@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>mapping-dsl-root</artifactId>
         <groupId>io.mapping-dsl</groupId>
+        <artifactId>mapping-dsl-root</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
