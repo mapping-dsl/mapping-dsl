@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
@@ -73,8 +72,7 @@ public abstract class AbstractDslGeneratorMojo extends AbstractMojo {
             this.project.addCompileSourceRoot(outputDirectoryPath);
         }
 
-        List<String> compilerOptions = buildCompilerOptions(
-                outputDirectory, classFiles, sourceFiles, targetSubdirectory);
+        List<String> compilerOptions = buildCompilerOptions(outputDirectory, classFiles, sourceFiles);
 
         getLog().debug("Compiler options: " + String.join(", ", compilerOptions));
 
@@ -144,9 +142,7 @@ public abstract class AbstractDslGeneratorMojo extends AbstractMojo {
         return fileManager.getJavaFileObjectsFromFiles(sources);
     }
 
-    private List<String> buildCompilerOptions(
-            File outputDirectory, List<String> classFiles, List<String> sourceFiles, String targetSubdirectory) {
-
+    private List<String> buildCompilerOptions(File outputDirectory, List<String> classFiles, List<String> sourceFiles) {
         Map<String, String> compilerOptionsPairs = new LinkedHashMap<>();
 
         compilerOptionsPairs.put("cp", buildClassPath());
@@ -160,7 +156,7 @@ public abstract class AbstractDslGeneratorMojo extends AbstractMojo {
 
         compilerOptionsPairs.put("s", outputDirectory.getPath());
 
-        String sourcePath = getSourceDirectories(targetSubdirectory).stream()
+        String sourcePath = getSourceDirectories().stream()
                 .map(directory -> IoUtils.runSafe(directory::getCanonicalPath))
                 .collect(Collectors.joining(File.pathSeparator));
 
@@ -180,9 +176,7 @@ public abstract class AbstractDslGeneratorMojo extends AbstractMojo {
         return compilerOptions;
     }
 
-    private Set<File> getSourceDirectories(String targetSubdirectory) {
-        File outputDirectory = new File(String.join(File.separator, this.targetDirectory, targetSubdirectory, "java"));
-
+    private Set<File> getSourceDirectories() {
         List<String> directoryNames = isTestCompilation()
                 ? this.project.getTestCompileSourceRoots()
                 : this.project.getCompileSourceRoots();
