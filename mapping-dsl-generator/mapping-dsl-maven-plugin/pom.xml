@@ -49,7 +49,7 @@
                 <executions>
                     <execution>
                         <id>default-descriptor</id>
-                        <phase>process-classes</phase>
+                        <phase>compile</phase>
                     </execution>
                 </executions>
             </plugin>
