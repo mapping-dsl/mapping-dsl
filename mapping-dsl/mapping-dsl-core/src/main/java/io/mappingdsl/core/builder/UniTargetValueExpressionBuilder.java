@@ -11,7 +11,7 @@ public class UniTargetValueExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
     private final MappingKey<SRC_ROOT, TRG_ROOT> mappingKey;
     private final UniMappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, ?> mappingRule;
 
-    public UniExpressionsChainBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> to(
+    public UniExpressionsChainBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> in(
             ValueExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> target) {
 
         return new UniExpressionsChainBuilder<>(this.mappingKey, this.mappingRule.withTarget(target));

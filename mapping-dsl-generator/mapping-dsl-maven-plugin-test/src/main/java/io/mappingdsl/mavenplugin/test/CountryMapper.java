@@ -13,7 +13,7 @@ public class CountryMapper {
         MapperDsl mapper = new DslMapperBuilder()
                 .uniMapping()
                 .from(Country.class).to(CountryTransport.class)
-                .supply(CountryMappingDsl.$this.name).to(CountryTransportMappingDsl.$this.name)
+                .supply(CountryMappingDsl.$this.name).in(CountryTransportMappingDsl.$this.name)
                 .build();
 
         return mapper.map(country, CountryTransport.class);
