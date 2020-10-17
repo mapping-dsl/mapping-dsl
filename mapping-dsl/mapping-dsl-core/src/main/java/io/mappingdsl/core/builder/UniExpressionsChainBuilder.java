@@ -9,11 +9,11 @@ import lombok.RequiredArgsConstructor;
 public class UniExpressionsChainBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
 
     private final MappingKey<SRC_ROOT, TRG_ROOT> mappingKey;
-    private final UniMappingContext<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> context;
+    private final UniMappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> mappingRule;
 
     public MapperDsl build() {
         MappingRules mappingRules = new MappingRules();
-        mappingRules.addMappingRule(this.mappingKey, this.context);
+        mappingRules.addMappingRule(this.mappingKey, this.mappingRule);
 
         return new MapperDsl(mappingRules);
     }

@@ -13,7 +13,7 @@ public class UniSourceExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     public <SRC_TYPE> UniTargetValueExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> supply(
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> sourceExpression) {
 
-        return new UniTargetValueExpressionBuilder<>(this.mappingKey, new UniMappingContext<>(sourceExpression));
+        return new UniTargetValueExpressionBuilder<>(this.mappingKey, new UniMappingRule<>(sourceExpression));
     }
 
 }

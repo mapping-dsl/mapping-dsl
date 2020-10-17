@@ -1,6 +1,6 @@
 package io.mappingdsl.core;
 
-import io.mappingdsl.core.builder.UniMappingContext;
+import io.mappingdsl.core.builder.UniMappingRule;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,13 +9,13 @@ import java.util.Set;
 
 public class MappingRules {
 
-    private final Map<MappingKey<?, ?>, Set<UniMappingContext<?, ?, ?, ?>>> rules = new HashMap<>();
+    private final Map<MappingKey<?, ?>, Set<UniMappingRule<?, ?, ?, ?>>> rules = new HashMap<>();
 
-    public <SRC, TRG> void addMappingRule(MappingKey<SRC, TRG> mappingKey, UniMappingContext<SRC, ?, TRG, ?> context) {
+    public <SRC, TRG> void addMappingRule(MappingKey<SRC, TRG> mappingKey, UniMappingRule<SRC, ?, TRG, ?> context) {
         this.rules.computeIfAbsent(mappingKey, key -> new HashSet<>()).add(context);
     }
 
-    public Set<UniMappingContext<?, ?, ?, ?>> getMappingRules(MappingKey<?, ?> mappingKey) {
+    public Set<UniMappingRule<?, ?, ?, ?>> getMappingRules(MappingKey<?, ?> mappingKey) {
         return this.rules.get(mappingKey);
     }
 

@@ -7,22 +7,22 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class UniMappingContext<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
+public class UniMappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
 
     private final ExpressionBase<SRC_ROOT, SRC_TYPE, ? extends ExpressionFunction> sourceExpression;
 
     private ExpressionBase<TRG_ROOT, TRG_TYPE, ? extends ExpressionFunction> targetExpression;
 
-    public UniMappingContext(ExpressionBase<SRC_ROOT, SRC_TYPE, ? extends ExpressionFunction> sourceExpression,
-                             ExpressionBase<TRG_ROOT, TRG_TYPE, ? extends ExpressionFunction> targetExpression) {
+    public UniMappingRule(ExpressionBase<SRC_ROOT, SRC_TYPE, ? extends ExpressionFunction> sourceExpression,
+                          ExpressionBase<TRG_ROOT, TRG_TYPE, ? extends ExpressionFunction> targetExpression) {
         this.sourceExpression = sourceExpression;
         this.targetExpression = targetExpression;
     }
 
-    public <NEW_TRG_TYPE> UniMappingContext<SRC_ROOT, SRC_TYPE, TRG_ROOT, NEW_TRG_TYPE> withTarget(
+    public <NEW_TRG_TYPE> UniMappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, NEW_TRG_TYPE> withTarget(
             ExpressionBase<TRG_ROOT, NEW_TRG_TYPE, ? extends ExpressionFunction> targetExpression) {
 
-        return new UniMappingContext<>(this.sourceExpression, targetExpression);
+        return new UniMappingRule<>(this.sourceExpression, targetExpression);
     }
 
 }
