@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Country {
+public class CountryDto {
 
     private String name;
 

@@ -2,21 +2,21 @@ package io.mappingdsl.mavenplugin.test;
 
 import io.mappingdsl.core.MapperDsl;
 import io.mappingdsl.core.builder.DslMapperBuilder;
-import org.thirdpatry.lib.Country;
-import org.thirdpatry.lib.CountryMappingDsl;
-import org.thirdpatry.lib.CountryTransport;
-import org.thirdpatry.lib.CountryTransportMappingDsl;
+import org.thirdpatry.lib.CountryDto;
+import org.thirdpatry.lib.CountryDtoMappingDsl;
+import org.thirdpatry.lib.CountryEntity;
+import org.thirdpatry.lib.CountryEntityMappingDsl;
 
 public class CountryMapper {
 
-    public CountryTransport map(Country country) {
+    public CountryDto map(CountryEntity country) {
         MapperDsl mapper = new DslMapperBuilder()
                 .uniMapping()
-                .from(Country.class).to(CountryTransport.class)
-                .supply(CountryMappingDsl.$this.name).in(CountryTransportMappingDsl.$this.name)
+                .from(CountryEntity.class).to(CountryDto.class)
+                .supply(CountryEntityMappingDsl.$this.name).in(CountryDtoMappingDsl.$this.name)
                 .build();
 
-        return mapper.map(country, CountryTransport.class);
+        return mapper.map(country, CountryDto.class);
     }
 
 }

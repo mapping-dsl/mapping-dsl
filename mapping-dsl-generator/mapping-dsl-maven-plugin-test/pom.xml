@@ -39,8 +39,8 @@
                         </goals>
                         <configuration>
                             <classFiles>
-                                <classFile>org.thirdpatry.lib.Country</classFile>
-                                <classFile>org.thirdpatry.lib.CountryTransport</classFile>
+                                <classFile>org.thirdpatry.lib.CountryDto</classFile>
+                                <classFile>org.thirdpatry.lib.CountryEntity</classFile>
                             </classFiles>
                         </configuration>
                     </execution>

@@ -7,11 +7,11 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class City {
+public class CityDto {
 
     private String name;
 
-    private Country country;
+    private CountryDto country;
 
     private int population;
 
