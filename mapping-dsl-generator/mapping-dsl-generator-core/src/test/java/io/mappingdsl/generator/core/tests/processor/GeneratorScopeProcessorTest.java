@@ -13,14 +13,14 @@ class GeneratorScopeProcessorTest {
     void shouldGenerateSimpleDsl() {
         Compilation compilation = Compiler.javac()
                 .withProcessors(new GeneratorScopeProcessor())
-                .withOptions("-Ascope=pojo.ZipCode")
-                .compile(JavaFileObjects.forResource("fixtures/input/ZipCode.java"));
+                .withOptions("-Ascope=pojo.SimpleField")
+                .compile(JavaFileObjects.forResource("fixtures/input/SimpleField.java"));
 
         CompilationSubject.assertThat(compilation).succeeded();
 
         CompilationSubject.assertThat(compilation)
-                .generatedSourceFile("pojo.ZipCodeMappingDsl")
-                .hasSourceEquivalentTo(JavaFileObjects.forResource("fixtures/output/ZipCodeMappingDsl.java"));
+                .generatedSourceFile("pojo.SimpleFieldMappingDsl")
+                .hasSourceEquivalentTo(JavaFileObjects.forResource("fixtures/output/SimpleFieldMappingDsl.java"));
     }
 
 }
