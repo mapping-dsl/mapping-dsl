@@ -21,8 +21,8 @@
 
         <dependency>
             <groupId>io.mapping-dsl</groupId>
-            <artifactId>mapping-dsl-generator-test-3rd-party-lib</artifactId>
-            <version>${project.version}</version>
+            <artifactId>test-lib</artifactId>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 
@@ -39,8 +39,8 @@
                         </goals>
                         <configuration>
                             <classFiles>
-                                <classFile>org.thirdpatry.lib.CountryDto</classFile>
-                                <classFile>org.thirdpatry.lib.CountryEntity</classFile>
+                                <classFile>org.thirdpatry.lib.SimpleDto</classFile>
+                                <classFile>org.thirdpatry.lib.SimpleEntity</classFile>
                             </classFiles>
                         </configuration>
                     </execution>
@@ -48,5 +48,12 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>bintray</id>
+            <url>https://dl.bintray.com/alexeyanufriev/mapping-dsl</url>
+        </repository>
+    </repositories>
 
 </project>

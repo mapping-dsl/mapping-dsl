@@ -15,7 +15,6 @@
 
     <modules>
         <module>mapping-dsl-generator-core</module>
-        <module>mapping-dsl-generator-test-3rd-party-lib</module>
         <module>mapping-dsl-maven-plugin</module>
         <module>mapping-dsl-maven-plugin-test</module>
     </modules>
