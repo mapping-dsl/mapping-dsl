@@ -14,4 +14,8 @@ public class MappingKey<SRC, TRG> {
     @Getter
     private final Class<TRG> target;
 
+    public MappingKey<TRG, SRC> invert() {
+        return new MappingKey<>(this.target, this.source);
+    }
+
 }

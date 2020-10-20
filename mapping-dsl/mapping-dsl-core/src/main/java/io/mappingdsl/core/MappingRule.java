@@ -26,4 +26,8 @@ public class MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
         return new MappingRule<>(this.initialExpression, terminalExpression);
     }
 
+    public MappingRule<TRG_ROOT, TRG_TYPE, SRC_ROOT, SRC_TYPE> invert() {
+        return new MappingRule<>(this.terminalExpression, this.initialExpression);
+    }
+
 }
