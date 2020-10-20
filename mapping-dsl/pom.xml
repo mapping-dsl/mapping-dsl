@@ -15,6 +15,7 @@
 
     <modules>
         <module>mapping-dsl-core</module>
+        <module>mapping-dsl-core-test</module>
     </modules>
 
 </project>
