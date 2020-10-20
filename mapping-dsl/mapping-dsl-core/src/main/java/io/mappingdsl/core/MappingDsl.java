@@ -2,11 +2,11 @@ package io.mappingdsl.core;
 
 import io.mappingdsl.core.execution.MappingExecutor;
 
-public class MapperDsl {
+public class MappingDsl {
 
     private final MappingRules mappingRules;
 
-    public MapperDsl(MappingRules mappingRules) {
+    public MappingDsl(MappingRules mappingRules) {
         this.mappingRules = mappingRules;
     }
 
