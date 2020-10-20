@@ -3,7 +3,7 @@ package io.mappingdsl.core.execution;
 import ice.bricks.reflection.ReflectionUtils;
 import io.mappingdsl.core.MappingKey;
 import io.mappingdsl.core.MappingRules;
-import io.mappingdsl.core.builder.UniMappingRule;
+import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.function.RootIdentityFunction;
 import io.mappingdsl.core.expression.function.TargetPathTraverserFunction;
@@ -27,18 +27,18 @@ public class MappingExecutor {
 
         Class<SRC> sourceType = (Class<SRC>) source.getClass();
         MappingKey<SRC, TRG> mappingKey = new MappingKey<>(sourceType, targetType);
-        Set<UniMappingRule<?, ?, ?, ?>> rules = this.mappingRules.getMappingRules(mappingKey);
+        Set<MappingRule<?, ?, ?, ?>> rules = this.mappingRules.getMappingRules(mappingKey);
 
         TRG target = ReflectionUtils.generateNewInstance(targetType);
 
-        for (UniMappingRule<?, ?, ?, ?> rule : rules) {
-            Deque<ExpressionBase<?, ?, ?>> sourcePath = unwindPath(rule.getSourceExpression());
+        for (MappingRule<?, ?, ?, ?> rule : rules) {
+            Deque<ExpressionBase<?, ?, ?>> sourcePath = unwindPath(rule.getInitialExpression());
             Object sourceValue = produceValue(source, sourcePath);
             if (sourceValue == null) {
                 continue;
             }
 
-            Deque<ExpressionBase<?, ?, ?>> targetPath = unwindPath(rule.getTargetExpression());
+            Deque<ExpressionBase<?, ?, ?>> targetPath = unwindPath(rule.getTerminalExpression());
             consumeValue(sourceValue, target, targetPath);
         }
 
