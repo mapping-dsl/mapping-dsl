@@ -13,7 +13,7 @@ public class SimpleMapper {
         MappingDsl mapper = new MappingDslBuilder()
                 .uniMapping()
                 .from(SimpleEntity.class).to(SimpleDto.class)
-                .supply(SimpleEntityMappingDsl.$this.val).in(SimpleDtoMappingDsl.$this.val)
+                .supply(SimpleEntityMappingDsl.$this.val).to(SimpleDtoMappingDsl.$this.val)
                 .build();
 
         return mapper.map(entity, SimpleDto.class);
