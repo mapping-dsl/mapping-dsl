@@ -1,6 +1,7 @@
 package io.mappingdsl.core.builder;
 
 import io.mappingdsl.core.MappingKey;
+import io.mappingdsl.core.MappingRules;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -10,7 +11,7 @@ public class UniTargetTypeBuilder<SRC_ROOT> {
 
     public <TRG_ROOT> UniSourceExpressionBuilder<SRC_ROOT, TRG_ROOT> to(Class<TRG_ROOT> targetType) {
         MappingKey<SRC_ROOT, TRG_ROOT> mappingKey = new MappingKey<>(this.sourceType, targetType);
-        return new UniSourceExpressionBuilder<>(mappingKey);
+        return new UniSourceExpressionBuilder<>(mappingKey, new MappingRules());
     }
 
 }

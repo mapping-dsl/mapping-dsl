@@ -2,6 +2,10 @@ package io.mappingdsl.core.test;
 
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.builder.MappingDslBuilder;
+import io.mappingdsl.core.test.fixtures.HouseNumberDto;
+import io.mappingdsl.core.test.fixtures.HouseNumberDtoMappingDsl;
+import io.mappingdsl.core.test.fixtures.HouseNumberEntity;
+import io.mappingdsl.core.test.fixtures.HouseNumberEntityMappingDsl;
 import io.mappingdsl.core.test.fixtures.StreetDto;
 import io.mappingdsl.core.test.fixtures.StreetDtoMappingDsl;
 import io.mappingdsl.core.test.fixtures.StreetEntity;
@@ -12,24 +16,48 @@ import org.junit.jupiter.api.Test;
 class BiSimpleMappingTest {
 
     @Test
-    void shouldMapSimpleObject() {
+    void shouldMapSinglePrimitiveField() {
         MappingDsl mappingDsl = new MappingDslBuilder()
                 .biMapping()
                 .between(StreetEntity.class).and(StreetDto.class)
                 .bind(StreetEntityMappingDsl.$this.name).with(StreetDtoMappingDsl.$this.name)
                 .build();
 
-        StreetEntity streetEntity = new StreetEntity("Broadway");
+        StreetEntity streetEntity = new StreetEntity("Baker Street");
 
         // forward mapping
         StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
 
-        Assertions.assertThat(streetDto.getName()).isEqualTo("Broadway");
+        Assertions.assertThat(streetDto.getName()).isEqualTo("Baker Street");
 
         // backward mapping
         streetEntity = mappingDsl.map(streetDto, StreetEntity.class);
 
-        Assertions.assertThat(streetEntity.getName()).isEqualTo("Broadway");
+        Assertions.assertThat(streetEntity.getName()).isEqualTo("Baker Street");
+    }
+
+    @Test
+    void shouldMapMultiplePrimitiveFields() {
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .biMapping()
+                .between(HouseNumberEntity.class).and(HouseNumberDto.class)
+                .bind(HouseNumberEntityMappingDsl.$this.number).with(HouseNumberDtoMappingDsl.$this.number)
+                .bind(HouseNumberEntityMappingDsl.$this.suffix).with(HouseNumberDtoMappingDsl.$this.suffix)
+                .build();
+
+        HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B");
+
+        // forward mapping
+        HouseNumberDto houseNumberDto = mappingDsl.map(houseNumberEntity, HouseNumberDto.class);
+
+        Assertions.assertThat(houseNumberDto.getNumber()).isEqualTo(221);
+        Assertions.assertThat(houseNumberDto.getSuffix()).isEqualTo("B");
+
+        // backward mapping
+        houseNumberEntity = mappingDsl.map(houseNumberDto, HouseNumberEntity.class);
+
+        Assertions.assertThat(houseNumberEntity.getNumber()).isEqualTo(221);
+        Assertions.assertThat(houseNumberEntity.getSuffix()).isEqualTo("B");
     }
 
 }
