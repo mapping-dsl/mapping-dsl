@@ -15,10 +15,10 @@ public class UniTargetValueExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
     private final MappingRules mappingRules;
 
     public UniExpressionsChainBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> to(
-            ValueExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> target) {
+            ValueExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
         return new UniExpressionsChainBuilder<>(
-                this.mappingKey, this.mappingRule.withTerminalExpression(target), this.mappingRules);
+                this.mappingKey, this.mappingRule.withTerminalExpression(targetExpression), this.mappingRules);
     }
 
 }
