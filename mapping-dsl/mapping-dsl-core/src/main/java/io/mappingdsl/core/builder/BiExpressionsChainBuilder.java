@@ -24,7 +24,6 @@ public class BiExpressionsChainBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE>
         this.mappingRules = mappingRules;
 
         this.mappingRules.addMappingRule(this.mappingKey, this.mappingRule);
-        this.mappingRules.addMappingRule(this.mappingKey.invert(), this.mappingRule.invert());
     }
 
     public MappingDsl build() {

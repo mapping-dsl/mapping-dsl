@@ -2,6 +2,7 @@ package io.mappingdsl.core.builder;
 
 import io.mappingdsl.core.MappingKey;
 import io.mappingdsl.core.MappingRule;
+import io.mappingdsl.core.MappingRule.MappingRuleDirection;
 import io.mappingdsl.core.MappingRules;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
@@ -17,7 +18,7 @@ public class UniSourceExpressionBuilder<SRC_ROOT, TRG_ROOT> {
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> sourceExpression) {
 
         return new UniTargetValueExpressionBuilder<>(
-                this.mappingKey, new MappingRule<>(sourceExpression), this.mappingRules);
+                this.mappingKey, new MappingRule<>(MappingRuleDirection.FORWARD, sourceExpression), this.mappingRules);
     }
 
 }
