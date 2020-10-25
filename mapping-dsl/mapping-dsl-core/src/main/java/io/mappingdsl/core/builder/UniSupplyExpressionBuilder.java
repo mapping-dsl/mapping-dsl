@@ -17,8 +17,10 @@ public class UniSupplyBuilder<SRC_ROOT, TRG_ROOT> {
     public <SRC_TYPE> UniCompositeBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> supply(
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> sourceExpression) {
 
-        return new UniCompositeBuilder<>(
-                this.mappingKey, new MappingRule<>(MappingRuleDirection.FORWARD, sourceExpression), this.mappingRules);
+        MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> mappingRule = new MappingRule<>(
+                MappingRuleDirection.FORWARD, sourceExpression, null);
+
+        return new UniCompositeBuilder<>(this.mappingKey, mappingRule, this.mappingRules);
     }
 
 }
