@@ -5,13 +5,13 @@ import io.mappingdsl.core.MappingRules;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class UniTargetTypeBuilder<SRC_ROOT> {
+public class UniToTypeBuilder<SRC_ROOT> {
 
     private final Class<SRC_ROOT> sourceType;
 
-    public <TRG_ROOT> UniSourceExpressionBuilder<SRC_ROOT, TRG_ROOT> to(Class<TRG_ROOT> targetType) {
+    public <TRG_ROOT> UniSupplyBuilder<SRC_ROOT, TRG_ROOT> to(Class<TRG_ROOT> targetType) {
         MappingKey<SRC_ROOT, TRG_ROOT> mappingKey = new MappingKey<>(this.sourceType, targetType);
-        return new UniSourceExpressionBuilder<>(mappingKey, new MappingRules());
+        return new UniSupplyBuilder<>(mappingKey, new MappingRules());
     }
 
 }

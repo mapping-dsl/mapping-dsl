@@ -9,15 +9,15 @@ import io.mappingdsl.core.expression.function.ValueProducerFunction;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class UniSourceExpressionBuilder<SRC_ROOT, TRG_ROOT> {
+public class UniSupplyBuilder<SRC_ROOT, TRG_ROOT> {
 
     private final MappingKey<SRC_ROOT, TRG_ROOT> mappingKey;
     private final MappingRules mappingRules;
 
-    public <SRC_TYPE> UniTargetValueExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> supply(
+    public <SRC_TYPE> UniCompositeBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> supply(
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> sourceExpression) {
 
-        return new UniTargetValueExpressionBuilder<>(
+        return new UniCompositeBuilder<>(
                 this.mappingKey, new MappingRule<>(MappingRuleDirection.FORWARD, sourceExpression), this.mappingRules);
     }
 
