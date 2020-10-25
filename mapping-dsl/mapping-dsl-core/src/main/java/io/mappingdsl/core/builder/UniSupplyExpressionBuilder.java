@@ -14,7 +14,7 @@ public class UniSupplyExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     private final MappingKey<SRC_ROOT, TRG_ROOT> mappingKey;
     private final MappingRules mappingRules;
 
-    public <SRC_TYPE> UniToExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> supply(
+    public <SRC_TYPE> UniToExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> supply(
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> sourceExpression) {
 
         MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> mappingRule = new MappingRule<>(

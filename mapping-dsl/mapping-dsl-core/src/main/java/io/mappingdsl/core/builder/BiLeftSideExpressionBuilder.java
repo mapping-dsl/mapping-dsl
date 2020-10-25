@@ -16,7 +16,7 @@ public class BiLeftSideExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     private final MappingKey<SRC_ROOT, TRG_ROOT> mappingKey;
     private final MappingRules mappingRules;
 
-    public <SRC_TYPE> BiRightSideValueExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> bind(
+    public <SRC_TYPE> BiRightSideValueExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> bind(
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> leftSideExpression) {
 
         MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> mappingRule = new MappingRule<>(
@@ -25,7 +25,7 @@ public class BiLeftSideExpressionBuilder<SRC_ROOT, TRG_ROOT> {
         return new BiRightSideValueExpressionBuilder<>(this.mappingKey, mappingRule, this.mappingRules);
     }
 
-    public <SRC_TYPE> BiValueExpressionConsumerBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> supply(
+    public <SRC_TYPE> BiValueExpressionConsumerBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> supply(
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> sourceExpression) {
 
         MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> mappingRule = new MappingRule<>(
@@ -34,7 +34,7 @@ public class BiLeftSideExpressionBuilder<SRC_ROOT, TRG_ROOT> {
         return new BiValueExpressionConsumerBuilder<>(this.mappingKey, mappingRule, this.mappingRules);
     }
 
-    public <SRC_TYPE> BiValueExpressionProducerBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
+    public <SRC_TYPE> BiValueExpressionProducerBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> consume(
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> sourceExpression) {
 
         MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> mappingRule = new MappingRule<>(

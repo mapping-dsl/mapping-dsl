@@ -8,14 +8,14 @@ import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class UniToExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
+public class UniToExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
 
     private final MappingKey<SRC_ROOT, TRG_ROOT> mappingKey;
-    private final MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, ?> mappingRule;
+    private final MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> mappingRule;
     private final MappingRules mappingRules;
 
-    public UniChainBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> to(
-            ValueExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+    public UniChainBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> to(
+            ValueExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
         return new UniChainBuilder<>(
                 this.mappingKey, this.mappingRule.withTerminalExpression(targetExpression), this.mappingRules);
