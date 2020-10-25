@@ -6,8 +6,8 @@ public class MappingDslBuilder {
         return new UniFromTypeBuilder();
     }
 
-    public BiLeftSideTypeBuilder biMapping() {
-        return new BiLeftSideTypeBuilder();
+    public BiBetweenTypeBuilder biMapping() {
+        return new BiBetweenTypeBuilder();
     }
 
 }

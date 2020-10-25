@@ -5,14 +5,14 @@ import io.mappingdsl.core.MappingKey;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.MappingRules;
 
-public class BiExpressionsChainBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE>
-        extends BiLeftSideExpressionBuilder<SRC_ROOT, TRG_ROOT> {
+public class BiChainBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE>
+        extends BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
 
     private final MappingKey<SRC_ROOT, TRG_ROOT> mappingKey;
     private final MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> mappingRule;
     private final MappingRules mappingRules;
 
-    public BiExpressionsChainBuilder(
+    public BiChainBuilder(
             MappingKey<SRC_ROOT, TRG_ROOT> mappingKey,
             MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> mappingRule,
             MappingRules mappingRules) {
