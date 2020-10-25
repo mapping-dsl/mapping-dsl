@@ -19,22 +19,28 @@ public class BiLeftSideExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     public <SRC_TYPE> BiRightSideValueExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> bind(
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> leftSideExpression) {
 
-        return new BiRightSideValueExpressionBuilder<>(
-                this.mappingKey, new MappingRule<>(MappingRuleDirection.BOTH, leftSideExpression), this.mappingRules);
+        MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> mappingRule = new MappingRule<>(
+                MappingRuleDirection.BOTH, leftSideExpression, null);
+
+        return new BiRightSideValueExpressionBuilder<>(this.mappingKey, mappingRule, this.mappingRules);
     }
 
     public <SRC_TYPE> BiValueExpressionConsumerBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> supply(
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> sourceExpression) {
 
-        return new BiValueExpressionConsumerBuilder<>(
-                this.mappingKey, new MappingRule<>(MappingRuleDirection.FORWARD, sourceExpression), this.mappingRules);
+        MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> mappingRule = new MappingRule<>(
+                MappingRuleDirection.FORWARD, sourceExpression, null);
+
+        return new BiValueExpressionConsumerBuilder<>(this.mappingKey, mappingRule, this.mappingRules);
     }
 
     public <SRC_TYPE> BiValueExpressionProducerBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> sourceExpression) {
 
-        return new BiValueExpressionProducerBuilder<>(
-                this.mappingKey, new MappingRule<>(MappingRuleDirection.BACKWARD, sourceExpression), this.mappingRules);
+        MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> mappingRule = new MappingRule<>(
+                MappingRuleDirection.BACKWARD, sourceExpression, null);
+
+        return new BiValueExpressionProducerBuilder<>(this.mappingKey, mappingRule, this.mappingRules);
     }
 
 }
