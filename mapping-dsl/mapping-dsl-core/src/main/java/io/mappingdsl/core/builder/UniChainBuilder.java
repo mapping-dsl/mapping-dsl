@@ -6,7 +6,7 @@ import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.MappingRules;
 
 public class UniChainBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE>
-        extends UniSupplyBuilder<SRC_ROOT, TRG_ROOT> {
+        extends UniSupplyExpressionBuilder<SRC_ROOT, TRG_ROOT> {
 
     private final MappingKey<SRC_ROOT, TRG_ROOT> mappingKey;
     private final MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> mappingRule;
