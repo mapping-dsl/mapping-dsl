@@ -7,9 +7,11 @@ import java.util.Set;
 
 public class MappingRules {
 
-    private final Map<MappingKey<?, ?>, Set<MappingRule<?, ?, ?, ?>>> rules = new HashMap<>();
+    private final Map<MappingKey<?, ?>, Set<MappingRule<?, ?>>> rules = new HashMap<>();
 
-    public <SRC, TRG> void addMappingRule(MappingKey<SRC, TRG> mappingKey, MappingRule<SRC, ?, TRG, ?> mappingRule) {
+    public <SRC_ROOT, TRG_ROOT> void addMappingRule(
+            MappingKey<SRC_ROOT, TRG_ROOT> mappingKey, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
+
         MappingRule.MappingRuleDirection ruleDirection = mappingRule.getMappingRuleDirection();
 
         switch (ruleDirection) {
@@ -31,7 +33,7 @@ public class MappingRules {
         }
     }
 
-    public Set<MappingRule<?, ?, ?, ?>> getMappingRules(MappingKey<?, ?> mappingKey) {
+    public Set<MappingRule<?, ?>> getMappingRules(MappingKey<?, ?> mappingKey) {
         return this.rules.get(mappingKey);
     }
 

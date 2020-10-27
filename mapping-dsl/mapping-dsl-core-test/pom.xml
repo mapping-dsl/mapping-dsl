@@ -37,6 +37,8 @@
                                 <testSourceFile>io.mappingdsl.core.test.fixtures.HouseNumberEntity</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.test.fixtures.StreetDto</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.test.fixtures.StreetEntity</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.test.fixtures.ZipDto</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.test.fixtures.ZipEntity</testSourceFile>
                             </testSourceFiles>
                         </configuration>
                     </execution>

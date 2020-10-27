@@ -16,31 +16,37 @@ public class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     private final MappingKey<SRC_ROOT, TRG_ROOT> mappingKey;
     private final MappingRules mappingRules;
 
-    public <SRC_TYPE> BiTerminalExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> bind(
-            ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> leftSideExpression) {
+    public <SRC_TYPE> BiConvertedExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> bind(
+            ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
 
-        MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> mappingRule = new MappingRule<>(
-                MappingRuleDirection.BOTH, leftSideExpression, null);
+        MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
+                .mappingRuleDirection(MappingRuleDirection.BOTH)
+                .initialExpression(initialExpression)
+                .build();
 
-        return new BiTerminalExpressionBuilder<>(this.mappingKey, mappingRule, this.mappingRules);
+        return new BiConvertedExpressionBuilder<>(this.mappingKey, mappingRule, this.mappingRules);
     }
 
-    public <SRC_TYPE> BiTerminalExpressionConsumerBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> supply(
-            ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> sourceExpression) {
+    public <SRC_TYPE> BiConvertedExpressionConsumerBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> supply(
+            ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
-        MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> mappingRule = new MappingRule<>(
-                MappingRuleDirection.FORWARD, sourceExpression, null);
+        MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
+                .mappingRuleDirection(MappingRuleDirection.FORWARD)
+                .initialExpression(initialExpression)
+                .build();
 
-        return new BiTerminalExpressionConsumerBuilder<>(this.mappingKey, mappingRule, this.mappingRules);
+        return new BiConvertedExpressionConsumerBuilder<>(this.mappingKey, mappingRule, this.mappingRules);
     }
 
-    public <SRC_TYPE> BiTerminalExpressionProducerBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> consume(
-            ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> sourceExpression) {
+    public <SRC_TYPE> BiConvertedExpressionProducerBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
+            ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
-        MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> mappingRule = new MappingRule<>(
-                MappingRuleDirection.BACKWARD, sourceExpression, null);
+        MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
+                .mappingRuleDirection(MappingRuleDirection.BACKWARD)
+                .initialExpression(initialExpression)
+                .build();
 
-        return new BiTerminalExpressionProducerBuilder<>(this.mappingKey, mappingRule, this.mappingRules);
+        return new BiConvertedExpressionProducerBuilder<>(this.mappingKey, mappingRule, this.mappingRules);
     }
 
 }

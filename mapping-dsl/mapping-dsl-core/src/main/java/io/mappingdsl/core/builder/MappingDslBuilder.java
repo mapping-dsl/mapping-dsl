@@ -2,12 +2,12 @@ package io.mappingdsl.core.builder;
 
 public class MappingDslBuilder {
 
-    public UniFromTypeBuilder uniMapping() {
-        return new UniFromTypeBuilder();
+    public UniInitialTypeBuilder uniMapping() {
+        return new UniInitialTypeBuilder();
     }
 
-    public BiBetweenTypeBuilder biMapping() {
-        return new BiBetweenTypeBuilder();
+    public BiInitialTypeBuilder biMapping() {
+        return new BiInitialTypeBuilder();
     }
 
 }

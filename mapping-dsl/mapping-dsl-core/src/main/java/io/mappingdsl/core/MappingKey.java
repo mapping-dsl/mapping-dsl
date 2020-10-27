@@ -3,9 +3,11 @@ package io.mappingdsl.core;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @RequiredArgsConstructor
 @EqualsAndHashCode
+@ToString
 public class MappingKey<SRC, TRG> {
 
     @Getter

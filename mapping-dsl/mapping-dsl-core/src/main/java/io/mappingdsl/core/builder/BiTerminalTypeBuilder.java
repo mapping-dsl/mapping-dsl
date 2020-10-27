@@ -5,7 +5,7 @@ import io.mappingdsl.core.MappingRules;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class BiAndTypeBuilder<SRC_ROOT> {
+public class BiTerminalTypeBuilder<SRC_ROOT> {
 
     private final Class<SRC_ROOT> sourceType;
 

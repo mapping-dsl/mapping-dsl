@@ -2,14 +2,16 @@ package io.mappingdsl.core.execution;
 
 import ice.bricks.reflection.ReflectionUtils;
 import io.mappingdsl.core.MappingKey;
-import io.mappingdsl.core.MappingRules;
 import io.mappingdsl.core.MappingRule;
+import io.mappingdsl.core.MappingRules;
+import io.mappingdsl.core.builder.Converter;
 import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.function.RootIdentityFunction;
 import io.mappingdsl.core.expression.function.TargetPathTraverserFunction;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -27,15 +29,26 @@ public class MappingExecutor {
 
         Class<SRC> sourceType = (Class<SRC>) source.getClass();
         MappingKey<SRC, TRG> mappingKey = new MappingKey<>(sourceType, targetType);
-        Set<MappingRule<?, ?, ?, ?>> rules = this.mappingRules.getMappingRules(mappingKey);
+        Set<MappingRule<?, ?>> rules = this.mappingRules.getMappingRules(mappingKey);
+
+        if (CollectionUtils.isEmpty(rules)) {
+            throw new NoMappingException(mappingKey);
+        }
 
         TRG target = ReflectionUtils.generateNewInstance(targetType);
 
-        for (MappingRule<?, ?, ?, ?> rule : rules) {
+        for (MappingRule<?, ?> rule : rules) {
             Deque<ExpressionBase<?, ?, ?>> sourcePath = unwindPath(rule.getInitialExpression());
             Object sourceValue = produceValue(source, sourcePath);
             if (sourceValue == null) {
                 continue;
+            }
+
+            Converter<Object, Object> expressionConverter =
+                    (Converter<Object, Object>) rule.getInitialExpressionConverter();
+
+            if (expressionConverter != null) {
+                sourceValue = expressionConverter.convert(sourceValue);
             }
 
             Deque<ExpressionBase<?, ?, ?>> targetPath = unwindPath(rule.getTerminalExpression());

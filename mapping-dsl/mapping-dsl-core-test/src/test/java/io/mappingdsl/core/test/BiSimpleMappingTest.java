@@ -23,15 +23,13 @@ class BiSimpleMappingTest {
                 .bind(StreetEntityMappingDsl.$this.name).with(StreetDtoMappingDsl.$this.name)
                 .build();
 
-        StreetEntity streetEntity = new StreetEntity("Baker Street");
-
         // forward mapping
-        StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
+        StreetDto streetDto = mappingDsl.map(new StreetEntity("Baker Street"), StreetDto.class);
 
         Assertions.assertThat(streetDto.getName()).isEqualTo("Baker Street");
 
         // backward mapping
-        streetEntity = mappingDsl.map(streetDto, StreetEntity.class);
+        StreetEntity streetEntity = mappingDsl.map(streetDto, StreetEntity.class);
 
         Assertions.assertThat(streetEntity.getName()).isEqualTo("Baker Street");
     }

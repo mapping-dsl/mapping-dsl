@@ -1,26 +1,65 @@
 package io.mappingdsl.core;
 
+import io.mappingdsl.core.builder.Converter;
 import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.function.ExpressionFunction;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
-public class MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
+@Builder
+public class MappingRule<SRC_ROOT, TRG_ROOT> {
 
     private final MappingRuleDirection mappingRuleDirection;
-    private final ExpressionBase<SRC_ROOT, SRC_TYPE, ? extends ExpressionFunction> initialExpression;
-    private final ExpressionBase<TRG_ROOT, TRG_TYPE, ? extends ExpressionFunction> terminalExpression;
+    private final ExpressionBase<SRC_ROOT, ?, ? extends ExpressionFunction> initialExpression;
+    private final ExpressionBase<TRG_ROOT, ?, ? extends ExpressionFunction> terminalExpression;
+    private final Converter<?, ?> initialExpressionConverter;
+    private final Converter<?, ?> terminalExpressionConverter;
 
-    public MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> withTerminalExpression(
-            ExpressionBase<TRG_ROOT, TRG_TYPE, ? extends ExpressionFunction> terminalExpression) {
+    public MappingRule<SRC_ROOT, TRG_ROOT> withInitialExpressionConverter(
+            Converter<?, ?> initialExpressionConverter) {
 
-        return new MappingRule<>(this.mappingRuleDirection, this.initialExpression, terminalExpression);
+        return MappingRule.<SRC_ROOT, TRG_ROOT>builder()
+                .mappingRuleDirection(this.mappingRuleDirection)
+                .initialExpression(this.initialExpression)
+                .terminalExpression(this.terminalExpression)
+                .initialExpressionConverter(initialExpressionConverter)
+                .terminalExpressionConverter(this.terminalExpressionConverter)
+                .build();
     }
 
-    public MappingRule<TRG_ROOT, TRG_TYPE, SRC_ROOT, SRC_TYPE> invert() {
-        return new MappingRule<>(this.mappingRuleDirection, this.terminalExpression, this.initialExpression);
+    public MappingRule<SRC_ROOT, TRG_ROOT> withTerminalExpressionConverter(
+            Converter<?, ?> terminalExpressionConverter) {
+
+        return MappingRule.<SRC_ROOT, TRG_ROOT>builder()
+                .mappingRuleDirection(this.mappingRuleDirection)
+                .initialExpression(this.initialExpression)
+                .terminalExpression(this.terminalExpression)
+                .initialExpressionConverter(this.initialExpressionConverter)
+                .terminalExpressionConverter(terminalExpressionConverter)
+                .build();
+    }
+
+    public MappingRule<SRC_ROOT, TRG_ROOT> withTerminalExpression(
+            ExpressionBase<TRG_ROOT, ?, ? extends ExpressionFunction> terminalExpression) {
+
+        return MappingRule.<SRC_ROOT, TRG_ROOT>builder()
+                .mappingRuleDirection(this.mappingRuleDirection)
+                .initialExpression(this.initialExpression)
+                .terminalExpression(terminalExpression)
+                .initialExpressionConverter(this.initialExpressionConverter)
+                .terminalExpressionConverter(this.terminalExpressionConverter)
+                .build();
+    }
+
+    public MappingRule<TRG_ROOT, SRC_ROOT> invert() {
+        return MappingRule.<TRG_ROOT, SRC_ROOT>builder()
+                .mappingRuleDirection(this.mappingRuleDirection)
+                .initialExpression(this.terminalExpression)
+                .terminalExpression(this.initialExpression)
+                .initialExpressionConverter(this.terminalExpressionConverter)
+                .terminalExpressionConverter(this.initialExpressionConverter)
+                .build();
     }
 
     public enum MappingRuleDirection {

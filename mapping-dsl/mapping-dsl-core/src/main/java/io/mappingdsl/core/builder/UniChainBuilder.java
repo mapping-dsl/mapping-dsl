@@ -6,15 +6,14 @@ import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.MappingRules;
 
 public class UniChainBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE>
-        extends UniSupplyExpressionBuilder<SRC_ROOT, TRG_ROOT> {
+        extends UniInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
 
     private final MappingKey<SRC_ROOT, TRG_ROOT> mappingKey;
-    private final MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> mappingRule;
+    private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
     private final MappingRules mappingRules;
 
     public UniChainBuilder(
-            MappingKey<SRC_ROOT, TRG_ROOT> mappingKey,
-            MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> mappingRule,
+            MappingKey<SRC_ROOT, TRG_ROOT> mappingKey, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule,
             MappingRules mappingRules) {
 
         super(mappingKey, mappingRules);

@@ -8,17 +8,17 @@ import io.mappingdsl.core.expression.function.ValueProcessingFunction;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class BiTerminalExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
+public class BiTerminalExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
     private final MappingKey<SRC_ROOT, TRG_ROOT> mappingKey;
-    private final MappingRule<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> mappingRule;
+    private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
     private final MappingRules mappingRules;
 
-    public BiChainBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> with(
-            ValueExpression<TRG_ROOT, TRG_TYPE, ? extends ValueProcessingFunction> rightSideExpression) {
+    public BiChainBuilder<SRC_ROOT, TRG_ROOT> with(
+            ValueExpression<TRG_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> terminalExpression) {
 
         return new BiChainBuilder<>(
-                this.mappingKey, this.mappingRule.withTerminalExpression(rightSideExpression), this.mappingRules);
+                this.mappingKey, this.mappingRule.withTerminalExpression(terminalExpression), this.mappingRules);
     }
 
 }
