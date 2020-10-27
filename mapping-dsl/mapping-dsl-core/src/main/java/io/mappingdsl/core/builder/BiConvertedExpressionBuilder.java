@@ -37,4 +37,17 @@ public class BiConvertedExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
         return new BiTerminalExpressionBuilder<>(this.mappingKey, rule, this.mappingRules);
     }
 
+    public <NEW_SRC_TYPE> BiTerminalExpressionBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> usingConverter(
+            BiConverter<SRC_TYPE, NEW_SRC_TYPE> converters) {
+
+        Converter<SRC_TYPE, NEW_SRC_TYPE> forwardConverter = converters::convertForward;
+        Converter<NEW_SRC_TYPE, SRC_TYPE> backwardConverter = converters::convertBackward;
+
+        MappingRule<SRC_ROOT, TRG_ROOT> rule = this.mappingRule
+                .withInitialExpressionConverter(forwardConverter)
+                .withTerminalExpressionConverter(backwardConverter);
+
+        return new BiTerminalExpressionBuilder<>(this.mappingKey, rule, this.mappingRules);
+    }
+
 }

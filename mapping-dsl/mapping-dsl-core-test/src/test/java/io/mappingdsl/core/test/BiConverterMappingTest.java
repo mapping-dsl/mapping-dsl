@@ -1,6 +1,7 @@
 package io.mappingdsl.core.test;
 
 import io.mappingdsl.core.MappingDsl;
+import io.mappingdsl.core.builder.BiConverter;
 import io.mappingdsl.core.builder.Converter;
 import io.mappingdsl.core.builder.MappingDslBuilder;
 import io.mappingdsl.core.execution.NoMappingException;
@@ -20,6 +21,40 @@ class BiConverterMappingTest {
                 .between(ZipEntity.class).and(ZipDto.class)
                 .bind(ZipEntityMappingDsl.$this.code)
                 .usingConverters(String::valueOf, Integer::valueOf)
+                .with(ZipDtoMappingDsl.$this.code)
+                .build();
+
+        // forward mapping
+        ZipDto zipDto = mappingDsl.map(new ZipEntity(123456), ZipDto.class);
+
+        Assertions.assertThat(zipDto.getCode()).isEqualTo("123456");
+
+        // backward mapping
+        ZipEntity zipEntity = mappingDsl.map(zipDto, ZipEntity.class);
+
+        Assertions.assertThat(zipEntity.getCode()).isEqualTo(123456);
+    }
+
+    @Test
+    void shouldMapSingleConvertedPrimitiveFieldWithBiConverter() {
+        BiConverter<Integer, String> converter = new BiConverter<Integer, String>() {
+
+            @Override
+            public String convertForward(Integer source) {
+                return String.valueOf(source);
+            }
+
+            @Override
+            public Integer convertBackward(String target) {
+                return Integer.valueOf(target);
+            }
+        };
+
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .biMapping()
+                .between(ZipEntity.class).and(ZipDto.class)
+                .bind(ZipEntityMappingDsl.$this.code)
+                .usingConverter(converter)
                 .with(ZipDtoMappingDsl.$this.code)
                 .build();
 
