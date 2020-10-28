@@ -8,8 +8,6 @@ import io.mappingdsl.core.MappingRules;
 public class UniChainBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE>
         extends UniInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
 
-    private final MappingKey<SRC_ROOT, TRG_ROOT> mappingKey;
-    private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
     private final MappingRules mappingRules;
 
     public UniChainBuilder(
@@ -18,11 +16,8 @@ public class UniChainBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE>
 
         super(mappingKey, mappingRules);
 
-        this.mappingKey = mappingKey;
-        this.mappingRule = mappingRule;
         this.mappingRules = mappingRules;
-
-        this.mappingRules.addMappingRule(this.mappingKey, this.mappingRule);
+        this.mappingRules.addMappingRule(mappingKey, mappingRule);
     }
 
     public MappingDsl build() {

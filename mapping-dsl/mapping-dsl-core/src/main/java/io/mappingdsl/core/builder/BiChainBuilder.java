@@ -7,8 +7,6 @@ import io.mappingdsl.core.MappingRules;
 
 public class BiChainBuilder<SRC_ROOT, TRG_ROOT> extends BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
 
-    private final MappingKey<SRC_ROOT, TRG_ROOT> mappingKey;
-    private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
     private final MappingRules mappingRules;
 
     public BiChainBuilder(
@@ -17,11 +15,8 @@ public class BiChainBuilder<SRC_ROOT, TRG_ROOT> extends BiInitialExpressionBuild
 
         super(mappingKey, mappingRules);
 
-        this.mappingKey = mappingKey;
-        this.mappingRule = mappingRule;
         this.mappingRules = mappingRules;
-
-        this.mappingRules.addMappingRule(this.mappingKey, this.mappingRule);
+        this.mappingRules.addMappingRule(mappingKey, mappingRule);
     }
 
     public MappingDsl build() {
