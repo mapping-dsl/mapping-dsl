@@ -7,10 +7,6 @@ import io.mappingdsl.core.test.fixtures.StreetDto;
 import io.mappingdsl.core.test.fixtures.StreetDtoMappingDsl;
 import io.mappingdsl.core.test.fixtures.StreetEntity;
 import io.mappingdsl.core.test.fixtures.StreetEntityMappingDsl;
-import io.mappingdsl.core.test.fixtures.ZipDto;
-import io.mappingdsl.core.test.fixtures.ZipDtoMappingDsl;
-import io.mappingdsl.core.test.fixtures.ZipEntity;
-import io.mappingdsl.core.test.fixtures.ZipEntityMappingDsl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
