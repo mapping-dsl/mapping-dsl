@@ -11,4 +11,8 @@ public class StreetEntity {
     @Setter
     private String name;
 
+    @Getter
+    @Setter
+    private HouseNumberEntity houseNumber;
+
 }

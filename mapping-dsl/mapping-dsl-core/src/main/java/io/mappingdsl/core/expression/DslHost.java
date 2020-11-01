@@ -1,12 +1,16 @@
 package io.mappingdsl.core.expression;
 
-import io.mappingdsl.core.expression.function.RootIdentityFunction;
-import io.mappingdsl.core.expression.function.ValueProducerFunction;
+import io.mappingdsl.core.expression.function.ExpressionFunction;
+import org.jetbrains.annotations.NotNull;
 
-public class DslHost<ROOT, TYPE> extends ExpressionBase<ROOT, TYPE, ValueProducerFunction> {
+public abstract class DslHost<ROOT, TYPE, FUN extends ExpressionFunction> extends ExpressionBase<ROOT, TYPE, FUN> {
 
-    public DslHost() {
-        super(new RootIdentityFunction());
+    public DslHost(@NotNull FUN expressionFunction) {
+        super(expressionFunction);
+    }
+
+    public DslHost(@NotNull ExpressionBase<ROOT, ?, ?> parentExpression, @NotNull FUN expressionFunction) {
+        super(parentExpression, expressionFunction);
     }
 
 }

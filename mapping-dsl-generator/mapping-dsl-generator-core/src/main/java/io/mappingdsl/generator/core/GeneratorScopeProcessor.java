@@ -62,17 +62,16 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
                 String className = ((TypeElement) element).getQualifiedName().toString();
 
                 if (!GeneratorUtils.isDslWrapperClass(className)) {
-                    String packageName = GeneratorUtils.getClassPackage(className);
-                    String dslClassName = GeneratorUtils.getDslWrapperClassName(className);
-
-                    WrapperClassModel wrapperClassModel = new WrapperClassModel(packageName, dslClassName, className);
+                    WrapperClassModel wrapperClassModel = new WrapperClassModel(className);
 
                     element.getEnclosedElements().stream()
                             .filter(nestedElement -> nestedElement.getKind() == ElementKind.FIELD)
                             .map(this::buildFieldModel)
                             .forEach(wrapperClassModel::registerFieldModel);
 
-                    String fullDslClassName = packageName + "." + dslClassName;
+                    String fullDslClassName = GeneratorUtils.getClassPackage(className) + "." +
+                            GeneratorUtils.getDslWrapperClassName(className);
+
                     JavaFileObject fileObject = IoUtils.runSafe(() ->
                             this.processingEnv.getFiler().createSourceFile(fullDslClassName));
 

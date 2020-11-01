@@ -7,4 +7,7 @@ public class StreetDto {
     @Getter
     private String name;
 
+    @Getter
+    private HouseNumberDto houseNumber;
+
 }
