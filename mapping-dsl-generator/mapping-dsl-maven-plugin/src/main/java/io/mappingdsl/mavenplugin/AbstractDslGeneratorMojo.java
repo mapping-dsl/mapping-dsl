@@ -115,9 +115,9 @@ public abstract class AbstractDslGeneratorMojo extends AbstractMojo {
 
     private void printDiagnostics(DiagnosticCollector<JavaFileObject> diagnostics) {
         if (!diagnostics.getDiagnostics().isEmpty()) {
-            getLog().debug("Diagnostics:");
+            getLog().warn("Diagnostics:");
             diagnostics.getDiagnostics().forEach(diagnostic ->
-                    getLog().info(diagnostic.getMessage(Locale.getDefault())));
+                    getLog().warn(diagnostic.getMessage(Locale.getDefault())));
         }
     }
 
