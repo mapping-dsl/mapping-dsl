@@ -5,8 +5,7 @@ import io.mappingdsl.core.MappingKey;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.MappingRules;
 
-public class UniChainBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE>
-        extends UniInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
+public class UniChainBuilder<SRC_ROOT, TRG_ROOT> extends UniInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
 
     private final MappingRules mappingRules;
 

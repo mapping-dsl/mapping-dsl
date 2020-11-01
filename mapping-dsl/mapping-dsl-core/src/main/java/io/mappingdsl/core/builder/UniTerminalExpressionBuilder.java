@@ -14,7 +14,7 @@ public class UniTerminalExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
     private final MappingRules mappingRules;
 
-    public UniChainBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> to(
+    public UniChainBuilder<SRC_ROOT, TRG_ROOT> to(
             ValueExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
         return new UniChainBuilder<>(
