@@ -12,7 +12,7 @@ public class MappingDslBuilder {
             .withMappingRules(new MappingRules());
 
     public ConfigurationBuilder configuration() {
-        return new ConfigurationBuilder(this.context);
+        return new ConfigurationBuilder(this, this.context);
     }
 
     public UniInitialTypeBuilder uniMapping() {
