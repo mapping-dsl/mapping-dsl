@@ -10,8 +10,9 @@ import io.mappingdsl.core.test.fixtures.StreetDto;
 import io.mappingdsl.core.test.fixtures.StreetDtoMappingDsl;
 import io.mappingdsl.core.test.fixtures.StreetEntity;
 import io.mappingdsl.core.test.fixtures.StreetEntityMappingDsl;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class BiSimpleMappingTest {
 
@@ -24,14 +25,17 @@ class BiSimpleMappingTest {
                 .build();
 
         // forward mapping
-        StreetDto streetDto = mappingDsl.map(new StreetEntity("Baker Street"), StreetDto.class);
+        StreetEntity streetEntity = new StreetEntity();
+        streetEntity.setName("Baker Street");
 
-        Assertions.assertThat(streetDto.getName()).isEqualTo("Baker Street");
+        StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
+
+        assertThat(streetDto.getName()).isEqualTo("Baker Street");
 
         // backward mapping
-        StreetEntity streetEntity = mappingDsl.map(streetDto, StreetEntity.class);
+        streetEntity = mappingDsl.map(streetDto, StreetEntity.class);
 
-        Assertions.assertThat(streetEntity.getName()).isEqualTo("Baker Street");
+        assertThat(streetEntity.getName()).isEqualTo("Baker Street");
     }
 
     @Test
@@ -48,14 +52,14 @@ class BiSimpleMappingTest {
         // forward mapping
         HouseNumberDto houseNumberDto = mappingDsl.map(houseNumberEntity, HouseNumberDto.class);
 
-        Assertions.assertThat(houseNumberDto.getNumber()).isEqualTo(221);
-        Assertions.assertThat(houseNumberDto.getSuffix()).isEqualTo("B");
+        assertThat(houseNumberDto.getNumber()).isEqualTo(221);
+        assertThat(houseNumberDto.getSuffix()).isEqualTo("B");
 
         // backward mapping
         houseNumberEntity = mappingDsl.map(houseNumberDto, HouseNumberEntity.class);
 
-        Assertions.assertThat(houseNumberEntity.getNumber()).isEqualTo(221);
-        Assertions.assertThat(houseNumberEntity.getSuffix()).isEqualTo("B");
+        assertThat(houseNumberEntity.getNumber()).isEqualTo(221);
+        assertThat(houseNumberEntity.getSuffix()).isEqualTo("B");
     }
 
     @Test
@@ -72,8 +76,8 @@ class BiSimpleMappingTest {
         // forward mapping
         HouseNumberDto houseNumberDto = mappingDsl.map(houseNumberEntity, HouseNumberDto.class);
 
-        Assertions.assertThat(houseNumberDto.getNumber()).isEqualTo(221);
-        Assertions.assertThat(houseNumberDto.getSuffix()).isNull();
+        assertThat(houseNumberDto.getNumber()).isEqualTo(221);
+        assertThat(houseNumberDto.getSuffix()).isNull();
 
         // restore missing value to get a full object for the next mapping iteration
         houseNumberDto.setSuffix("B");
@@ -81,8 +85,8 @@ class BiSimpleMappingTest {
         // backward mapping
         houseNumberEntity = mappingDsl.map(houseNumberDto, HouseNumberEntity.class);
 
-        Assertions.assertThat(houseNumberEntity.getNumber()).isNull();
-        Assertions.assertThat(houseNumberEntity.getSuffix()).isEqualTo("B");
+        assertThat(houseNumberEntity.getNumber()).isNull();
+        assertThat(houseNumberEntity.getSuffix()).isEqualTo("B");
     }
 
 }

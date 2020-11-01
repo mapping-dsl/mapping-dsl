@@ -6,8 +6,9 @@ import io.mappingdsl.core.test.fixtures.ZipDto;
 import io.mappingdsl.core.test.fixtures.ZipDtoMappingDsl;
 import io.mappingdsl.core.test.fixtures.ZipEntity;
 import io.mappingdsl.core.test.fixtures.ZipEntityMappingDsl;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class UniConverterMappingTest {
 
@@ -24,7 +25,7 @@ class UniConverterMappingTest {
         ZipEntity zipEntity = new ZipEntity(123456);
         ZipDto zipDto = mappingDsl.map(zipEntity, ZipDto.class);
 
-        Assertions.assertThat(zipDto.getCode()).isEqualTo("123456");
+        assertThat(zipDto.getCode()).isEqualTo("123456");
     }
 
 }

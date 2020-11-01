@@ -1,26 +1,47 @@
 package io.mappingdsl.generator.core.tests.processor;
 
 import com.google.testing.compile.Compilation;
-import com.google.testing.compile.CompilationSubject;
-import com.google.testing.compile.Compiler;
-import com.google.testing.compile.JavaFileObjects;
 import io.mappingdsl.generator.core.GeneratorScopeProcessor;
 import org.junit.jupiter.api.Test;
+
+import static com.google.testing.compile.CompilationSubject.assertThat;
+import static com.google.testing.compile.Compiler.javac;
+import static com.google.testing.compile.JavaFileObjects.forResource;
 
 class GeneratorScopeProcessorTest {
 
     @Test
     void shouldGenerateSimpleDsl() {
-        Compilation compilation = Compiler.javac()
+        Compilation compilation = javac()
                 .withProcessors(new GeneratorScopeProcessor())
                 .withOptions("-Ascope=pojo.SimpleField")
-                .compile(JavaFileObjects.forResource("fixtures/input/SimpleField.java"));
+                .compile(forResource("fixtures/input/SimpleField.java"));
 
-        CompilationSubject.assertThat(compilation).succeeded();
+        assertThat(compilation).succeeded();
 
-        CompilationSubject.assertThat(compilation)
+        assertThat(compilation)
                 .generatedSourceFile("pojo.SimpleFieldMappingDsl")
-                .hasSourceEquivalentTo(JavaFileObjects.forResource("fixtures/output/SimpleFieldMappingDsl.java"));
+                .hasSourceEquivalentTo(forResource("fixtures/output/SimpleFieldMappingDsl.java"));
+    }
+
+    @Test
+    void shouldGenerateNestedDsl() {
+        Compilation compilation = javac()
+                .withProcessors(new GeneratorScopeProcessor())
+                .withOptions("-Ascope=pojo.SimpleField,pojo.ComplexField")
+                .compile(
+                        forResource("fixtures/input/SimpleField.java"),
+                        forResource("fixtures/input/ComplexField.java"));
+
+        assertThat(compilation).succeeded();
+
+        assertThat(compilation)
+                .generatedSourceFile("pojo.SimpleFieldMappingDsl")
+                .hasSourceEquivalentTo(forResource("fixtures/output/SimpleFieldMappingDsl.java"));
+
+        assertThat(compilation)
+                .generatedSourceFile("pojo.ComplexFieldMappingDsl")
+                .hasSourceEquivalentTo(forResource("fixtures/output/ComplexFieldMappingDsl.java"));
     }
 
 }

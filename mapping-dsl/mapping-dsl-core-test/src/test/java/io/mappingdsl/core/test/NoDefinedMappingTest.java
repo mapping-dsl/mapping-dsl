@@ -7,10 +7,11 @@ import io.mappingdsl.core.test.fixtures.StreetDto;
 import io.mappingdsl.core.test.fixtures.StreetDtoMappingDsl;
 import io.mappingdsl.core.test.fixtures.StreetEntity;
 import io.mappingdsl.core.test.fixtures.StreetEntityMappingDsl;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class NoDefinedMappingTest {
 
@@ -22,7 +23,7 @@ class NoDefinedMappingTest {
                 .supply(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
                 .build();
 
-        Assertions.assertThatThrownBy(() -> mappingDsl.map(BigInteger.valueOf(123), Integer.class))
+        assertThatThrownBy(() -> mappingDsl.map(BigInteger.valueOf(123), Integer.class))
                 .isInstanceOf(NoMappingException.class)
                 .hasMessage("No mapping defined for " +
                         "MappingKey(source=class java.math.BigInteger, target=class java.lang.Integer)");

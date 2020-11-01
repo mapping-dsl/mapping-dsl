@@ -10,8 +10,9 @@ import io.mappingdsl.core.test.fixtures.StreetDto;
 import io.mappingdsl.core.test.fixtures.StreetDtoMappingDsl;
 import io.mappingdsl.core.test.fixtures.StreetEntity;
 import io.mappingdsl.core.test.fixtures.StreetEntityMappingDsl;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class UniSimpleMappingTest {
 
@@ -23,10 +24,12 @@ class UniSimpleMappingTest {
                 .supply(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
                 .build();
 
-        StreetEntity streetEntity = new StreetEntity("Baker Street");
+        StreetEntity streetEntity = new StreetEntity();
+        streetEntity.setName("Baker Street");
+
         StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
 
-        Assertions.assertThat(streetDto.getName()).isEqualTo("Baker Street");
+        assertThat(streetDto.getName()).isEqualTo("Baker Street");
     }
 
     @Test
@@ -41,8 +44,8 @@ class UniSimpleMappingTest {
         HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B");
         HouseNumberDto houseNumberDto = mappingDsl.map(houseNumberEntity, HouseNumberDto.class);
 
-        Assertions.assertThat(houseNumberDto.getNumber()).isEqualTo(221);
-        Assertions.assertThat(houseNumberDto.getSuffix()).isEqualTo("B");
+        assertThat(houseNumberDto.getNumber()).isEqualTo(221);
+        assertThat(houseNumberDto.getSuffix()).isEqualTo("B");
     }
 
 }

@@ -9,8 +9,10 @@ import io.mappingdsl.core.test.fixtures.ZipDto;
 import io.mappingdsl.core.test.fixtures.ZipDtoMappingDsl;
 import io.mappingdsl.core.test.fixtures.ZipEntity;
 import io.mappingdsl.core.test.fixtures.ZipEntityMappingDsl;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class BiConverterMappingTest {
 
@@ -27,12 +29,12 @@ class BiConverterMappingTest {
         // forward mapping
         ZipDto zipDto = mappingDsl.map(new ZipEntity(123456), ZipDto.class);
 
-        Assertions.assertThat(zipDto.getCode()).isEqualTo("123456");
+        assertThat(zipDto.getCode()).isEqualTo("123456");
 
         // backward mapping
         ZipEntity zipEntity = mappingDsl.map(zipDto, ZipEntity.class);
 
-        Assertions.assertThat(zipEntity.getCode()).isEqualTo(123456);
+        assertThat(zipEntity.getCode()).isEqualTo(123456);
     }
 
     @Test
@@ -61,12 +63,12 @@ class BiConverterMappingTest {
         // forward mapping
         ZipDto zipDto = mappingDsl.map(new ZipEntity(123456), ZipDto.class);
 
-        Assertions.assertThat(zipDto.getCode()).isEqualTo("123456");
+        assertThat(zipDto.getCode()).isEqualTo("123456");
 
         // backward mapping
         ZipEntity zipEntity = mappingDsl.map(zipDto, ZipEntity.class);
 
-        Assertions.assertThat(zipEntity.getCode()).isEqualTo(123456);
+        assertThat(zipEntity.getCode()).isEqualTo(123456);
     }
 
     @Test
@@ -82,10 +84,10 @@ class BiConverterMappingTest {
         // forward mapping
         ZipDto zipDto = mappingDsl.map(new ZipEntity(123456), ZipDto.class);
 
-        Assertions.assertThat(zipDto.getCode()).isEqualTo("123456");
+        assertThat(zipDto.getCode()).isEqualTo("123456");
 
         // backward mapping
-        Assertions.assertThatThrownBy(() -> mappingDsl.map(zipDto, ZipEntity.class))
+        assertThatThrownBy(() -> mappingDsl.map(zipDto, ZipEntity.class))
                 .isInstanceOf(NoMappingException.class);
     }
 
@@ -104,13 +106,13 @@ class BiConverterMappingTest {
                 .build();
 
         // forward mapping
-        Assertions.assertThatThrownBy(() -> mappingDsl.map(new ZipEntity(123456), ZipDto.class))
+        assertThatThrownBy(() -> mappingDsl.map(new ZipEntity(123456), ZipDto.class))
                 .isInstanceOf(NoMappingException.class);
 
         // backward mapping
         ZipEntity zipEntity = mappingDsl.map(new ZipDto("123456"), ZipEntity.class);
 
-        Assertions.assertThat(zipEntity.getCode()).isEqualTo(123456);
+        assertThat(zipEntity.getCode()).isEqualTo(123456);
     }
 
 }
