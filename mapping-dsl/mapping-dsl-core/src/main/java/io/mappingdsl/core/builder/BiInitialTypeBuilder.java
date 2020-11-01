@@ -1,9 +1,15 @@
 package io.mappingdsl.core.builder;
 
+import io.mappingdsl.core.MappingContext;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class BiInitialTypeBuilder {
 
-    public <SRC_ROOT> BiTerminalTypeBuilder<SRC_ROOT> between(Class<SRC_ROOT> leftSideType) {
-        return new BiTerminalTypeBuilder<>(leftSideType);
+    private final MappingContext<?, ?> context;
+
+    public <SRC_ROOT> BiTerminalTypeBuilder<SRC_ROOT> between(Class<SRC_ROOT> initialType) {
+        return new BiTerminalTypeBuilder<>(this.context, initialType);
     }
 
 }

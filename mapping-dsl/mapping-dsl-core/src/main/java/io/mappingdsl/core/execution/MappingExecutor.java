@@ -1,6 +1,7 @@
 package io.mappingdsl.core.execution;
 
 import ice.bricks.reflection.ReflectionUtils;
+import io.mappingdsl.core.MappingConfiguration;
 import io.mappingdsl.core.MappingKey;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.MappingRules;
@@ -20,6 +21,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class MappingExecutor {
 
+    private final MappingConfiguration mappingConfiguration;
     private final MappingRules mappingRules;
 
     public <SRC, TRG> TRG executeMapping(SRC source, Class<TRG> targetType) {

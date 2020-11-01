@@ -1,29 +1,25 @@
 package io.mappingdsl.core.builder;
 
-import io.mappingdsl.core.MappingKey;
+import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
-import io.mappingdsl.core.MappingRules;
 import lombok.experimental.Delegate;
 
 public class BiConvertedExpressionConsumerBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
-    private final MappingKey<SRC_ROOT, TRG_ROOT> mappingKey;
+    private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
-    private final MappingRules mappingRules;
 
     @Delegate
     private final BiTerminalExpressionConsumerBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> terminalExpressionBuilder;
 
     public BiConvertedExpressionConsumerBuilder(
-            MappingKey<SRC_ROOT, TRG_ROOT> mappingKey, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule,
-            MappingRules mappingRules) {
+            MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
 
-        this.mappingKey = mappingKey;
+        this.context = context;
         this.mappingRule = mappingRule;
-        this.mappingRules = mappingRules;
 
         this.terminalExpressionBuilder = new BiTerminalExpressionConsumerBuilder<>(
-                this.mappingKey, this.mappingRule, this.mappingRules);
+                this.context, this.mappingRule);
     }
 
     public <NEW_SRC_TYPE> BiTerminalExpressionConsumerBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> usingConverter(
@@ -32,7 +28,7 @@ public class BiConvertedExpressionConsumerBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> 
         MappingRule<SRC_ROOT, TRG_ROOT> rule = this.mappingRule
                 .withInitialExpressionConverter(initialExpressionConverter);
 
-        return new BiTerminalExpressionConsumerBuilder<>(this.mappingKey, rule, this.mappingRules);
+        return new BiTerminalExpressionConsumerBuilder<>(this.context, rule);
     }
 
 }

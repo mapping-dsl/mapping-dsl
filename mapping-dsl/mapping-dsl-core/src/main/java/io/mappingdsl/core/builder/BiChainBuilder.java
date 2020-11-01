@@ -1,26 +1,22 @@
 package io.mappingdsl.core.builder;
 
+import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingDsl;
-import io.mappingdsl.core.MappingKey;
 import io.mappingdsl.core.MappingRule;
-import io.mappingdsl.core.MappingRules;
 
 public class BiChainBuilder<SRC_ROOT, TRG_ROOT> extends BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
 
-    private final MappingRules mappingRules;
+    private final MappingContext<SRC_ROOT, TRG_ROOT> context;
 
-    public BiChainBuilder(
-            MappingKey<SRC_ROOT, TRG_ROOT> mappingKey, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule,
-            MappingRules mappingRules) {
+    public BiChainBuilder(MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
+        super(context);
 
-        super(mappingKey, mappingRules);
-
-        this.mappingRules = mappingRules;
-        this.mappingRules.addMappingRule(mappingKey, mappingRule);
+        this.context = context;
+        this.context.addMappingRule(mappingRule);
     }
 
     public MappingDsl build() {
-        return new MappingDsl(this.mappingRules);
+        return new MappingDsl(this.context.getConfiguration(), this.context.getMappingRules());
     }
 
 }

@@ -1,9 +1,8 @@
 package io.mappingdsl.core.builder;
 
-import io.mappingdsl.core.MappingKey;
+import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.MappingRule.MappingRuleDirection;
-import io.mappingdsl.core.MappingRules;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
@@ -13,8 +12,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
 
-    private final MappingKey<SRC_ROOT, TRG_ROOT> mappingKey;
-    private final MappingRules mappingRules;
+    private final MappingContext<SRC_ROOT, TRG_ROOT> context;
 
     public <SRC_TYPE> BiConvertedExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> bind(
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
@@ -24,7 +22,7 @@ public class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
                 .initialExpression(initialExpression)
                 .build();
 
-        return new BiConvertedExpressionBuilder<>(this.mappingKey, mappingRule, this.mappingRules);
+        return new BiConvertedExpressionBuilder<>(this.context, mappingRule);
     }
 
     public <SRC_TYPE> BiConvertedExpressionConsumerBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> supply(
@@ -35,7 +33,7 @@ public class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
                 .initialExpression(initialExpression)
                 .build();
 
-        return new BiConvertedExpressionConsumerBuilder<>(this.mappingKey, mappingRule, this.mappingRules);
+        return new BiConvertedExpressionConsumerBuilder<>(this.context, mappingRule);
     }
 
     public <SRC_TYPE> BiConvertedExpressionProducerBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
@@ -46,7 +44,7 @@ public class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
                 .initialExpression(initialExpression)
                 .build();
 
-        return new BiConvertedExpressionProducerBuilder<>(this.mappingKey, mappingRule, this.mappingRules);
+        return new BiConvertedExpressionProducerBuilder<>(this.context, mappingRule);
     }
 
 }
