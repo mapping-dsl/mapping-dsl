@@ -17,7 +17,7 @@ public class SimpleFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
         extends DslHost<ROOT, pojo.SimpleField, FUN> {
 
     public static SimpleFieldMappingDsl<pojo.SimpleField, ValueProducerFunction> $this =
-            new SimpleFieldMappingDsl<>(new RootIdentityFunction());
+            new SimpleFieldMappingDsl<>(new RootIdentityFunction("SimpleField"));
 
     public ValueExpression<ROOT, java.lang.String, ValueProcessingFunction> val =
             new ValueExpression<>(this, new ObjectFieldAccessorFunction(java.lang.String.class, "val"));

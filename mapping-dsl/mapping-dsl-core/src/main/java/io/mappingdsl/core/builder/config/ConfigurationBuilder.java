@@ -10,4 +10,8 @@ public class ConfigurationBuilder {
     private final MappingDslBuilder mappingDslBuilder;
     private final MappingContext<?, ?> context;
 
+    public NullHandlingConfigurationBuilder onNull() {
+        return new NullHandlingConfigurationBuilder(this.mappingDslBuilder, this.context);
+    }
+
 }

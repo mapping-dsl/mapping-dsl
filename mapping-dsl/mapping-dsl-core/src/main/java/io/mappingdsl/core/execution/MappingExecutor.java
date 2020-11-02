@@ -18,6 +18,8 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Set;
 
+import static io.mappingdsl.core.MappingConfiguration.NullHandlingMode.PROCEED;
+
 @RequiredArgsConstructor
 public class MappingExecutor {
 
@@ -26,7 +28,8 @@ public class MappingExecutor {
 
     public <SRC, TRG> TRG executeMapping(SRC source, Class<TRG> targetType) {
         if (source == null) {
-            return null;
+            // based on null-handling configuration
+            return (TRG) getNullSourceValue(null);
         }
 
         Class<SRC> sourceType = (Class<SRC>) source.getClass();
@@ -79,6 +82,11 @@ public class MappingExecutor {
             ExpressionBase<?, ?, ?> expression = path.pop();
             ValueProducerFunction producerFunction = (ValueProducerFunction) expression.getExpressionFunction();
             value = producerFunction.produce(value);
+
+            if (value == null && !path.isEmpty()) {
+                // based on null-handling configuration
+                return getNullSourceValue(expression);
+            }
         }
 
         return value;
@@ -100,6 +108,15 @@ public class MappingExecutor {
 
                 currentTarget = traverserFunction.step(currentTarget);
             }
+        }
+    }
+
+    private Object getNullSourceValue(ExpressionBase<?, ?, ?> expression) {
+        if (this.mappingConfiguration.getNullHandlingMode() == PROCEED) {
+            return null;
+        }
+        else {
+            throw new NullSourceValueException(expression);
         }
     }
 

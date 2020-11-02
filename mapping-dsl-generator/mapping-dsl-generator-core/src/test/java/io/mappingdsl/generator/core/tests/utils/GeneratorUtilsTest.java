@@ -11,10 +11,7 @@ class GeneratorUtilsTest {
     void shouldGenerateProperDslWrapperClassName() {
         assertThat(GeneratorUtils.getDslWrapperClassName("CountryTransport"))
                 .isEqualTo("CountryTransportMappingDsl");
-    }
 
-    @Test
-    void shouldGenerateProperDslWrapperClassNameWithPackage() {
         assertThat(GeneratorUtils.getDslWrapperClassName("pojo.CountryTransport"))
                 .isEqualTo("CountryTransportMappingDsl");
     }
@@ -23,12 +20,18 @@ class GeneratorUtilsTest {
     void shouldExtractClassPackage() {
         assertThat(GeneratorUtils.getClassPackage("pojo.CountryTransport"))
                 .isEqualTo("pojo");
+
+        assertThat(GeneratorUtils.getClassPackage("CountryTransport"))
+                .isNull();
     }
 
     @Test
-    void shouldExtractEmptyClassPackage() {
-        assertThat(GeneratorUtils.getClassPackage("CountryTransport"))
-                .isNull();
+    void shouldExtractClassName() {
+        assertThat(GeneratorUtils.getClassName("pojo.CountryTransport"))
+                .isEqualTo("CountryTransport");
+
+        assertThat(GeneratorUtils.getClassName("CountryTransport"))
+                .isEqualTo("CountryTransport");
     }
 
 }

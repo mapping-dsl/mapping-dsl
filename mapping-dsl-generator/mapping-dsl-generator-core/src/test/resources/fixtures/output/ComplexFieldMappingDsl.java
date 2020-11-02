@@ -17,7 +17,7 @@ public class ComplexFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
         extends DslHost<ROOT, pojo.ComplexField, FUN> {
 
     public static ComplexFieldMappingDsl<pojo.ComplexField, ValueProducerFunction> $this =
-            new ComplexFieldMappingDsl<>(new RootIdentityFunction());
+            new ComplexFieldMappingDsl<>(new RootIdentityFunction("ComplexField"));
 
     public SimpleFieldMappingDsl<ROOT, PathProcessingFunction> field =
             new SimpleFieldMappingDsl<>(this, new ObjectFieldAccessorFunction(pojo.SimpleField.class, "field"));
