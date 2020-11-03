@@ -1,8 +1,9 @@
 <#-- @ftlvariable name="GeneratorUtils" type="io.mappingdsl.generator.core.utils.GeneratorUtils" -->
+<#-- @ftlvariable name="ClassUtils" type="ice.bricks.meta.ClassUtils.static" -->
 <#-- @ftlvariable name="" type="io.mappingdsl.generator.core.model.WrapperClassModel" -->
 <#import "fields.ftl" as fieldDefinitions>
 <#assign dslClassName = GeneratorUtils.getDslWrapperClassName(fullClassName)>
-package ${GeneratorUtils.getClassPackage(fullClassName)};
+package ${ClassUtils.getClassPackage(fullClassName)};
 
 import io.mappingdsl.core.expression.DslHost;
 import io.mappingdsl.core.expression.ExpressionBase;
@@ -21,7 +22,7 @@ public class ${dslClassName}<ROOT, FUN extends ExpressionFunction>
         extends DslHost<ROOT, ${fullClassName}, FUN> {
 
     public static ${dslClassName}<${fullClassName}, ValueProducerFunction> $this =
-            new ${dslClassName}<>(new RootIdentityFunction("${GeneratorUtils.getClassName(fullClassName)}"));
+            new ${dslClassName}<>(new RootIdentityFunction("${ClassUtils.getClassName(fullClassName)}"));
 
     <#list fieldModels as fieldModel>
         <#switch fieldModel.modelType>

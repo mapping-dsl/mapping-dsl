@@ -7,6 +7,7 @@ import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.TemplateModel;
 import ice.bricks.exceptions.ExceptionUtils;
 import ice.bricks.io.IoUtils;
+import ice.bricks.meta.ClassUtils;
 import io.mappingdsl.generator.core.model.WrapperClassModel;
 import io.mappingdsl.generator.core.utils.GeneratorUtils;
 
@@ -24,9 +25,14 @@ public class SourceCodeGenerator {
         configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 
         BeansWrapper beansWrapper = new BeansWrapper(Configuration.VERSION_2_3_30);
-        TemplateModel templateModel = ExceptionUtils.runSafe(
+
+        TemplateModel generatorUtilsMode = ExceptionUtils.runSafe(
                 () -> beansWrapper.getStaticModels().get(GeneratorUtils.class.getName()));
-        configuration.setSharedVariable("GeneratorUtils", templateModel);
+        configuration.setSharedVariable("GeneratorUtils", generatorUtilsMode);
+
+        TemplateModel classUtilsModel = ExceptionUtils.runSafe(
+                () -> beansWrapper.getStaticModels().get(ClassUtils.class.getName()));
+        configuration.setSharedVariable("ClassUtils", classUtilsModel);
 
         this.rootTemplate = IoUtils.runSafe(() -> configuration.getTemplate("dsl-class.ftl"));
     }

@@ -1,6 +1,7 @@
 package io.mappingdsl.generator.core;
 
 import ice.bricks.io.IoUtils;
+import ice.bricks.meta.ClassUtils;
 import io.mappingdsl.generator.core.model.FieldModel;
 import io.mappingdsl.generator.core.model.FieldModelType;
 import io.mappingdsl.generator.core.model.WrapperClassModel;
@@ -69,7 +70,7 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
                             .map(this::buildFieldModel)
                             .forEach(wrapperClassModel::registerFieldModel);
 
-                    String fullDslClassName = GeneratorUtils.getClassPackage(className) + "." +
+                    String fullDslClassName = ClassUtils.getClassPackage(className) + "." +
                             GeneratorUtils.getDslWrapperClassName(className);
 
                     JavaFileObject fileObject = IoUtils.runSafe(() ->
