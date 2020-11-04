@@ -5,6 +5,7 @@ import io.mappingdsl.core.MappingConfiguration;
 import io.mappingdsl.core.MappingKey;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.MappingRules;
+import io.mappingdsl.core.builder.Condition;
 import io.mappingdsl.core.builder.Converter;
 import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.function.RootIdentityFunction;
@@ -57,7 +58,7 @@ public class MappingExecutor {
             }
 
             Deque<ExpressionBase<?, ?, ?>> targetPath = unwindPath(rule.getTerminalExpression());
-            consumeValue(sourceValue, target, targetPath);
+            consumeValue(rule, sourceValue, target, targetPath);
         }
 
         return target;
@@ -92,7 +93,7 @@ public class MappingExecutor {
         return value;
     }
 
-    private void consumeValue(Object source, Object target, Deque<ExpressionBase<?, ?, ?>> path) {
+    private void consumeValue(MappingRule<?, ?> rule, Object source, Object target, Deque<ExpressionBase<?, ?, ?>> path) {
         Object currentTarget = target;
 
         while (!path.isEmpty()) {
@@ -100,7 +101,11 @@ public class MappingExecutor {
 
             if (path.isEmpty()) {
                 ValueConsumerFunction consumerFunction = (ValueConsumerFunction) expression.getExpressionFunction();
-                consumerFunction.consume(currentTarget, source);
+
+                Condition<Object, Object> condition = (Condition<Object, Object>) rule.getInitialCondition();
+                if (condition == null || condition.test(source, consumerFunction.getConsumer(currentTarget))) {
+                    consumerFunction.consume(currentTarget, source);
+                }
             }
             else {
                 TargetPathTraverserFunction traverserFunction =
