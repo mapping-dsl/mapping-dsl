@@ -2,14 +2,13 @@ package io.mappingdsl.core.builder;
 
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
-import lombok.experimental.Delegate;
+import io.mappingdsl.core.expression.ValueExpression;
+import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 
 public class UniConvertedExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
-
-    @Delegate
     private final UniTerminalExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> terminalExpressionBuilder;
 
     public UniConvertedExpressionBuilder(
@@ -25,6 +24,13 @@ public class UniConvertedExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
         return new UniTerminalExpressionBuilder<>(
                 this.context, this.mappingRule.withInitialExpressionConverter(converter));
+    }
+
+    // delegate method
+    public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> to(
+            ValueExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+
+        return this.terminalExpressionBuilder.to(targetExpression);
     }
 
 }

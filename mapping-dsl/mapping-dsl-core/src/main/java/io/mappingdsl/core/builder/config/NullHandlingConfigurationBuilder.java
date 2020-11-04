@@ -14,12 +14,12 @@ public class NullHandlingConfigurationBuilder {
     private final MappingContext<?, ?> context;
 
     public MappingDslBuilder proceed() {
-        this.context.setNullHandlingMode(PROCEED);
+        this.context.getConfiguration().setNullHandlingMode(PROCEED);
         return this.mappingDslBuilder;
     }
 
     public MappingDslBuilder terminate() {
-        this.context.setNullHandlingMode(TERMINATE);
+        this.context.getConfiguration().setNullHandlingMode(TERMINATE);
         return this.mappingDslBuilder;
     }
 

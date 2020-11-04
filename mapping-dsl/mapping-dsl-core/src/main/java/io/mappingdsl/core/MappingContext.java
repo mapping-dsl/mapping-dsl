@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Delegate;
 
 @Builder
 @NoArgsConstructor
@@ -12,7 +11,6 @@ import lombok.experimental.Delegate;
 public class MappingContext<SRC_ROOT, TRG_ROOT> {
 
     @Getter
-    @Delegate
     private MappingConfiguration configuration;
 
     @Getter
