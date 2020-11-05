@@ -12,10 +12,10 @@ public class BiTerminalExpressionProducerBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
-    public BiChainBuilder<SRC_ROOT, TRG_ROOT> from(
+    public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> from(
             ValueExpression<TRG_ROOT, SRC_TYPE, ? extends ValueProducerFunction> targetExpression) {
 
-        return new BiChainBuilder<>(
+        return new BiMappingConditionBuilder<>(
                 this.context, this.mappingRule.withTerminalExpression(targetExpression));
     }
 

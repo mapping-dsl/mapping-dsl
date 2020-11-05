@@ -44,7 +44,7 @@ public class BiConvertedExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
     }
 
     // delegate method
-    public BiChainBuilder<SRC_ROOT, TRG_ROOT> with(
+    public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> with(
             ValueExpression<TRG_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> terminalExpression) {
 
         return this.terminalExpressionBuilder.with(terminalExpression);
