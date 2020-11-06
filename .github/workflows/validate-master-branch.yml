@@ -21,7 +21,12 @@ jobs:
     - name: Run Maven
       run: mvn -B clean test --file pom.xml
 
-    - name: Upload coverage report
+    - name: Upload coverage report to codecov
       uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
+        
+    - name: Upload coverage report to codacy
+      uses: codacy/codacy-coverage-reporter-action@master
+      with:
+        project-token: ${{ secrets.CODACY_TOKEN }}
