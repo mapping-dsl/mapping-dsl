@@ -1,15 +1,15 @@
-package io.mappingdsl.core.test;
+package io.mappingdsl.core.tests;
 
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.builder.MappingDslBuilder;
-import io.mappingdsl.core.test.fixtures.HouseNumberDto;
-import io.mappingdsl.core.test.fixtures.HouseNumberDtoMappingDsl;
-import io.mappingdsl.core.test.fixtures.HouseNumberEntity;
-import io.mappingdsl.core.test.fixtures.HouseNumberEntityMappingDsl;
-import io.mappingdsl.core.test.fixtures.StreetDto;
-import io.mappingdsl.core.test.fixtures.StreetDtoMappingDsl;
-import io.mappingdsl.core.test.fixtures.StreetEntity;
-import io.mappingdsl.core.test.fixtures.StreetEntityMappingDsl;
+import io.mappingdsl.core.tests.fixtures.HouseNumberDto;
+import io.mappingdsl.core.tests.fixtures.HouseNumberDtoMappingDsl;
+import io.mappingdsl.core.tests.fixtures.HouseNumberEntity;
+import io.mappingdsl.core.tests.fixtures.HouseNumberEntityMappingDsl;
+import io.mappingdsl.core.tests.fixtures.StreetDto;
+import io.mappingdsl.core.tests.fixtures.StreetDtoMappingDsl;
+import io.mappingdsl.core.tests.fixtures.StreetEntity;
+import io.mappingdsl.core.tests.fixtures.StreetEntityMappingDsl;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -1,14 +1,14 @@
-package io.mappingdsl.core.test;
+package io.mappingdsl.core.tests;
 
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.builder.BiConverter;
 import io.mappingdsl.core.builder.Converter;
 import io.mappingdsl.core.builder.MappingDslBuilder;
 import io.mappingdsl.core.execution.NoMappingException;
-import io.mappingdsl.core.test.fixtures.ZipDto;
-import io.mappingdsl.core.test.fixtures.ZipDtoMappingDsl;
-import io.mappingdsl.core.test.fixtures.ZipEntity;
-import io.mappingdsl.core.test.fixtures.ZipEntityMappingDsl;
+import io.mappingdsl.core.tests.fixtures.ZipDto;
+import io.mappingdsl.core.tests.fixtures.ZipDtoMappingDsl;
+import io.mappingdsl.core.tests.fixtures.ZipEntity;
+import io.mappingdsl.core.tests.fixtures.ZipEntityMappingDsl;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

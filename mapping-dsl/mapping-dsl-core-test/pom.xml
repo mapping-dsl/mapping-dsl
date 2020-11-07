@@ -33,12 +33,12 @@
                         </goals>
                         <configuration>
                             <testSourceFiles>
-                                <testSourceFile>io.mappingdsl.core.test.fixtures.HouseNumberDto</testSourceFile>
-                                <testSourceFile>io.mappingdsl.core.test.fixtures.HouseNumberEntity</testSourceFile>
-                                <testSourceFile>io.mappingdsl.core.test.fixtures.StreetDto</testSourceFile>
-                                <testSourceFile>io.mappingdsl.core.test.fixtures.StreetEntity</testSourceFile>
-                                <testSourceFile>io.mappingdsl.core.test.fixtures.ZipDto</testSourceFile>
-                                <testSourceFile>io.mappingdsl.core.test.fixtures.ZipEntity</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.HouseNumberDto</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.HouseNumberEntity</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.StreetDto</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.StreetEntity</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.ZipDto</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.ZipEntity</testSourceFile>
                             </testSourceFiles>
                         </configuration>
                     </execution>

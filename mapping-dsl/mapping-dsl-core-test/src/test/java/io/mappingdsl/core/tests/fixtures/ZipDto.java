@@ -1,4 +1,4 @@
-package io.mappingdsl.core.test.fixtures;
+package io.mappingdsl.core.tests.fixtures;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

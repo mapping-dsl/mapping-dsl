@@ -1,4 +1,4 @@
-package io.mappingdsl.core.test.fixtures;
+package io.mappingdsl.core.tests.fixtures;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,9 +6,12 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class ZipEntity {
+public class HouseNumberEntity {
 
     @Getter
-    private Integer code;
+    private Integer number;
+
+    @Getter
+    private String suffix;
 
 }
