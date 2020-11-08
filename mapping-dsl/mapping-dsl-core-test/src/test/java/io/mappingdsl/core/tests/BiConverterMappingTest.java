@@ -4,7 +4,6 @@ import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.builder.BiConverter;
 import io.mappingdsl.core.builder.Converter;
 import io.mappingdsl.core.builder.MappingDslBuilder;
-import io.mappingdsl.core.execution.NoMappingException;
 import io.mappingdsl.core.tests.fixtures.ZipDto;
 import io.mappingdsl.core.tests.fixtures.ZipDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.ZipEntity;
@@ -12,7 +11,6 @@ import io.mappingdsl.core.tests.fixtures.ZipEntityMappingDsl;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class BiConverterMappingTest {
 
@@ -87,8 +85,9 @@ class BiConverterMappingTest {
         assertThat(zipDto.getCode()).isEqualTo("123456");
 
         // backward mapping
-        assertThatThrownBy(() -> mappingDsl.map(zipDto, ZipEntity.class))
-                .isInstanceOf(NoMappingException.class);
+        ZipEntity zipEntity = mappingDsl.map(zipDto, ZipEntity.class);
+
+        assertThat(zipEntity).isNull();
     }
 
     @Test
@@ -106,8 +105,9 @@ class BiConverterMappingTest {
                 .build();
 
         // forward mapping
-        assertThatThrownBy(() -> mappingDsl.map(new ZipEntity(123456), ZipDto.class))
-                .isInstanceOf(NoMappingException.class);
+        ZipDto zipDto = mappingDsl.map(new ZipEntity(123456), ZipDto.class);
+
+        assertThat(zipDto).isNull();
 
         // backward mapping
         ZipEntity zipEntity = mappingDsl.map(new ZipDto("123456"), ZipEntity.class);
