@@ -25,6 +25,7 @@ import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -60,12 +61,23 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
 
         for (Element element: roundEnvironment.getRootElements()) {
             if (element.getKind() == ElementKind.CLASS) {
-                String className = ((TypeElement) element).getQualifiedName().toString();
+                TypeElement typeElement = (TypeElement) element;
+
+                String className = typeElement.getQualifiedName().toString();
 
                 if (!GeneratorUtils.isDslWrapperClass(className)) {
                     WrapperClassModel wrapperClassModel = new WrapperClassModel(className);
 
-                    element.getEnclosedElements().stream()
+                    Set<TypeElement> classHierarchy = new LinkedHashSet<>();
+
+                    // stop hierarchy at Object class
+                    while (!typeElement.getQualifiedName().toString().equals(Object.class.getCanonicalName())) {
+                        classHierarchy.add(typeElement);
+                        typeElement = (TypeElement) this.typeUtils.asElement(typeElement.getSuperclass());
+                    }
+
+                    classHierarchy.stream()
+                            .flatMap(type -> type.getEnclosedElements().stream())
                             .filter(nestedElement -> nestedElement.getKind() == ElementKind.FIELD)
                             .map(this::buildFieldModel)
                             .forEach(wrapperClassModel::registerFieldModel);

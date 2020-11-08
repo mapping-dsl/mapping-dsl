@@ -5,11 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
-public class StreetEntity {
-
-    @Getter
-    @Setter
-    private String name;
+public class StreetEntity extends NamedObject {
 
     @Getter
     @Setter
