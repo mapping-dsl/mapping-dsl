@@ -11,13 +11,16 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class NoDefinedMappingTest {
 
     @Test
-    void shouldFailIfNoMappingDefined() {
+    void shouldFailIfNoMappingDefinedAndTerminateModeSet() {
         MappingDsl mappingDsl = new MappingDslBuilder()
+                .configuration()
+                .onMissingMapping().terminate()
                 .uniMapping()
                 .from(StreetEntity.class).to(StreetDto.class)
                 .supply(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
@@ -27,6 +30,32 @@ class NoDefinedMappingTest {
                 .isInstanceOf(NoMappingException.class)
                 .hasMessage("No mapping defined for " +
                         "MappingKey(source=class java.math.BigInteger, target=class java.lang.Integer)");
+    }
+
+    @Test
+    void shouldReturnNullByDefaultIfNoMappingDefined() {
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .uniMapping()
+                .from(StreetEntity.class).to(StreetDto.class)
+                .supply(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
+                .build();
+
+        Integer mappedValue = mappingDsl.map(BigInteger.valueOf(123), Integer.class);
+        assertThat(mappedValue).isNull();
+    }
+
+    @Test
+    void shouldReturnNullIfNoMappingDefinedAndReturnNullModeSet() {
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .configuration()
+                .onMissingMapping().returnNull()
+                .uniMapping()
+                .from(StreetEntity.class).to(StreetDto.class)
+                .supply(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
+                .build();
+
+        Integer mappedValue = mappingDsl.map(BigInteger.valueOf(123), Integer.class);
+        assertThat(mappedValue).isNull();
     }
 
 }

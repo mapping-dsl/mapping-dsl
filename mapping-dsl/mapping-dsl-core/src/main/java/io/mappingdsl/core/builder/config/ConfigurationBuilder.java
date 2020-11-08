@@ -14,4 +14,8 @@ public class ConfigurationBuilder {
         return new NullHandlingConfigurationBuilder(this.mappingDslBuilder, this.context);
     }
 
+    public MissingMappingHandlingConfigurationBuilder onMissingMapping() {
+        return new MissingMappingHandlingConfigurationBuilder(this.mappingDslBuilder, this.context);
+    }
+
 }

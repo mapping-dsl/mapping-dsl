@@ -2,6 +2,8 @@ package io.mappingdsl.core.execution;
 
 import ice.bricks.reflection.ReflectionUtils;
 import io.mappingdsl.core.MappingConfiguration;
+import io.mappingdsl.core.MappingConfiguration.MissingMappingHandlingMode;
+import io.mappingdsl.core.MappingConfiguration.NullHandlingMode;
 import io.mappingdsl.core.MappingKey;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.MappingRules;
@@ -18,8 +20,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Set;
-
-import static io.mappingdsl.core.MappingConfiguration.NullHandlingMode.PROCEED;
 
 @RequiredArgsConstructor
 public class MappingExecutor {
@@ -38,7 +38,12 @@ public class MappingExecutor {
         Set<MappingRule<?, ?>> rules = this.mappingRules.getMappingRules(mappingKey);
 
         if (CollectionUtils.isEmpty(rules)) {
-            throw new NoMappingException(mappingKey);
+            if (this.mappingConfiguration.getMissingMappingHandlingMode() == MissingMappingHandlingMode.TERMINATE) {
+                throw new NoMappingException(mappingKey);
+            }
+            else {
+                return null;
+            }
         }
 
         TRG target = ReflectionUtils.generateNewInstance(targetType);
@@ -117,7 +122,7 @@ public class MappingExecutor {
     }
 
     private Object getNullSourceValue(ExpressionBase<?, ?, ?> expression) {
-        if (this.mappingConfiguration.getNullHandlingMode() == PROCEED) {
+        if (this.mappingConfiguration.getNullHandlingMode() == NullHandlingMode.PROCEED) {
             return null;
         }
         else {
