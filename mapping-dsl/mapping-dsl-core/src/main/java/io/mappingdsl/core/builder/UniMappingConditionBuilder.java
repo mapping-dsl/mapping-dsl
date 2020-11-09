@@ -3,6 +3,7 @@ package io.mappingdsl.core.builder;
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.MappingRule;
+import io.mappingdsl.core.expression.DslHost;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
 
@@ -24,14 +25,26 @@ public class UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> 
         return new UniChainBuilder<>(this.context, this.mappingRule.withInitialCondition(condition));
     }
 
-    // delegate method, to make the path: .to(...).supply(...)
+    // delegate method
+    public UniInitialTypeBuilder uniMapping() {
+        return this.chainBuilder.uniMapping();
+    }
+
+    // delegate method
     public <NEW_SRC_TYPE> UniConvertedExpressionBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> supply(
             ValueExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         return this.chainBuilder.supply(initialExpression);
     }
 
-    // delegate method, to make the path: .to(...).build()
+    // delegate method
+    public <NEW_SRC_TYPE> UniTerminalWrapperRouterExpressionBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> supply(
+            DslHost<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+
+        return this.chainBuilder.supply(initialExpression);
+    }
+
+    // delegate method
     public MappingDsl build() {
         return this.chainBuilder.build();
     }

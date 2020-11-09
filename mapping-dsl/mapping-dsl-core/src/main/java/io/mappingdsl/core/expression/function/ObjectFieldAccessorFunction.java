@@ -18,6 +18,11 @@ public class ObjectFieldAccessorFunction implements PathProcessingFunction {
     }
 
     @Override
+    public Class<?> getConsumerType() {
+        return this.type;
+    }
+
+    @Override
     public Object getConsumer(Object target) {
         return ReflectionUtils.readField(target, this.name);
     }

@@ -109,6 +109,14 @@ public class MappingExecutor {
 
                 Condition<Object, Object> condition = (Condition<Object, Object>) rule.getInitialCondition();
                 if (condition == null || condition.test(source, consumerFunction.getConsumer(currentTarget))) {
+                    Class<?> targetType = consumerFunction.getConsumerType();
+
+                    // check if nested mapping is required
+                    MappingKey<?, ?> nestedMappingKey = new MappingKey<>(source.getClass(), targetType);
+                    if (this.mappingRules.containsMappingRules(nestedMappingKey)) {
+                        source = executeMapping(source, targetType);
+                    }
+
                     consumerFunction.consume(currentTarget, source);
                 }
             }

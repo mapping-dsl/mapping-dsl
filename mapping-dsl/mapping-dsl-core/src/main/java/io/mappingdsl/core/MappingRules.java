@@ -37,4 +37,8 @@ public class MappingRules {
         return this.rules.get(mappingKey);
     }
 
+    public boolean containsMappingRules(MappingKey<?, ?> mappingKey) {
+        return this.rules.containsKey(mappingKey);
+    }
+
 }
