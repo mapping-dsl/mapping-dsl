@@ -117,6 +117,11 @@ public class MappingExecutor {
                         source = executeMapping(source, targetType);
                     }
 
+                    // fail if types are incompatible
+                    if (!targetType.isInstance(source)) {
+                        throw new IllegalAssignmentException(consumerFunction, source.getClass());
+                    }
+
                     consumerFunction.consume(currentTarget, source);
                 }
             }
