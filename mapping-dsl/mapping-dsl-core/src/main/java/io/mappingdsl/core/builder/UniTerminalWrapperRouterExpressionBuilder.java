@@ -10,8 +10,12 @@ public class UniTerminalWrapperRouterExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_R
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
-    public UniTerminalWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> usingMapping() {
-        return new UniTerminalWrapperExpressionBuilder<>(this.context, this.mappingRule);
+    public UniTerminalIncompatibleWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> usingMapping() {
+        return new UniTerminalIncompatibleWrapperExpressionBuilder<>(this.context, this.mappingRule);
+    }
+
+    public UniTerminalCompatibleWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> asIs() {
+        return new UniTerminalCompatibleWrapperExpressionBuilder<>(this.context, this.mappingRule);
     }
 
 }

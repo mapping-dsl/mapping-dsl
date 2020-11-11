@@ -33,6 +33,7 @@
                         </goals>
                         <configuration>
                             <testSourceFiles>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.Geolocation</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.HouseNumberDto</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.HouseNumberEntity</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.StreetDto</testSourceFile>
