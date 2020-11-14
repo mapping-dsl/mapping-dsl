@@ -3,6 +3,7 @@ package io.mappingdsl.core.builder;
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.MappingRule.MappingRuleDirection;
+import io.mappingdsl.core.expression.DslHost;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
@@ -23,6 +24,17 @@ public class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
                 .build();
 
         return new BiConvertedExpressionBuilder<>(this.context, mappingRule);
+    }
+
+    public <SRC_TYPE> BiTerminalWrapperRouterExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> bind(
+            DslHost<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
+
+        MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
+                .mappingRuleDirection(MappingRuleDirection.BOTH)
+                .initialExpression(initialExpression)
+                .build();
+
+        return new BiTerminalWrapperRouterExpressionBuilder<>(this.context, mappingRule);
     }
 
     public <SRC_TYPE> BiConvertedExpressionConsumerBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> supply(
