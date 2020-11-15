@@ -25,19 +25,19 @@ public class UniChainBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     // delegate method
-    public <SRC_TYPE> UniConvertedExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> supply(
+    public <SRC_TYPE> UniConvertedExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         registerCurrentRule();
-        return this.initialExpressionBuilder.supply(initialExpression);
+        return this.initialExpressionBuilder.produce(initialExpression);
     }
 
     // delegate method
-    public <SRC_TYPE> UniTerminalWrapperRouterExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> supply(
+    public <SRC_TYPE> UniTerminalWrapperRouterExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
             DslHost<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         registerCurrentRule();
-        return this.initialExpressionBuilder.supply(initialExpression);
+        return this.initialExpressionBuilder.produce(initialExpression);
     }
 
     public MappingDsl build() {

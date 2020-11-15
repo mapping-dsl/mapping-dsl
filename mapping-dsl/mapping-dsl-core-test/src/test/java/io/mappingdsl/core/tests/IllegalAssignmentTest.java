@@ -19,7 +19,7 @@ class IllegalAssignmentTest {
         MappingDsl mappingDsl = new MappingDslBuilder()
                 .uniMapping()
                 .from(StreetEntity.class).to(StreetDto.class)
-                .supply(StreetEntityMappingDsl.$this.houseNumber)
+                .produce(StreetEntityMappingDsl.$this.houseNumber)
                 .usingMapping()
                 .to(StreetDtoMappingDsl.$this.houseNumber)
 

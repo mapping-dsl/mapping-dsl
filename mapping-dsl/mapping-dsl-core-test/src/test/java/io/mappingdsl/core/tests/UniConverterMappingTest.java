@@ -17,7 +17,7 @@ class UniConverterMappingTest {
         MappingDsl mappingDsl = new MappingDslBuilder()
                 .uniMapping()
                 .from(ZipEntity.class).to(ZipDto.class)
-                .supply(ZipEntityMappingDsl.$this.code)
+                .produce(ZipEntityMappingDsl.$this.code)
                 .usingConverter(String::valueOf)
                 .to(ZipDtoMappingDsl.$this.code)
                 .build();

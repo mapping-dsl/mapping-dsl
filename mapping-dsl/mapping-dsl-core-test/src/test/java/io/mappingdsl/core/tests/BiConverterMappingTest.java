@@ -74,7 +74,7 @@ class BiConverterMappingTest {
         MappingDsl mappingDsl = new MappingDslBuilder()
                 .biMapping()
                 .between(ZipEntity.class).and(ZipDto.class)
-                .supply(ZipEntityMappingDsl.$this.code)
+                .produce(ZipEntityMappingDsl.$this.code)
                 .usingConverter(String::valueOf)
                 .to(ZipDtoMappingDsl.$this.code)
                 .build();

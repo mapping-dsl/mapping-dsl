@@ -13,7 +13,7 @@ public class UniInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
 
-    public <SRC_TYPE> UniConvertedExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> supply(
+    public <SRC_TYPE> UniConvertedExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
@@ -24,7 +24,7 @@ public class UniInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
         return new UniConvertedExpressionBuilder<>(this.context, mappingRule);
     }
 
-    public <SRC_TYPE> UniTerminalWrapperRouterExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> supply(
+    public <SRC_TYPE> UniTerminalWrapperRouterExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
             DslHost<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()

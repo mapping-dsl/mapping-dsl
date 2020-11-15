@@ -60,17 +60,17 @@ public class BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
     }
 
     // delegate method
-    public <NEW_SRC_TYPE> BiConvertedExpressionConsumerBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> supply(
+    public <NEW_SRC_TYPE> BiConvertedExpressionConsumerBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> produce(
             ValueExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
-        return this.chainBuilder.supply(initialExpression);
+        return this.chainBuilder.produce(initialExpression);
     }
 
     // delegate method
-    public <NEW_SRC_TYPE> BiTerminalWrapperRouterProducerExpressionBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> supply(
+    public <NEW_SRC_TYPE> BiTerminalWrapperRouterProducerExpressionBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> produce(
             DslHost<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
-        return this.chainBuilder.supply(initialExpression);
+        return this.chainBuilder.produce(initialExpression);
     }
 
     // delegate method

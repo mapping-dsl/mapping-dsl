@@ -186,7 +186,7 @@ class BiNestedMappingTest {
                 .between(StreetEntity.class).and(StreetDto.class)
                 .bind(StreetEntityMappingDsl.$this.name)
                 .with(StreetDtoMappingDsl.$this.name)
-                .supply(StreetEntityMappingDsl.$this.houseNumber.number)
+                .produce(StreetEntityMappingDsl.$this.houseNumber.number)
                 .to(StreetDtoMappingDsl.$this.houseNumber.number)
                 .consume(StreetEntityMappingDsl.$this.houseNumber.suffix)
                 .from(StreetDtoMappingDsl.$this.houseNumber.suffix)
@@ -221,7 +221,7 @@ class BiNestedMappingTest {
                 .between(StreetEntity.class).and(StreetDto.class)
                 .bind(StreetEntityMappingDsl.$this.name)
                 .with(StreetDtoMappingDsl.$this.name)
-                .supply(StreetEntityMappingDsl.$this.houseNumber)
+                .produce(StreetEntityMappingDsl.$this.houseNumber)
                 .usingMapping()
                 .to(StreetDtoMappingDsl.$this.houseNumber)
 
@@ -273,7 +273,7 @@ class BiNestedMappingTest {
                 .with(HouseNumberDtoMappingDsl.$this.number)
                 .bind(HouseNumberEntityMappingDsl.$this.suffix)
                 .with(HouseNumberDtoMappingDsl.$this.suffix)
-                .supply(HouseNumberEntityMappingDsl.$this.geolocation)
+                .produce(HouseNumberEntityMappingDsl.$this.geolocation)
                 .asIs()
                 .to(HouseNumberDtoMappingDsl.$this.geolocation)
                 .build();
@@ -307,7 +307,7 @@ class BiNestedMappingTest {
                 .between(StreetEntity.class).and(StreetDto.class)
                 .bind(StreetEntityMappingDsl.$this.name)
                 .with(StreetDtoMappingDsl.$this.name)
-                .supply(StreetEntityMappingDsl.$this.houseNumber)
+                .produce(StreetEntityMappingDsl.$this.houseNumber)
                 .usingConverter(this::convertHouseNumberEntity)
                 .to(StreetDtoMappingDsl.$this.houseNumber)
 

@@ -21,7 +21,7 @@ class UniSimpleMappingTest {
         MappingDsl mappingDsl = new MappingDslBuilder()
                 .uniMapping()
                 .from(StreetEntity.class).to(StreetDto.class)
-                .supply(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
+                .produce(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
                 .build();
 
         StreetEntity streetEntity = new StreetEntity();
@@ -37,8 +37,8 @@ class UniSimpleMappingTest {
         MappingDsl mappingDsl = new MappingDslBuilder()
                 .uniMapping()
                 .from(HouseNumberEntity.class).to(HouseNumberDto.class)
-                .supply(HouseNumberEntityMappingDsl.$this.number).to(HouseNumberDtoMappingDsl.$this.number)
-                .supply(HouseNumberEntityMappingDsl.$this.suffix).to(HouseNumberDtoMappingDsl.$this.suffix)
+                .produce(HouseNumberEntityMappingDsl.$this.number).to(HouseNumberDtoMappingDsl.$this.number)
+                .produce(HouseNumberEntityMappingDsl.$this.suffix).to(HouseNumberDtoMappingDsl.$this.suffix)
                 .build();
 
         HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B");

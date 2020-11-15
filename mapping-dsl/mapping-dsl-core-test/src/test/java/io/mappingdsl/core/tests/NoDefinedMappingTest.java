@@ -23,7 +23,7 @@ class NoDefinedMappingTest {
                 .onMissingMapping().terminate()
                 .uniMapping()
                 .from(StreetEntity.class).to(StreetDto.class)
-                .supply(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
+                .produce(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
                 .build();
 
         assertThatThrownBy(() -> mappingDsl.map(BigInteger.valueOf(123), Integer.class))
@@ -37,7 +37,7 @@ class NoDefinedMappingTest {
         MappingDsl mappingDsl = new MappingDslBuilder()
                 .uniMapping()
                 .from(StreetEntity.class).to(StreetDto.class)
-                .supply(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
+                .produce(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
                 .build();
 
         Integer mappedValue = mappingDsl.map(BigInteger.valueOf(123), Integer.class);
@@ -51,7 +51,7 @@ class NoDefinedMappingTest {
                 .onMissingMapping().returnNull()
                 .uniMapping()
                 .from(StreetEntity.class).to(StreetDto.class)
-                .supply(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
+                .produce(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
                 .build();
 
         Integer mappedValue = mappingDsl.map(BigInteger.valueOf(123), Integer.class);

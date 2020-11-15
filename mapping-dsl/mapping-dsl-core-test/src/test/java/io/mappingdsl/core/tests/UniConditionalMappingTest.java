@@ -17,10 +17,10 @@ class UniConditionalMappingTest {
         MappingDsl mappingDsl = new MappingDslBuilder()
                 .uniMapping()
                 .from(HouseNumberEntity.class).to(HouseNumberDto.class)
-                .supply(HouseNumberEntityMappingDsl.$this.number)
+                .produce(HouseNumberEntityMappingDsl.$this.number)
                 .to(HouseNumberDtoMappingDsl.$this.number)
                 .when((source, target) -> source > 100)
-                .supply(HouseNumberEntityMappingDsl.$this.suffix)
+                .produce(HouseNumberEntityMappingDsl.$this.suffix)
                 .to(HouseNumberDtoMappingDsl.$this.suffix)
                 .build();
 
@@ -36,10 +36,10 @@ class UniConditionalMappingTest {
         MappingDsl mappingDsl = new MappingDslBuilder()
                 .uniMapping()
                 .from(HouseNumberEntity.class).to(HouseNumberDto.class)
-                .supply(HouseNumberEntityMappingDsl.$this.number)
+                .produce(HouseNumberEntityMappingDsl.$this.number)
                 .to(HouseNumberDtoMappingDsl.$this.number)
                 .when((source, target) -> source < 100)
-                .supply(HouseNumberEntityMappingDsl.$this.suffix)
+                .produce(HouseNumberEntityMappingDsl.$this.suffix)
                 .to(HouseNumberDtoMappingDsl.$this.suffix)
                 .build();
 

@@ -67,7 +67,7 @@ class BiSimpleMappingTest {
         MappingDsl mappingDsl = new MappingDslBuilder()
                 .biMapping()
                 .between(HouseNumberEntity.class).and(HouseNumberDto.class)
-                .supply(HouseNumberEntityMappingDsl.$this.number).to(HouseNumberDtoMappingDsl.$this.number)
+                .produce(HouseNumberEntityMappingDsl.$this.number).to(HouseNumberDtoMappingDsl.$this.number)
                 .consume(HouseNumberEntityMappingDsl.$this.suffix).from(HouseNumberDtoMappingDsl.$this.suffix)
                 .build();
 

@@ -20,7 +20,7 @@ class NullHandlingTest {
         MappingDsl mappingDsl = new MappingDslBuilder()
                 .uniMapping()
                 .from(StreetEntity.class).to(StreetDto.class)
-                .supply(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
+                .produce(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
                 .build();
 
         StreetDto streetDto = mappingDsl.map(null, StreetDto.class);
@@ -35,7 +35,7 @@ class NullHandlingTest {
                 .onNull().proceed()
                 .uniMapping()
                 .from(StreetEntity.class).to(StreetDto.class)
-                .supply(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
+                .produce(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
                 .build();
 
         StreetDto streetDto = mappingDsl.map(null, StreetDto.class);
@@ -50,7 +50,7 @@ class NullHandlingTest {
                 .onNull().terminate()
                 .uniMapping()
                 .from(StreetEntity.class).to(StreetDto.class)
-                .supply(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
+                .produce(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
                 .build();
 
         assertThatExceptionOfType(NullSourceValueException.class)
@@ -63,9 +63,9 @@ class NullHandlingTest {
         MappingDsl mappingDsl = new MappingDslBuilder()
                 .uniMapping()
                 .from(StreetEntity.class).to(StreetDto.class)
-                .supply(StreetEntityMappingDsl.$this.houseNumber.number)
+                .produce(StreetEntityMappingDsl.$this.houseNumber.number)
                 .to(StreetDtoMappingDsl.$this.houseNumber.number)
-                .supply(StreetEntityMappingDsl.$this.houseNumber.suffix)
+                .produce(StreetEntityMappingDsl.$this.houseNumber.suffix)
                 .to(StreetDtoMappingDsl.$this.houseNumber.suffix)
                 .build();
 
@@ -81,9 +81,9 @@ class NullHandlingTest {
                 .onNull().proceed()
                 .uniMapping()
                 .from(StreetEntity.class).to(StreetDto.class)
-                .supply(StreetEntityMappingDsl.$this.houseNumber.number)
+                .produce(StreetEntityMappingDsl.$this.houseNumber.number)
                 .to(StreetDtoMappingDsl.$this.houseNumber.number)
-                .supply(StreetEntityMappingDsl.$this.houseNumber.suffix)
+                .produce(StreetEntityMappingDsl.$this.houseNumber.suffix)
                 .to(StreetDtoMappingDsl.$this.houseNumber.suffix)
                 .build();
 
@@ -99,9 +99,9 @@ class NullHandlingTest {
                 .onNull().terminate()
                 .uniMapping()
                 .from(StreetEntity.class).to(StreetDto.class)
-                .supply(StreetEntityMappingDsl.$this.houseNumber.number)
+                .produce(StreetEntityMappingDsl.$this.houseNumber.number)
                 .to(StreetDtoMappingDsl.$this.houseNumber.number)
-                .supply(StreetEntityMappingDsl.$this.houseNumber.suffix)
+                .produce(StreetEntityMappingDsl.$this.houseNumber.suffix)
                 .to(StreetDtoMappingDsl.$this.houseNumber.suffix)
                 .build();
 
@@ -118,9 +118,9 @@ class NullHandlingTest {
                 .onNull().terminate()
                 .uniMapping()
                 .from(StreetEntity.class).to(StreetDto.class)
-                .supply(StreetEntityMappingDsl.$this.houseNumber.number)
+                .produce(StreetEntityMappingDsl.$this.houseNumber.number)
                 .to(StreetDtoMappingDsl.$this.houseNumber.number)
-                .supply(StreetEntityMappingDsl.$this.houseNumber.suffix)
+                .produce(StreetEntityMappingDsl.$this.houseNumber.suffix)
                 .to(StreetDtoMappingDsl.$this.houseNumber.suffix)
                 .build();
 
