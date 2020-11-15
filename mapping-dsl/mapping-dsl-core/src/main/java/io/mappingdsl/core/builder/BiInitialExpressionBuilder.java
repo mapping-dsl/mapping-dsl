@@ -48,6 +48,17 @@ public class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
         return new BiConvertedExpressionConsumerBuilder<>(this.context, mappingRule);
     }
 
+    public <SRC_TYPE> BiTerminalWrapperRouterProducerExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> supply(
+            DslHost<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+
+        MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
+                .mappingRuleDirection(MappingRuleDirection.FORWARD)
+                .initialExpression(initialExpression)
+                .build();
+
+        return new BiTerminalWrapperRouterProducerExpressionBuilder<>(this.context, mappingRule);
+    }
+
     public <SRC_TYPE> BiConvertedExpressionProducerBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 

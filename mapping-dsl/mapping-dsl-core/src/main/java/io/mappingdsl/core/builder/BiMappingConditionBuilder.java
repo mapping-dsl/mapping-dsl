@@ -67,6 +67,13 @@ public class BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
     }
 
     // delegate method
+    public <NEW_SRC_TYPE> BiTerminalWrapperRouterProducerExpressionBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> supply(
+            DslHost<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+
+        return this.chainBuilder.supply(initialExpression);
+    }
+
+    // delegate method
     public <NEW_SRC_TYPE> BiConvertedExpressionProducerBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> consume(
             ValueExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 

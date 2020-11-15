@@ -51,6 +51,14 @@ public class BiChainBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     // delegate method
+    public <SRC_TYPE> BiTerminalWrapperRouterProducerExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> supply(
+            DslHost<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+
+        registerCurrentRule();
+        return this.initialExpressionBuilder.supply(initialExpression);
+    }
+
+    // delegate method
     public <SRC_TYPE> BiConvertedExpressionProducerBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
