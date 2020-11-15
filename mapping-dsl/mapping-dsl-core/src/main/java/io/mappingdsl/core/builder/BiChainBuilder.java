@@ -66,6 +66,14 @@ public class BiChainBuilder<SRC_ROOT, TRG_ROOT> {
         return this.initialExpressionBuilder.consume(initialExpression);
     }
 
+    // delegate method
+    public <SRC_TYPE> BiTerminalWrapperRouterConsumerExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
+            DslHost<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+
+        registerCurrentRule();
+        return this.initialExpressionBuilder.consume(initialExpression);
+    }
+
     public MappingDsl build() {
         registerCurrentRule();
         return new MappingDsl(this.context.getConfiguration(), this.context.getMappingRules());

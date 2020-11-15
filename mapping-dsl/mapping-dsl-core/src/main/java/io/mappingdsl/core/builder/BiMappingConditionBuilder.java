@@ -80,6 +80,13 @@ public class BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
         return this.chainBuilder.consume(initialExpression);
     }
 
+    // delegate method
+    public <NEW_SRC_TYPE> BiTerminalWrapperRouterConsumerExpressionBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> consume(
+            DslHost<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+
+        return this.chainBuilder.consume(initialExpression);
+    }
+
     public MappingDsl build() {
         return this.chainBuilder.build();
     }

@@ -70,4 +70,15 @@ public class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
         return new BiConvertedExpressionProducerBuilder<>(this.context, mappingRule);
     }
 
+    public <SRC_TYPE> BiTerminalWrapperRouterConsumerExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
+            DslHost<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+
+        MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
+                .mappingRuleDirection(MappingRuleDirection.BACKWARD)
+                .initialExpression(initialExpression)
+                .build();
+
+        return new BiTerminalWrapperRouterConsumerExpressionBuilder<>(this.context, mappingRule);
+    }
+
 }
