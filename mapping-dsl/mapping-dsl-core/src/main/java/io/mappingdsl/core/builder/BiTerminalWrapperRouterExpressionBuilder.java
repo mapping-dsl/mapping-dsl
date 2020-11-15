@@ -10,6 +10,10 @@ public class BiTerminalWrapperRouterExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_RO
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
+    public BiTerminalCompatibleWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> asIs() {
+        return new BiTerminalCompatibleWrapperExpressionBuilder<>(this.context, this.mappingRule);
+    }
+
     public BiTerminalIncompatibleWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> usingMapping() {
         return new BiTerminalIncompatibleWrapperExpressionBuilder<>(this.context, this.mappingRule);
     }

@@ -2,6 +2,7 @@ package io.mappingdsl.core.tests;
 
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.builder.MappingDslBuilder;
+import io.mappingdsl.core.tests.fixtures.Geolocation;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDto;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntity;
@@ -65,18 +66,23 @@ class BiNestedMappingTest {
                 .with(HouseNumberDtoMappingDsl.$this.number)
                 .bind(HouseNumberEntityMappingDsl.$this.suffix)
                 .with(HouseNumberDtoMappingDsl.$this.suffix)
+                .bind(HouseNumberEntityMappingDsl.$this.geolocation)
+                .asIs()
+                .to(HouseNumberDtoMappingDsl.$this.geolocation)
                 .build();
 
         // forward mapping
         StreetEntity streetEntity = new StreetEntity();
         streetEntity.setName("Baker Street");
-        streetEntity.setHouseNumber(new HouseNumberEntity(221, "B"));
+        streetEntity.setHouseNumber(new HouseNumberEntity(221, "B", new Geolocation(51.523772, -0.158539)));
 
         StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
 
         assertThat(streetDto.getName()).isEqualTo("Baker Street");
         assertThat(streetDto.getHouseNumber().getNumber()).isEqualTo(221);
         assertThat(streetDto.getHouseNumber().getSuffix()).isEqualTo("B");
+        assertThat(streetDto.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
+        assertThat(streetDto.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
 
         // backward mapping
         streetEntity = mappingDsl.map(streetDto, StreetEntity.class);
@@ -84,6 +90,8 @@ class BiNestedMappingTest {
         assertThat(streetEntity.getName()).isEqualTo("Baker Street");
         assertThat(streetEntity.getHouseNumber().getNumber()).isEqualTo(221);
         assertThat(streetEntity.getHouseNumber().getSuffix()).isEqualTo("B");
+        assertThat(streetEntity.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
+        assertThat(streetEntity.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
     }
 
     @Test
