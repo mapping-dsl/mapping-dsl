@@ -14,7 +14,6 @@ public class UniExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYP
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
     private final UniExpressionChainBuilder<SRC_ROOT, TRG_ROOT> chainBuilder;
-    private final UniExpressionInitiatorBuilder<SRC_ROOT, TRG_ROOT> initialExpressionBuilder;
 
     public UniExpressionConditionBuilder(
             MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
@@ -22,7 +21,6 @@ public class UniExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYP
         this.context = context;
         this.mappingRule = mappingRule;
         this.chainBuilder = new UniExpressionChainBuilder<>(context, mappingRule);
-        this.initialExpressionBuilder = new UniExpressionInitiatorBuilder<>(context);
     }
 
     public UniExpressionChainBuilder<SRC_ROOT, TRG_ROOT> when(Condition<SRC_TYPE, TRG_TYPE> condition) {
@@ -38,14 +36,14 @@ public class UniExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYP
     public <NEW_SRC_TYPE> UniExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> produce(
             ValueExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
-        return this.initialExpressionBuilder.produce(initialExpression);
+        return this.chainBuilder.produce(initialExpression);
     }
 
     // delegate method
     public <NEW_SRC_TYPE> UniExpressionWrapperTerminatorBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> produce(
             DslHost<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
-        return this.initialExpressionBuilder.produce(initialExpression);
+        return this.chainBuilder.produce(initialExpression);
     }
 
     // delegate method
