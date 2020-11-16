@@ -1,7 +1,7 @@
 package io.mappingdsl.core.tests;
 
 import io.mappingdsl.core.MappingDsl;
-import io.mappingdsl.core.builder.BiConverter;
+import io.mappingdsl.core.common.BiConverter;
 import io.mappingdsl.core.common.Converter;
 import io.mappingdsl.core.builder.MappingDslBuilder;
 import io.mappingdsl.core.tests.fixtures.ZipDto;

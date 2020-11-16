@@ -1,17 +1,18 @@
-package io.mappingdsl.core.builder;
+package io.mappingdsl.core.builder.bi.expression;
 
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
+import io.mappingdsl.core.common.Converter;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 
-public class BiConvertedExpressionConsumerBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
+public class BiConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
     private final BiTerminalExpressionConsumerBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> terminalExpressionBuilder;
 
-    public BiConvertedExpressionConsumerBuilder(
+    public BiConsumerExpressionConverterBuilder(
             MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
 
         this.context = context;

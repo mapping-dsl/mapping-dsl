@@ -1,4 +1,4 @@
-package io.mappingdsl.core.builder;
+package io.mappingdsl.core.builder.bi.expression;
 
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;

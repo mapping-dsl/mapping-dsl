@@ -1,4 +1,4 @@
-package io.mappingdsl.core.builder;
+package io.mappingdsl.core.common;
 
 public interface BiCondition<SRC_TYPE, TRG_TYPE> {
 
