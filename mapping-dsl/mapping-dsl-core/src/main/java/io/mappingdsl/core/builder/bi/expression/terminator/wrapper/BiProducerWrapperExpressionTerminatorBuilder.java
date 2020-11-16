@@ -1,14 +1,15 @@
-package io.mappingdsl.core.builder.bi.expression;
+package io.mappingdsl.core.builder.bi.expression.terminator.wrapper;
 
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
+import io.mappingdsl.core.builder.bi.expression.BiExpressionConditionBuilder;
 import io.mappingdsl.core.common.Converter;
 import io.mappingdsl.core.expression.DslHost;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class BiTerminalProducerWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
+public class BiProducerWrapperExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
@@ -36,10 +37,10 @@ public class BiTerminalProducerWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
-        public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> to(
+        public BiExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> to(
                 DslHost<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
-            return new BiMappingConditionBuilder<>(
+            return new BiExpressionConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
         }
 
@@ -51,10 +52,10 @@ public class BiTerminalProducerWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
-        public <TRG_TYPE> BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> to(
+        public <TRG_TYPE> BiExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> to(
                 DslHost<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
-            return new BiMappingConditionBuilder<>(
+            return new BiExpressionConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
         }
 
