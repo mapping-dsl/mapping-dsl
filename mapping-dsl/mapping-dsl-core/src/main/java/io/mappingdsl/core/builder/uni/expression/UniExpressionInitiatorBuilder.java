@@ -9,7 +9,7 @@ import io.mappingdsl.core.expression.function.ValueProducerFunction;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class UniInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
+public class UniExpressionInitiatorBuilder<SRC_ROOT, TRG_ROOT> {
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
 
@@ -24,7 +24,7 @@ public class UniInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
         return new UniExpressionConverterBuilder<>(this.context, mappingRule);
     }
 
-    public <SRC_TYPE> UniTerminalWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
+    public <SRC_TYPE> UniExpressionWrapperTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
             DslHost<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
@@ -32,7 +32,7 @@ public class UniInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
                 .initialExpression(initialExpression)
                 .build();
 
-        return new UniTerminalWrapperExpressionBuilder<>(this.context, mappingRule);
+        return new UniExpressionWrapperTerminatorBuilder<>(this.context, mappingRule);
     }
 
 }

@@ -8,7 +8,7 @@ import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class UniTerminalWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
+public class UniExpressionWrapperTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
@@ -36,10 +36,10 @@ public class UniTerminalWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
-        public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> to(
+        public UniExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> to(
                 DslHost<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
-            return new UniMappingConditionBuilder<>(
+            return new UniExpressionConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
         }
 
@@ -51,10 +51,10 @@ public class UniTerminalWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
-        public <TRG_TYPE> UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> to(
+        public <TRG_TYPE> UniExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> to(
                 DslHost<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
-            return new UniMappingConditionBuilder<>(
+            return new UniExpressionConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
         }
 
