@@ -1,8 +1,8 @@
 package io.mappingdsl.core.tests;
 
 import io.mappingdsl.core.MappingDsl;
-import io.mappingdsl.core.common.BiConverter;
 import io.mappingdsl.core.builder.MappingDslBuilder;
+import io.mappingdsl.core.common.BiConverter;
 import io.mappingdsl.core.tests.fixtures.Geolocation;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDto;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDtoMappingDsl;
