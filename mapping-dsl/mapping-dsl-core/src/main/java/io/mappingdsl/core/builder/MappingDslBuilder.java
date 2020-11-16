@@ -4,6 +4,7 @@ import io.mappingdsl.core.MappingConfiguration;
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRules;
 import io.mappingdsl.core.builder.config.ConfigurationBuilder;
+import io.mappingdsl.core.builder.uni.type.UniInitialTypeBuilder;
 
 public class MappingDslBuilder {
 

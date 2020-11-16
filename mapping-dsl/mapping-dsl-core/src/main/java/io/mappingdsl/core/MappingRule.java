@@ -1,7 +1,7 @@
 package io.mappingdsl.core;
 
-import io.mappingdsl.core.builder.Condition;
-import io.mappingdsl.core.builder.Converter;
+import io.mappingdsl.core.common.Condition;
+import io.mappingdsl.core.common.Converter;
 import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.function.ExpressionFunction;
 import lombok.Builder;
