@@ -3,7 +3,7 @@ package io.mappingdsl.mavenplugin.tests;
 import ice.bricks.meta.ClassUtils;
 import ice.bricks.reflection.ReflectionUtils;
 import io.mappingdsl.generator.core.utils.GeneratorUtils;
-import io.mappingdsl.mavenplugin.DslGeneratorMojo;
+import io.mappingdsl.mavenplugin.TestDslGeneratorMojo;
 import io.mappingdsl.mavenplugin.tests.fixtures.SimplePojo;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.project.MavenProject;
@@ -16,14 +16,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class DslGeneratorMojoTest {
+class DslTestGeneratorMojoTest {
 
     @Test
     void shouldGenerateDslWrapper() throws Exception {
         String testClassName = SimplePojo.class.getCanonicalName();
 
-        DslGeneratorMojo mojo = preparePluginMojo();
-        mojo.sourceFiles.add(testClassName);
+        TestDslGeneratorMojo mojo = preparePluginMojo();
+        mojo.testSourceFiles.add(testClassName);
         mojo.execute();
 
         File generatedDsl = getGeneratedFile(testClassName);
@@ -31,11 +31,11 @@ class DslGeneratorMojoTest {
         assertThat(generatedDsl).hasSameTextualContentAs(expectedDsl);
     }
 
-    private DslGeneratorMojo preparePluginMojo() {
-        DslGeneratorMojo mojo = new DslGeneratorMojo();
+    private TestDslGeneratorMojo preparePluginMojo() {
+        TestDslGeneratorMojo mojo = new TestDslGeneratorMojo();
 
         ReflectionUtils.writeField(mojo, "project", new MavenProject());
-        ReflectionUtils.writeField(mojo, "sourceDirectory", "src/test/java");
+        ReflectionUtils.writeField(mojo, "testSourceDirectory", "src/test/java");
 
         Artifact mappingDslCore = mock(Artifact.class);
         when(mappingDslCore.getFile()).thenReturn(new File("./../../mapping-dsl/mapping-dsl-core/target/classes"));
@@ -48,7 +48,7 @@ class DslGeneratorMojoTest {
 
     private File getGeneratedFile(String testClassName) {
         return new File(String.join(File.separator,
-                "target/generated-sources/java",
+                "target/generated-test-sources/java",
                 ClassUtils.getClassPackage(testClassName).replace(".", File.separator),
                 GeneratorUtils.getDslWrapperClassName(testClassName) + ".java"
         ));
