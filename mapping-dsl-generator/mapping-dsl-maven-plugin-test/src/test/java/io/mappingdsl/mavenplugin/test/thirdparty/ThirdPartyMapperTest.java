@@ -6,14 +6,14 @@ import org.thirdpatry.lib.SimpleEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SimpleMapperTest {
+class ThirdPartyMapperTest {
 
     @Test
     void shouldPerformMapping() {
         SimpleEntity simpleEntity = new SimpleEntity();
         simpleEntity.setVal("whatever");
 
-        SimpleDto simpleDto = new SimpleMapper().map(simpleEntity);
+        SimpleDto simpleDto = new ThirdPartyMapper().map(simpleEntity);
 
         assertThat(simpleDto.getVal()).isEqualTo("whatever");
     }

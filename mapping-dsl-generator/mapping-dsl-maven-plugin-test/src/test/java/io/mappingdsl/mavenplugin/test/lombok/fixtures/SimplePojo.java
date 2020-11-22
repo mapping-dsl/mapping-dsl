@@ -15,4 +15,14 @@ public class SimplePojo {
     @Setter
     private String propertyValue;
 
+    private String regularValue;
+
+    public String getRegularValue() {
+        return regularValue;
+    }
+
+    public void setRegularValue(String regularValue) {
+        this.regularValue = regularValue;
+    }
+
 }

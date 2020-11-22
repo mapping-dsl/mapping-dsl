@@ -9,7 +9,7 @@ import org.thirdpatry.lib.SimpleEntityMappingDsl;
 
 // This mapper must be a part of productive code to mimic the real use case:
 // productive code + generated wrappers + test
-public class SimpleMapper {
+public class ThirdPartyMapper {
 
     public SimpleDto map(SimpleEntity entity) {
         MappingDsl mapper = new MappingDslBuilder()

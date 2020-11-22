@@ -32,6 +32,9 @@ public final class SimplePojoMappingDsl<ROOT, FUN extends ExpressionFunction>
     public final ValueExpression<ROOT, java.lang.String, ValueProcessingFunction> propertyValue =
             new ValueExpression<>(this, new ObjectFieldAccessorFunction(java.lang.String.class, "propertyValue"));
 
+    public final ValueExpression<ROOT, java.lang.String, ValueProcessingFunction> regularValue =
+            new ValueExpression<>(this, new ObjectFieldAccessorFunction(java.lang.String.class, "regularValue"));
+
     public final ValueExpression<ROOT, java.lang.String, GetMethodAccessorFunction> getGettableValue =
             new ValueExpression<>(this, new GetMethodAccessorFunction(java.lang.String.class, "getGettableValue"));
 
@@ -44,10 +47,21 @@ public final class SimplePojoMappingDsl<ROOT, FUN extends ExpressionFunction>
     public final ValueExpression<ROOT, java.lang.String, SetMethodAccessorFunction> setPropertyValue =
             new ValueExpression<>(this, new SetMethodAccessorFunction(java.lang.String.class, "setPropertyValue"));
 
+    public final ValueExpression<ROOT, java.lang.String, GetMethodAccessorFunction> getRegularValue =
+            new ValueExpression<>(this, new GetMethodAccessorFunction(java.lang.String.class, "getRegularValue"));
+
+    public final ValueExpression<ROOT, java.lang.String, SetMethodAccessorFunction> setRegularValue =
+            new ValueExpression<>(this, new SetMethodAccessorFunction(java.lang.String.class, "setRegularValue"));
+
     public final ValueExpression<ROOT, java.lang.String, PropertyAccessorFunction> propertyValueProperty =
             new ValueExpression<>(this, new PropertyAccessorFunction(
                     this.getPropertyValue.getExpressionFunction(),
                     this.setPropertyValue.getExpressionFunction()));
+
+    public final ValueExpression<ROOT, java.lang.String, PropertyAccessorFunction> regularValueProperty =
+            new ValueExpression<>(this, new PropertyAccessorFunction(
+                    this.getRegularValue.getExpressionFunction(),
+                    this.setRegularValue.getExpressionFunction()));
 
     public SimplePojoMappingDsl(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
         super(parentExpression, expressionFunction);
