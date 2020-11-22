@@ -83,6 +83,76 @@ class UniNestedMappingTest {
     }
 
     @Test
+    void shouldMapNestedFieldsViaMethodsAndDedicatedConfig() {
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .uniMapping()
+                .from(StreetEntity.class).to(StreetDto.class)
+                .produce(StreetEntityMappingDsl.$this.name)
+                .to(StreetDtoMappingDsl.$this.name)
+                .produce(StreetEntityMappingDsl.$this.getHouseNumber)
+                .usingMapping()
+                .to(StreetDtoMappingDsl.$this.setHouseNumber)
+
+                .uniMapping()
+                .from(HouseNumberEntity.class).to(HouseNumberDto.class)
+                .produce(HouseNumberEntityMappingDsl.$this.number)
+                .to(HouseNumberDtoMappingDsl.$this.number)
+                .produce(HouseNumberEntityMappingDsl.$this.suffix)
+                .to(HouseNumberDtoMappingDsl.$this.suffix)
+                .produce(HouseNumberEntityMappingDsl.$this.geolocation)
+                .asIs()
+                .to(HouseNumberDtoMappingDsl.$this.geolocation)
+                .build();
+
+        StreetEntity streetEntity = new StreetEntity();
+        streetEntity.setName("Baker Street");
+        streetEntity.setHouseNumber(new HouseNumberEntity(221, "B", new Geolocation(51.523772, -0.158539)));
+
+        StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
+
+        assertThat(streetDto.getName()).isEqualTo("Baker Street");
+        assertThat(streetDto.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(streetDto.getHouseNumber().getSuffix()).isEqualTo("B");
+        assertThat(streetDto.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
+        assertThat(streetDto.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
+    }
+
+    @Test
+    void shouldMapNestedFieldsViaPropertiesAndDedicatedConfig() {
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .uniMapping()
+                .from(StreetEntity.class).to(StreetDto.class)
+                .produce(StreetEntityMappingDsl.$this.name)
+                .to(StreetDtoMappingDsl.$this.name)
+                .produce(StreetEntityMappingDsl.$this.houseNumberProperty)
+                .usingMapping()
+                .to(StreetDtoMappingDsl.$this.houseNumberProperty)
+
+                .uniMapping()
+                .from(HouseNumberEntity.class).to(HouseNumberDto.class)
+                .produce(HouseNumberEntityMappingDsl.$this.number)
+                .to(HouseNumberDtoMappingDsl.$this.number)
+                .produce(HouseNumberEntityMappingDsl.$this.suffix)
+                .to(HouseNumberDtoMappingDsl.$this.suffix)
+                .produce(HouseNumberEntityMappingDsl.$this.geolocation)
+                .asIs()
+                .to(HouseNumberDtoMappingDsl.$this.geolocation)
+                .build();
+
+        StreetEntity streetEntity = new StreetEntity();
+        streetEntity.setName("Baker Street");
+        streetEntity.setHouseNumber(new HouseNumberEntity(221, "B", new Geolocation(51.523772, -0.158539)));
+
+        StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
+
+        assertThat(streetDto.getName()).isEqualTo("Baker Street");
+        assertThat(streetDto.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(streetDto.getHouseNumber().getSuffix()).isEqualTo("B");
+        assertThat(streetDto.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
+        assertThat(streetDto.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
+    }
+
+    @Test
     void shouldMapNestedFieldsViaDedicatedConverter() {
         MappingDsl mappingDsl = new MappingDslBuilder()
                 .uniMapping()

@@ -39,6 +39,28 @@ class BiSimpleMappingTest {
     }
 
     @Test
+    void shouldMapSinglePrimitiveFieldViaProperties() {
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .biMapping()
+                .between(StreetEntity.class).and(StreetDto.class)
+                .bind(StreetEntityMappingDsl.$this.nameProperty).with(StreetDtoMappingDsl.$this.nameProperty)
+                .build();
+
+        // forward mapping
+        StreetEntity streetEntity = new StreetEntity();
+        streetEntity.setName("Baker Street");
+
+        StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
+
+        assertThat(streetDto.getName()).isEqualTo("Baker Street");
+
+        // backward mapping
+        streetEntity = mappingDsl.map(streetDto, StreetEntity.class);
+
+        assertThat(streetEntity.getName()).isEqualTo("Baker Street");
+    }
+
+    @Test
     void shouldMapMultiplePrimitiveFields() {
         MappingDsl mappingDsl = new MappingDslBuilder()
                 .biMapping()
@@ -69,6 +91,33 @@ class BiSimpleMappingTest {
                 .between(HouseNumberEntity.class).and(HouseNumberDto.class)
                 .produce(HouseNumberEntityMappingDsl.$this.number).to(HouseNumberDtoMappingDsl.$this.number)
                 .consume(HouseNumberEntityMappingDsl.$this.suffix).from(HouseNumberDtoMappingDsl.$this.suffix)
+                .build();
+
+        HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B");
+
+        // forward mapping
+        HouseNumberDto houseNumberDto = mappingDsl.map(houseNumberEntity, HouseNumberDto.class);
+
+        assertThat(houseNumberDto.getNumber()).isEqualTo(221);
+        assertThat(houseNumberDto.getSuffix()).isNull();
+
+        // restore missing value to get a full object for the next mapping iteration
+        houseNumberDto.setSuffix("B");
+
+        // backward mapping
+        houseNumberEntity = mappingDsl.map(houseNumberDto, HouseNumberEntity.class);
+
+        assertThat(houseNumberEntity.getNumber()).isNull();
+        assertThat(houseNumberEntity.getSuffix()).isEqualTo("B");
+    }
+
+    @Test
+    void shouldMapMultiplePrimitiveFieldsViaMethodsWithDifferentDirectionality() {
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .biMapping()
+                .between(HouseNumberEntity.class).and(HouseNumberDto.class)
+                .produce(HouseNumberEntityMappingDsl.$this.getNumber).to(HouseNumberDtoMappingDsl.$this.setNumber)
+                .consume(HouseNumberEntityMappingDsl.$this.setSuffix).from(HouseNumberDtoMappingDsl.$this.getSuffix)
                 .build();
 
         HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B");

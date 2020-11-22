@@ -33,6 +33,38 @@ class UniSimpleMappingTest {
     }
 
     @Test
+    void shouldMapSinglePrimitiveFieldViaMethods() {
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .uniMapping()
+                .from(StreetEntity.class).to(StreetDto.class)
+                .produce(StreetEntityMappingDsl.$this.getName).to(StreetDtoMappingDsl.$this.setName)
+                .build();
+
+        StreetEntity streetEntity = new StreetEntity();
+        streetEntity.setName("Baker Street");
+
+        StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
+
+        assertThat(streetDto.getName()).isEqualTo("Baker Street");
+    }
+
+    @Test
+    void shouldMapSinglePrimitiveFieldViaProperties() {
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .uniMapping()
+                .from(StreetEntity.class).to(StreetDto.class)
+                .produce(StreetEntityMappingDsl.$this.nameProperty).to(StreetDtoMappingDsl.$this.nameProperty)
+                .build();
+
+        StreetEntity streetEntity = new StreetEntity();
+        streetEntity.setName("Baker Street");
+
+        StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
+
+        assertThat(streetDto.getName()).isEqualTo("Baker Street");
+    }
+
+    @Test
     void shouldMapMultiplePrimitiveFields() {
         MappingDsl mappingDsl = new MappingDslBuilder()
                 .uniMapping()

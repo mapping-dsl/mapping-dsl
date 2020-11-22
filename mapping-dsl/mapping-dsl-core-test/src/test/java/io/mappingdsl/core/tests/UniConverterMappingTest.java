@@ -28,4 +28,36 @@ class UniConverterMappingTest {
         assertThat(zipDto.getCode()).isEqualTo("123456");
     }
 
+    @Test
+    void shouldMapSingleConvertedPrimitiveFieldViaMethods() {
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .uniMapping()
+                .from(ZipEntity.class).to(ZipDto.class)
+                .produce(ZipEntityMappingDsl.$this.getCode)
+                .usingConverter(String::valueOf)
+                .to(ZipDtoMappingDsl.$this.setCode)
+                .build();
+
+        ZipEntity zipEntity = new ZipEntity(123456);
+        ZipDto zipDto = mappingDsl.map(zipEntity, ZipDto.class);
+
+        assertThat(zipDto.getCode()).isEqualTo("123456");
+    }
+
+    @Test
+    void shouldMapSingleConvertedPrimitiveFieldViaProperties() {
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .uniMapping()
+                .from(ZipEntity.class).to(ZipDto.class)
+                .produce(ZipEntityMappingDsl.$this.codeProperty)
+                .usingConverter(String::valueOf)
+                .to(ZipDtoMappingDsl.$this.codeProperty)
+                .build();
+
+        ZipEntity zipEntity = new ZipEntity(123456);
+        ZipDto zipDto = mappingDsl.map(zipEntity, ZipDto.class);
+
+        assertThat(zipDto.getCode()).isEqualTo("123456");
+    }
+
 }

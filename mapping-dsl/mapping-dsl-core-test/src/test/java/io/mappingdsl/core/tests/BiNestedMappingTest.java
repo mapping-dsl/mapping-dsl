@@ -96,6 +96,51 @@ class BiNestedMappingTest {
     }
 
     @Test
+    void shouldMapNestedFieldsViaPropertiesAndDedicatedConfig() {
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .biMapping()
+                .between(StreetEntity.class).and(StreetDto.class)
+                .bind(StreetEntityMappingDsl.$this.name)
+                .with(StreetDtoMappingDsl.$this.name)
+                .bind(StreetEntityMappingDsl.$this.houseNumberProperty)
+                .usingMapping()
+                .with(StreetDtoMappingDsl.$this.houseNumberProperty)
+
+                .biMapping()
+                .between(HouseNumberEntity.class).and(HouseNumberDto.class)
+                .bind(HouseNumberEntityMappingDsl.$this.number)
+                .with(HouseNumberDtoMappingDsl.$this.number)
+                .bind(HouseNumberEntityMappingDsl.$this.suffix)
+                .with(HouseNumberDtoMappingDsl.$this.suffix)
+                .bind(HouseNumberEntityMappingDsl.$this.geolocation)
+                .asIs()
+                .with(HouseNumberDtoMappingDsl.$this.geolocation)
+                .build();
+
+        // forward mapping
+        StreetEntity streetEntity = new StreetEntity();
+        streetEntity.setName("Baker Street");
+        streetEntity.setHouseNumber(new HouseNumberEntity(221, "B", new Geolocation(51.523772, -0.158539)));
+
+        StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
+
+        assertThat(streetDto.getName()).isEqualTo("Baker Street");
+        assertThat(streetDto.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(streetDto.getHouseNumber().getSuffix()).isEqualTo("B");
+        assertThat(streetDto.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
+        assertThat(streetDto.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
+
+        // backward mapping
+        streetEntity = mappingDsl.map(streetDto, StreetEntity.class);
+
+        assertThat(streetEntity.getName()).isEqualTo("Baker Street");
+        assertThat(streetEntity.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(streetEntity.getHouseNumber().getSuffix()).isEqualTo("B");
+        assertThat(streetEntity.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
+        assertThat(streetEntity.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
+    }
+
+    @Test
     void shouldMapNestedFieldsViaDedicatedConverter() {
         BiConverter<HouseNumberEntity, HouseNumberDto> converter = new BiConverter<HouseNumberEntity, HouseNumberDto>() {
 
@@ -119,6 +164,55 @@ class BiNestedMappingTest {
                 .bind(StreetEntityMappingDsl.$this.houseNumber)
                 .usingConverter(converter)
                 .with(StreetDtoMappingDsl.$this.houseNumber)
+                .build();
+
+        // forward mapping
+        StreetEntity streetEntity = new StreetEntity();
+        streetEntity.setName("Baker Street");
+        streetEntity.setHouseNumber(new HouseNumberEntity(221, "B", new Geolocation(51.523772, -0.158539)));
+
+        StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
+
+        assertThat(streetDto.getName()).isEqualTo("Baker Street");
+        assertThat(streetDto.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(streetDto.getHouseNumber().getSuffix()).isEqualTo("B");
+        assertThat(streetDto.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
+        assertThat(streetDto.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
+
+        // backward mapping
+        streetEntity = mappingDsl.map(streetDto, StreetEntity.class);
+
+        assertThat(streetEntity.getName()).isEqualTo("Baker Street");
+        assertThat(streetEntity.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(streetEntity.getHouseNumber().getSuffix()).isEqualTo("B");
+        assertThat(streetEntity.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
+        assertThat(streetEntity.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
+    }
+
+    @Test
+    void shouldMapNestedFieldsViaPropertiesAndDedicatedConverter() {
+        BiConverter<HouseNumberEntity, HouseNumberDto> converter = new BiConverter<HouseNumberEntity, HouseNumberDto>() {
+
+            @Override
+            public HouseNumberDto convertForward(HouseNumberEntity source) {
+                return convertHouseNumberEntity(source);
+            }
+
+            @Override
+            public HouseNumberEntity convertBackward(HouseNumberDto target) {
+                return convertHouseNumberDto(target);
+            }
+
+        };
+
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .biMapping()
+                .between(StreetEntity.class).and(StreetDto.class)
+                .bind(StreetEntityMappingDsl.$this.name)
+                .with(StreetDtoMappingDsl.$this.name)
+                .bind(StreetEntityMappingDsl.$this.houseNumberProperty)
+                .usingConverter(converter)
+                .with(StreetDtoMappingDsl.$this.houseNumberProperty)
                 .build();
 
         // forward mapping
@@ -190,6 +284,41 @@ class BiNestedMappingTest {
                 .to(StreetDtoMappingDsl.$this.houseNumber.number)
                 .consume(StreetEntityMappingDsl.$this.houseNumber.suffix)
                 .from(StreetDtoMappingDsl.$this.houseNumber.suffix)
+                .build();
+
+        // forward mapping
+        StreetEntity streetEntity = new StreetEntity();
+        streetEntity.setName("Baker Street");
+        streetEntity.setHouseNumber(new HouseNumberEntity(221, "B"));
+
+        StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
+
+        assertThat(streetDto.getName()).isEqualTo("Baker Street");
+        assertThat(streetDto.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(streetDto.getHouseNumber().getSuffix()).isNull();
+
+        // restore missing value to get a full object for the next mapping iteration
+        streetDto.getHouseNumber().setSuffix("B");
+
+        // backward mapping
+        streetEntity = mappingDsl.map(streetDto, StreetEntity.class);
+
+        assertThat(streetEntity.getName()).isEqualTo("Baker Street");
+        assertThat(streetEntity.getHouseNumber().getNumber()).isNull();
+        assertThat(streetEntity.getHouseNumber().getSuffix()).isEqualTo("B");
+    }
+
+    @Test
+    void shouldMapNestedFieldsViaMethodsAndFlatConfigWithDifferentDirectionality() {
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .biMapping()
+                .between(StreetEntity.class).and(StreetDto.class)
+                .bind(StreetEntityMappingDsl.$this.name)
+                .with(StreetDtoMappingDsl.$this.name)
+                .produce(StreetEntityMappingDsl.$this.houseNumber.getNumber)
+                .to(StreetDtoMappingDsl.$this.houseNumber.setNumber)
+                .consume(StreetEntityMappingDsl.$this.houseNumber.setSuffix)
+                .from(StreetDtoMappingDsl.$this.houseNumber.getSuffix)
                 .build();
 
         // forward mapping
