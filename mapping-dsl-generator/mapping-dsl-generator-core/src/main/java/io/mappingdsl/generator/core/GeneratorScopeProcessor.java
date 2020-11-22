@@ -11,6 +11,9 @@ import io.mappingdsl.generator.core.model.MethodModelType;
 import io.mappingdsl.generator.core.model.PropertyModel;
 import io.mappingdsl.generator.core.model.WrapperClassModel;
 import io.mappingdsl.generator.core.utils.GeneratorUtils;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,6 +28,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.PrimitiveType;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
@@ -156,6 +160,94 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
                 propertyModel.registerMethodModel(methodModel);
                 model.registerMethodModel(methodModel);
             });
+
+            Element hostClass = field.getEnclosingElement();
+
+            // Lombok Data
+            if (hostClass.getAnnotation(Data.class) != null) {
+                String methodType = field.asType().toString();
+
+                if (field.asType().getKind().isPrimitive()) {
+                    methodType = this.typeUtils.boxedClass((PrimitiveType) field.asType()).toString();
+                }
+
+                String fieldName = StringUtils.capitalize(field.getSimpleName().toString());
+                String methodName = "get" + fieldName;
+                if (field.asType().getKind().isPrimitive() && field.asType().getKind() == TypeKind.BOOLEAN) {
+                    methodName = "is" + fieldName;
+                }
+
+                // getter
+                MethodModel getMethodModel = MethodModel.builder()
+                        .fieldModel(fieldModel)
+                        .name(methodName)
+                        .type(methodType)
+                        .modelType(MethodModelType.GETTER)
+                        .build();
+
+                propertyModel.registerMethodModel(getMethodModel);
+                model.registerMethodModel(getMethodModel);
+
+                // setter
+                methodName = "set" + fieldName;
+
+                MethodModel setMethodModel = MethodModel.builder()
+                        .fieldModel(fieldModel)
+                        .name(methodName)
+                        .type(methodType)
+                        .modelType(MethodModelType.SETTER)
+                        .build();
+
+                propertyModel.registerMethodModel(setMethodModel);
+                model.registerMethodModel(setMethodModel);
+            }
+
+            // Lombok Getter
+            if (hostClass.getAnnotation(Getter.class) != null || field.getAnnotation(Getter.class) != null) {
+                String methodType = field.asType().toString();
+
+                if (field.asType().getKind().isPrimitive()) {
+                    methodType = this.typeUtils.boxedClass((PrimitiveType) field.asType()).toString();
+                }
+
+                String fieldName = StringUtils.capitalize(field.getSimpleName().toString());
+                String methodName = "get" + fieldName;
+                if (field.asType().getKind().isPrimitive() && field.asType().getKind() == TypeKind.BOOLEAN) {
+                    methodName = "is" + fieldName;
+                }
+
+                MethodModel methodModel = MethodModel.builder()
+                        .fieldModel(fieldModel)
+                        .name(methodName)
+                        .type(methodType)
+                        .modelType(MethodModelType.GETTER)
+                        .build();
+
+                propertyModel.registerMethodModel(methodModel);
+                model.registerMethodModel(methodModel);
+            }
+
+            // Lombok Setter
+            if (hostClass.getAnnotation(Setter.class) != null || field.getAnnotation(Setter.class) != null) {
+                String methodType = field.asType().toString();
+
+                if (field.asType().getKind().isPrimitive()) {
+                    methodType = this.typeUtils.boxedClass((PrimitiveType) field.asType()).toString();
+                }
+
+                String fieldName = StringUtils.capitalize(field.getSimpleName().toString());
+                String methodName = "set" + fieldName;
+
+                MethodModel methodModel = MethodModel.builder()
+                        .fieldModel(fieldModel)
+                        .name(methodName)
+                        .type(methodType)
+                        .modelType(MethodModelType.SETTER)
+                        .build();
+
+                propertyModel.registerMethodModel(methodModel);
+                model.registerMethodModel(methodModel);
+            }
 
             if (propertyModel.isComplete()) {
                 model.registerPropertyModel(propertyModel);

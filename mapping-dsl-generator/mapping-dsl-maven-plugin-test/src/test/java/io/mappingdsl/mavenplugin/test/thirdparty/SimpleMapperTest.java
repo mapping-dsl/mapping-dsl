@@ -1,4 +1,4 @@
-package io.mappingdsl.mavenplugin.test;
+package io.mappingdsl.mavenplugin.test.thirdparty;
 
 import org.junit.jupiter.api.Test;
 import org.thirdpatry.lib.SimpleDto;

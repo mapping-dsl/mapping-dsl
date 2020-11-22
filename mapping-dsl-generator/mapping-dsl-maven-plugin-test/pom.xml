@@ -21,6 +21,12 @@
 
         <dependency>
             <groupId>io.mapping-dsl</groupId>
+            <artifactId>mapping-dsl-generator-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.mapping-dsl</groupId>
             <artifactId>test-lib</artifactId>
             <version>1.0</version>
         </dependency>
@@ -34,6 +40,7 @@
                 <version>${project.version}</version>
                 <executions>
                     <execution>
+                        <id>dsl</id>
                         <goals>
                             <goal>generate-dsl</goal>
                         </goals>
@@ -42,6 +49,18 @@
                                 <classFile>org.thirdpatry.lib.SimpleDto</classFile>
                                 <classFile>org.thirdpatry.lib.SimpleEntity</classFile>
                             </classFiles>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>test-dsl</id>
+                        <goals>
+                            <goal>generate-test-dsl</goal>
+                        </goals>
+                        <configuration>
+                            <testSourceFiles>
+                                <testSourceFile>io.mappingdsl.mavenplugin.test.lombok.fixtures.SimpleDataPojo</testSourceFile>
+                                <testSourceFile>io.mappingdsl.mavenplugin.test.lombok.fixtures.SimplePojo</testSourceFile>
+                            </testSourceFiles>
                         </configuration>
                     </execution>
                 </executions>
