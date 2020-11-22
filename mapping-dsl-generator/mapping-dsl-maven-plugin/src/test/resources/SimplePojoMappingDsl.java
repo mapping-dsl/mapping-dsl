@@ -17,13 +17,13 @@ import io.mappingdsl.core.expression.function.ValueProducerFunction;
 import javax.annotation.Generated;
 
 @Generated("MappingDsl")
-public class SimplePojoMappingDsl<ROOT, FUN extends ExpressionFunction>
+public final class SimplePojoMappingDsl<ROOT, FUN extends ExpressionFunction>
         extends DslHost<ROOT, io.mappingdsl.mavenplugin.tests.fixtures.SimplePojo, FUN> {
 
-    public static SimplePojoMappingDsl<io.mappingdsl.mavenplugin.tests.fixtures.SimplePojo, ValueProducerFunction> $this =
+    public static final SimplePojoMappingDsl<io.mappingdsl.mavenplugin.tests.fixtures.SimplePojo, ValueProducerFunction> $this =
             new SimplePojoMappingDsl<>(new RootIdentityFunction("SimplePojo"));
 
-    public ValueExpression<ROOT, java.lang.String, ValueProcessingFunction> stringValue =
+    public final ValueExpression<ROOT, java.lang.String, ValueProcessingFunction> stringValue =
             new ValueExpression<>(this, new ObjectFieldAccessorFunction(java.lang.String.class, "stringValue"));
 
     public SimplePojoMappingDsl(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {

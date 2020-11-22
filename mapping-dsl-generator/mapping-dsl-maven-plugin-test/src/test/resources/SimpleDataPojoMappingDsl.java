@@ -17,22 +17,22 @@ import io.mappingdsl.core.expression.function.ValueProducerFunction;
 import javax.annotation.Generated;
 
 @Generated("MappingDsl")
-public class SimpleDataPojoMappingDsl<ROOT, FUN extends ExpressionFunction>
+public final class SimpleDataPojoMappingDsl<ROOT, FUN extends ExpressionFunction>
         extends DslHost<ROOT, io.mappingdsl.mavenplugin.test.lombok.fixtures.SimpleDataPojo, FUN> {
 
-    public static SimpleDataPojoMappingDsl<io.mappingdsl.mavenplugin.test.lombok.fixtures.SimpleDataPojo, ValueProducerFunction> $this =
+    public static final SimpleDataPojoMappingDsl<io.mappingdsl.mavenplugin.test.lombok.fixtures.SimpleDataPojo, ValueProducerFunction> $this =
             new SimpleDataPojoMappingDsl<>(new RootIdentityFunction("SimpleDataPojo"));
 
-    public ValueExpression<ROOT, java.lang.String, ValueProcessingFunction> simpleValue =
+    public final ValueExpression<ROOT, java.lang.String, ValueProcessingFunction> simpleValue =
             new ValueExpression<>(this, new ObjectFieldAccessorFunction(java.lang.String.class, "simpleValue"));
 
-    public ValueExpression<ROOT, java.lang.String, GetMethodAccessorFunction> getSimpleValue =
+    public final ValueExpression<ROOT, java.lang.String, GetMethodAccessorFunction> getSimpleValue =
             new ValueExpression<>(this, new GetMethodAccessorFunction(java.lang.String.class, "getSimpleValue"));
 
-    public ValueExpression<ROOT, java.lang.String, SetMethodAccessorFunction> setSimpleValue =
+    public final ValueExpression<ROOT, java.lang.String, SetMethodAccessorFunction> setSimpleValue =
             new ValueExpression<>(this, new SetMethodAccessorFunction(java.lang.String.class, "setSimpleValue"));
 
-    public ValueExpression<ROOT, java.lang.String, PropertyAccessorFunction> simpleValueProperty =
+    public final ValueExpression<ROOT, java.lang.String, PropertyAccessorFunction> simpleValueProperty =
             new ValueExpression<>(this, new PropertyAccessorFunction(
                     this.getSimpleValue.getExpressionFunction(),
                     this.setSimpleValue.getExpressionFunction()));

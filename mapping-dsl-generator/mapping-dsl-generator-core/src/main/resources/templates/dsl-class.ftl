@@ -22,10 +22,10 @@ import io.mappingdsl.core.expression.function.ValueProducerFunction;
 import javax.annotation.Generated;
 
 @Generated("MappingDsl")
-public class ${dslClassName}<ROOT, FUN extends ExpressionFunction>
+public final class ${dslClassName}<ROOT, FUN extends ExpressionFunction>
         extends DslHost<ROOT, ${fullClassName}, FUN> {
 
-    public static ${dslClassName}<${fullClassName}, ValueProducerFunction> $this =
+    public static final ${dslClassName}<${fullClassName}, ValueProducerFunction> $this =
             new ${dslClassName}<>(new RootIdentityFunction("${ClassUtils.getClassName(fullClassName)}"));
 
     <#list fieldModels as fieldModel>
