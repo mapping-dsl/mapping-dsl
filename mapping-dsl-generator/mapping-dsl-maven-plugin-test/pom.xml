@@ -45,6 +45,10 @@
                             <goal>generate-dsl</goal>
                         </goals>
                         <configuration>
+                            <!--
+                            this classes are treated as productive to mimic the real use case:
+                            productive code + generated wrappers + test
+                            -->
                             <classFiles>
                                 <classFile>org.thirdpatry.lib.SimpleDto</classFile>
                                 <classFile>org.thirdpatry.lib.SimpleEntity</classFile>
