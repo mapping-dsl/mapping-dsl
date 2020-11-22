@@ -1,9 +1,14 @@
 package io.mappingdsl.generator.core;
 
+import com.sun.tools.javac.code.Symbol;
+import com.sun.tools.javac.code.Type;
 import ice.bricks.io.IoUtils;
 import ice.bricks.meta.ClassUtils;
 import io.mappingdsl.generator.core.model.FieldModel;
 import io.mappingdsl.generator.core.model.FieldModelType;
+import io.mappingdsl.generator.core.model.MethodModel;
+import io.mappingdsl.generator.core.model.MethodModelType;
+import io.mappingdsl.generator.core.model.PropertyModel;
 import io.mappingdsl.generator.core.model.WrapperClassModel;
 import io.mappingdsl.generator.core.utils.GeneratorUtils;
 import org.apache.commons.collections4.CollectionUtils;
@@ -25,9 +30,13 @@ import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import java.util.Arrays;
-import java.util.LinkedHashSet;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @SupportedAnnotationTypes("*")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
@@ -68,19 +77,11 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
                 if (!GeneratorUtils.isDslWrapperClass(className)) {
                     WrapperClassModel wrapperClassModel = new WrapperClassModel(className);
 
-                    Set<TypeElement> classHierarchy = new LinkedHashSet<>();
+                    List<TypeElement> classHierarchy = getClassHierarchy(typeElement);
 
-                    // stop hierarchy at Object class
-                    while (!typeElement.getQualifiedName().toString().equals(Object.class.getCanonicalName())) {
-                        classHierarchy.add(typeElement);
-                        typeElement = (TypeElement) this.typeUtils.asElement(typeElement.getSuperclass());
-                    }
-
-                    classHierarchy.stream()
-                            .flatMap(type -> type.getEnclosedElements().stream())
-                            .filter(nestedElement -> nestedElement.getKind() == ElementKind.FIELD)
-                            .map(this::buildFieldModel)
-                            .forEach(wrapperClassModel::registerFieldModel);
+                    List<Element> fields = getFields(classHierarchy);
+                    List<Element> methods = getMethods(classHierarchy);
+                    register(wrapperClassModel, fields, methods);
 
                     String fullDslClassName = ClassUtils.getClassPackage(className) + "." +
                             GeneratorUtils.getDslWrapperClassName(className);
@@ -98,23 +99,139 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
         return false;
     }
 
-    private FieldModel buildFieldModel(Element element) {
-        TypeMirror type = element.asType();
+    private List<TypeElement> getClassHierarchy(TypeElement typeElement) {
+        List<TypeElement> classHierarchy = new LinkedList<>();
+
+        // stop hierarchy at Object class
+        while (!typeElement.getQualifiedName().toString().equals(Object.class.getCanonicalName())) {
+            classHierarchy.add(typeElement);
+            typeElement = (TypeElement) this.typeUtils.asElement(typeElement.getSuperclass());
+        }
+        return classHierarchy;
+    }
+
+    private List<Element> getFields(List<TypeElement> classHierarchy) {
+        return classHierarchy.stream()
+                .flatMap(type -> type.getEnclosedElements().stream())
+                .filter(nestedElement -> nestedElement.getKind() == ElementKind.FIELD)
+                .collect(Collectors.toList());
+    }
+
+    private List<Element> getMethods(List<TypeElement> classHierarchy) {
+        return classHierarchy.stream()
+                .flatMap(type -> type.getEnclosedElements().stream())
+                .filter(nestedElement -> nestedElement.getKind() == ElementKind.METHOD)
+                .collect(Collectors.toList());
+    }
+
+    private void register(WrapperClassModel model, List<Element> fields, List<Element> methods) {
+        Map<Element, List<Element>> groupedFields = fields.stream()
+                .collect(Collectors.groupingBy(Element::getEnclosingElement));
+
+        Map<Element, List<Element>> groupedMethods = methods.stream()
+                .collect(Collectors.groupingBy(Element::getEnclosingElement));
+
+        Map<Element, List<Element>> groupedElements = new LinkedHashMap<>();
+
+        groupedFields.forEach((type, typeFields) -> {
+            List<Element> typeMethods = groupedMethods.getOrDefault(type, Collections.emptyList());
+
+            typeFields.forEach(typeField -> {
+                List<Element> relatedMethods = typeMethods.stream()
+                        .filter(typeMethod -> isFieldRelatedToMethod(typeField, typeMethod))
+                        .collect(Collectors.toList());
+
+                groupedElements.put(typeField, relatedMethods);
+            });
+        });
+
+        groupedElements.forEach((field, relatedMethods) -> {
+            FieldModel fieldModel = buildFieldModel(field);
+            model.registerFieldModel(fieldModel);
+
+            PropertyModel propertyModel = new PropertyModel(fieldModel);
+
+            relatedMethods.forEach(method -> {
+                MethodModel methodModel = buildMethodModel(method, fieldModel);
+                propertyModel.registerMethodModel(methodModel);
+                model.registerMethodModel(methodModel);
+            });
+
+            if (propertyModel.isComplete()) {
+                model.registerPropertyModel(propertyModel);
+            }
+        });
+    }
+
+    private boolean isFieldRelatedToMethod(Element fieldElement, Element methodElement) {
+        String fieldName = StringUtils.capitalize(fieldElement.getSimpleName().toString());
+
+        Symbol.MethodSymbol method = (Symbol.MethodSymbol) methodElement;
+        String methodName = method.getSimpleName().toString();
+
+        if (((isBooleanType(method.getReturnType()) && methodName.equals("is" + fieldName))
+                || methodName.equals("get" + fieldName)) && method.getParameters().isEmpty()) {
+
+            return fieldElement.asType().equals(method.getReturnType());
+        }
+
+        if (methodName.equals("set" + fieldName) && method.getParameters().size() == 1) {
+            return fieldElement.asType().equals(method.getParameters().get(0).asType());
+        }
+
+        return false;
+    }
+
+    private boolean isBooleanType(Type type) {
+        String typeName = type.toString();
+        if (type.isPrimitive()) {
+            typeName = this.typeUtils.boxedClass((PrimitiveType) type).toString();
+        }
+
+        return Boolean.class.getCanonicalName().equals(typeName);
+    }
+
+    private FieldModel buildFieldModel(Element fieldElement) {
+        TypeMirror type = fieldElement.asType();
         String fieldType = type.toString();
 
         if (type.getKind().isPrimitive()) {
             fieldType = this.typeUtils.boxedClass((PrimitiveType) type).toString();
         }
 
-        String fieldName = element.getSimpleName().toString();
+        String fieldName = fieldElement.getSimpleName().toString();
 
         FieldModelType modelType = this.scope.contains(fieldType)
-                ? FieldModelType.DSL_WRAPPER
+                ? FieldModelType.DSL
                 : FieldModelType.VALUE;
 
         return FieldModel.builder()
                 .name(fieldName)
                 .type(fieldType)
+                .modelType(modelType)
+                .build();
+    }
+
+    private MethodModel buildMethodModel(Element methodElement, FieldModel fieldModel) {
+        Symbol.MethodSymbol method = (Symbol.MethodSymbol) methodElement;
+
+        TypeMirror returnType = method.getReturnType();
+        String methodReturenType = returnType.toString();
+
+        if (returnType.getKind().isPrimitive()) {
+            methodReturenType = this.typeUtils.boxedClass((PrimitiveType) returnType).toString();
+        }
+
+        String methodName = methodElement.getSimpleName().toString();
+
+        MethodModelType modelType = methodName.startsWith("set")
+                ? MethodModelType.SETTER
+                : MethodModelType.GETTER;
+
+        return MethodModel.builder()
+                .fieldModel(fieldModel)
+                .name(methodName)
+                .type(methodReturenType)
                 .modelType(modelType)
                 .build();
     }

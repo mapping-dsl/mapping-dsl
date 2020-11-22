@@ -1,7 +1,7 @@
 <#-- @ftlvariable name="GeneratorUtils" type="io.mappingdsl.generator.core.utils.GeneratorUtils" -->
 <#-- @ftlvariable name="ClassUtils" type="ice.bricks.meta.ClassUtils.static" -->
 <#-- @ftlvariable name="" type="io.mappingdsl.generator.core.model.WrapperClassModel" -->
-<#import "fields.ftl" as fieldDefinitions>
+<#import "dsl-expressions.ftl" as expressions>
 <#assign dslClassName = GeneratorUtils.getDslWrapperClassName(fullClassName)>
 package ${ClassUtils.getClassPackage(fullClassName)};
 
@@ -9,9 +9,13 @@ import io.mappingdsl.core.expression.DslHost;
 import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ExpressionFunction;
+import io.mappingdsl.core.expression.function.GetMethodAccessorFunction;
 import io.mappingdsl.core.expression.function.ObjectFieldAccessorFunction;
 import io.mappingdsl.core.expression.function.PathProcessingFunction;
+import io.mappingdsl.core.expression.function.PropertyAccessorFunction;
 import io.mappingdsl.core.expression.function.RootIdentityFunction;
+import io.mappingdsl.core.expression.function.SetMethodAccessorFunction;
+import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
 
@@ -27,15 +31,33 @@ public class ${dslClassName}<ROOT, FUN extends ExpressionFunction>
     <#list fieldModels as fieldModel>
         <#switch fieldModel.modelType>
             <#case "VALUE">
-                <@fieldDefinitions.valueField model=fieldModel />
+                <@expressions.valueField model=fieldModel />
                 <#break>
-            <#case "DSL_WRAPPER">
-                <@fieldDefinitions.dslWrapperField model=fieldModel />
+            <#case "DSL">
+                <@expressions.dslField model=fieldModel />
                 <#break>
-        </#switch>
-        <#if !fieldModel?is_last>${'\n'}</#if>
+        </#switch>${'\n'}
     </#list>
-
+    <#list methodModels as methodModel>
+        <#switch methodModel.fieldModel.modelType>
+            <#case "VALUE">
+                <@expressions.valueMethodReference model=methodModel />
+                <#break>
+            <#case "DSL">
+                <@expressions.dslMethodReference model=methodModel />
+                <#break>
+        </#switch>${'\n'}
+    </#list>
+    <#list propertyModels as propertyModel>
+        <#switch propertyModel.fieldModel.modelType>
+            <#case "VALUE">
+                <@expressions.valueProperty model=propertyModel />
+                <#break>
+            <#case "DSL">
+                <@expressions.dslProperty model=propertyModel />
+                <#break>
+        </#switch>${'\n'}
+    </#list>
     public ${dslClassName}(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
         super(parentExpression, expressionFunction);
     }

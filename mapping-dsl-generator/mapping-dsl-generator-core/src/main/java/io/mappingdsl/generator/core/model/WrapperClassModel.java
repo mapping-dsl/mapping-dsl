@@ -11,6 +11,8 @@ public class WrapperClassModel {
 
     private final String fullClassName;
     private final List<FieldModel> fieldModels = new LinkedList<>();
+    private final List<MethodModel> methodModels = new LinkedList<>();
+    private final List<PropertyModel> propertyModels = new LinkedList<>();
 
     @Builder
     public WrapperClassModel(String fullClassName) {
@@ -19,6 +21,14 @@ public class WrapperClassModel {
 
     public void registerFieldModel(FieldModel field) {
         this.fieldModels.add(field);
+    }
+
+    public void registerMethodModel(MethodModel method) {
+        this.methodModels.add(method);
+    }
+
+    public void registerPropertyModel(PropertyModel property) {
+        this.propertyModels.add(property);
     }
 
 }

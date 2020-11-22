@@ -4,9 +4,13 @@ import io.mappingdsl.core.expression.DslHost;
 import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ExpressionFunction;
+import io.mappingdsl.core.expression.function.GetMethodAccessorFunction;
 import io.mappingdsl.core.expression.function.ObjectFieldAccessorFunction;
 import io.mappingdsl.core.expression.function.PathProcessingFunction;
+import io.mappingdsl.core.expression.function.PropertyAccessorFunction;
 import io.mappingdsl.core.expression.function.RootIdentityFunction;
+import io.mappingdsl.core.expression.function.SetMethodAccessorFunction;
+import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
 
@@ -20,7 +24,7 @@ public class SimplePojoMappingDsl<ROOT, FUN extends ExpressionFunction>
             new SimplePojoMappingDsl<>(new RootIdentityFunction("SimplePojo"));
 
     public ValueExpression<ROOT, java.lang.String, ValueProcessingFunction> stringValue =
-            new ValueExpression<>(this, new ObjectFieldAccessorFunction(java.lang.String.class, "stringValue"));        
+            new ValueExpression<>(this, new ObjectFieldAccessorFunction(java.lang.String.class, "stringValue"));
 
     public SimplePojoMappingDsl(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
         super(parentExpression, expressionFunction);

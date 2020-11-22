@@ -11,6 +11,6 @@ public enum FieldModelType {
      * Represents field of type that is explicitly defined in the generator scope.
      * For this type of fields DSL will be generated using respective DSL wrapper class.
      */
-    DSL_WRAPPER
+    DSL
 
 }
