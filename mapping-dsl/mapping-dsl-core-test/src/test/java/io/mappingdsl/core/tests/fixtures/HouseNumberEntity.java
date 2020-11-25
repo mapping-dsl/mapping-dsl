@@ -5,16 +5,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class HouseNumberEntity {
 
+    @Getter
+    @Setter
     private Integer number;
 
+    @Getter
+    @Setter
     private String suffix;
 
+    @Getter
+    @Setter
     private Geolocation geolocation;
 
     public HouseNumberEntity(Integer number, String suffix) {

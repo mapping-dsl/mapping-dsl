@@ -10,74 +10,107 @@ import io.mappingdsl.core.tests.fixtures.StreetDto;
 import io.mappingdsl.core.tests.fixtures.StreetDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.StreetEntity;
 import io.mappingdsl.core.tests.fixtures.StreetEntityMappingDsl;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class UniSimpleMappingTest {
 
-    @Test
-    void shouldMapSinglePrimitiveField() {
-        MappingDsl mappingDsl = new MappingDslBuilder()
-                .uniMapping()
-                .from(StreetEntity.class).to(StreetDto.class)
-                .produce(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
-                .build();
-
-        StreetEntity streetEntity = new StreetEntity();
-        streetEntity.setName("Baker Street");
-
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("singleFiledTestData")
+    void shouldMapSinglePrimitiveField(String testName, MappingDsl mappingDsl) {
+        StreetEntity streetEntity = new StreetEntity("Baker Street");
         StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
 
         assertThat(streetDto.getName()).isEqualTo("Baker Street");
     }
 
-    @Test
-    void shouldMapSinglePrimitiveFieldViaMethods() {
-        MappingDsl mappingDsl = new MappingDslBuilder()
-                .uniMapping()
-                .from(StreetEntity.class).to(StreetDto.class)
-                .produce(StreetEntityMappingDsl.$this.getName).to(StreetDtoMappingDsl.$this.setName)
-                .build();
+    private static Stream<Arguments> singleFiledTestData() {
+        return Stream.of(
+                Arguments.of(
+                        "[uni] mapping over fields",
 
-        StreetEntity streetEntity = new StreetEntity();
-        streetEntity.setName("Baker Street");
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(StreetEntity.class).to(StreetDto.class)
+                                .produce(StreetEntityMappingDsl.$this.name)
+                                .to(StreetDtoMappingDsl.$this.name)
+                                .build()),
 
-        StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
+                Arguments.of(
+                        "[uni] mapping over properties",
 
-        assertThat(streetDto.getName()).isEqualTo("Baker Street");
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(StreetEntity.class).to(StreetDto.class)
+                                .produce(StreetEntityMappingDsl.$this.nameProperty)
+                                .to(StreetDtoMappingDsl.$this.nameProperty)
+                                .build()),
+
+                Arguments.of(
+                        "[uni] mapping over methods",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(StreetEntity.class).to(StreetDto.class)
+                                .produce(StreetEntityMappingDsl.$this.getName)
+                                .to(StreetDtoMappingDsl.$this.setName)
+                                .build())
+        );
     }
 
-    @Test
-    void shouldMapSinglePrimitiveFieldViaProperties() {
-        MappingDsl mappingDsl = new MappingDslBuilder()
-                .uniMapping()
-                .from(StreetEntity.class).to(StreetDto.class)
-                .produce(StreetEntityMappingDsl.$this.nameProperty).to(StreetDtoMappingDsl.$this.nameProperty)
-                .build();
-
-        StreetEntity streetEntity = new StreetEntity();
-        streetEntity.setName("Baker Street");
-
-        StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
-
-        assertThat(streetDto.getName()).isEqualTo("Baker Street");
-    }
-
-    @Test
-    void shouldMapMultiplePrimitiveFields() {
-        MappingDsl mappingDsl = new MappingDslBuilder()
-                .uniMapping()
-                .from(HouseNumberEntity.class).to(HouseNumberDto.class)
-                .produce(HouseNumberEntityMappingDsl.$this.number).to(HouseNumberDtoMappingDsl.$this.number)
-                .produce(HouseNumberEntityMappingDsl.$this.suffix).to(HouseNumberDtoMappingDsl.$this.suffix)
-                .build();
-
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("multiFiledTestData")
+    void shouldMapMultiplePrimitiveFields(String testName, MappingDsl mappingDsl) {
         HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B");
         HouseNumberDto houseNumberDto = mappingDsl.map(houseNumberEntity, HouseNumberDto.class);
 
         assertThat(houseNumberDto.getNumber()).isEqualTo(221);
         assertThat(houseNumberDto.getSuffix()).isEqualTo("B");
+    }
+
+    private static Stream<Arguments> multiFiledTestData() {
+        return Stream.of(
+                Arguments.of(
+                        "[uni] mapping over fields",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(HouseNumberEntity.class).to(HouseNumberDto.class)
+                                .produce(HouseNumberEntityMappingDsl.$this.number)
+                                .to(HouseNumberDtoMappingDsl.$this.number)
+                                .produce(HouseNumberEntityMappingDsl.$this.suffix)
+                                .to(HouseNumberDtoMappingDsl.$this.suffix)
+                                .build()),
+
+                Arguments.of(
+                        "[uni] mapping over properties",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(HouseNumberEntity.class).to(HouseNumberDto.class)
+                                .produce(HouseNumberEntityMappingDsl.$this.numberProperty)
+                                .to(HouseNumberDtoMappingDsl.$this.numberProperty)
+                                .produce(HouseNumberEntityMappingDsl.$this.suffixProperty)
+                                .to(HouseNumberDtoMappingDsl.$this.suffixProperty)
+                                .build()),
+
+                Arguments.of(
+                        "[uni] mapping over methods",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(HouseNumberEntity.class).to(HouseNumberDto.class)
+                                .produce(HouseNumberEntityMappingDsl.$this.getNumber)
+                                .to(HouseNumberDtoMappingDsl.$this.setNumber)
+                                .produce(HouseNumberEntityMappingDsl.$this.getSuffix)
+                                .to(HouseNumberDtoMappingDsl.$this.setSuffix)
+                                .build())
+        );
     }
 
 }

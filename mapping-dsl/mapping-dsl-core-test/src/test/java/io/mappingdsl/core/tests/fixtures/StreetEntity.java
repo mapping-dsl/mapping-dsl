@@ -11,4 +11,8 @@ public class StreetEntity extends NamedObject {
     @Setter
     private HouseNumberEntity houseNumber;
 
+    public StreetEntity(String name) {
+        super(name);
+    }
+
 }

@@ -3,14 +3,18 @@ package io.mappingdsl.core.tests.fixtures;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 public class Geolocation {
 
+    @Getter
+    @Setter
     private double latitude;
 
+    @Getter
+    @Setter
     private double longitude;
 
 }
