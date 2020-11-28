@@ -2,10 +2,10 @@ package io.mappingdsl.core.builder.bi.expression.terminator.wrapper;
 
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
-import io.mappingdsl.core.builder.bi.expression.BiExpressionConditionBuilder;
+import io.mappingdsl.core.builder.bi.expression.condition.BiExpressionConditionBuilder;
 import io.mappingdsl.core.common.Converter;
 import io.mappingdsl.core.expression.DslHost;
-import io.mappingdsl.core.expression.function.ValueConsumerFunction;
+import io.mappingdsl.core.expression.function.ValueProducerFunction;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -19,11 +19,9 @@ public class BiConsumerWrapperExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TR
     }
 
     public <NEW_SRC_TYPE> BiTerminalCompatibleWrapperConsumerExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, NEW_SRC_TYPE> usingConverter(
-            Converter<SRC_TYPE, NEW_SRC_TYPE> initialExpressionConverter) {
+            Converter<NEW_SRC_TYPE, SRC_TYPE> converter) {
 
-        MappingRule<SRC_ROOT, TRG_ROOT> rule = this.mappingRule
-                .withInitialExpressionConverter(initialExpressionConverter);
-
+        MappingRule<SRC_ROOT, TRG_ROOT> rule = this.mappingRule.withTerminalExpressionConverter(converter);
         return new BiTerminalCompatibleWrapperConsumerExpressionBuilder<>(this.context, rule);
     }
 
@@ -38,7 +36,7 @@ public class BiConsumerWrapperExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TR
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
         public BiExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> from(
-                DslHost<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+                DslHost<TRG_ROOT, TRG_TYPE, ? extends ValueProducerFunction> targetExpression) {
 
             return new BiExpressionConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
@@ -53,7 +51,7 @@ public class BiConsumerWrapperExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TR
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
         public <TRG_TYPE> BiExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> from(
-                DslHost<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+                DslHost<TRG_ROOT, TRG_TYPE, ? extends ValueProducerFunction> targetExpression) {
 
             return new BiExpressionConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));

@@ -2,7 +2,7 @@ package io.mappingdsl.core.builder.bi.expression.terminator.value;
 
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
-import io.mappingdsl.core.builder.bi.expression.BiExpressionConditionBuilder;
+import io.mappingdsl.core.builder.bi.expression.condition.BiExpressionConditionBuilder;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
 import lombok.RequiredArgsConstructor;

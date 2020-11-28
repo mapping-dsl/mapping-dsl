@@ -2,7 +2,7 @@ package io.mappingdsl.core.builder.bi.expression.terminator.wrapper;
 
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
-import io.mappingdsl.core.builder.bi.expression.BiExpressionConditionBuilder;
+import io.mappingdsl.core.builder.bi.expression.condition.BiExpressionConditionBuilder;
 import io.mappingdsl.core.common.BiConverter;
 import io.mappingdsl.core.common.Converter;
 import io.mappingdsl.core.expression.DslHost;

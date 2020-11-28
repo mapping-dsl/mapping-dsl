@@ -2,7 +2,7 @@ package io.mappingdsl.core.builder.bi.expression.terminator.wrapper;
 
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
-import io.mappingdsl.core.builder.bi.expression.BiExpressionConditionBuilder;
+import io.mappingdsl.core.builder.bi.expression.condition.BiExpressionConditionBuilder;
 import io.mappingdsl.core.common.Converter;
 import io.mappingdsl.core.expression.DslHost;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
@@ -19,11 +19,9 @@ public class BiProducerWrapperExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TR
     }
 
     public <NEW_SRC_TYPE> BiTerminalCompatibleWrapperProducerExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, NEW_SRC_TYPE> usingConverter(
-            Converter<SRC_TYPE, NEW_SRC_TYPE> initialExpressionConverter) {
+            Converter<SRC_TYPE, NEW_SRC_TYPE> converter) {
 
-        MappingRule<SRC_ROOT, TRG_ROOT> rule = this.mappingRule
-                .withInitialExpressionConverter(initialExpressionConverter);
-
+        MappingRule<SRC_ROOT, TRG_ROOT> rule = this.mappingRule.withInitialExpressionConverter(converter);
         return new BiTerminalCompatibleWrapperProducerExpressionBuilder<>(this.context, rule);
     }
 

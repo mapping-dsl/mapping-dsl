@@ -50,7 +50,7 @@ public class BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     // delegate method
-    public <SRC_TYPE> BiConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
+    public <SRC_TYPE> BiProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         registerCurrentRule();
@@ -66,7 +66,7 @@ public class BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     // delegate method
-    public <SRC_TYPE> BiProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
+    public <SRC_TYPE> BiConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
         registerCurrentRule();

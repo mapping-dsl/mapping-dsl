@@ -43,7 +43,7 @@ public class BiExpressionInitiatorBuilder<SRC_ROOT, TRG_ROOT> {
         return new BiWrapperExpressionTerminatorBuilder<>(this.context, mappingRule);
     }
 
-    public <SRC_TYPE> BiConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
+    public <SRC_TYPE> BiProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
@@ -51,7 +51,7 @@ public class BiExpressionInitiatorBuilder<SRC_ROOT, TRG_ROOT> {
                 .initialExpression(initialExpression)
                 .build();
 
-        return new BiConsumerExpressionConverterBuilder<>(this.context, mappingRule);
+        return new BiProducerExpressionConverterBuilder<>(this.context, mappingRule);
     }
 
     public <SRC_TYPE> BiProducerWrapperExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
@@ -65,7 +65,7 @@ public class BiExpressionInitiatorBuilder<SRC_ROOT, TRG_ROOT> {
         return new BiProducerWrapperExpressionTerminatorBuilder<>(this.context, mappingRule);
     }
 
-    public <SRC_TYPE> BiProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
+    public <SRC_TYPE> BiConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
@@ -73,7 +73,7 @@ public class BiExpressionInitiatorBuilder<SRC_ROOT, TRG_ROOT> {
                 .initialExpression(initialExpression)
                 .build();
 
-        return new BiProducerExpressionConverterBuilder<>(this.context, mappingRule);
+        return new BiConsumerExpressionConverterBuilder<>(this.context, mappingRule);
     }
 
     public <SRC_TYPE> BiConsumerWrapperExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
