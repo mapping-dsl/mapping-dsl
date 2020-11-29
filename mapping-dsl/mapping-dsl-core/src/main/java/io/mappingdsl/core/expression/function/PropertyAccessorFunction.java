@@ -46,4 +46,10 @@ public class PropertyAccessorFunction implements PathProcessingFunction {
         return property;
     }
 
+    @Override
+    public String toString() {
+        return String.format("[%s / %s] (property access)",
+                this.getMethodAccessorFunction.toString(), this.setMethodAccessorFunction.toString());
+    }
+
 }

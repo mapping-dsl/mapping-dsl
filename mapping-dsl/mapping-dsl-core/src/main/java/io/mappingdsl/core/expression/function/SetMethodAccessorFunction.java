@@ -29,7 +29,7 @@ public class SetMethodAccessorFunction implements ValueConsumerFunction {
 
     @Override
     public String toString() {
-        return String.format("%s.%s (setter access)", this.type.getSimpleName(), this.name);
+        return String.format("%s (setter access)", this.name);
     }
 
 }

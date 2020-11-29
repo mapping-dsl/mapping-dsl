@@ -107,7 +107,7 @@ class NullHandlingTest {
 
         assertThatExceptionOfType(NullSourceValueException.class)
                 .isThrownBy(() -> mappingDsl.map(new StreetEntity(), StreetDto.class))
-                .withMessage("Intermediate expression 'StreetEntity -> HouseNumberEntity.houseNumber (field access)' " +
+                .withMessage("Intermediate expression 'StreetEntity -> houseNumber (field access)' " +
                         "is evaluated to null");
     }
 

@@ -36,7 +36,7 @@ class IllegalAssignmentTest {
 
         assertThatThrownBy(() -> mappingDsl.map(streetEntity, StreetDto.class))
                 .isInstanceOf(IllegalAssignmentException.class)
-                .hasMessage("HouseNumberDto.houseNumber (field access) cannot consume value of type " +
+                .hasMessage("houseNumber (field access) cannot consume value of type " +
                         "io.mappingdsl.core.tests.fixtures.HouseNumberEntity");
     }
 

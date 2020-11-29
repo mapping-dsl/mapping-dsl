@@ -19,7 +19,7 @@ public class GetMethodAccessorFunction implements ValueProducerFunction {
 
     @Override
     public String toString() {
-        return String.format("%s.%s (getter access)", this.type.getSimpleName(), this.name);
+        return String.format("%s (getter access)", this.name);
     }
 
 }

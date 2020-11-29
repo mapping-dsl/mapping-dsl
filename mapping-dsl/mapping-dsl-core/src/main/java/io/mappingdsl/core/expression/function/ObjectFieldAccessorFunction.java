@@ -46,7 +46,7 @@ public class ObjectFieldAccessorFunction implements PathProcessingFunction {
 
     @Override
     public String toString() {
-        return String.format("%s.%s (field access)", this.type.getSimpleName(), this.name);
+        return String.format("%s (field access)", this.name);
     }
 
 }
