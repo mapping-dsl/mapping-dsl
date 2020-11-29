@@ -469,8 +469,31 @@ class BiNestedMappingTest {
                         BiMappingTestFlow.builder()
                                 .forwardMapped(false)
                                 .backwardMapped(true)
+                                .build()),
+
+                Arguments.of(
+                        "[bi] flat mapping with intermediate properties",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(StreetEntity.class).and(StreetDto.class)
+                                .bind(StreetEntityMappingDsl.$this.name)
+                                .with(StreetDtoMappingDsl.$this.name)
+                                .bind(StreetEntityMappingDsl.$this.houseNumberProperty.number)
+                                .with(StreetDtoMappingDsl.$this.houseNumberProperty.number)
+                                .bind(StreetEntityMappingDsl.$this.houseNumberProperty.suffix)
+                                .with(StreetDtoMappingDsl.$this.houseNumberProperty.suffix)
+                                .bind(StreetEntityMappingDsl.$this.houseNumberProperty.geolocationProperty.longitude)
+                                .with(StreetDtoMappingDsl.$this.houseNumberProperty.geolocationProperty.longitude)
+                                .bind(StreetEntityMappingDsl.$this.houseNumberProperty.geolocationProperty.latitude)
+                                .with(StreetDtoMappingDsl.$this.houseNumberProperty.geolocationProperty.latitude)
+                                .build(),
+
+                        BiMappingTestFlow.builder()
+                                .forwardMapped(true)
+                                .backwardMapped(true)
                                 .build())
-        );
+                );
     }
 
 }

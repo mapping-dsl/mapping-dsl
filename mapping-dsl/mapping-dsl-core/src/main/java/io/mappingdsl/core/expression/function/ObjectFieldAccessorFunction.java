@@ -38,8 +38,9 @@ public class ObjectFieldAccessorFunction implements PathProcessingFunction {
 
         if (property == null) {
             property = ReflectionUtils.generateNewInstance(this.type);
-            ReflectionUtils.writeField(target, this.name, property);
+            consume(target, property);
         }
+
         return property;
     }
 
