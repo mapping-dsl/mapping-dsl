@@ -26,10 +26,10 @@ public final class ComplexFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
     public final SimpleFieldMappingDsl<ROOT, PathProcessingFunction> field =
             new SimpleFieldMappingDsl<>(this, new ObjectFieldAccessorFunction(pojo.SimpleField.class, "field"));
 
-    public final SimpleFieldMappingDsl<ROOT, GetMethodAccessorFunction> getField =
+    public final DslHost<ROOT, pojo.SimpleField, GetMethodAccessorFunction> getField =
             new SimpleFieldMappingDsl<>(this, new GetMethodAccessorFunction(pojo.SimpleField.class, "getField"));
 
-    public final SimpleFieldMappingDsl<ROOT, SetMethodAccessorFunction> setField =
+    public final DslHost<ROOT, pojo.SimpleField, SetMethodAccessorFunction> setField =
             new SimpleFieldMappingDsl<>(this, new SetMethodAccessorFunction(pojo.SimpleField.class, "setField"));
 
     public final SimpleFieldMappingDsl<ROOT, PropertyAccessorFunction> fieldProperty =
