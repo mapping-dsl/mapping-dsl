@@ -6,7 +6,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -18,6 +17,11 @@ jobs:
       with:
         java-version: 1.8
 
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: java
+
     - name: Cache Maven dependencies
       uses: actions/cache@v2
       with:
@@ -28,6 +32,9 @@ jobs:
 
     - name: Run Maven
       run: mvn -B clean test --file pom.xml
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
 
     - name: Upload coverage report to codecov
       uses: codecov/codecov-action@v1
