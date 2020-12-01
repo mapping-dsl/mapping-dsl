@@ -35,7 +35,6 @@ import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -135,127 +134,103 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
         Map<Element, List<Element>> groupedMethods = methods.stream()
                 .collect(Collectors.groupingBy(Element::getEnclosingElement));
 
-        Map<Element, List<Element>> groupedElements = new LinkedHashMap<>();
-
         groupedFields.forEach((type, typeFields) -> {
             List<Element> typeMethods = groupedMethods.getOrDefault(type, Collections.emptyList());
 
-            typeFields.forEach(typeField -> {
+            typeFields.forEach(field -> {
                 List<Element> relatedMethods = typeMethods.stream()
-                        .filter(typeMethod -> isFieldRelatedToMethod(typeField, typeMethod))
+                        .filter(typeMethod -> checkPropertyNamingConvention(field, typeMethod))
                         .collect(Collectors.toList());
 
-                groupedElements.put(typeField, relatedMethods);
+                // register field
+                FieldModel fieldModel = buildFieldModel(field);
+                model.registerFieldModel(fieldModel);
+
+                // register property
+                PropertyModel propertyModel = new PropertyModel(fieldModel);
+
+                // check existing methods first
+                relatedMethods.forEach(method -> {
+                    MethodModel methodModel = buildMethodModel(method, fieldModel);
+                    propertyModel.registerMethodModel(methodModel);
+                    model.registerMethodModel(methodModel);
+                });
+
+                Element hostClass = field.getEnclosingElement();
+                String methodReturnType = getBoxedTypeName(field.asType());
+
+                // check Lombok Data
+                if (hostClass.getAnnotation(Data.class) != null) {
+                    // getter
+                    MethodModel getter = buildMethodModel(buildFieldGetterName(field), methodReturnType, fieldModel);
+                    propertyModel.registerMethodModel(getter);
+                    model.registerMethodModel(getter);
+
+                    // setter
+                    MethodModel setter = buildMethodModel(buildFieldSetterName(field), methodReturnType, fieldModel);
+                    propertyModel.registerMethodModel(setter);
+                    model.registerMethodModel(setter);
+                }
+
+                // check Lombok Getter
+                if (hostClass.getAnnotation(Getter.class) != null || field.getAnnotation(Getter.class) != null) {
+                    MethodModel getter = buildMethodModel(buildFieldGetterName(field), methodReturnType, fieldModel);
+                    propertyModel.registerMethodModel(getter);
+                    model.registerMethodModel(getter);
+                }
+
+                // check Lombok Setter
+                if (hostClass.getAnnotation(Setter.class) != null || field.getAnnotation(Setter.class) != null) {
+                    MethodModel setter = buildMethodModel(buildFieldSetterName(field), methodReturnType, fieldModel);
+                    propertyModel.registerMethodModel(setter);
+                    model.registerMethodModel(setter);
+                }
+
+                if (propertyModel.isComplete()) {
+                    model.registerPropertyModel(propertyModel);
+                }
             });
-        });
-
-        groupedElements.forEach((field, relatedMethods) -> {
-            FieldModel fieldModel = buildFieldModel(field);
-            model.registerFieldModel(fieldModel);
-
-            PropertyModel propertyModel = new PropertyModel(fieldModel);
-
-            relatedMethods.forEach(method -> {
-                MethodModel methodModel = buildMethodModel(method, fieldModel);
-                propertyModel.registerMethodModel(methodModel);
-                model.registerMethodModel(methodModel);
-            });
-
-            Element hostClass = field.getEnclosingElement();
-
-            // Lombok Data
-            if (hostClass.getAnnotation(Data.class) != null) {
-                String methodType = field.asType().toString();
-
-                if (field.asType().getKind().isPrimitive()) {
-                    methodType = this.typeUtils.boxedClass((PrimitiveType) field.asType()).toString();
-                }
-
-                String fieldName = StringUtils.capitalize(field.getSimpleName().toString());
-                String methodName = "get" + fieldName;
-                if (field.asType().getKind().isPrimitive() && field.asType().getKind() == TypeKind.BOOLEAN) {
-                    methodName = "is" + fieldName;
-                }
-
-                // getter
-                MethodModel getMethodModel = MethodModel.builder()
-                        .fieldModel(fieldModel)
-                        .name(methodName)
-                        .type(methodType)
-                        .modelType(MethodModelType.GETTER)
-                        .build();
-
-                propertyModel.registerMethodModel(getMethodModel);
-                model.registerMethodModel(getMethodModel);
-
-                // setter
-                methodName = "set" + fieldName;
-
-                MethodModel setMethodModel = MethodModel.builder()
-                        .fieldModel(fieldModel)
-                        .name(methodName)
-                        .type(methodType)
-                        .modelType(MethodModelType.SETTER)
-                        .build();
-
-                propertyModel.registerMethodModel(setMethodModel);
-                model.registerMethodModel(setMethodModel);
-            }
-
-            // Lombok Getter
-            if (hostClass.getAnnotation(Getter.class) != null || field.getAnnotation(Getter.class) != null) {
-                String methodType = field.asType().toString();
-
-                if (field.asType().getKind().isPrimitive()) {
-                    methodType = this.typeUtils.boxedClass((PrimitiveType) field.asType()).toString();
-                }
-
-                String fieldName = StringUtils.capitalize(field.getSimpleName().toString());
-                String methodName = "get" + fieldName;
-                if (field.asType().getKind().isPrimitive() && field.asType().getKind() == TypeKind.BOOLEAN) {
-                    methodName = "is" + fieldName;
-                }
-
-                MethodModel methodModel = MethodModel.builder()
-                        .fieldModel(fieldModel)
-                        .name(methodName)
-                        .type(methodType)
-                        .modelType(MethodModelType.GETTER)
-                        .build();
-
-                propertyModel.registerMethodModel(methodModel);
-                model.registerMethodModel(methodModel);
-            }
-
-            // Lombok Setter
-            if (hostClass.getAnnotation(Setter.class) != null || field.getAnnotation(Setter.class) != null) {
-                String methodType = field.asType().toString();
-
-                if (field.asType().getKind().isPrimitive()) {
-                    methodType = this.typeUtils.boxedClass((PrimitiveType) field.asType()).toString();
-                }
-
-                String fieldName = StringUtils.capitalize(field.getSimpleName().toString());
-                String methodName = "set" + fieldName;
-
-                MethodModel methodModel = MethodModel.builder()
-                        .fieldModel(fieldModel)
-                        .name(methodName)
-                        .type(methodType)
-                        .modelType(MethodModelType.SETTER)
-                        .build();
-
-                propertyModel.registerMethodModel(methodModel);
-                model.registerMethodModel(methodModel);
-            }
-
-            if (propertyModel.isComplete()) {
-                model.registerPropertyModel(propertyModel);
-            }
         });
     }
 
-    private boolean isFieldRelatedToMethod(Element fieldElement, Element methodElement) {
+    private FieldModel buildFieldModel(Element fieldElement) {
+        String fieldType = getBoxedTypeName(fieldElement.asType());
+        String fieldName = fieldElement.getSimpleName().toString();
+
+        FieldModelType modelType = this.scope.contains(fieldType)
+                ? FieldModelType.DSL
+                : FieldModelType.VALUE;
+
+        return FieldModel.builder()
+                .name(fieldName)
+                .type(fieldType)
+                .modelType(modelType)
+                .build();
+    }
+
+    private MethodModel buildMethodModel(Element methodElement, FieldModel fieldModel) {
+        String methodName = methodElement.getSimpleName().toString();
+
+        Symbol.MethodSymbol method = (Symbol.MethodSymbol) methodElement;
+        String methodReturnType = getBoxedTypeName(method.getReturnType());
+
+        return buildMethodModel(methodName, methodReturnType, fieldModel);
+    }
+
+    private MethodModel buildMethodModel(String methodName, String methodReturnType, FieldModel fieldModel) {
+        MethodModelType modelType = methodName.startsWith("set")
+                ? MethodModelType.SETTER
+                : MethodModelType.GETTER;
+
+        return MethodModel.builder()
+                .fieldModel(fieldModel)
+                .name(methodName)
+                .type(methodReturnType)
+                .modelType(modelType)
+                .build();
+    }
+
+    private boolean checkPropertyNamingConvention(Element fieldElement, Element methodElement) {
         String fieldName = StringUtils.capitalize(fieldElement.getSimpleName().toString());
 
         Symbol.MethodSymbol method = (Symbol.MethodSymbol) methodElement;
@@ -275,57 +250,33 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
     }
 
     private boolean isBooleanType(Type type) {
-        String typeName = type.toString();
-        if (type.isPrimitive()) {
-            typeName = this.typeUtils.boxedClass((PrimitiveType) type).toString();
-        }
-
+        String typeName = getBoxedTypeName(type);
         return Boolean.class.getCanonicalName().equals(typeName);
     }
 
-    private FieldModel buildFieldModel(Element fieldElement) {
-        TypeMirror type = fieldElement.asType();
-        String fieldType = type.toString();
-
-        if (type.getKind().isPrimitive()) {
-            fieldType = this.typeUtils.boxedClass((PrimitiveType) type).toString();
+    private String buildFieldGetterName(Element field) {
+        String fieldName = StringUtils.capitalize(field.getSimpleName().toString());
+        String methodName = "get" + fieldName;
+        if (field.asType().getKind().isPrimitive() && field.asType().getKind() == TypeKind.BOOLEAN) {
+            methodName = "is" + fieldName;
         }
 
-        String fieldName = fieldElement.getSimpleName().toString();
-
-        FieldModelType modelType = this.scope.contains(fieldType)
-                ? FieldModelType.DSL
-                : FieldModelType.VALUE;
-
-        return FieldModel.builder()
-                .name(fieldName)
-                .type(fieldType)
-                .modelType(modelType)
-                .build();
+        return methodName;
     }
 
-    private MethodModel buildMethodModel(Element methodElement, FieldModel fieldModel) {
-        Symbol.MethodSymbol method = (Symbol.MethodSymbol) methodElement;
+    private String buildFieldSetterName(Element field) {
+        String fieldName = StringUtils.capitalize(field.getSimpleName().toString());
+        return "set" + fieldName;
+    }
 
-        TypeMirror returnType = method.getReturnType();
-        String methodReturenType = returnType.toString();
+    private String getBoxedTypeName(TypeMirror type) {
+        String typeName = type.toString();
 
-        if (returnType.getKind().isPrimitive()) {
-            methodReturenType = this.typeUtils.boxedClass((PrimitiveType) returnType).toString();
+        if (type.getKind().isPrimitive()) {
+            typeName = this.typeUtils.boxedClass((PrimitiveType) type).toString();
         }
 
-        String methodName = methodElement.getSimpleName().toString();
-
-        MethodModelType modelType = methodName.startsWith("set")
-                ? MethodModelType.SETTER
-                : MethodModelType.GETTER;
-
-        return MethodModel.builder()
-                .fieldModel(fieldModel)
-                .name(methodName)
-                .type(methodReturenType)
-                .modelType(modelType)
-                .build();
+        return typeName;
     }
 
 }
