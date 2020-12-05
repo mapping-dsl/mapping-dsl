@@ -1,8 +1,9 @@
 package io.mappingdsl.generator.core;
 
 import com.sun.tools.javac.code.Symbol;
-import com.sun.tools.javac.code.Type;
+import ice.bricks.beans.BeansUtils;
 import ice.bricks.io.IoUtils;
+import ice.bricks.lang.model.LanguageModelUtils;
 import ice.bricks.meta.ClassUtils;
 import io.mappingdsl.generator.core.model.FieldModel;
 import io.mappingdsl.generator.core.model.FieldModelType;
@@ -27,9 +28,6 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.PrimitiveType;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
@@ -139,7 +137,7 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
 
             typeFields.forEach(field -> {
                 List<Element> relatedMethods = typeMethods.stream()
-                        .filter(typeMethod -> checkPropertyNamingConvention(field, typeMethod))
+                        .filter(method -> BeansUtils.checkPropertyNamingConvention(this.typeUtils, field, method))
                         .collect(Collectors.toList());
 
                 // register field
@@ -157,31 +155,31 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
                 });
 
                 Element hostClass = field.getEnclosingElement();
-                String methodReturnType = getBoxedTypeName(field.asType());
+                String methodReturnType = LanguageModelUtils.getBoxedTypeName(this.typeUtils, field.asType());
 
                 // check Lombok Data
                 if (hostClass.getAnnotation(Data.class) != null) {
                     // getter
-                    MethodModel getter = buildMethodModel(buildFieldGetterName(field), methodReturnType, fieldModel);
+                    MethodModel getter = buildMethodModel(BeansUtils.getFieldGetterName(field), methodReturnType, fieldModel);
                     propertyModel.registerMethodModel(getter);
                     model.registerMethodModel(getter);
 
                     // setter
-                    MethodModel setter = buildMethodModel(buildFieldSetterName(field), methodReturnType, fieldModel);
+                    MethodModel setter = buildMethodModel(BeansUtils.getFieldSetterName(field), methodReturnType, fieldModel);
                     propertyModel.registerMethodModel(setter);
                     model.registerMethodModel(setter);
                 }
 
                 // check Lombok Getter
                 if (hostClass.getAnnotation(Getter.class) != null || field.getAnnotation(Getter.class) != null) {
-                    MethodModel getter = buildMethodModel(buildFieldGetterName(field), methodReturnType, fieldModel);
+                    MethodModel getter = buildMethodModel(BeansUtils.getFieldGetterName(field), methodReturnType, fieldModel);
                     propertyModel.registerMethodModel(getter);
                     model.registerMethodModel(getter);
                 }
 
                 // check Lombok Setter
                 if (hostClass.getAnnotation(Setter.class) != null || field.getAnnotation(Setter.class) != null) {
-                    MethodModel setter = buildMethodModel(buildFieldSetterName(field), methodReturnType, fieldModel);
+                    MethodModel setter = buildMethodModel(BeansUtils.getFieldSetterName(field), methodReturnType, fieldModel);
                     propertyModel.registerMethodModel(setter);
                     model.registerMethodModel(setter);
                 }
@@ -194,7 +192,7 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
     }
 
     private FieldModel buildFieldModel(Element fieldElement) {
-        String fieldType = getBoxedTypeName(fieldElement.asType());
+        String fieldType = LanguageModelUtils.getBoxedTypeName(this.typeUtils, fieldElement.asType());
         String fieldName = fieldElement.getSimpleName().toString();
 
         FieldModelType modelType = this.scope.contains(fieldType)
@@ -212,7 +210,7 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
         String methodName = methodElement.getSimpleName().toString();
 
         Symbol.MethodSymbol method = (Symbol.MethodSymbol) methodElement;
-        String methodReturnType = getBoxedTypeName(method.getReturnType());
+        String methodReturnType = LanguageModelUtils.getBoxedTypeName(this.typeUtils, method.getReturnType());
 
         return buildMethodModel(methodName, methodReturnType, fieldModel);
     }
@@ -228,55 +226,6 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
                 .type(methodReturnType)
                 .modelType(modelType)
                 .build();
-    }
-
-    private boolean checkPropertyNamingConvention(Element fieldElement, Element methodElement) {
-        String fieldName = StringUtils.capitalize(fieldElement.getSimpleName().toString());
-
-        Symbol.MethodSymbol method = (Symbol.MethodSymbol) methodElement;
-        String methodName = method.getSimpleName().toString();
-
-        if (((isBooleanType(method.getReturnType()) && methodName.equals("is" + fieldName))
-                || methodName.equals("get" + fieldName)) && method.getParameters().isEmpty()) {
-
-            return fieldElement.asType().equals(method.getReturnType());
-        }
-
-        if (methodName.equals("set" + fieldName) && method.getParameters().size() == 1) {
-            return fieldElement.asType().equals(method.getParameters().get(0).asType());
-        }
-
-        return false;
-    }
-
-    private boolean isBooleanType(Type type) {
-        String typeName = getBoxedTypeName(type);
-        return Boolean.class.getCanonicalName().equals(typeName);
-    }
-
-    private String buildFieldGetterName(Element field) {
-        String fieldName = StringUtils.capitalize(field.getSimpleName().toString());
-        String methodName = "get" + fieldName;
-        if (field.asType().getKind().isPrimitive() && field.asType().getKind() == TypeKind.BOOLEAN) {
-            methodName = "is" + fieldName;
-        }
-
-        return methodName;
-    }
-
-    private String buildFieldSetterName(Element field) {
-        String fieldName = StringUtils.capitalize(field.getSimpleName().toString());
-        return "set" + fieldName;
-    }
-
-    private String getBoxedTypeName(TypeMirror type) {
-        String typeName = type.toString();
-
-        if (type.getKind().isPrimitive()) {
-            typeName = this.typeUtils.boxedClass((PrimitiveType) type).toString();
-        }
-
-        return typeName;
     }
 
 }
