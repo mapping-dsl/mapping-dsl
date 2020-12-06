@@ -20,11 +20,6 @@ public class PropertyAccessorFunction implements PathProcessingFunction {
     }
 
     // delegate method
-    public Object getConsumer(Object target) {
-        return this.setMethodAccessorFunction.getConsumer(target);
-    }
-
-    // delegate method
     public void consume(Object target, Object value) {
         this.setMethodAccessorFunction.consume(target, value);
     }

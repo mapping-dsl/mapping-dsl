@@ -44,7 +44,7 @@ class UniConditionalMappingTest {
                                 .from(HouseNumberEntity.class).to(HouseNumberDto.class)
                                 .produce(HouseNumberEntityMappingDsl.$this.number)
                                 .to(HouseNumberDtoMappingDsl.$this.number)
-                                .when((source, target) -> source > 100)
+                                .when(source -> source > 100)
                                 .produce(HouseNumberEntityMappingDsl.$this.suffix)
                                 .to(HouseNumberDtoMappingDsl.$this.suffix)
                                 .build()),
@@ -57,7 +57,7 @@ class UniConditionalMappingTest {
                                 .from(HouseNumberEntity.class).to(HouseNumberDto.class)
                                 .produce(HouseNumberEntityMappingDsl.$this.numberProperty)
                                 .to(HouseNumberDtoMappingDsl.$this.numberProperty)
-                                .when((source, target) -> source > 100)
+                                .when(source -> source > 100)
                                 .produce(HouseNumberEntityMappingDsl.$this.suffix)
                                 .to(HouseNumberDtoMappingDsl.$this.suffix)
                                 .build()),
@@ -70,7 +70,7 @@ class UniConditionalMappingTest {
                                 .from(HouseNumberEntity.class).to(HouseNumberDto.class)
                                 .produce(HouseNumberEntityMappingDsl.$this.getNumber)
                                 .to(HouseNumberDtoMappingDsl.$this.setNumber)
-                                .when((source, target) -> source > 100)
+                                .when(source -> source > 100)
                                 .produce(HouseNumberEntityMappingDsl.$this.suffix)
                                 .to(HouseNumberDtoMappingDsl.$this.suffix)
                                 .build())

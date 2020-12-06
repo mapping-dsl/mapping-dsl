@@ -32,7 +32,7 @@ public class BiExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE
     }
 
     public BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> when(
-            Condition<SRC_TYPE, TRG_TYPE> forwardCondition, Condition<TRG_TYPE, SRC_TYPE> backwardCondition) {
+            Condition<SRC_TYPE> forwardCondition, Condition<TRG_TYPE> backwardCondition) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> rule = this.mappingRule
                 .withInitialCondition(forwardCondition).withTerminalCondition(backwardCondition);
@@ -41,8 +41,8 @@ public class BiExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE
     }
 
     public BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> when(BiCondition<SRC_TYPE, TRG_TYPE> condition) {
-        Condition<SRC_TYPE, TRG_TYPE> forwardCondition = condition::testForward;
-        Condition<TRG_TYPE, SRC_TYPE> backwardCondition = condition::testBackward;
+        Condition<SRC_TYPE> forwardCondition = condition::testForward;
+        Condition<TRG_TYPE> backwardCondition = condition::testBackward;
 
         MappingRule<SRC_ROOT, TRG_ROOT> rule = this.mappingRule
                 .withInitialCondition(forwardCondition).withTerminalCondition(backwardCondition);

@@ -107,8 +107,8 @@ public class MappingExecutor {
             if (path.isEmpty()) {
                 ValueConsumerFunction consumerFunction = (ValueConsumerFunction) expression.getExpressionFunction();
 
-                Condition<Object, Object> condition = (Condition<Object, Object>) rule.getInitialCondition();
-                if (condition == null || condition.test(source, consumerFunction.getConsumer(currentTarget))) {
+                Condition<Object> condition = (Condition<Object>) rule.getInitialCondition();
+                if (condition == null || condition.test(source)) {
                     Class<?> targetType = consumerFunction.getConsumerType();
 
                     // check if nested mapping is required

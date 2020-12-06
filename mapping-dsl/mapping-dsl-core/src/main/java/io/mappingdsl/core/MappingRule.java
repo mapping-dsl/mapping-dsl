@@ -16,8 +16,8 @@ public class MappingRule<SRC_ROOT, TRG_ROOT> {
     private final ExpressionBase<TRG_ROOT, ?, ? extends ExpressionFunction> terminalExpression;
     private final Converter<?, ?> initialExpressionConverter;
     private final Converter<?, ?> terminalExpressionConverter;
-    private final Condition<?, ?> initialCondition;
-    private final Condition<?, ?> terminalCondition;
+    private final Condition<?> initialCondition;
+    private final Condition<?> terminalCondition;
 
     public MappingRule<SRC_ROOT, TRG_ROOT> withInitialExpressionConverter(
             Converter<?, ?> initialExpressionConverter) {
@@ -61,8 +61,7 @@ public class MappingRule<SRC_ROOT, TRG_ROOT> {
                 .build();
     }
 
-    public MappingRule<SRC_ROOT, TRG_ROOT> withInitialCondition(
-            Condition<?, ?> initialCondition) {
+    public MappingRule<SRC_ROOT, TRG_ROOT> withInitialCondition(Condition<?> initialCondition) {
 
         return MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(this.mappingRuleDirection)
@@ -75,8 +74,7 @@ public class MappingRule<SRC_ROOT, TRG_ROOT> {
                 .build();
     }
 
-    public MappingRule<SRC_ROOT, TRG_ROOT> withTerminalCondition(
-            Condition<?, ?> terminalCondition) {
+    public MappingRule<SRC_ROOT, TRG_ROOT> withTerminalCondition(Condition<?> terminalCondition) {
 
         return MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(this.mappingRuleDirection)

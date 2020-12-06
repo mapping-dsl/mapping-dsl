@@ -23,11 +23,6 @@ public class ObjectFieldAccessorFunction implements PathProcessingFunction {
     }
 
     @Override
-    public Object getConsumer(Object target) {
-        return ReflectionUtils.readField(target, this.name);
-    }
-
-    @Override
     public void consume(Object target, Object value) {
         ReflectionUtils.writeField(target, this.name, value);
     }

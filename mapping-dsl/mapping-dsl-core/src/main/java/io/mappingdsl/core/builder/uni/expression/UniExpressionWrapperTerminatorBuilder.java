@@ -36,7 +36,7 @@ public class UniExpressionWrapperTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT>
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
-        public UniExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> to(
+        public UniExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
                 DslHost<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
             return new UniExpressionConditionBuilder<>(
@@ -51,7 +51,7 @@ public class UniExpressionWrapperTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT>
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
-        public <TRG_TYPE> UniExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> to(
+        public <TRG_TYPE> UniExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
                 DslHost<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
             return new UniExpressionConditionBuilder<>(

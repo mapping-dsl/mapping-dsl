@@ -59,7 +59,7 @@ class BiConditionalMappingTest {
                                 .between(HouseNumberEntity.class).and(HouseNumberDto.class)
                                 .bind(HouseNumberEntityMappingDsl.$this.number)
                                 .with(HouseNumberDtoMappingDsl.$this.number)
-                                .when((source, target) -> source > 100, (source, target) -> source < 100)
+                                .when(source -> source > 100, target -> target < 100)
                                 .bind(HouseNumberEntityMappingDsl.$this.suffix)
                                 .with(HouseNumberDtoMappingDsl.$this.suffix)
                                 .build(),
@@ -77,7 +77,7 @@ class BiConditionalMappingTest {
                                 .between(HouseNumberEntity.class).and(HouseNumberDto.class)
                                 .bind(HouseNumberEntityMappingDsl.$this.numberProperty)
                                 .with(HouseNumberDtoMappingDsl.$this.numberProperty)
-                                .when((source, target) -> source > 100, (source, target) -> source < 100)
+                                .when(source -> source > 100, target -> target < 100)
                                 .bind(HouseNumberEntityMappingDsl.$this.suffixProperty)
                                 .with(HouseNumberDtoMappingDsl.$this.suffixProperty)
                                 .build(),
@@ -95,7 +95,7 @@ class BiConditionalMappingTest {
                                 .between(HouseNumberEntity.class).and(HouseNumberDto.class)
                                 .produce(HouseNumberEntityMappingDsl.$this.number)
                                 .to(HouseNumberDtoMappingDsl.$this.number)
-                                .when((source, target) -> source > 100)
+                                .when(source -> source > 100)
                                 .produce(HouseNumberEntityMappingDsl.$this.suffix)
                                 .to(HouseNumberDtoMappingDsl.$this.suffix)
                                 .build(),
@@ -113,7 +113,7 @@ class BiConditionalMappingTest {
                                 .between(HouseNumberEntity.class).and(HouseNumberDto.class)
                                 .produce(HouseNumberEntityMappingDsl.$this.numberProperty)
                                 .to(HouseNumberDtoMappingDsl.$this.numberProperty)
-                                .when((source, target) -> source > 100)
+                                .when(source -> source > 100)
                                 .produce(HouseNumberEntityMappingDsl.$this.suffixProperty)
                                 .to(HouseNumberDtoMappingDsl.$this.suffixProperty)
                                 .build(),
@@ -131,7 +131,7 @@ class BiConditionalMappingTest {
                                 .between(HouseNumberEntity.class).and(HouseNumberDto.class)
                                 .produce(HouseNumberEntityMappingDsl.$this.getNumber)
                                 .to(HouseNumberDtoMappingDsl.$this.setNumber)
-                                .when((source, target) -> source > 100)
+                                .when(source -> source > 100)
                                 .produce(HouseNumberEntityMappingDsl.$this.getSuffix)
                                 .to(HouseNumberDtoMappingDsl.$this.setSuffix)
                                 .build(),
@@ -149,7 +149,7 @@ class BiConditionalMappingTest {
                                 .between(HouseNumberEntity.class).and(HouseNumberDto.class)
                                 .consume(HouseNumberEntityMappingDsl.$this.number)
                                 .from(HouseNumberDtoMappingDsl.$this.number)
-                                .when((source, target) -> source < 100)
+                                .when(target -> target < 100)
                                 .consume(HouseNumberEntityMappingDsl.$this.suffix)
                                 .from(HouseNumberDtoMappingDsl.$this.suffix)
                                 .build(),
@@ -167,7 +167,7 @@ class BiConditionalMappingTest {
                                 .between(HouseNumberEntity.class).and(HouseNumberDto.class)
                                 .consume(HouseNumberEntityMappingDsl.$this.numberProperty)
                                 .from(HouseNumberDtoMappingDsl.$this.numberProperty)
-                                .when((source, target) -> source < 100)
+                                .when(target -> target < 100)
                                 .consume(HouseNumberEntityMappingDsl.$this.suffixProperty)
                                 .from(HouseNumberDtoMappingDsl.$this.suffixProperty)
                                 .build(),
@@ -185,7 +185,7 @@ class BiConditionalMappingTest {
                                 .between(HouseNumberEntity.class).and(HouseNumberDto.class)
                                 .consume(HouseNumberEntityMappingDsl.$this.setNumber)
                                 .from(HouseNumberDtoMappingDsl.$this.getNumber)
-                                .when((source, target) -> source < 100)
+                                .when(target -> target < 100)
                                 .consume(HouseNumberEntityMappingDsl.$this.setSuffix)
                                 .from(HouseNumberDtoMappingDsl.$this.getSuffix)
                                 .build(),
@@ -236,14 +236,15 @@ class BiConditionalMappingTest {
     private static final BiCondition<Integer, Integer> condition = new BiCondition<Integer, Integer>() {
 
         @Override
-        public boolean testForward(Integer source, Integer target) {
+        public boolean testForward(Integer source) {
             return source > 100;
         }
 
         @Override
-        public boolean testBackward(Integer target, Integer source) {
+        public boolean testBackward(Integer target) {
             return target < 100;
         }
+
     };
 
 }

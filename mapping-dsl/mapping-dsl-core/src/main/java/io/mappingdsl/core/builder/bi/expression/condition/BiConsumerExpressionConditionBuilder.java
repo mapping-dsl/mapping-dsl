@@ -18,7 +18,7 @@ import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
 
-public class BiConsumerExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
+public class BiConsumerExpressionConditionBuilder<SRC_ROOT, TRG_ROOT, TRG_TYPE> {
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
@@ -32,7 +32,7 @@ public class BiConsumerExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, 
         this.chainBuilder = new BiExpressionChainBuilder<>(this.context, this.mappingRule);
     }
 
-    public BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> when(Condition<SRC_TYPE, TRG_TYPE> condition) {
+    public BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> when(Condition<TRG_TYPE> condition) {
         MappingRule<SRC_ROOT, TRG_ROOT> rule = this.mappingRule
                 .withInitialCondition(null).withTerminalCondition(condition);
 

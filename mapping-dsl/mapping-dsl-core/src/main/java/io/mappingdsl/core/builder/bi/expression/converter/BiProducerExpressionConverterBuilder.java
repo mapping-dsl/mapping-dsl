@@ -30,7 +30,7 @@ public class BiProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> 
     }
 
     // delegate method
-    public BiProducerExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> to(
+    public BiProducerExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
             ValueExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
         return this.terminalExpressionBuilder.to(targetExpression);

@@ -13,7 +13,7 @@ public class BiProducerExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT>
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
-    public BiProducerExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> to(
+    public BiProducerExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
             ValueExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
         return new BiProducerExpressionConditionBuilder<>(

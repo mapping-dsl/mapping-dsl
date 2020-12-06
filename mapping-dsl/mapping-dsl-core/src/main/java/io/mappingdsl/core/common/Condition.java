@@ -1,8 +1,8 @@
 package io.mappingdsl.core.common;
 
 @FunctionalInterface
-public interface Condition<SRC_TYPE, TRG_TYPE> {
+public interface Condition<SRC_TYPE> {
 
-    boolean test(SRC_TYPE source, TRG_TYPE target);
+    boolean test(SRC_TYPE source);
 
 }

@@ -9,7 +9,7 @@ import io.mappingdsl.core.expression.DslHost;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
 
-public class UniExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
+public class UniExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
@@ -23,7 +23,7 @@ public class UniExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYP
         this.chainBuilder = new UniExpressionChainBuilder<>(context, mappingRule);
     }
 
-    public UniExpressionChainBuilder<SRC_ROOT, TRG_ROOT> when(Condition<SRC_TYPE, TRG_TYPE> condition) {
+    public UniExpressionChainBuilder<SRC_ROOT, TRG_ROOT> when(Condition<SRC_TYPE> condition) {
         return new UniExpressionChainBuilder<>(this.context, this.mappingRule.withInitialCondition(condition));
     }
 
