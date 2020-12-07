@@ -1,14 +1,15 @@
 package io.mappingdsl.core.execution;
 
 import ice.bricks.reflection.ReflectionUtils;
-import io.mappingdsl.core.MappingConfiguration;
-import io.mappingdsl.core.MappingConfiguration.MissingMappingHandlingMode;
-import io.mappingdsl.core.MappingConfiguration.NullHandlingMode;
 import io.mappingdsl.core.MappingKey;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.MappingRules;
 import io.mappingdsl.core.common.Condition;
 import io.mappingdsl.core.common.Converter;
+import io.mappingdsl.core.config.BeanFactoryConfiguration;
+import io.mappingdsl.core.config.MappingConfiguration;
+import io.mappingdsl.core.config.MissingMappingHandlingMode;
+import io.mappingdsl.core.config.NullHandlingMode;
 import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.function.RootIdentityFunction;
 import io.mappingdsl.core.expression.function.TargetPathTraverserFunction;
@@ -46,7 +47,16 @@ public class MappingExecutor {
             }
         }
 
-        TRG target = ReflectionUtils.generateNewInstance(targetType);
+        TRG target;
+
+        BeanFactoryConfiguration beanFactoryConfiguration = this.mappingConfiguration.getBeanFactoryConfiguration();
+        if (beanFactoryConfiguration.hasFactory(targetType)) {
+            MappingBeanFactory<TRG> beanFactory = beanFactoryConfiguration.getFactory(targetType);
+            target = beanFactory.create(source, targetType);
+        }
+        else {
+            target = ReflectionUtils.generateNewInstance(targetType);
+        }
 
         for (MappingRule<?, ?> rule : rules) {
             Deque<ExpressionBase<?, ?, ?>> sourcePath = unwindPath(rule.getInitialExpression());

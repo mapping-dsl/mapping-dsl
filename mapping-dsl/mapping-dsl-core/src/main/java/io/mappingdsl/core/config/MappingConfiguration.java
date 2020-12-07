@@ -1,9 +1,12 @@
-package io.mappingdsl.core;
+package io.mappingdsl.core.config;
 
 import lombok.Getter;
 import lombok.Setter;
 
 public class MappingConfiguration {
+
+    @Getter
+    private final BeanFactoryConfiguration beanFactoryConfiguration = new BeanFactoryConfiguration();
 
     @Getter
     @Setter
@@ -12,13 +15,5 @@ public class MappingConfiguration {
     @Getter
     @Setter
     private MissingMappingHandlingMode missingMappingHandlingMode = MissingMappingHandlingMode.RETURN_NULL;
-
-    public enum NullHandlingMode {
-        PROCEED, TERMINATE
-    }
-
-    public enum MissingMappingHandlingMode {
-        RETURN_NULL, TERMINATE
-    }
 
 }

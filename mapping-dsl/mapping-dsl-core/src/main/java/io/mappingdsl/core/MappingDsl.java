@@ -1,5 +1,6 @@
 package io.mappingdsl.core;
 
+import io.mappingdsl.core.config.MappingConfiguration;
 import io.mappingdsl.core.execution.MappingExecutor;
 
 public class MappingDsl {

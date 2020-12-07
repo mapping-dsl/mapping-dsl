@@ -1,11 +1,11 @@
 package io.mappingdsl.core.builder;
 
-import io.mappingdsl.core.MappingConfiguration;
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRules;
 import io.mappingdsl.core.builder.bi.type.BiTypeInitiatorBuilder;
 import io.mappingdsl.core.builder.config.ConfigurationBuilder;
 import io.mappingdsl.core.builder.uni.type.UniTypeInitiatorBuilder;
+import io.mappingdsl.core.config.MappingConfiguration;
 
 public class MappingDslBuilder {
 
@@ -14,7 +14,7 @@ public class MappingDslBuilder {
             .withMappingRules(new MappingRules());
 
     public ConfigurationBuilder configuration() {
-        return new ConfigurationBuilder(this, this.context);
+        return new ConfigurationBuilder(this.context);
     }
 
     public UniTypeInitiatorBuilder uniMapping() {

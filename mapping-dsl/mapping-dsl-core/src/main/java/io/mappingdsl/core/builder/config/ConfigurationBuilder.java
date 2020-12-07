@@ -1,21 +1,35 @@
 package io.mappingdsl.core.builder.config;
 
 import io.mappingdsl.core.MappingContext;
-import io.mappingdsl.core.builder.MappingDslBuilder;
+import io.mappingdsl.core.builder.bi.type.BiTypeInitiatorBuilder;
+import io.mappingdsl.core.builder.uni.type.UniTypeInitiatorBuilder;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class ConfigurationBuilder {
 
-    private final MappingDslBuilder mappingDslBuilder;
     private final MappingContext<?, ?> context;
 
+    public <T> BeanFactoryConfigurationBuilder<T> onCreate(Class<T> type) {
+        return new BeanFactoryConfigurationBuilder<>(this, this.context, type);
+    }
+
     public NullHandlingConfigurationBuilder onNull() {
-        return new NullHandlingConfigurationBuilder(this.mappingDslBuilder, this.context);
+        return new NullHandlingConfigurationBuilder(this, this.context);
     }
 
     public MissingMappingHandlingConfigurationBuilder onMissingMapping() {
-        return new MissingMappingHandlingConfigurationBuilder(this.mappingDslBuilder, this.context);
+        return new MissingMappingHandlingConfigurationBuilder(this, this.context);
+    }
+
+    // duplicating MappingDslBuilder
+    public UniTypeInitiatorBuilder uniMapping() {
+        return new UniTypeInitiatorBuilder(this.context);
+    }
+
+    // duplicating MappingDslBuilder
+    public BiTypeInitiatorBuilder biMapping() {
+        return new BiTypeInitiatorBuilder(this.context);
     }
 
 }

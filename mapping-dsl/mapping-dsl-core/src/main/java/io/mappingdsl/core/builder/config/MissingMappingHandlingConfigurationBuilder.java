@@ -1,27 +1,24 @@
 package io.mappingdsl.core.builder.config;
 
 import io.mappingdsl.core.MappingContext;
-import io.mappingdsl.core.builder.MappingDslBuilder;
 
-import static io.mappingdsl.core.MappingConfiguration.MissingMappingHandlingMode.RETURN_NULL;
-import static io.mappingdsl.core.MappingConfiguration.MissingMappingHandlingMode.TERMINATE;
+import static io.mappingdsl.core.config.MissingMappingHandlingMode.RETURN_NULL;
+import static io.mappingdsl.core.config.MissingMappingHandlingMode.TERMINATE;
 
 public class MissingMappingHandlingConfigurationBuilder extends ConfigurationBuilderBase {
 
-    public MissingMappingHandlingConfigurationBuilder(
-            MappingDslBuilder mappingDslBuilder, MappingContext<?, ?> context) {
-
-        super(mappingDslBuilder, context);
+    public MissingMappingHandlingConfigurationBuilder(ConfigurationBuilder configBuilder, MappingContext<?, ?> context) {
+        super(configBuilder, context);
     }
 
-    public MappingDslBuilder returnNull() {
+    public ConfigurationBuilder returnNull() {
         this.context.getConfiguration().setMissingMappingHandlingMode(RETURN_NULL);
-        return this.mappingDslBuilder;
+        return this.configBuilder;
     }
 
-    public MappingDslBuilder terminate() {
+    public ConfigurationBuilder terminate() {
         this.context.getConfiguration().setMissingMappingHandlingMode(TERMINATE);
-        return this.mappingDslBuilder;
+        return this.configBuilder;
     }
 
 }

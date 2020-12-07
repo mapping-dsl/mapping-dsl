@@ -1,5 +1,6 @@
 package io.mappingdsl.core;
 
+import io.mappingdsl.core.config.MappingConfiguration;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
