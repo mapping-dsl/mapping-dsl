@@ -19,9 +19,9 @@ public class BiWrapperExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> 
         return new BiTerminalCompatibleWrapperExpressionBuilder<>(this.context, this.mappingRule);
     }
 
-    public <NEW_SRC_TYPE> BiTerminalCompatibleWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, NEW_SRC_TYPE> usingConverters(
-            Converter<SRC_TYPE, NEW_SRC_TYPE> initialExpressionConverter,
-            Converter<NEW_SRC_TYPE, SRC_TYPE> terminalExpressionConverter) {
+    public <TRG_TYPE> BiTerminalCompatibleWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> usingConverters(
+            Converter<SRC_TYPE, TRG_TYPE> initialExpressionConverter,
+            Converter<TRG_TYPE, SRC_TYPE> terminalExpressionConverter) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> rule = this.mappingRule
                 .withInitialExpressionConverter(initialExpressionConverter)
@@ -30,11 +30,11 @@ public class BiWrapperExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> 
         return new BiTerminalCompatibleWrapperExpressionBuilder<>(this.context, rule);
     }
 
-    public <NEW_SRC_TYPE> BiTerminalCompatibleWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, NEW_SRC_TYPE> usingConverter(
-            BiConverter<SRC_TYPE, NEW_SRC_TYPE> converters) {
+    public <TRG_TYPE> BiTerminalCompatibleWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> usingConverter(
+            BiConverter<SRC_TYPE, TRG_TYPE> converters) {
 
-        Converter<SRC_TYPE, NEW_SRC_TYPE> forwardConverter = converters::convertForward;
-        Converter<NEW_SRC_TYPE, SRC_TYPE> backwardConverter = converters::convertBackward;
+        Converter<SRC_TYPE, TRG_TYPE> forwardConverter = converters::convertForward;
+        Converter<TRG_TYPE, SRC_TYPE> backwardConverter = converters::convertBackward;
 
         return usingConverters(forwardConverter, backwardConverter);
     }

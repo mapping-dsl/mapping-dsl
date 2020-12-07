@@ -20,8 +20,8 @@ public class UniExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
         this.terminalExpressionBuilder = new UniExpressionTerminatorBuilder<>(this.context, this.mappingRule);
     }
 
-    public <NEW_SRC_TYPE> UniExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, NEW_SRC_TYPE> usingConverter(
-            Converter<SRC_TYPE, NEW_SRC_TYPE> converter) {
+    public <TRG_TYPE> UniExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> usingConverter(
+            Converter<SRC_TYPE, TRG_TYPE> converter) {
 
         return new UniExpressionTerminatorBuilder<>(
                 this.context, this.mappingRule.withInitialExpressionConverter(converter));

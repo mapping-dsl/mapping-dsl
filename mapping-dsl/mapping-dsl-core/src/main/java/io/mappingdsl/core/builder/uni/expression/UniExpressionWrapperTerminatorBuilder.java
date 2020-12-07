@@ -17,8 +17,8 @@ public class UniExpressionWrapperTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT>
         return new UniTerminalCompatibleWrapperExpressionBuilder<>(this.context, this.mappingRule);
     }
 
-    public <NEW_SRC_TYPE> UniTerminalCompatibleWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, NEW_SRC_TYPE> usingConverter(
-            Converter<SRC_TYPE, NEW_SRC_TYPE> initialExpressionConverter) {
+    public <TRG_TYPE> UniTerminalCompatibleWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> usingConverter(
+            Converter<SRC_TYPE, TRG_TYPE> initialExpressionConverter) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> rule = this.mappingRule.withInitialExpressionConverter(
                 initialExpressionConverter);

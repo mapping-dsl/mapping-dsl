@@ -18,8 +18,8 @@ public class BiConsumerWrapperExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TR
         return new BiTerminalCompatibleWrapperConsumerExpressionBuilder<>(this.context, this.mappingRule);
     }
 
-    public <NEW_SRC_TYPE> BiTerminalCompatibleWrapperConsumerExpressionBuilder<SRC_ROOT, TRG_ROOT, NEW_SRC_TYPE> usingConverter(
-            Converter<NEW_SRC_TYPE, SRC_TYPE> converter) {
+    public <TRG_TYPE> BiTerminalCompatibleWrapperConsumerExpressionBuilder<SRC_ROOT, TRG_ROOT, TRG_TYPE> usingConverter(
+            Converter<TRG_TYPE, SRC_TYPE> converter) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> rule = this.mappingRule.withTerminalExpressionConverter(converter);
         return new BiTerminalCompatibleWrapperConsumerExpressionBuilder<>(this.context, rule);
