@@ -55,6 +55,11 @@ public class MappingExecutor {
                 continue;
             }
 
+            Condition<Object> condition = (Condition<Object>) rule.getInitialCondition();
+            if (condition != null && !condition.test(sourceValue)) {
+                continue;
+            }
+
             Converter<Object, Object> expressionConverter =
                     (Converter<Object, Object>) rule.getInitialExpressionConverter();
 
@@ -106,24 +111,20 @@ public class MappingExecutor {
 
             if (path.isEmpty()) {
                 ValueConsumerFunction consumerFunction = (ValueConsumerFunction) expression.getExpressionFunction();
+                Class<?> targetType = consumerFunction.getConsumerType();
 
-                Condition<Object> condition = (Condition<Object>) rule.getInitialCondition();
-                if (condition == null || condition.test(source)) {
-                    Class<?> targetType = consumerFunction.getConsumerType();
-
-                    // check if nested mapping is required
-                    MappingKey<?, ?> nestedMappingKey = new MappingKey<>(source.getClass(), targetType);
-                    if (this.mappingRules.containsMappingRules(nestedMappingKey)) {
-                        source = executeMapping(source, targetType);
-                    }
-
-                    // fail if types are incompatible
-                    if (!targetType.isInstance(source)) {
-                        throw new IllegalAssignmentException(consumerFunction, source.getClass());
-                    }
-
-                    consumerFunction.consume(currentTarget, source);
+                // check if nested mapping is required
+                MappingKey<?, ?> nestedMappingKey = new MappingKey<>(source.getClass(), targetType);
+                if (this.mappingRules.containsMappingRules(nestedMappingKey)) {
+                    source = executeMapping(source, targetType);
                 }
+
+                // fail if types are incompatible
+                if (!targetType.isInstance(source)) {
+                    throw new IllegalAssignmentException(consumerFunction, source.getClass());
+                }
+
+                consumerFunction.consume(currentTarget, source);
             }
             else {
                 TargetPathTraverserFunction traverserFunction =

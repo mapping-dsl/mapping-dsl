@@ -15,4 +15,9 @@ public class StreetEntity extends NamedObject {
         super(name);
     }
 
+    public StreetEntity(String name, HouseNumberEntity houseNumber) {
+        super(name);
+        this.houseNumber = houseNumber;
+    }
+
 }

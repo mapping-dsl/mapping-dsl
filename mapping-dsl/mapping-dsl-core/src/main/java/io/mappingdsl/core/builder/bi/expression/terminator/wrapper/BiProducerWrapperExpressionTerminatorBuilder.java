@@ -2,7 +2,7 @@ package io.mappingdsl.core.builder.bi.expression.terminator.wrapper;
 
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
-import io.mappingdsl.core.builder.bi.expression.condition.BiExpressionConditionBuilder;
+import io.mappingdsl.core.builder.bi.expression.condition.BiProducerExpressionConditionBuilder;
 import io.mappingdsl.core.common.Converter;
 import io.mappingdsl.core.expression.DslHost;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
@@ -35,10 +35,10 @@ public class BiProducerWrapperExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TR
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
-        public BiExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> to(
+        public BiProducerExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
                 DslHost<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
-            return new BiExpressionConditionBuilder<>(
+            return new BiProducerExpressionConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
         }
 
@@ -50,10 +50,10 @@ public class BiProducerWrapperExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TR
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
-        public <TRG_TYPE> BiExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> to(
+        public <TRG_TYPE> BiProducerExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
                 DslHost<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
-            return new BiExpressionConditionBuilder<>(
+            return new BiProducerExpressionConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
         }
 

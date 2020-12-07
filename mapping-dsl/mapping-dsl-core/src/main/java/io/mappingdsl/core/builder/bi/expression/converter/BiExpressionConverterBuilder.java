@@ -13,7 +13,7 @@ public class BiExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
-    private final BiExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> terminalExpressionBuilder;
+    private final BiExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> terminalExpressionBuilder;
 
     public BiExpressionConverterBuilder(
             MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
@@ -23,7 +23,7 @@ public class BiExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
         this.terminalExpressionBuilder = new BiExpressionTerminatorBuilder<>(this.context, this.mappingRule);
     }
 
-    public <NEW_SRC_TYPE> BiExpressionTerminatorBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> usingConverters(
+    public <NEW_SRC_TYPE> BiExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, NEW_SRC_TYPE> usingConverters(
             Converter<SRC_TYPE, NEW_SRC_TYPE> initialExpressionConverter,
             Converter<NEW_SRC_TYPE, SRC_TYPE> terminalExpressionConverter) {
 
@@ -34,7 +34,7 @@ public class BiExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
         return new BiExpressionTerminatorBuilder<>(this.context, rule);
     }
 
-    public <NEW_SRC_TYPE> BiExpressionTerminatorBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> usingConverter(
+    public <NEW_SRC_TYPE> BiExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, NEW_SRC_TYPE> usingConverter(
             BiConverter<SRC_TYPE, NEW_SRC_TYPE> converters) {
 
         Converter<SRC_TYPE, NEW_SRC_TYPE> forwardConverter = converters::convertForward;

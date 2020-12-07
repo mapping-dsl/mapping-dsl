@@ -21,6 +21,10 @@ public class HouseNumberEntity {
     @Setter
     private Geolocation geolocation;
 
+    public HouseNumberEntity(Integer number) {
+        this.number = number;
+    }
+
     public HouseNumberEntity(Integer number, String suffix) {
         this.number = number;
         this.suffix = suffix;

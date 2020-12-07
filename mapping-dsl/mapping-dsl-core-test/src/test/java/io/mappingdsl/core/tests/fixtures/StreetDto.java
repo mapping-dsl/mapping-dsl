@@ -15,4 +15,9 @@ public class StreetDto extends NamedObject {
         super(name);
     }
 
+    public StreetDto(String name, HouseNumberDto houseNumber) {
+        super(name);
+        this.houseNumber = houseNumber;
+    }
+
 }

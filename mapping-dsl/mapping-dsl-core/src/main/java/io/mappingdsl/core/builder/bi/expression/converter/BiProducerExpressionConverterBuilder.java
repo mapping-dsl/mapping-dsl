@@ -12,7 +12,7 @@ public class BiProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> 
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
-    private final BiProducerExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> terminalExpressionBuilder;
+    private final BiProducerExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> terminalExpressionBuilder;
 
     public BiProducerExpressionConverterBuilder(
             MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
@@ -22,7 +22,7 @@ public class BiProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> 
         this.terminalExpressionBuilder = new BiProducerExpressionTerminatorBuilder<>(this.context, this.mappingRule);
     }
 
-    public <NEW_SRC_TYPE> BiProducerExpressionTerminatorBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> usingConverter(
+    public <NEW_SRC_TYPE> BiProducerExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, NEW_SRC_TYPE> usingConverter(
             Converter<SRC_TYPE, NEW_SRC_TYPE> converter) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> rule = this.mappingRule.withInitialExpressionConverter(converter);
