@@ -2,13 +2,14 @@ package io.mappingdsl.core.tests;
 
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.builder.MappingDslBuilder;
+import io.mappingdsl.core.tests.fixtures.AddressDto;
+import io.mappingdsl.core.tests.fixtures.AddressDtoMappingDsl;
+import io.mappingdsl.core.tests.fixtures.AddressEntity;
+import io.mappingdsl.core.tests.fixtures.AddressEntityMappingDsl;
 import io.mappingdsl.core.tests.fixtures.Geolocation;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDto;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntity;
-import io.mappingdsl.core.tests.fixtures.StreetDto;
-import io.mappingdsl.core.tests.fixtures.StreetDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.StreetEntity;
-import io.mappingdsl.core.tests.fixtures.StreetEntityMappingDsl;
 import io.mappingdsl.core.tests.fixtures.ZipDto;
 import io.mappingdsl.core.tests.fixtures.ZipDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.ZipEntity;
@@ -73,15 +74,16 @@ class UniConverterMappingTest {
     @MethodSource("complexFieldTestData")
     void shouldMapConvertedComplexField(String testName, MappingDsl mappingDsl) {
         StreetEntity streetEntity = new StreetEntity("Baker Street");
-        streetEntity.setHouseNumber(new HouseNumberEntity(221, "B", new Geolocation(51.523772, -0.158539)));
+        HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B", new Geolocation(51.523772, -0.158539));
+        AddressEntity addressEntity = new AddressEntity(streetEntity, houseNumberEntity);
 
-        StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
+        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
 
-        assertThat(streetDto.getName()).isEqualTo("Baker Street");
-        assertThat(streetDto.getHouseNumber().getNumber()).isEqualTo(221);
-        assertThat(streetDto.getHouseNumber().getSuffix()).isEqualTo("B");
-        assertThat(streetDto.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
-        assertThat(streetDto.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
+        assertThat(addressDto.getStreet().getName()).isEqualTo("Baker Street");
+        assertThat(addressDto.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(addressDto.getHouseNumber().getSuffix()).isEqualTo("B");
+        assertThat(addressDto.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
+        assertThat(addressDto.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
     }
 
     private static Stream<Arguments> complexFieldTestData() {
@@ -91,12 +93,12 @@ class UniConverterMappingTest {
 
                         new MappingDslBuilder()
                                 .uniMapping()
-                                .from(StreetEntity.class).to(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.name)
-                                .to(StreetDtoMappingDsl.$this.name)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber)
+                                .from(AddressEntity.class).to(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.street.name)
+                                .to(AddressDtoMappingDsl.$this.street.name)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber)
                                 .usingConverter(UniConverterMappingTest::convertHouseNumber)
-                                .to(StreetDtoMappingDsl.$this.houseNumber)
+                                .to(AddressDtoMappingDsl.$this.houseNumber)
                                 .build()),
 
                 Arguments.of(
@@ -104,12 +106,12 @@ class UniConverterMappingTest {
 
                         new MappingDslBuilder()
                                 .uniMapping()
-                                .from(StreetEntity.class).to(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.name)
-                                .to(StreetDtoMappingDsl.$this.name)
-                                .produce(StreetEntityMappingDsl.$this.houseNumberProperty)
+                                .from(AddressEntity.class).to(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.street.nameProperty)
+                                .to(AddressDtoMappingDsl.$this.street.nameProperty)
+                                .produce(AddressEntityMappingDsl.$this.houseNumberProperty)
                                 .usingConverter(UniConverterMappingTest::convertHouseNumber)
-                                .to(StreetDtoMappingDsl.$this.houseNumberProperty)
+                                .to(AddressDtoMappingDsl.$this.houseNumberProperty)
                                 .build()),
 
                 Arguments.of(
@@ -117,12 +119,12 @@ class UniConverterMappingTest {
 
                         new MappingDslBuilder()
                                 .uniMapping()
-                                .from(StreetEntity.class).to(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.name)
-                                .to(StreetDtoMappingDsl.$this.name)
-                                .produce(StreetEntityMappingDsl.$this.getHouseNumber)
+                                .from(AddressEntity.class).to(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.street.getName)
+                                .to(AddressDtoMappingDsl.$this.street.setName)
+                                .produce(AddressEntityMappingDsl.$this.getHouseNumber)
                                 .usingConverter(UniConverterMappingTest::convertHouseNumber)
-                                .to(StreetDtoMappingDsl.$this.setHouseNumber)
+                                .to(AddressDtoMappingDsl.$this.setHouseNumber)
                                 .build())
         );
     }

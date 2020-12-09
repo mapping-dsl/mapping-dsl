@@ -3,6 +3,10 @@ package io.mappingdsl.core.tests;
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.builder.MappingDslBuilder;
 import io.mappingdsl.core.execution.NullSourceValueException;
+import io.mappingdsl.core.tests.fixtures.AddressDto;
+import io.mappingdsl.core.tests.fixtures.AddressDtoMappingDsl;
+import io.mappingdsl.core.tests.fixtures.AddressEntity;
+import io.mappingdsl.core.tests.fixtures.AddressEntityMappingDsl;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntity;
 import io.mappingdsl.core.tests.fixtures.StreetDto;
 import io.mappingdsl.core.tests.fixtures.StreetDtoMappingDsl;
@@ -62,16 +66,16 @@ class NullHandlingTest {
     void shouldReturnNullByDefaultForNullNestedObject() {
         MappingDsl mappingDsl = new MappingDslBuilder()
                 .uniMapping()
-                .from(StreetEntity.class).to(StreetDto.class)
-                .produce(StreetEntityMappingDsl.$this.houseNumber.number)
-                .to(StreetDtoMappingDsl.$this.houseNumber.number)
-                .produce(StreetEntityMappingDsl.$this.houseNumber.suffix)
-                .to(StreetDtoMappingDsl.$this.houseNumber.suffix)
+                .from(AddressEntity.class).to(AddressDto.class)
+                .produce(AddressEntityMappingDsl.$this.houseNumber.number)
+                .to(AddressDtoMappingDsl.$this.houseNumber.number)
+                .produce(AddressEntityMappingDsl.$this.houseNumber.suffix)
+                .to(AddressDtoMappingDsl.$this.houseNumber.suffix)
                 .build();
 
-        StreetDto streetDto = mappingDsl.map(new StreetEntity(), StreetDto.class);
+        AddressDto addressDto = mappingDsl.map(new AddressEntity(), AddressDto.class);
 
-        assertThat(streetDto.getHouseNumber()).isNull();
+        assertThat(addressDto.getHouseNumber()).isNull();
     }
 
     @Test
@@ -80,16 +84,16 @@ class NullHandlingTest {
                 .configuration()
                 .onNull().proceed()
                 .uniMapping()
-                .from(StreetEntity.class).to(StreetDto.class)
-                .produce(StreetEntityMappingDsl.$this.houseNumber.number)
-                .to(StreetDtoMappingDsl.$this.houseNumber.number)
-                .produce(StreetEntityMappingDsl.$this.houseNumber.suffix)
-                .to(StreetDtoMappingDsl.$this.houseNumber.suffix)
+                .from(AddressEntity.class).to(AddressDto.class)
+                .produce(AddressEntityMappingDsl.$this.houseNumber.number)
+                .to(AddressDtoMappingDsl.$this.houseNumber.number)
+                .produce(AddressEntityMappingDsl.$this.houseNumber.suffix)
+                .to(AddressDtoMappingDsl.$this.houseNumber.suffix)
                 .build();
 
-        StreetDto streetDto = mappingDsl.map(new StreetEntity(), StreetDto.class);
+        AddressDto addressDto = mappingDsl.map(new AddressEntity(), AddressDto.class);
 
-        assertThat(streetDto.getHouseNumber()).isNull();
+        assertThat(addressDto.getHouseNumber()).isNull();
     }
 
     @Test
@@ -98,16 +102,16 @@ class NullHandlingTest {
                 .configuration()
                 .onNull().terminate()
                 .uniMapping()
-                .from(StreetEntity.class).to(StreetDto.class)
-                .produce(StreetEntityMappingDsl.$this.houseNumber.number)
-                .to(StreetDtoMappingDsl.$this.houseNumber.number)
-                .produce(StreetEntityMappingDsl.$this.houseNumber.suffix)
-                .to(StreetDtoMappingDsl.$this.houseNumber.suffix)
+                .from(AddressEntity.class).to(AddressDto.class)
+                .produce(AddressEntityMappingDsl.$this.houseNumber.number)
+                .to(AddressDtoMappingDsl.$this.houseNumber.number)
+                .produce(AddressEntityMappingDsl.$this.houseNumber.suffix)
+                .to(AddressDtoMappingDsl.$this.houseNumber.suffix)
                 .build();
 
         assertThatExceptionOfType(NullSourceValueException.class)
-                .isThrownBy(() -> mappingDsl.map(new StreetEntity(), StreetDto.class))
-                .withMessage("Intermediate expression 'StreetEntity -> houseNumber (field access)' " +
+                .isThrownBy(() -> mappingDsl.map(new AddressEntity(), AddressDto.class))
+                .withMessage("Intermediate expression 'AddressEntity -> houseNumber (field access)' " +
                         "is evaluated to null");
     }
 
@@ -117,19 +121,19 @@ class NullHandlingTest {
                 .configuration()
                 .onNull().terminate()
                 .uniMapping()
-                .from(StreetEntity.class).to(StreetDto.class)
-                .produce(StreetEntityMappingDsl.$this.houseNumber.number)
-                .to(StreetDtoMappingDsl.$this.houseNumber.number)
-                .produce(StreetEntityMappingDsl.$this.houseNumber.suffix)
-                .to(StreetDtoMappingDsl.$this.houseNumber.suffix)
+                .from(AddressEntity.class).to(AddressDto.class)
+                .produce(AddressEntityMappingDsl.$this.houseNumber.number)
+                .to(AddressDtoMappingDsl.$this.houseNumber.number)
+                .produce(AddressEntityMappingDsl.$this.houseNumber.suffix)
+                .to(AddressDtoMappingDsl.$this.houseNumber.suffix)
                 .build();
 
-        StreetEntity streetEntity = new StreetEntity();
-        streetEntity.setHouseNumber(new HouseNumberEntity(221, null));
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setHouseNumber(new HouseNumberEntity(221, null));
 
-        StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
+        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
 
-        assertThat(streetDto.getHouseNumber().getSuffix()).isNull();
+        assertThat(addressDto.getHouseNumber().getSuffix()).isNull();
     }
 
 }

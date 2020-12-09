@@ -4,13 +4,15 @@ import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.builder.MappingDslBuilder;
 import io.mappingdsl.core.common.BiConverter;
 import io.mappingdsl.core.common.Converter;
+import io.mappingdsl.core.tests.fixtures.AddressDto;
+import io.mappingdsl.core.tests.fixtures.AddressDtoMappingDsl;
+import io.mappingdsl.core.tests.fixtures.AddressEntity;
+import io.mappingdsl.core.tests.fixtures.AddressEntityMappingDsl;
 import io.mappingdsl.core.tests.fixtures.Geolocation;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDto;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntity;
 import io.mappingdsl.core.tests.fixtures.StreetDto;
-import io.mappingdsl.core.tests.fixtures.StreetDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.StreetEntity;
-import io.mappingdsl.core.tests.fixtures.StreetEntityMappingDsl;
 import io.mappingdsl.core.tests.fixtures.ZipDto;
 import io.mappingdsl.core.tests.fixtures.ZipDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.ZipEntity;
@@ -221,38 +223,40 @@ class BiConverterMappingTest {
     @MethodSource("complexConverterTestData")
     void shouldMapUsingComplexConverter(String testName, MappingDsl mappingDsl, BiMappingTestFlow testFlow) {
         StreetEntity streetEntity = new StreetEntity("Baker Street");
-        streetEntity.setHouseNumber(new HouseNumberEntity(221, "B", new Geolocation(51.523772, -0.158539)));
+        HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B", new Geolocation(51.523772, -0.158539));
+        AddressEntity addressEntity = new AddressEntity(streetEntity, houseNumberEntity);
 
         // forward mapping
-        StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
+        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
 
         if (testFlow.isForwardMapped()) {
-            assertThat(streetDto.getName()).isEqualTo("Baker Street");
-            assertThat(streetDto.getHouseNumber().getNumber()).isEqualTo(221);
-            assertThat(streetDto.getHouseNumber().getSuffix()).isEqualTo("B");
-            assertThat(streetDto.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
-            assertThat(streetDto.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
+            assertThat(addressDto.getStreet().getName()).isEqualTo("Baker Street");
+            assertThat(addressDto.getHouseNumber().getNumber()).isEqualTo(221);
+            assertThat(addressDto.getHouseNumber().getSuffix()).isEqualTo("B");
+            assertThat(addressDto.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
+            assertThat(addressDto.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
         }
         else {
-            assertThat(streetDto).isNull();
+            assertThat(addressDto).isNull();
         }
 
         // refresh test entity for backward mapping
-        streetDto = new StreetDto("Baker Street");
-        streetDto.setHouseNumber(new HouseNumberDto(221, "B", new Geolocation(51.523772, -0.158539)));
+        StreetDto streetDto = new StreetDto("Baker Street");
+        HouseNumberDto houseNumberDto = new HouseNumberDto(221, "B", new Geolocation(51.523772, -0.158539));
+        addressDto = new AddressDto(streetDto, houseNumberDto);
 
         // backward mapping
-        streetEntity = mappingDsl.map(streetDto, StreetEntity.class);
+        addressEntity = mappingDsl.map(addressDto, AddressEntity.class);
 
         if (testFlow.isBackwardMapped()) {
-            assertThat(streetEntity.getName()).isEqualTo("Baker Street");
-            assertThat(streetEntity.getHouseNumber().getNumber()).isEqualTo(221);
-            assertThat(streetEntity.getHouseNumber().getSuffix()).isEqualTo("B");
-            assertThat(streetEntity.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
-            assertThat(streetEntity.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
+            assertThat(addressEntity.getStreet().getName()).isEqualTo("Baker Street");
+            assertThat(addressEntity.getHouseNumber().getNumber()).isEqualTo(221);
+            assertThat(addressEntity.getHouseNumber().getSuffix()).isEqualTo("B");
+            assertThat(addressEntity.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
+            assertThat(addressEntity.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
         }
         else {
-            assertThat(streetEntity).isNull();
+            assertThat(addressEntity).isNull();
         }
     }
 
@@ -263,12 +267,12 @@ class BiConverterMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .bind(StreetEntityMappingDsl.$this.name)
-                                .with(StreetDtoMappingDsl.$this.name)
-                                .bind(StreetEntityMappingDsl.$this.houseNumber)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .bind(AddressEntityMappingDsl.$this.street.name)
+                                .with(AddressDtoMappingDsl.$this.street.name)
+                                .bind(AddressEntityMappingDsl.$this.houseNumber)
                                 .usingConverter(houseNumberConverter)
-                                .with(StreetDtoMappingDsl.$this.houseNumber)
+                                .with(AddressDtoMappingDsl.$this.houseNumber)
                                 .build(),
 
                         BiMappingTestFlow.builder()
@@ -281,12 +285,12 @@ class BiConverterMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .bind(StreetEntityMappingDsl.$this.nameProperty)
-                                .with(StreetDtoMappingDsl.$this.nameProperty)
-                                .bind(StreetEntityMappingDsl.$this.houseNumberProperty)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .bind(AddressEntityMappingDsl.$this.street.nameProperty)
+                                .with(AddressDtoMappingDsl.$this.street.nameProperty)
+                                .bind(AddressEntityMappingDsl.$this.houseNumberProperty)
                                 .usingConverter(houseNumberConverter)
-                                .with(StreetDtoMappingDsl.$this.houseNumberProperty)
+                                .with(AddressDtoMappingDsl.$this.houseNumberProperty)
                                 .build(),
 
                         BiMappingTestFlow.builder()
@@ -299,14 +303,14 @@ class BiConverterMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .bind(StreetEntityMappingDsl.$this.name)
-                                .with(StreetDtoMappingDsl.$this.name)
-                                .bind(StreetEntityMappingDsl.$this.houseNumber)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .bind(AddressEntityMappingDsl.$this.street.name)
+                                .with(AddressDtoMappingDsl.$this.street.name)
+                                .bind(AddressEntityMappingDsl.$this.houseNumber)
                                 .usingConverters(
                                         BiConverterMappingTest::convertHouseNumberEntity,
                                         BiConverterMappingTest::convertHouseNumberDto)
-                                .with(StreetDtoMappingDsl.$this.houseNumber)
+                                .with(AddressDtoMappingDsl.$this.houseNumber)
                                 .build(),
 
                         BiMappingTestFlow.builder()
@@ -319,14 +323,14 @@ class BiConverterMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .bind(StreetEntityMappingDsl.$this.nameProperty)
-                                .with(StreetDtoMappingDsl.$this.nameProperty)
-                                .bind(StreetEntityMappingDsl.$this.houseNumberProperty)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .bind(AddressEntityMappingDsl.$this.street.nameProperty)
+                                .with(AddressDtoMappingDsl.$this.street.nameProperty)
+                                .bind(AddressEntityMappingDsl.$this.houseNumberProperty)
                                 .usingConverters(
                                         BiConverterMappingTest::convertHouseNumberEntity,
                                         BiConverterMappingTest::convertHouseNumberDto)
-                                .with(StreetDtoMappingDsl.$this.houseNumberProperty)
+                                .with(AddressDtoMappingDsl.$this.houseNumberProperty)
                                 .build(),
 
                         BiMappingTestFlow.builder()
@@ -339,12 +343,12 @@ class BiConverterMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.name)
-                                .to(StreetDtoMappingDsl.$this.name)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.street.name)
+                                .to(AddressDtoMappingDsl.$this.street.name)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber)
                                 .usingConverter(BiConverterMappingTest::convertHouseNumberEntity)
-                                .to(StreetDtoMappingDsl.$this.houseNumber)
+                                .to(AddressDtoMappingDsl.$this.houseNumber)
                                 .build(),
 
                         BiMappingTestFlow.builder()
@@ -357,12 +361,12 @@ class BiConverterMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.nameProperty)
-                                .to(StreetDtoMappingDsl.$this.nameProperty)
-                                .produce(StreetEntityMappingDsl.$this.houseNumberProperty)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.street.nameProperty)
+                                .to(AddressDtoMappingDsl.$this.street.nameProperty)
+                                .produce(AddressEntityMappingDsl.$this.houseNumberProperty)
                                 .usingConverter(BiConverterMappingTest::convertHouseNumberEntity)
-                                .to(StreetDtoMappingDsl.$this.houseNumberProperty)
+                                .to(AddressDtoMappingDsl.$this.houseNumberProperty)
                                 .build(),
 
                         BiMappingTestFlow.builder()
@@ -375,12 +379,12 @@ class BiConverterMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.getName)
-                                .to(StreetDtoMappingDsl.$this.setName)
-                                .produce(StreetEntityMappingDsl.$this.getHouseNumber)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.street.getName)
+                                .to(AddressDtoMappingDsl.$this.street.setName)
+                                .produce(AddressEntityMappingDsl.$this.getHouseNumber)
                                 .usingConverter(BiConverterMappingTest::convertHouseNumberEntity)
-                                .to(StreetDtoMappingDsl.$this.setHouseNumber)
+                                .to(AddressDtoMappingDsl.$this.setHouseNumber)
                                 .build(),
 
                         BiMappingTestFlow.builder()
@@ -393,12 +397,12 @@ class BiConverterMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .consume(StreetEntityMappingDsl.$this.name)
-                                .from(StreetDtoMappingDsl.$this.name)
-                                .consume(StreetEntityMappingDsl.$this.houseNumber)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .consume(AddressEntityMappingDsl.$this.street.name)
+                                .from(AddressDtoMappingDsl.$this.street.name)
+                                .consume(AddressEntityMappingDsl.$this.houseNumber)
                                 .usingConverter(BiConverterMappingTest::convertHouseNumberDto)
-                                .from(StreetDtoMappingDsl.$this.houseNumber)
+                                .from(AddressDtoMappingDsl.$this.houseNumber)
                                 .build(),
 
                         BiMappingTestFlow.builder()
@@ -411,12 +415,12 @@ class BiConverterMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .consume(StreetEntityMappingDsl.$this.nameProperty)
-                                .from(StreetDtoMappingDsl.$this.nameProperty)
-                                .consume(StreetEntityMappingDsl.$this.houseNumberProperty)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .consume(AddressEntityMappingDsl.$this.street.nameProperty)
+                                .from(AddressDtoMappingDsl.$this.street.nameProperty)
+                                .consume(AddressEntityMappingDsl.$this.houseNumberProperty)
                                 .usingConverter(BiConverterMappingTest::convertHouseNumberDto)
-                                .from(StreetDtoMappingDsl.$this.houseNumberProperty)
+                                .from(AddressDtoMappingDsl.$this.houseNumberProperty)
                                 .build(),
 
                         BiMappingTestFlow.builder()
@@ -429,12 +433,12 @@ class BiConverterMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .consume(StreetEntityMappingDsl.$this.setName)
-                                .from(StreetDtoMappingDsl.$this.getName)
-                                .consume(StreetEntityMappingDsl.$this.setHouseNumber)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .consume(AddressEntityMappingDsl.$this.street.setName)
+                                .from(AddressDtoMappingDsl.$this.street.getName)
+                                .consume(AddressEntityMappingDsl.$this.setHouseNumber)
                                 .usingConverter(BiConverterMappingTest::convertHouseNumberDto)
-                                .from(StreetDtoMappingDsl.$this.getHouseNumber)
+                                .from(AddressDtoMappingDsl.$this.getHouseNumber)
                                 .build(),
 
                         BiMappingTestFlow.builder()

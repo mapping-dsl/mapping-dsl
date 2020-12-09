@@ -2,15 +2,17 @@ package io.mappingdsl.core.tests;
 
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.builder.MappingDslBuilder;
+import io.mappingdsl.core.tests.fixtures.AddressDto;
+import io.mappingdsl.core.tests.fixtures.AddressDtoMappingDsl;
+import io.mappingdsl.core.tests.fixtures.AddressEntity;
+import io.mappingdsl.core.tests.fixtures.AddressEntityMappingDsl;
 import io.mappingdsl.core.tests.fixtures.Geolocation;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDto;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntity;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntityMappingDsl;
 import io.mappingdsl.core.tests.fixtures.StreetDto;
-import io.mappingdsl.core.tests.fixtures.StreetDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.StreetEntity;
-import io.mappingdsl.core.tests.fixtures.StreetEntityMappingDsl;
 import io.mappingdsl.core.tests.utils.BiMappingTestFlow;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -26,38 +28,40 @@ class BiNestedMappingTest {
     @MethodSource("testData")
     void shouldMapNestedFields(String testName, MappingDsl mappingDsl, BiMappingTestFlow testFlow) {
         StreetEntity streetEntity = new StreetEntity("Baker Street");
-        streetEntity.setHouseNumber(new HouseNumberEntity(221, "B", new Geolocation(51.523772, -0.158539)));
+        HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B", new Geolocation(51.523772, -0.158539));
+        AddressEntity addressEntity = new AddressEntity(streetEntity, houseNumberEntity);
 
         // forward mapping
-        StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
+        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
 
         if (testFlow.isForwardMapped()) {
-            assertThat(streetDto.getName()).isEqualTo("Baker Street");
-            assertThat(streetDto.getHouseNumber().getNumber()).isEqualTo(221);
-            assertThat(streetDto.getHouseNumber().getSuffix()).isEqualTo("B");
-            assertThat(streetDto.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
-            assertThat(streetDto.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
+            assertThat(addressDto.getStreet().getName()).isEqualTo("Baker Street");
+            assertThat(addressDto.getHouseNumber().getNumber()).isEqualTo(221);
+            assertThat(addressDto.getHouseNumber().getSuffix()).isEqualTo("B");
+            assertThat(addressDto.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
+            assertThat(addressDto.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
         }
         else {
-            assertThat(streetDto).isNull();
+            assertThat(addressDto).isNull();
         }
 
         // refresh test entity for backward mapping
-        streetDto = new StreetDto("Baker Street");
-        streetDto.setHouseNumber(new HouseNumberDto(221, "B", new Geolocation(51.523772, -0.158539)));
+        StreetDto streetDto = new StreetDto("Baker Street");
+        HouseNumberDto houseNumberDto = new HouseNumberDto(221, "B", new Geolocation(51.523772, -0.158539));
+        addressDto = new AddressDto(streetDto, houseNumberDto);
 
         // backward mapping
-        streetEntity = mappingDsl.map(streetDto, StreetEntity.class);
+        addressEntity = mappingDsl.map(addressDto, AddressEntity.class);
 
         if (testFlow.isBackwardMapped()) {
-            assertThat(streetEntity.getName()).isEqualTo("Baker Street");
-            assertThat(streetEntity.getHouseNumber().getNumber()).isEqualTo(221);
-            assertThat(streetEntity.getHouseNumber().getSuffix()).isEqualTo("B");
-            assertThat(streetEntity.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
-            assertThat(streetEntity.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
+            assertThat(addressEntity.getStreet().getName()).isEqualTo("Baker Street");
+            assertThat(addressEntity.getHouseNumber().getNumber()).isEqualTo(221);
+            assertThat(addressEntity.getHouseNumber().getSuffix()).isEqualTo("B");
+            assertThat(addressEntity.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
+            assertThat(addressEntity.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
         }
         else {
-            assertThat(streetEntity).isNull();
+            assertThat(addressEntity).isNull();
         }
     }
 
@@ -68,17 +72,17 @@ class BiNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .bind(StreetEntityMappingDsl.$this.name)
-                                .with(StreetDtoMappingDsl.$this.name)
-                                .bind(StreetEntityMappingDsl.$this.houseNumber.number)
-                                .with(StreetDtoMappingDsl.$this.houseNumber.number)
-                                .bind(StreetEntityMappingDsl.$this.houseNumber.suffix)
-                                .with(StreetDtoMappingDsl.$this.houseNumber.suffix)
-                                .bind(StreetEntityMappingDsl.$this.houseNumber.geolocation.longitude)
-                                .with(StreetDtoMappingDsl.$this.houseNumber.geolocation.longitude)
-                                .bind(StreetEntityMappingDsl.$this.houseNumber.geolocation.latitude)
-                                .with(StreetDtoMappingDsl.$this.houseNumber.geolocation.latitude)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .bind(AddressEntityMappingDsl.$this.street.name)
+                                .with(AddressDtoMappingDsl.$this.street.name)
+                                .bind(AddressEntityMappingDsl.$this.houseNumber.number)
+                                .with(AddressDtoMappingDsl.$this.houseNumber.number)
+                                .bind(AddressEntityMappingDsl.$this.houseNumber.suffix)
+                                .with(AddressDtoMappingDsl.$this.houseNumber.suffix)
+                                .bind(AddressEntityMappingDsl.$this.houseNumber.geolocation.longitude)
+                                .with(AddressDtoMappingDsl.$this.houseNumber.geolocation.longitude)
+                                .bind(AddressEntityMappingDsl.$this.houseNumber.geolocation.latitude)
+                                .with(AddressDtoMappingDsl.$this.houseNumber.geolocation.latitude)
                                 .build(),
 
                         BiMappingTestFlow.builder()
@@ -91,17 +95,17 @@ class BiNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .bind(StreetEntityMappingDsl.$this.nameProperty)
-                                .with(StreetDtoMappingDsl.$this.nameProperty)
-                                .bind(StreetEntityMappingDsl.$this.houseNumber.numberProperty)
-                                .with(StreetDtoMappingDsl.$this.houseNumber.numberProperty)
-                                .bind(StreetEntityMappingDsl.$this.houseNumber.suffixProperty)
-                                .with(StreetDtoMappingDsl.$this.houseNumber.suffixProperty)
-                                .bind(StreetEntityMappingDsl.$this.houseNumber.geolocation.longitudeProperty)
-                                .with(StreetDtoMappingDsl.$this.houseNumber.geolocation.longitudeProperty)
-                                .bind(StreetEntityMappingDsl.$this.houseNumber.geolocation.latitudeProperty)
-                                .with(StreetDtoMappingDsl.$this.houseNumber.geolocation.latitudeProperty)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .bind(AddressEntityMappingDsl.$this.street.nameProperty)
+                                .with(AddressDtoMappingDsl.$this.street.nameProperty)
+                                .bind(AddressEntityMappingDsl.$this.houseNumber.numberProperty)
+                                .with(AddressDtoMappingDsl.$this.houseNumber.numberProperty)
+                                .bind(AddressEntityMappingDsl.$this.houseNumber.suffixProperty)
+                                .with(AddressDtoMappingDsl.$this.houseNumber.suffixProperty)
+                                .bind(AddressEntityMappingDsl.$this.houseNumber.geolocation.longitudeProperty)
+                                .with(AddressDtoMappingDsl.$this.houseNumber.geolocation.longitudeProperty)
+                                .bind(AddressEntityMappingDsl.$this.houseNumber.geolocation.latitudeProperty)
+                                .with(AddressDtoMappingDsl.$this.houseNumber.geolocation.latitudeProperty)
                                 .build(),
 
                         BiMappingTestFlow.builder()
@@ -114,17 +118,17 @@ class BiNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.name)
-                                .to(StreetDtoMappingDsl.$this.name)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.number)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.number)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.suffix)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.suffix)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.geolocation.longitude)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.geolocation.longitude)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.geolocation.latitude)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.geolocation.latitude)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.street.name)
+                                .to(AddressDtoMappingDsl.$this.street.name)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.number)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.number)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.suffix)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.suffix)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.geolocation.longitude)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.geolocation.longitude)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.geolocation.latitude)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.geolocation.latitude)
                                 .build(),
 
                         BiMappingTestFlow.builder()
@@ -137,17 +141,17 @@ class BiNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.nameProperty)
-                                .to(StreetDtoMappingDsl.$this.nameProperty)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.numberProperty)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.numberProperty)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.suffixProperty)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.suffixProperty)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.geolocation.longitudeProperty)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.geolocation.longitudeProperty)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.geolocation.latitudeProperty)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.geolocation.latitudeProperty)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.street.nameProperty)
+                                .to(AddressDtoMappingDsl.$this.street.nameProperty)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.numberProperty)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.numberProperty)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.suffixProperty)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.suffixProperty)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.geolocation.longitudeProperty)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.geolocation.longitudeProperty)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.geolocation.latitudeProperty)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.geolocation.latitudeProperty)
                                 .build(),
 
                         BiMappingTestFlow.builder()
@@ -160,17 +164,17 @@ class BiNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.getName)
-                                .to(StreetDtoMappingDsl.$this.setName)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.getNumber)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.setNumber)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.getSuffix)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.setSuffix)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.geolocation.getLongitude)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.geolocation.setLongitude)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.geolocation.getLatitude)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.geolocation.setLatitude)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.street.getName)
+                                .to(AddressDtoMappingDsl.$this.street.setName)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.getNumber)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.setNumber)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.getSuffix)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.setSuffix)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.geolocation.getLongitude)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.geolocation.setLongitude)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.geolocation.getLatitude)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.geolocation.setLatitude)
                                 .build(),
 
                         BiMappingTestFlow.builder()
@@ -183,17 +187,17 @@ class BiNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .consume(StreetEntityMappingDsl.$this.name)
-                                .from(StreetDtoMappingDsl.$this.name)
-                                .consume(StreetEntityMappingDsl.$this.houseNumber.number)
-                                .from(StreetDtoMappingDsl.$this.houseNumber.number)
-                                .consume(StreetEntityMappingDsl.$this.houseNumber.suffix)
-                                .from(StreetDtoMappingDsl.$this.houseNumber.suffix)
-                                .consume(StreetEntityMappingDsl.$this.houseNumber.geolocation.longitude)
-                                .from(StreetDtoMappingDsl.$this.houseNumber.geolocation.longitude)
-                                .consume(StreetEntityMappingDsl.$this.houseNumber.geolocation.latitude)
-                                .from(StreetDtoMappingDsl.$this.houseNumber.geolocation.latitude)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .consume(AddressEntityMappingDsl.$this.street.name)
+                                .from(AddressDtoMappingDsl.$this.street.name)
+                                .consume(AddressEntityMappingDsl.$this.houseNumber.number)
+                                .from(AddressDtoMappingDsl.$this.houseNumber.number)
+                                .consume(AddressEntityMappingDsl.$this.houseNumber.suffix)
+                                .from(AddressDtoMappingDsl.$this.houseNumber.suffix)
+                                .consume(AddressEntityMappingDsl.$this.houseNumber.geolocation.longitude)
+                                .from(AddressDtoMappingDsl.$this.houseNumber.geolocation.longitude)
+                                .consume(AddressEntityMappingDsl.$this.houseNumber.geolocation.latitude)
+                                .from(AddressDtoMappingDsl.$this.houseNumber.geolocation.latitude)
                                 .build(),
 
                         BiMappingTestFlow.builder()
@@ -206,17 +210,17 @@ class BiNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .consume(StreetEntityMappingDsl.$this.nameProperty)
-                                .from(StreetDtoMappingDsl.$this.nameProperty)
-                                .consume(StreetEntityMappingDsl.$this.houseNumber.numberProperty)
-                                .from(StreetDtoMappingDsl.$this.houseNumber.numberProperty)
-                                .consume(StreetEntityMappingDsl.$this.houseNumber.suffixProperty)
-                                .from(StreetDtoMappingDsl.$this.houseNumber.suffixProperty)
-                                .consume(StreetEntityMappingDsl.$this.houseNumber.geolocation.longitudeProperty)
-                                .from(StreetDtoMappingDsl.$this.houseNumber.geolocation.longitudeProperty)
-                                .consume(StreetEntityMappingDsl.$this.houseNumber.geolocation.latitudeProperty)
-                                .from(StreetDtoMappingDsl.$this.houseNumber.geolocation.latitudeProperty)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .consume(AddressEntityMappingDsl.$this.street.nameProperty)
+                                .from(AddressDtoMappingDsl.$this.street.nameProperty)
+                                .consume(AddressEntityMappingDsl.$this.houseNumber.numberProperty)
+                                .from(AddressDtoMappingDsl.$this.houseNumber.numberProperty)
+                                .consume(AddressEntityMappingDsl.$this.houseNumber.suffixProperty)
+                                .from(AddressDtoMappingDsl.$this.houseNumber.suffixProperty)
+                                .consume(AddressEntityMappingDsl.$this.houseNumber.geolocation.longitudeProperty)
+                                .from(AddressDtoMappingDsl.$this.houseNumber.geolocation.longitudeProperty)
+                                .consume(AddressEntityMappingDsl.$this.houseNumber.geolocation.latitudeProperty)
+                                .from(AddressDtoMappingDsl.$this.houseNumber.geolocation.latitudeProperty)
                                 .build(),
 
                         BiMappingTestFlow.builder()
@@ -229,17 +233,17 @@ class BiNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .consume(StreetEntityMappingDsl.$this.setName)
-                                .from(StreetDtoMappingDsl.$this.getName)
-                                .consume(StreetEntityMappingDsl.$this.houseNumber.setNumber)
-                                .from(StreetDtoMappingDsl.$this.houseNumber.getNumber)
-                                .consume(StreetEntityMappingDsl.$this.houseNumber.setSuffix)
-                                .from(StreetDtoMappingDsl.$this.houseNumber.getSuffix)
-                                .consume(StreetEntityMappingDsl.$this.houseNumber.geolocation.setLongitude)
-                                .from(StreetDtoMappingDsl.$this.houseNumber.geolocation.getLongitude)
-                                .consume(StreetEntityMappingDsl.$this.houseNumber.geolocation.setLatitude)
-                                .from(StreetDtoMappingDsl.$this.houseNumber.geolocation.getLatitude)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .consume(AddressEntityMappingDsl.$this.street.setName)
+                                .from(AddressDtoMappingDsl.$this.street.getName)
+                                .consume(AddressEntityMappingDsl.$this.houseNumber.setNumber)
+                                .from(AddressDtoMappingDsl.$this.houseNumber.getNumber)
+                                .consume(AddressEntityMappingDsl.$this.houseNumber.setSuffix)
+                                .from(AddressDtoMappingDsl.$this.houseNumber.getSuffix)
+                                .consume(AddressEntityMappingDsl.$this.houseNumber.geolocation.setLongitude)
+                                .from(AddressDtoMappingDsl.$this.houseNumber.geolocation.getLongitude)
+                                .consume(AddressEntityMappingDsl.$this.houseNumber.geolocation.setLatitude)
+                                .from(AddressDtoMappingDsl.$this.houseNumber.geolocation.getLatitude)
                                 .build(),
 
                         BiMappingTestFlow.builder()
@@ -252,12 +256,12 @@ class BiNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .bind(StreetEntityMappingDsl.$this.name)
-                                .with(StreetDtoMappingDsl.$this.name)
-                                .bind(StreetEntityMappingDsl.$this.houseNumber)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .bind(AddressEntityMappingDsl.$this.street.name)
+                                .with(AddressDtoMappingDsl.$this.street.name)
+                                .bind(AddressEntityMappingDsl.$this.houseNumber)
                                 .usingMapping()
-                                .with(StreetDtoMappingDsl.$this.houseNumber)
+                                .with(AddressDtoMappingDsl.$this.houseNumber)
 
                                 .biMapping()
                                 .between(HouseNumberEntity.class).and(HouseNumberDto.class)
@@ -280,12 +284,12 @@ class BiNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .bind(StreetEntityMappingDsl.$this.nameProperty)
-                                .with(StreetDtoMappingDsl.$this.nameProperty)
-                                .bind(StreetEntityMappingDsl.$this.houseNumberProperty)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .bind(AddressEntityMappingDsl.$this.street.nameProperty)
+                                .with(AddressDtoMappingDsl.$this.street.nameProperty)
+                                .bind(AddressEntityMappingDsl.$this.houseNumberProperty)
                                 .usingMapping()
-                                .with(StreetDtoMappingDsl.$this.houseNumberProperty)
+                                .with(AddressDtoMappingDsl.$this.houseNumberProperty)
 
                                 .biMapping()
                                 .between(HouseNumberEntity.class).and(HouseNumberDto.class)
@@ -308,12 +312,12 @@ class BiNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.name)
-                                .to(StreetDtoMappingDsl.$this.name)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.street.name)
+                                .to(AddressDtoMappingDsl.$this.street.name)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber)
                                 .usingMapping()
-                                .to(StreetDtoMappingDsl.$this.houseNumber)
+                                .to(AddressDtoMappingDsl.$this.houseNumber)
 
                                 .biMapping()
                                 .between(HouseNumberEntity.class).and(HouseNumberDto.class)
@@ -336,12 +340,12 @@ class BiNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.nameProperty)
-                                .to(StreetDtoMappingDsl.$this.nameProperty)
-                                .produce(StreetEntityMappingDsl.$this.houseNumberProperty)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.street.nameProperty)
+                                .to(AddressDtoMappingDsl.$this.street.nameProperty)
+                                .produce(AddressEntityMappingDsl.$this.houseNumberProperty)
                                 .usingMapping()
-                                .to(StreetDtoMappingDsl.$this.houseNumberProperty)
+                                .to(AddressDtoMappingDsl.$this.houseNumberProperty)
 
                                 .biMapping()
                                 .between(HouseNumberEntity.class).and(HouseNumberDto.class)
@@ -364,12 +368,12 @@ class BiNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.getName)
-                                .to(StreetDtoMappingDsl.$this.setName)
-                                .produce(StreetEntityMappingDsl.$this.getHouseNumber)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.street.getName)
+                                .to(AddressDtoMappingDsl.$this.street.setName)
+                                .produce(AddressEntityMappingDsl.$this.getHouseNumber)
                                 .usingMapping()
-                                .to(StreetDtoMappingDsl.$this.setHouseNumber)
+                                .to(AddressDtoMappingDsl.$this.setHouseNumber)
 
                                 .biMapping()
                                 .between(HouseNumberEntity.class).and(HouseNumberDto.class)
@@ -392,12 +396,12 @@ class BiNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .consume(StreetEntityMappingDsl.$this.name)
-                                .from(StreetDtoMappingDsl.$this.name)
-                                .consume(StreetEntityMappingDsl.$this.houseNumber)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .consume(AddressEntityMappingDsl.$this.street.name)
+                                .from(AddressDtoMappingDsl.$this.street.name)
+                                .consume(AddressEntityMappingDsl.$this.houseNumber)
                                 .usingMapping()
-                                .from(StreetDtoMappingDsl.$this.houseNumber)
+                                .from(AddressDtoMappingDsl.$this.houseNumber)
 
                                 .biMapping()
                                 .between(HouseNumberEntity.class).and(HouseNumberDto.class)
@@ -420,12 +424,12 @@ class BiNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .consume(StreetEntityMappingDsl.$this.nameProperty)
-                                .from(StreetDtoMappingDsl.$this.nameProperty)
-                                .consume(StreetEntityMappingDsl.$this.houseNumberProperty)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .consume(AddressEntityMappingDsl.$this.street.nameProperty)
+                                .from(AddressDtoMappingDsl.$this.street.nameProperty)
+                                .consume(AddressEntityMappingDsl.$this.houseNumberProperty)
                                 .usingMapping()
-                                .from(StreetDtoMappingDsl.$this.houseNumberProperty)
+                                .from(AddressDtoMappingDsl.$this.houseNumberProperty)
 
                                 .biMapping()
                                 .between(HouseNumberEntity.class).and(HouseNumberDto.class)
@@ -448,12 +452,12 @@ class BiNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .consume(StreetEntityMappingDsl.$this.setName)
-                                .from(StreetDtoMappingDsl.$this.getName)
-                                .consume(StreetEntityMappingDsl.$this.setHouseNumber)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .consume(AddressEntityMappingDsl.$this.street.setName)
+                                .from(AddressDtoMappingDsl.$this.street.getName)
+                                .consume(AddressEntityMappingDsl.$this.setHouseNumber)
                                 .usingMapping()
-                                .from(StreetDtoMappingDsl.$this.getHouseNumber)
+                                .from(AddressDtoMappingDsl.$this.getHouseNumber)
 
                                 .biMapping()
                                 .between(HouseNumberEntity.class).and(HouseNumberDto.class)
@@ -476,17 +480,17 @@ class BiNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .bind(StreetEntityMappingDsl.$this.name)
-                                .with(StreetDtoMappingDsl.$this.name)
-                                .bind(StreetEntityMappingDsl.$this.houseNumberProperty.number)
-                                .with(StreetDtoMappingDsl.$this.houseNumberProperty.number)
-                                .bind(StreetEntityMappingDsl.$this.houseNumberProperty.suffix)
-                                .with(StreetDtoMappingDsl.$this.houseNumberProperty.suffix)
-                                .bind(StreetEntityMappingDsl.$this.houseNumberProperty.geolocationProperty.longitude)
-                                .with(StreetDtoMappingDsl.$this.houseNumberProperty.geolocationProperty.longitude)
-                                .bind(StreetEntityMappingDsl.$this.houseNumberProperty.geolocationProperty.latitude)
-                                .with(StreetDtoMappingDsl.$this.houseNumberProperty.geolocationProperty.latitude)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .bind(AddressEntityMappingDsl.$this.street.name)
+                                .with(AddressDtoMappingDsl.$this.street.name)
+                                .bind(AddressEntityMappingDsl.$this.houseNumberProperty.number)
+                                .with(AddressDtoMappingDsl.$this.houseNumberProperty.number)
+                                .bind(AddressEntityMappingDsl.$this.houseNumberProperty.suffix)
+                                .with(AddressDtoMappingDsl.$this.houseNumberProperty.suffix)
+                                .bind(AddressEntityMappingDsl.$this.houseNumberProperty.geolocationProperty.longitude)
+                                .with(AddressDtoMappingDsl.$this.houseNumberProperty.geolocationProperty.longitude)
+                                .bind(AddressEntityMappingDsl.$this.houseNumberProperty.geolocationProperty.latitude)
+                                .with(AddressDtoMappingDsl.$this.houseNumberProperty.geolocationProperty.latitude)
                                 .build(),
 
                         BiMappingTestFlow.builder()

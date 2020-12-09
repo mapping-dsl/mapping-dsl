@@ -2,15 +2,16 @@ package io.mappingdsl.core.tests;
 
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.builder.MappingDslBuilder;
+import io.mappingdsl.core.tests.fixtures.AddressDto;
+import io.mappingdsl.core.tests.fixtures.AddressDtoMappingDsl;
+import io.mappingdsl.core.tests.fixtures.AddressEntity;
+import io.mappingdsl.core.tests.fixtures.AddressEntityMappingDsl;
 import io.mappingdsl.core.tests.fixtures.Geolocation;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDto;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntity;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntityMappingDsl;
-import io.mappingdsl.core.tests.fixtures.StreetDto;
-import io.mappingdsl.core.tests.fixtures.StreetDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.StreetEntity;
-import io.mappingdsl.core.tests.fixtures.StreetEntityMappingDsl;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -25,15 +26,16 @@ class UniNestedMappingTest {
     @MethodSource("testData")
     void shouldMapNestedFields(String testName, MappingDsl mappingDsl) {
         StreetEntity streetEntity = new StreetEntity("Baker Street");
-        streetEntity.setHouseNumber(new HouseNumberEntity(221, "B", new Geolocation(51.523772, -0.158539)));
+        HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B", new Geolocation(51.523772, -0.158539));
+        AddressEntity addressEntity = new AddressEntity(streetEntity, houseNumberEntity);
 
-        StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
+        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
 
-        assertThat(streetDto.getName()).isEqualTo("Baker Street");
-        assertThat(streetDto.getHouseNumber().getNumber()).isEqualTo(221);
-        assertThat(streetDto.getHouseNumber().getSuffix()).isEqualTo("B");
-        assertThat(streetDto.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
-        assertThat(streetDto.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
+        assertThat(addressDto.getStreet().getName()).isEqualTo("Baker Street");
+        assertThat(addressDto.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(addressDto.getHouseNumber().getSuffix()).isEqualTo("B");
+        assertThat(addressDto.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
+        assertThat(addressDto.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
     }
 
     private static Stream<Arguments> testData() {
@@ -43,17 +45,17 @@ class UniNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .uniMapping()
-                                .from(StreetEntity.class).to(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.name)
-                                .to(StreetDtoMappingDsl.$this.name)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.number)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.number)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.suffix)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.suffix)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.geolocation.longitude)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.geolocation.longitude)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.geolocation.latitude)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.geolocation.latitude)
+                                .from(AddressEntity.class).to(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.street.name)
+                                .to(AddressDtoMappingDsl.$this.street.name)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.number)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.number)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.suffix)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.suffix)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.geolocation.longitude)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.geolocation.longitude)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.geolocation.latitude)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.geolocation.latitude)
                                 .build()),
 
                 Arguments.of(
@@ -61,17 +63,17 @@ class UniNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .uniMapping()
-                                .from(StreetEntity.class).to(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.nameProperty)
-                                .to(StreetDtoMappingDsl.$this.nameProperty)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.numberProperty)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.numberProperty)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.suffixProperty)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.suffixProperty)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.geolocation.longitudeProperty)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.geolocation.longitudeProperty)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.geolocation.latitudeProperty)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.geolocation.latitudeProperty)
+                                .from(AddressEntity.class).to(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.street.nameProperty)
+                                .to(AddressDtoMappingDsl.$this.street.nameProperty)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.numberProperty)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.numberProperty)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.suffixProperty)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.suffixProperty)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.geolocation.longitudeProperty)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.geolocation.longitudeProperty)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.geolocation.latitudeProperty)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.geolocation.latitudeProperty)
                                 .build()),
 
                 Arguments.of(
@@ -79,17 +81,17 @@ class UniNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .uniMapping()
-                                .from(StreetEntity.class).to(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.getName)
-                                .to(StreetDtoMappingDsl.$this.setName)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.getNumber)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.setNumber)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.getSuffix)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.setSuffix)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.geolocation.getLongitude)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.geolocation.setLongitude)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber.geolocation.getLatitude)
-                                .to(StreetDtoMappingDsl.$this.houseNumber.geolocation.setLatitude)
+                                .from(AddressEntity.class).to(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.street.getName)
+                                .to(AddressDtoMappingDsl.$this.street.setName)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.getNumber)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.setNumber)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.getSuffix)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.setSuffix)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.geolocation.getLongitude)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.geolocation.setLongitude)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber.geolocation.getLatitude)
+                                .to(AddressDtoMappingDsl.$this.houseNumber.geolocation.setLatitude)
                                 .build()),
 
                 Arguments.of(
@@ -97,12 +99,12 @@ class UniNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .uniMapping()
-                                .from(StreetEntity.class).to(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.name)
-                                .to(StreetDtoMappingDsl.$this.name)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber)
+                                .from(AddressEntity.class).to(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.street.name)
+                                .to(AddressDtoMappingDsl.$this.street.name)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber)
                                 .usingMapping()
-                                .to(StreetDtoMappingDsl.$this.houseNumber)
+                                .to(AddressDtoMappingDsl.$this.houseNumber)
 
                                 .uniMapping()
                                 .from(HouseNumberEntity.class).to(HouseNumberDto.class)
@@ -120,12 +122,12 @@ class UniNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .uniMapping()
-                                .from(StreetEntity.class).to(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.name)
-                                .to(StreetDtoMappingDsl.$this.name)
-                                .produce(StreetEntityMappingDsl.$this.houseNumberProperty)
+                                .from(AddressEntity.class).to(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.street.name)
+                                .to(AddressDtoMappingDsl.$this.street.name)
+                                .produce(AddressEntityMappingDsl.$this.houseNumberProperty)
                                 .usingMapping()
-                                .to(StreetDtoMappingDsl.$this.houseNumberProperty)
+                                .to(AddressDtoMappingDsl.$this.houseNumberProperty)
 
                                 .uniMapping()
                                 .from(HouseNumberEntity.class).to(HouseNumberDto.class)
@@ -143,12 +145,12 @@ class UniNestedMappingTest {
 
                         new MappingDslBuilder()
                                 .uniMapping()
-                                .from(StreetEntity.class).to(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.name)
-                                .to(StreetDtoMappingDsl.$this.name)
-                                .produce(StreetEntityMappingDsl.$this.getHouseNumber)
+                                .from(AddressEntity.class).to(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.street.name)
+                                .to(AddressDtoMappingDsl.$this.street.name)
+                                .produce(AddressEntityMappingDsl.$this.getHouseNumber)
                                 .usingMapping()
-                                .to(StreetDtoMappingDsl.$this.setHouseNumber)
+                                .to(AddressDtoMappingDsl.$this.setHouseNumber)
 
                                 .uniMapping()
                                 .from(HouseNumberEntity.class).to(HouseNumberDto.class)

@@ -3,12 +3,14 @@ package io.mappingdsl.core.tests;
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.builder.MappingDslBuilder;
 import io.mappingdsl.core.execution.MappingBeanFactory;
+import io.mappingdsl.core.tests.fixtures.AddressDto;
+import io.mappingdsl.core.tests.fixtures.AddressDtoMappingDsl;
+import io.mappingdsl.core.tests.fixtures.AddressEntity;
+import io.mappingdsl.core.tests.fixtures.AddressEntityMappingDsl;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDto;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntity;
 import io.mappingdsl.core.tests.fixtures.StreetDto;
-import io.mappingdsl.core.tests.fixtures.StreetDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.StreetEntity;
-import io.mappingdsl.core.tests.fixtures.StreetEntityMappingDsl;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,44 +22,50 @@ class BeanFactoryTest {
     void shouldCreateTargetObjectViaBeanFactoryForUniMapping() {
         MappingDsl mappingDsl = new MappingDslBuilder()
                 .configuration()
-                .onCreate(StreetDto.class).useFactory(new StreetDtoBeanFactory())
+                .onCreate(AddressDto.class).useFactory(new AddressDtoBeanFactory())
                 .uniMapping()
-                .from(StreetEntity.class).to(StreetDto.class)
-                .produce(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
+                .from(AddressEntity.class).to(AddressDto.class)
+                .produce(AddressEntityMappingDsl.$this.street.name).to(AddressDtoMappingDsl.$this.street.name)
                 .build();
 
-        StreetDto streetDto = mappingDsl.map(new StreetEntity("Baker Street"), StreetDto.class);
+        StreetEntity streetEntity = new StreetEntity("Baker Street");
+        AddressEntity addressEntity = new AddressEntity(streetEntity, null);
+        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
 
-        assertThat(streetDto.getName()).isEqualTo("Baker Street");
+        assertThat(addressDto.getStreet().getName()).isEqualTo("Baker Street");
 
         // added by bean factory
-        assertThat(streetDto.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(addressDto.getHouseNumber().getNumber()).isEqualTo(221);
     }
 
     @Test
     void shouldCreateTargetObjectViaBeanFactoryForBiMapping() {
         MappingDsl mappingDsl = new MappingDslBuilder()
                 .configuration()
-                .onCreate(StreetDto.class).useFactory(new StreetDtoBeanFactory())
-                .onCreate(StreetEntity.class).useFactory(new StreetEntityBeanFactory())
+                .onCreate(AddressDto.class).useFactory(new AddressDtoBeanFactory())
+                .onCreate(AddressEntity.class).useFactory(new AddressEntityBeanFactory())
                 .biMapping()
-                .between(StreetEntity.class).and(StreetDto.class)
-                .bind(StreetEntityMappingDsl.$this.name).with(StreetDtoMappingDsl.$this.name)
+                .between(AddressEntity.class).and(AddressDto.class)
+                .bind(AddressEntityMappingDsl.$this.street.name).with(AddressDtoMappingDsl.$this.street.name)
                 .build();
 
-        StreetDto streetDto = mappingDsl.map(new StreetEntity("Baker Street"), StreetDto.class);
+        StreetEntity streetEntity = new StreetEntity("Baker Street");
+        AddressEntity addressEntity = new AddressEntity(streetEntity, null);
+        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
 
-        assertThat(streetDto.getName()).isEqualTo("Baker Street");
-
-        // added by bean factory
-        assertThat(streetDto.getHouseNumber().getNumber()).isEqualTo(221);
-
-        StreetEntity streetEntity = mappingDsl.map(new StreetDto("Baker Street"), StreetEntity.class);
-
-        assertThat(streetEntity.getName()).isEqualTo("Baker Street");
+        assertThat(addressDto.getStreet().getName()).isEqualTo("Baker Street");
 
         // added by bean factory
-        assertThat(streetEntity.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(addressDto.getHouseNumber().getNumber()).isEqualTo(221);
+
+        StreetDto streetDto = new StreetDto("Baker Street");
+        addressDto = new AddressDto(streetDto, null);
+        addressEntity = mappingDsl.map(addressDto, AddressEntity.class);
+
+        assertThat(addressEntity.getStreet().getName()).isEqualTo("Baker Street");
+
+        // added by bean factory
+        assertThat(addressEntity.getHouseNumber().getNumber()).isEqualTo(221);
     }
 
     @Test
@@ -65,25 +73,25 @@ class BeanFactoryTest {
         assertThatExceptionOfType(IllegalStateException.class)
                 .isThrownBy(() -> new MappingDslBuilder()
                         .configuration()
-                        .onCreate(StreetDto.class).useFactory(new StreetDtoBeanFactory())
-                        .onCreate(StreetDto.class).useFactory(new StreetDtoBeanFactory()))
-                .withMessage("Bean Factory has been already set for type: io.mappingdsl.core.tests.fixtures.StreetDto");
+                        .onCreate(AddressDto.class).useFactory(new AddressDtoBeanFactory())
+                        .onCreate(AddressDto.class).useFactory(new AddressDtoBeanFactory()))
+                .withMessage("Bean Factory has been already set for type: io.mappingdsl.core.tests.fixtures.AddressDto");
     }
 
-    private static final class StreetDtoBeanFactory implements MappingBeanFactory<StreetDto> {
+    private static final class AddressDtoBeanFactory implements MappingBeanFactory<AddressDto> {
 
         @Override
-        public StreetDto create(Object source, Class<StreetDto> targetType) {
-            return new StreetDto(null, new HouseNumberDto(221));
+        public AddressDto create(Object source, Class<AddressDto> targetType) {
+            return new AddressDto(null, new HouseNumberDto(221));
         }
 
     }
 
-    private static final class StreetEntityBeanFactory implements MappingBeanFactory<StreetEntity> {
+    private static final class AddressEntityBeanFactory implements MappingBeanFactory<AddressEntity> {
 
         @Override
-        public StreetEntity create(Object source, Class<StreetEntity> targetType) {
-            return new StreetEntity(null, new HouseNumberEntity(221));
+        public AddressEntity create(Object source, Class<AddressEntity> targetType) {
+            return new AddressEntity(null, new HouseNumberEntity(221));
         }
 
     }

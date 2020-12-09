@@ -5,12 +5,12 @@ import io.mappingdsl.core.builder.MappingDslBuilder;
 import io.mappingdsl.core.common.BiCondition;
 import io.mappingdsl.core.common.BiConverter;
 import io.mappingdsl.core.common.Converter;
+import io.mappingdsl.core.tests.fixtures.AddressDto;
+import io.mappingdsl.core.tests.fixtures.AddressDtoMappingDsl;
+import io.mappingdsl.core.tests.fixtures.AddressEntity;
+import io.mappingdsl.core.tests.fixtures.AddressEntityMappingDsl;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDto;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntity;
-import io.mappingdsl.core.tests.fixtures.StreetDto;
-import io.mappingdsl.core.tests.fixtures.StreetDtoMappingDsl;
-import io.mappingdsl.core.tests.fixtures.StreetEntity;
-import io.mappingdsl.core.tests.fixtures.StreetEntityMappingDsl;
 import io.mappingdsl.core.tests.fixtures.ZipDto;
 import io.mappingdsl.core.tests.fixtures.ZipDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.ZipEntity;
@@ -227,18 +227,26 @@ class BiMixedMappingTest {
     @MethodSource("complexConverterTestData")
     void shouldMapUsingComplexConverterWhenConditionAllows(String testName, MappingDsl mappingDsl, BiMappingTestFlow testFlow) {
         if (testFlow.isForwardMapped()) {
-            StreetDto streetDto = mappingDsl.map(new StreetEntity(null, new HouseNumberEntity(221)), StreetDto.class);
-            assertThat(streetDto.getHouseNumber().getNumber()).isPositive();
+            HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221);
+            AddressEntity addressEntity = new AddressEntity(null, houseNumberEntity);
+            AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
+            assertThat(addressDto.getHouseNumber().getNumber()).isPositive();
 
-            streetDto = mappingDsl.map(new StreetEntity(null, new HouseNumberEntity(-221)), StreetDto.class);
-            assertThat(streetDto.getHouseNumber()).isNull();
+            houseNumberEntity = new HouseNumberEntity(-221);
+            addressEntity = new AddressEntity(null, houseNumberEntity);
+            addressDto = mappingDsl.map(addressEntity, AddressDto.class);
+            assertThat(addressDto.getHouseNumber()).isNull();
         }
 
         if (testFlow.isBackwardMapped()) {
-            StreetEntity streetEntity = mappingDsl.map(new StreetDto(null, new HouseNumberDto(221)), StreetEntity.class);
+            HouseNumberDto houseNumberDto = new HouseNumberDto(221);
+            AddressDto addressDto = new AddressDto(null, houseNumberDto);
+            AddressEntity streetEntity = mappingDsl.map(addressDto, AddressEntity.class);
             assertThat(streetEntity.getHouseNumber().getNumber()).isPositive();
 
-            streetEntity = mappingDsl.map(new StreetDto(null, new HouseNumberDto(-221)), StreetEntity.class);
+            houseNumberDto = new HouseNumberDto(-221);
+            addressDto = new AddressDto(null, houseNumberDto);
+            streetEntity = mappingDsl.map(addressDto, AddressEntity.class);
             assertThat(streetEntity.getHouseNumber()).isNull();
         }
     }
@@ -250,12 +258,10 @@ class BiMixedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .bind(StreetEntityMappingDsl.$this.name)
-                                .with(StreetDtoMappingDsl.$this.name)
-                                .bind(StreetEntityMappingDsl.$this.houseNumber)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .bind(AddressEntityMappingDsl.$this.houseNumber)
                                 .usingConverter(houseNumberConverter)
-                                .with(StreetDtoMappingDsl.$this.houseNumber)
+                                .with(AddressDtoMappingDsl.$this.houseNumber)
                                 .when(houseNumberCondition)
                                 .build(),
 
@@ -269,12 +275,10 @@ class BiMixedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .bind(StreetEntityMappingDsl.$this.nameProperty)
-                                .with(StreetDtoMappingDsl.$this.nameProperty)
-                                .bind(StreetEntityMappingDsl.$this.houseNumberProperty)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .bind(AddressEntityMappingDsl.$this.houseNumberProperty)
                                 .usingConverter(houseNumberConverter)
-                                .with(StreetDtoMappingDsl.$this.houseNumberProperty)
+                                .with(AddressDtoMappingDsl.$this.houseNumberProperty)
                                 .when(houseNumberCondition)
                                 .build(),
 
@@ -288,14 +292,12 @@ class BiMixedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .bind(StreetEntityMappingDsl.$this.name)
-                                .with(StreetDtoMappingDsl.$this.name)
-                                .bind(StreetEntityMappingDsl.$this.houseNumber)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .bind(AddressEntityMappingDsl.$this.houseNumber)
                                 .usingConverters(
                                         BiMixedMappingTest::convertHouseNumberEntity,
                                         BiMixedMappingTest::convertHouseNumberDto)
-                                .with(StreetDtoMappingDsl.$this.houseNumber)
+                                .with(AddressDtoMappingDsl.$this.houseNumber)
                                 .when(houseNumberCondition)
                                 .build(),
 
@@ -309,14 +311,12 @@ class BiMixedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .bind(StreetEntityMappingDsl.$this.nameProperty)
-                                .with(StreetDtoMappingDsl.$this.nameProperty)
-                                .bind(StreetEntityMappingDsl.$this.houseNumberProperty)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .bind(AddressEntityMappingDsl.$this.houseNumberProperty)
                                 .usingConverters(
                                         BiMixedMappingTest::convertHouseNumberEntity,
                                         BiMixedMappingTest::convertHouseNumberDto)
-                                .with(StreetDtoMappingDsl.$this.houseNumberProperty)
+                                .with(AddressDtoMappingDsl.$this.houseNumberProperty)
                                 .when(houseNumberCondition)
                                 .build(),
 
@@ -330,12 +330,10 @@ class BiMixedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.name)
-                                .to(StreetDtoMappingDsl.$this.name)
-                                .produce(StreetEntityMappingDsl.$this.houseNumber)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.houseNumber)
                                 .usingConverter(BiMixedMappingTest::convertHouseNumberEntity)
-                                .to(StreetDtoMappingDsl.$this.houseNumber)
+                                .to(AddressDtoMappingDsl.$this.houseNumber)
                                 .when(houseNumberEntity -> houseNumberEntity.getNumber() > 100)
                                 .build(),
 
@@ -349,12 +347,10 @@ class BiMixedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.nameProperty)
-                                .to(StreetDtoMappingDsl.$this.nameProperty)
-                                .produce(StreetEntityMappingDsl.$this.houseNumberProperty)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.houseNumberProperty)
                                 .usingConverter(BiMixedMappingTest::convertHouseNumberEntity)
-                                .to(StreetDtoMappingDsl.$this.houseNumberProperty)
+                                .to(AddressDtoMappingDsl.$this.houseNumberProperty)
                                 .when(houseNumberEntity -> houseNumberEntity.getNumber() > 100)
                                 .build(),
 
@@ -368,12 +364,10 @@ class BiMixedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.getName)
-                                .to(StreetDtoMappingDsl.$this.setName)
-                                .produce(StreetEntityMappingDsl.$this.getHouseNumber)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.getHouseNumber)
                                 .usingConverter(BiMixedMappingTest::convertHouseNumberEntity)
-                                .to(StreetDtoMappingDsl.$this.setHouseNumber)
+                                .to(AddressDtoMappingDsl.$this.setHouseNumber)
                                 .when(houseNumberEntity -> houseNumberEntity.getNumber() > 100)
                                 .build(),
 
@@ -387,12 +381,10 @@ class BiMixedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .consume(StreetEntityMappingDsl.$this.name)
-                                .from(StreetDtoMappingDsl.$this.name)
-                                .consume(StreetEntityMappingDsl.$this.houseNumber)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .consume(AddressEntityMappingDsl.$this.houseNumber)
                                 .usingConverter(BiMixedMappingTest::convertHouseNumberDto)
-                                .from(StreetDtoMappingDsl.$this.houseNumber)
+                                .from(AddressDtoMappingDsl.$this.houseNumber)
                                 .when(houseNumberDto -> houseNumberDto.getNumber() > 100)
                                 .build(),
 
@@ -406,12 +398,10 @@ class BiMixedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .consume(StreetEntityMappingDsl.$this.nameProperty)
-                                .from(StreetDtoMappingDsl.$this.nameProperty)
-                                .consume(StreetEntityMappingDsl.$this.houseNumberProperty)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .consume(AddressEntityMappingDsl.$this.houseNumberProperty)
                                 .usingConverter(BiMixedMappingTest::convertHouseNumberDto)
-                                .from(StreetDtoMappingDsl.$this.houseNumberProperty)
+                                .from(AddressDtoMappingDsl.$this.houseNumberProperty)
                                 .when(houseNumberDto -> houseNumberDto.getNumber() > 100)
                                 .build(),
 
@@ -425,12 +415,10 @@ class BiMixedMappingTest {
 
                         new MappingDslBuilder()
                                 .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .consume(StreetEntityMappingDsl.$this.setName)
-                                .from(StreetDtoMappingDsl.$this.getName)
-                                .consume(StreetEntityMappingDsl.$this.setHouseNumber)
+                                .between(AddressEntity.class).and(AddressDto.class)
+                                .consume(AddressEntityMappingDsl.$this.setHouseNumber)
                                 .usingConverter(BiMixedMappingTest::convertHouseNumberDto)
-                                .from(StreetDtoMappingDsl.$this.getHouseNumber)
+                                .from(AddressDtoMappingDsl.$this.getHouseNumber)
                                 .when(houseNumberDto -> houseNumberDto.getNumber() > 100)
                                 .build(),
 
