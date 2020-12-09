@@ -39,11 +39,11 @@ public class MappingExecutor {
         Set<MappingRule<?, ?>> rules = this.mappingRules.getMappingRules(mappingKey);
 
         if (CollectionUtils.isEmpty(rules)) {
-            if (this.mappingConfiguration.getMissingMappingHandlingMode() == MissingMappingHandlingMode.TERMINATE) {
-                throw new NoMappingException(mappingKey);
+            if (this.mappingConfiguration.getMissingMappingHandlingMode() == MissingMappingHandlingMode.RETURN_NULL) {
+                return null;
             }
             else {
-                return null;
+                throw new NoMappingException(mappingKey);
             }
         }
 
