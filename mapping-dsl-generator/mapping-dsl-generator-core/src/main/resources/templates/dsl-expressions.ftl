@@ -28,10 +28,10 @@
     <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
     <#switch model.modelType>
     <#case "GETTER">
-    public final DslHost<ROOT, ${model.fieldModel.type}, GetMethodAccessorFunction> ${model.name} =
+    public final DslHostExpression<ROOT, ${model.fieldModel.type}, GetMethodAccessorFunction> ${model.name} =
             new ${dslClassName}<>(this, new GetMethodAccessorFunction(${model.fieldModel.type}.class, "${model.name}"));<#break>
     <#case "SETTER">
-    public final DslHost<ROOT, ${model.fieldModel.type}, SetMethodAccessorFunction> ${model.name} =
+    public final DslHostExpression<ROOT, ${model.fieldModel.type}, SetMethodAccessorFunction> ${model.name} =
             new ${dslClassName}<>(this, new SetMethodAccessorFunction(${model.fieldModel.type}.class, "${model.name}"));<#break>
     </#switch>
 </#macro>

@@ -1,6 +1,6 @@
 package pojo;
 
-import io.mappingdsl.core.expression.DslHost;
+import io.mappingdsl.core.expression.DslHostExpression;
 import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ExpressionFunction;
@@ -18,7 +18,7 @@ import javax.annotation.Generated;
 
 @Generated("MappingDsl")
 public final class SimpleFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
-        extends DslHost<ROOT, pojo.SimpleField, FUN> {
+        extends DslHostExpression<ROOT, pojo.SimpleField, FUN> {
 
     public static final SimpleFieldMappingDsl<pojo.SimpleField, ValueProducerFunction> $this =
             new SimpleFieldMappingDsl<>(new RootIdentityFunction("SimpleField"));

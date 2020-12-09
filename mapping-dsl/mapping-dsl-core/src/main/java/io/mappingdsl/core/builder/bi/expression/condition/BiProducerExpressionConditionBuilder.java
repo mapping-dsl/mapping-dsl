@@ -12,7 +12,7 @@ import io.mappingdsl.core.builder.bi.expression.terminator.wrapper.BiProducerWra
 import io.mappingdsl.core.builder.bi.expression.terminator.wrapper.BiWrapperExpressionTerminatorBuilder;
 import io.mappingdsl.core.builder.bi.type.BiTypeInitiatorBuilder;
 import io.mappingdsl.core.common.Condition;
-import io.mappingdsl.core.expression.DslHost;
+import io.mappingdsl.core.expression.DslHostExpression;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
@@ -53,7 +53,7 @@ public class BiProducerExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> 
 
     // delegate method
     public <NEW_SRC_TYPE> BiWrapperExpressionTerminatorBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> bind(
-            DslHost<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
+            DslHostExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
 
         return this.chainBuilder.bind(initialExpression);
     }
@@ -67,7 +67,7 @@ public class BiProducerExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> 
 
     // delegate method
     public <NEW_SRC_TYPE> BiProducerWrapperExpressionTerminatorBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> produce(
-            DslHost<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            DslHostExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         return this.chainBuilder.produce(initialExpression);
     }
@@ -81,7 +81,7 @@ public class BiProducerExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> 
 
     // delegate method
     public <NEW_SRC_TYPE> BiConsumerWrapperExpressionTerminatorBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> consume(
-            DslHost<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+            DslHostExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
         return this.chainBuilder.consume(initialExpression);
     }

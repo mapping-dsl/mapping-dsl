@@ -1,6 +1,6 @@
 package io.mappingdsl.mavenplugin.test.lombok.fixtures;
 
-import io.mappingdsl.core.expression.DslHost;
+import io.mappingdsl.core.expression.DslHostExpression;
 import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ExpressionFunction;
@@ -18,7 +18,7 @@ import javax.annotation.Generated;
 
 @Generated("MappingDsl")
 public final class SimplePojoMappingDsl<ROOT, FUN extends ExpressionFunction>
-        extends DslHost<ROOT, io.mappingdsl.mavenplugin.test.lombok.fixtures.SimplePojo, FUN> {
+        extends DslHostExpression<ROOT, io.mappingdsl.mavenplugin.test.lombok.fixtures.SimplePojo, FUN> {
 
     public static final SimplePojoMappingDsl<io.mappingdsl.mavenplugin.test.lombok.fixtures.SimplePojo, ValueProducerFunction> $this =
             new SimplePojoMappingDsl<>(new RootIdentityFunction("SimplePojo"));

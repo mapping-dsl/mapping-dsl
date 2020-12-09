@@ -10,7 +10,7 @@ import io.mappingdsl.core.builder.bi.expression.terminator.wrapper.BiConsumerWra
 import io.mappingdsl.core.builder.bi.expression.terminator.wrapper.BiProducerWrapperExpressionTerminatorBuilder;
 import io.mappingdsl.core.builder.bi.expression.terminator.wrapper.BiWrapperExpressionTerminatorBuilder;
 import io.mappingdsl.core.builder.bi.type.BiTypeInitiatorBuilder;
-import io.mappingdsl.core.expression.DslHost;
+import io.mappingdsl.core.expression.DslHostExpression;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
@@ -43,7 +43,7 @@ public class BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     // delegate method
     public <SRC_TYPE> BiWrapperExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> bind(
-            DslHost<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
+            DslHostExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.bind(initialExpression);
@@ -59,7 +59,7 @@ public class BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     // delegate method
     public <SRC_TYPE> BiProducerWrapperExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
-            DslHost<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            DslHostExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.produce(initialExpression);
@@ -75,7 +75,7 @@ public class BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     // delegate method
     public <SRC_TYPE> BiConsumerWrapperExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
-            DslHost<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+            DslHostExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.consume(initialExpression);

@@ -1,6 +1,6 @@
 package pojo;
 
-import io.mappingdsl.core.expression.DslHost;
+import io.mappingdsl.core.expression.DslHostExpression;
 import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ExpressionFunction;
@@ -18,7 +18,7 @@ import javax.annotation.Generated;
 
 @Generated("MappingDsl")
 public final class ComplexFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
-        extends DslHost<ROOT, pojo.ComplexField, FUN> {
+        extends DslHostExpression<ROOT, pojo.ComplexField, FUN> {
 
     public static final ComplexFieldMappingDsl<pojo.ComplexField, ValueProducerFunction> $this =
             new ComplexFieldMappingDsl<>(new RootIdentityFunction("ComplexField"));
@@ -26,10 +26,10 @@ public final class ComplexFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
     public final SimpleFieldMappingDsl<ROOT, PathProcessingFunction> field =
             new SimpleFieldMappingDsl<>(this, new ObjectFieldAccessorFunction(pojo.SimpleField.class, "field"));
 
-    public final DslHost<ROOT, pojo.SimpleField, GetMethodAccessorFunction> getField =
+    public final DslHostExpression<ROOT, pojo.SimpleField, GetMethodAccessorFunction> getField =
             new SimpleFieldMappingDsl<>(this, new GetMethodAccessorFunction(pojo.SimpleField.class, "getField"));
 
-    public final DslHost<ROOT, pojo.SimpleField, SetMethodAccessorFunction> setField =
+    public final DslHostExpression<ROOT, pojo.SimpleField, SetMethodAccessorFunction> setField =
             new SimpleFieldMappingDsl<>(this, new SetMethodAccessorFunction(pojo.SimpleField.class, "setField"));
 
     public final SimpleFieldMappingDsl<ROOT, PropertyAccessorFunction> fieldProperty =
