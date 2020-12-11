@@ -18,9 +18,13 @@ import io.mappingdsl.core.expression.function.ValueProducerFunction;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @RequiredArgsConstructor
 public class MappingExecutor {
@@ -65,23 +69,51 @@ public class MappingExecutor {
                 continue;
             }
 
+            Stream<Object> sourceValues = wrapSourceValue(sourceValue);
             Condition<Object> condition = (Condition<Object>) rule.getInitialCondition();
-            if (condition != null && !condition.test(sourceValue)) {
-                continue;
-            }
-
-            Converter<Object, Object> expressionConverter =
-                    (Converter<Object, Object>) rule.getInitialExpressionConverter();
-
-            if (expressionConverter != null) {
-                sourceValue = expressionConverter.convert(sourceValue);
-            }
+            Converter<Object, Object> converter = (Converter<Object, Object>) rule.getInitialExpressionConverter();
 
             Deque<ExpressionBase<?, ?, ?>> targetPath = unwindPath(rule.getTerminalExpression());
-            consumeValue(rule, sourceValue, target, targetPath);
+            ValueConsumer valueConsumer = getValueConsumer(target, targetPath);
+
+            sourceValues
+                    .filter(Objects::nonNull)
+                    .filter(value -> condition == null || condition.test(value))
+                    .map(value -> (converter == null) ? value : converter.convert(value))
+                    .forEach(value -> consumeValue(valueConsumer, value));
         }
 
         return target;
+    }
+
+    private void consumeValue(ValueConsumer valueConsumer, Object sourceValue) {
+        ValueConsumerFunction consumerFunction = valueConsumer.consumerFunction;
+        Class<?> targetType = consumerFunction.getConsumerType();
+
+        // check if nested mapping is required
+        MappingKey<?, ?> nestedMappingKey = new MappingKey<>(sourceValue.getClass(), targetType);
+        if (this.mappingRules.containsMappingRules(nestedMappingKey)) {
+            sourceValue = executeMapping(sourceValue, targetType);
+        }
+
+        // fail if types are incompatible
+        if (!targetType.isInstance(sourceValue)) {
+            throw new IllegalAssignmentException(consumerFunction, sourceValue.getClass());
+        }
+
+        consumerFunction.consume(valueConsumer.target, sourceValue);
+    }
+
+    private Stream<Object> wrapSourceValue(Object sourceValue) {
+        if (sourceValue instanceof Iterable) {
+            return StreamSupport.stream(((Iterable<Object>) sourceValue).spliterator(), false);
+        }
+
+        if (sourceValue.getClass().isArray()) {
+            return Arrays.stream((Object[]) sourceValue);
+        }
+
+        return Stream.of(sourceValue);
     }
 
     private Deque<ExpressionBase<?, ?, ?>> unwindPath(ExpressionBase<?, ?, ?> expression) {
@@ -113,7 +145,7 @@ public class MappingExecutor {
         return value;
     }
 
-    private void consumeValue(MappingRule<?, ?> rule, Object source, Object target, Deque<ExpressionBase<?, ?, ?>> path) {
+    private ValueConsumer getValueConsumer(Object target, Deque<ExpressionBase<?, ?, ?>> path) {
         Object currentTarget = target;
 
         while (!path.isEmpty()) {
@@ -121,20 +153,7 @@ public class MappingExecutor {
 
             if (path.isEmpty()) {
                 ValueConsumerFunction consumerFunction = (ValueConsumerFunction) expression.getExpressionFunction();
-                Class<?> targetType = consumerFunction.getConsumerType();
-
-                // check if nested mapping is required
-                MappingKey<?, ?> nestedMappingKey = new MappingKey<>(source.getClass(), targetType);
-                if (this.mappingRules.containsMappingRules(nestedMappingKey)) {
-                    source = executeMapping(source, targetType);
-                }
-
-                // fail if types are incompatible
-                if (!targetType.isInstance(source)) {
-                    throw new IllegalAssignmentException(consumerFunction, source.getClass());
-                }
-
-                consumerFunction.consume(currentTarget, source);
+                return new ValueConsumer(currentTarget, consumerFunction);
             }
             else {
                 TargetPathTraverserFunction traverserFunction =
@@ -143,6 +162,8 @@ public class MappingExecutor {
                 currentTarget = traverserFunction.step(currentTarget);
             }
         }
+
+        throw new IllegalStateException("Unable to get value consumer");
     }
 
     private Object getNullSourceValue(ExpressionBase<?, ?, ?> expression) {
@@ -152,6 +173,14 @@ public class MappingExecutor {
         else {
             throw new NullSourceValueException(expression);
         }
+    }
+
+    @RequiredArgsConstructor
+    private static class ValueConsumer {
+
+        private final Object target;
+        private final ValueConsumerFunction consumerFunction;
+
     }
 
 }
