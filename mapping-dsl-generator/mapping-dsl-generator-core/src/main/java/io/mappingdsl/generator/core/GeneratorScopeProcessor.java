@@ -2,9 +2,12 @@ package io.mappingdsl.generator.core;
 
 import com.sun.tools.javac.code.Symbol;
 import ice.bricks.beans.BeansUtils;
+import ice.bricks.exceptions.ExceptionUtils;
 import ice.bricks.io.IoUtils;
 import ice.bricks.lang.model.LanguageModelUtils;
+import ice.bricks.lang.model.LanguageModelUtils.TypeDefinition;
 import ice.bricks.meta.ClassUtils;
+import io.mappingdsl.generator.core.model.CollectionFieldModel;
 import io.mappingdsl.generator.core.model.FieldModel;
 import io.mappingdsl.generator.core.model.FieldModelType;
 import io.mappingdsl.generator.core.model.MethodModel;
@@ -16,6 +19,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -28,6 +32,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
@@ -192,16 +197,56 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
     }
 
     private FieldModel buildFieldModel(Element fieldElement) {
-        String fieldType = LanguageModelUtils.getBoxedTypeName(this.typeUtils, fieldElement.asType());
         String fieldName = fieldElement.getSimpleName().toString();
 
-        FieldModelType modelType = this.scope.contains(fieldType)
+        TypeDefinition fieldTypeDefinition = ExceptionUtils.defaultIfException(
+                () -> LanguageModelUtils.getTypeDefinition(fieldElement), null);
+
+        String fieldTypeName;
+
+        if (fieldTypeDefinition == null) {
+            TypeMirror type = fieldElement.asType();
+            if (type.getKind().isPrimitive()) {
+                // primitive type, must be boxed
+                fieldTypeName = LanguageModelUtils.getBoxedTypeName(this.typeUtils, type);
+            }
+            else {
+                // type is not yet compiled (probably defined in the same source codebase)
+                // thus `Class` representation of it is not available during the compilation,
+                // then string representation can be taken
+                fieldTypeName = type.toString();
+            }
+        }
+        else {
+            // type is compiled and `Class` representation of it was detected
+            fieldTypeName = fieldTypeDefinition.getType().getCanonicalName();
+        }
+
+        FieldModelType modelType = this.scope.contains(fieldTypeName)
                 ? FieldModelType.DSL
                 : FieldModelType.VALUE;
 
-        return FieldModel.builder()
+        Class<?> fieldType = ClassUtils.getClassByName(fieldTypeName);
+
+        if (fieldType != null && Iterable.class.isAssignableFrom(fieldType)) {
+            List<Class<?>> generics = fieldTypeDefinition.getGenerics();
+
+            Class<?> elementType = Object.class;
+            if (generics.size() == 1) {
+                elementType = ObjectUtils.defaultIfNull(generics.get(0), elementType);
+            }
+
+            return CollectionFieldModel.collectionFieldModelBuilder()
+                    .name(fieldName)
+                    .elementType(elementType.getCanonicalName())
+                    .collectionType(fieldType.getCanonicalName())
+                    .modelType(modelType)
+                    .build();
+        }
+
+        return FieldModel.fieldModelBuilder()
                 .name(fieldName)
-                .type(fieldType)
+                .type(fieldTypeName)
                 .modelType(modelType)
                 .build();
     }

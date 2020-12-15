@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @NoArgsConstructor
 public class AddressEntity {
 
@@ -18,6 +20,10 @@ public class AddressEntity {
     @Getter
     @Setter
     private ZipEntity zip;
+
+    @Getter
+    @Setter
+    private List<String> phoneNumbers;
 
     public AddressEntity(StreetEntity street, HouseNumberEntity houseNumber) {
         this.street = street;

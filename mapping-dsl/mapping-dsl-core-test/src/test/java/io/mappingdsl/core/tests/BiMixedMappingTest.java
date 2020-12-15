@@ -28,7 +28,7 @@ class BiMixedMappingTest {
 
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("simpleConverterTestData")
-    void shouldMapUsingSimpleConverterWhenConditionAllows(String testName, MappingDsl mappingDsl, BiMappingTestFlow testFlow) {
+    void shouldMapUsingSimpleConverterConditionally(String testName, MappingDsl mappingDsl, BiMappingTestFlow testFlow) {
         if (testFlow.isForwardMapped()) {
             // forward mapping + condition allows mapping
             ZipDto zipDto = mappingDsl.map(new ZipEntity(123456), ZipDto.class);
@@ -225,7 +225,7 @@ class BiMixedMappingTest {
 
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("complexConverterTestData")
-    void shouldMapUsingComplexConverterWhenConditionAllows(String testName, MappingDsl mappingDsl, BiMappingTestFlow testFlow) {
+    void shouldMapUsingComplexConverterConditionally(String testName, MappingDsl mappingDsl, BiMappingTestFlow testFlow) {
         if (testFlow.isForwardMapped()) {
             HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221);
             AddressEntity addressEntity = new AddressEntity(null, houseNumberEntity);

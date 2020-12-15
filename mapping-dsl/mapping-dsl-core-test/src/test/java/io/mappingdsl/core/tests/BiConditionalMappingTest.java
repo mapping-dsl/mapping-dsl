@@ -20,7 +20,7 @@ class BiConditionalMappingTest {
 
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("testData")
-    void shouldMapWhenConditionAllows(String testName, MappingDsl mappingDsl, BiMappingTestFlow testFlow) {
+    void shouldMapConditionally(String testName, MappingDsl mappingDsl, BiMappingTestFlow testFlow) {
         HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B");
 
         // forward mapping

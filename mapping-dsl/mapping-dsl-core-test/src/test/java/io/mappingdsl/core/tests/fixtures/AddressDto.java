@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @NoArgsConstructor
 public class AddressDto {
 
@@ -18,6 +20,10 @@ public class AddressDto {
     @Getter
     @Setter
     private ZipDto zip;
+
+    @Getter
+    @Setter
+    private List<String> phoneNumbers;
 
     public AddressDto(StreetDto street, HouseNumberDto houseNumber) {
         this.street = street;

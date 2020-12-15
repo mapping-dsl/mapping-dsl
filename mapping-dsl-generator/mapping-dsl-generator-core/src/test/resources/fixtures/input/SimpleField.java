@@ -1,5 +1,7 @@
 package pojo;
 
+import java.util.List;
+
 public class SimpleField {
 
     private String stringValue;
@@ -11,6 +13,8 @@ public class SimpleField {
     private boolean booleanValue;
 
     private Boolean anotherBooleanValue;
+
+    private List<String> listOfString;
 
     public String getStringValue() {
         return stringValue;
@@ -50,6 +54,14 @@ public class SimpleField {
 
     public void setAnotherBooleanValue(Boolean anotherBooleanValue) {
         this.anotherBooleanValue = anotherBooleanValue;
+    }
+
+    public List<String> getListOfString() {
+        return listOfString;
+    }
+
+    public void setListOfString(List<String> listOfString) {
+        this.listOfString = listOfString;
     }
 
 }

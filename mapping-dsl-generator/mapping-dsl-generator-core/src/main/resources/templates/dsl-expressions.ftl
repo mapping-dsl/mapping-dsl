@@ -5,6 +5,11 @@
     public final ValueExpression<ROOT, ${model.type}, ValueProcessingFunction> ${model.name} =
             new ValueExpression<>(this, new ObjectFieldAccessorFunction(${model.type}.class, "${model.name}"));</#macro>
 
+<#macro valuesCollectionField model>
+    <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.CollectionFieldModel" -->
+    public final ValuesCollectionExpression<ROOT, ${model.elementType}, ValueProcessingFunction> ${model.name} =
+            new ValuesCollectionExpression<>(this, new CollectionFieldAccessorFunction(${model.collectionType}.class, ${model.elementType}.class, "${model.name}"));</#macro>
+
 <#macro dslField model>
     <#assign dslClassName = GeneratorUtils.getDslWrapperClassName(model.type)>
     <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.FieldModel" -->

@@ -2,14 +2,20 @@ package io.mappingdsl.core.tests;
 
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.builder.MappingDslBuilder;
+import io.mappingdsl.core.tests.fixtures.AddressDto;
+import io.mappingdsl.core.tests.fixtures.AddressDtoMappingDsl;
+import io.mappingdsl.core.tests.fixtures.AddressEntity;
+import io.mappingdsl.core.tests.fixtures.AddressEntityMappingDsl;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDto;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntity;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntityMappingDsl;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,7 +24,7 @@ class UniConditionalMappingTest {
 
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("testData")
-    void shouldMapWhenConditionAllows(String testName, MappingDsl mappingDsl) {
+    void shouldMapConditionally(String testName, MappingDsl mappingDsl) {
         // passed condition
         HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B");
         HouseNumberDto houseNumberDto = mappingDsl.map(houseNumberEntity, HouseNumberDto.class);
@@ -75,6 +81,24 @@ class UniConditionalMappingTest {
                                 .to(HouseNumberDtoMappingDsl.$this.suffix)
                                 .build())
         );
+    }
+
+    @Test
+    void shouldMapCollectionElementsConditionally() {
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setPhoneNumbers(Arrays.asList("+123", "+456", "789"));
+
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .uniMapping()
+                .from(AddressEntity.class).to(AddressDto.class)
+                .produce(AddressEntityMappingDsl.$this.phoneNumbers)
+                .to(AddressDtoMappingDsl.$this.phoneNumbers)
+                .when(phoneNumber -> phoneNumber.startsWith("+"))
+                .build();
+
+        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
+
+        assertThat(addressDto.getPhoneNumbers()).containsExactly("+123", "+456");
     }
 
 }

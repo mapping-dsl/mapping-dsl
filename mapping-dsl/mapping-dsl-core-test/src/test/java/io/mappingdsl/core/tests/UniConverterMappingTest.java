@@ -14,10 +14,12 @@ import io.mappingdsl.core.tests.fixtures.ZipDto;
 import io.mappingdsl.core.tests.fixtures.ZipDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.ZipEntity;
 import io.mappingdsl.core.tests.fixtures.ZipEntityMappingDsl;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -135,6 +137,24 @@ class UniConverterMappingTest {
         houseNumberDto.setSuffix(houseNumberEntity.getSuffix());
         houseNumberDto.setGeolocation(houseNumberEntity.getGeolocation());
         return houseNumberDto;
+    }
+
+    @Test
+    void shouldMapConvertedCollectionElements() {
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setPhoneNumbers(Arrays.asList("123", "456", "789"));
+
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .uniMapping()
+                .from(AddressEntity.class).to(AddressDto.class)
+                .produce(AddressEntityMappingDsl.$this.phoneNumbers)
+                .usingConverter(phoneNumber -> "+" + phoneNumber)
+                .to(AddressDtoMappingDsl.$this.phoneNumbers)
+                .build();
+
+        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
+
+        assertThat(addressDto.getPhoneNumbers()).containsExactly("+123", "+456", "+789");
     }
 
 }

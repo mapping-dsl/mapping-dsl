@@ -8,6 +8,8 @@ package ${ClassUtils.getClassPackage(fullClassName)};
 import io.mappingdsl.core.expression.DslHostExpression;
 import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.ValueExpression;
+import io.mappingdsl.core.expression.ValuesCollectionExpression;
+import io.mappingdsl.core.expression.function.CollectionFieldAccessorFunction;
 import io.mappingdsl.core.expression.function.ExpressionFunction;
 import io.mappingdsl.core.expression.function.GetMethodAccessorFunction;
 import io.mappingdsl.core.expression.function.ObjectFieldAccessorFunction;
@@ -31,7 +33,11 @@ public final class ${dslClassName}<ROOT, FUN extends ExpressionFunction>
     <#list fieldModels as fieldModel>
         <#switch fieldModel.modelType>
             <#case "VALUE">
-                <@expressions.valueField model=fieldModel />
+                <#if GeneratorUtils.isCollectionFieldModel(fieldModel.class)>
+                    <@expressions.valuesCollectionField model=fieldModel />
+                <#else>
+                    <@expressions.valueField model=fieldModel />
+                </#if>
                 <#break>
             <#case "DSL">
                 <@expressions.dslField model=fieldModel />

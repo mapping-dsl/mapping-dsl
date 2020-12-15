@@ -3,6 +3,8 @@ package pojo;
 import io.mappingdsl.core.expression.DslHostExpression;
 import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.ValueExpression;
+import io.mappingdsl.core.expression.ValuesCollectionExpression;
+import io.mappingdsl.core.expression.function.CollectionFieldAccessorFunction;
 import io.mappingdsl.core.expression.function.ExpressionFunction;
 import io.mappingdsl.core.expression.function.GetMethodAccessorFunction;
 import io.mappingdsl.core.expression.function.ObjectFieldAccessorFunction;
@@ -37,6 +39,9 @@ public final class SimpleFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
 
     public final ValueExpression<ROOT, java.lang.Boolean, ValueProcessingFunction> anotherBooleanValue =
             new ValueExpression<>(this, new ObjectFieldAccessorFunction(java.lang.Boolean.class, "anotherBooleanValue"));
+
+    public final ValuesCollectionExpression<ROOT, java.lang.String, ValueProcessingFunction> listOfString =
+            new ValuesCollectionExpression<>(this, new CollectionFieldAccessorFunction(java.util.List.class, java.lang.String.class, "listOfString"));
 
     public final ValueExpression<ROOT, java.lang.String, GetMethodAccessorFunction> getStringValue =
             new ValueExpression<>(this, new GetMethodAccessorFunction(java.lang.String.class, "getStringValue"));

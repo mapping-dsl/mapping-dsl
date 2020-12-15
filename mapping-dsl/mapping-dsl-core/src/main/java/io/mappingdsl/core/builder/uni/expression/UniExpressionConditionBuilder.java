@@ -7,6 +7,7 @@ import io.mappingdsl.core.builder.uni.type.UniTypeInitiatorBuilder;
 import io.mappingdsl.core.common.Condition;
 import io.mappingdsl.core.expression.DslHostExpression;
 import io.mappingdsl.core.expression.ValueExpression;
+import io.mappingdsl.core.expression.ValuesCollectionExpression;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
 
 public class UniExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
@@ -42,6 +43,13 @@ public class UniExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
     // delegate method
     public <NEW_SRC_TYPE> UniExpressionWrapperTerminatorBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> produce(
             DslHostExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+
+        return this.chainBuilder.produce(initialExpression);
+    }
+
+    // delegate method
+    public <NEW_SRC_TYPE> UniExpressionCollectionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> produce(
+            ValuesCollectionExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         return this.chainBuilder.produce(initialExpression);
     }

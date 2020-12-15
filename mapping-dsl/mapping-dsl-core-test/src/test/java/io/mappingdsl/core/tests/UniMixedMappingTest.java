@@ -24,7 +24,7 @@ class UniMixedMappingTest {
 
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("primitiveFieldTestData")
-    void shouldMapConvertedPrimitiveFieldWhenConditionAllows(String testName, MappingDsl mappingDsl) {
+    void shouldMapConvertedPrimitiveFieldConditionally(String testName, MappingDsl mappingDsl) {
         // condition allows mapping
         ZipEntity zipEntity = new ZipEntity(123456);
         ZipDto zipDto = mappingDsl.map(zipEntity, ZipDto.class);
@@ -80,7 +80,7 @@ class UniMixedMappingTest {
 
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("complexFieldTestData")
-    void shouldMapConvertedComplexFieldWhenConditionAllows(String testName, MappingDsl mappingDsl) {
+    void shouldMapConvertedComplexFieldConditionally(String testName, MappingDsl mappingDsl) {
         // condition allows mapping
         AddressEntity addressEntity = new AddressEntity();
         HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221);

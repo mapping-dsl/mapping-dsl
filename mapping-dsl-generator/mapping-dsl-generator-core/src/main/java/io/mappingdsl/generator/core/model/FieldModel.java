@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
+@Builder(builderMethodName = "fieldModelBuilder")
 public class FieldModel {
 
     private final String name;

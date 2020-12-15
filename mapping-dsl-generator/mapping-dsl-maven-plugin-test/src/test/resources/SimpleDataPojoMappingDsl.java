@@ -3,6 +3,8 @@ package io.mappingdsl.mavenplugin.test.lombok.fixtures;
 import io.mappingdsl.core.expression.DslHostExpression;
 import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.ValueExpression;
+import io.mappingdsl.core.expression.ValuesCollectionExpression;
+import io.mappingdsl.core.expression.function.CollectionFieldAccessorFunction;
 import io.mappingdsl.core.expression.function.ExpressionFunction;
 import io.mappingdsl.core.expression.function.GetMethodAccessorFunction;
 import io.mappingdsl.core.expression.function.ObjectFieldAccessorFunction;
