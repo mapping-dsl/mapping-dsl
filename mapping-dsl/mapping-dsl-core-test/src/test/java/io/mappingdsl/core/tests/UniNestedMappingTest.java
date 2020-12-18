@@ -11,7 +11,11 @@ import io.mappingdsl.core.tests.fixtures.HouseNumberDto;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntity;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntityMappingDsl;
+import io.mappingdsl.core.tests.fixtures.StreetDto;
+import io.mappingdsl.core.tests.fixtures.StreetDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.StreetEntity;
+import io.mappingdsl.core.tests.fixtures.StreetEntityMappingDsl;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -163,6 +167,28 @@ class UniNestedMappingTest {
                                 .to(HouseNumberDtoMappingDsl.$this.setGeolocation)
                                 .build())
         );
+    }
+
+    @Test
+    void shouldMapDifferentHierarchyLevels() {
+        StreetEntity streetEntity = new StreetEntity("Baker Street");
+
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .uniMapping()
+                .from(StreetEntity.class).to(AddressDto.class)
+                .produce(StreetEntityMappingDsl.$this)
+                .usingMapping()
+                .to(AddressDtoMappingDsl.$this.street)
+
+                .uniMapping()
+                .from(StreetEntity.class).to(StreetDto.class)
+                .produce(StreetEntityMappingDsl.$this.name)
+                .to(StreetDtoMappingDsl.$this.name)
+                .build();
+
+        StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
+
+        assertThat(streetDto.getName()).isEqualTo("Baker Street");
     }
 
 }
