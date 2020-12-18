@@ -14,6 +14,6 @@ public class MappingConfiguration {
 
     @Getter
     @Setter
-    private MissingMappingHandlingMode missingMappingHandlingMode = MissingMappingHandlingMode.RETURN_NULL;
+    private MissingMappingHandlingMode missingMappingHandlingMode = MissingMappingHandlingMode.TERMINATE;
 
 }

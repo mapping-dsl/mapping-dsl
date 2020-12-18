@@ -33,15 +33,17 @@ class NoDefinedMappingTest {
     }
 
     @Test
-    void shouldReturnNullByDefaultIfNoMappingDefined() {
+    void shouldFailByDefaultIfNoMappingDefined() {
         MappingDsl mappingDsl = new MappingDslBuilder()
                 .uniMapping()
                 .from(StreetEntity.class).to(StreetDto.class)
                 .produce(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
                 .build();
 
-        Integer mappedValue = mappingDsl.map(BigInteger.valueOf(123), Integer.class);
-        assertThat(mappedValue).isNull();
+        assertThatThrownBy(() -> mappingDsl.map(BigInteger.valueOf(123), Integer.class))
+                .isInstanceOf(NoMappingException.class)
+                .hasMessage("No mapping defined for " +
+                        "MappingKey(source=class java.math.BigInteger, target=class java.lang.Integer)");
     }
 
     @Test

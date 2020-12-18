@@ -2,6 +2,7 @@ package io.mappingdsl.core.tests;
 
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.builder.MappingDslBuilder;
+import io.mappingdsl.core.execution.NoMappingException;
 import io.mappingdsl.core.tests.fixtures.AddressDto;
 import io.mappingdsl.core.tests.fixtures.AddressDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.AddressEntity;
@@ -32,7 +33,14 @@ class BiNestedMappingTest {
         AddressEntity addressEntity = new AddressEntity(streetEntity, houseNumberEntity);
 
         // forward mapping
-        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        AddressDto addressDto;
+
+        try {
+            addressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        }
+        catch (NoMappingException ignore) {
+            addressDto = null;
+        }
 
         if (testFlow.isForwardMapped()) {
             assertThat(addressDto.getStreet().getName()).isEqualTo("Baker Street");
@@ -51,7 +59,12 @@ class BiNestedMappingTest {
         addressDto = new AddressDto(streetDto, houseNumberDto);
 
         // backward mapping
-        addressEntity = mappingDsl.map(addressDto, AddressEntity.class);
+        try {
+            addressEntity = mappingDsl.map(addressDto, AddressEntity.class);
+        }
+        catch (NoMappingException ignore) {
+            addressEntity = null;
+        }
 
         if (testFlow.isBackwardMapped()) {
             assertThat(addressEntity.getStreet().getName()).isEqualTo("Baker Street");

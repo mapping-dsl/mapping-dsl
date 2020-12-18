@@ -3,6 +3,7 @@ package io.mappingdsl.core.tests;
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.builder.MappingDslBuilder;
 import io.mappingdsl.core.common.BiCondition;
+import io.mappingdsl.core.execution.NoMappingException;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDto;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntity;
@@ -24,7 +25,14 @@ class BiConditionalMappingTest {
         HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B");
 
         // forward mapping
-        HouseNumberDto houseNumberDto = mappingDsl.map(houseNumberEntity, HouseNumberDto.class);
+        HouseNumberDto houseNumberDto;
+
+        try {
+            houseNumberDto = mappingDsl.map(houseNumberEntity, HouseNumberDto.class);
+        }
+        catch (NoMappingException ignore) {
+            houseNumberDto = null;
+        }
 
         if (testFlow.isForwardMapped()) {
             assertThat(houseNumberDto.getNumber()).isEqualTo(221);
@@ -38,7 +46,12 @@ class BiConditionalMappingTest {
         houseNumberDto = new HouseNumberDto(221, "B");
 
         // backward mapping
-        houseNumberEntity = mappingDsl.map(houseNumberDto, HouseNumberEntity.class);
+        try {
+            houseNumberEntity = mappingDsl.map(houseNumberDto, HouseNumberEntity.class);
+        }
+        catch (NoMappingException ignore) {
+            houseNumberEntity = null;
+        }
 
         if (testFlow.isBackwardMapped()) {
             assertThat(houseNumberEntity.getNumber()).isNull();

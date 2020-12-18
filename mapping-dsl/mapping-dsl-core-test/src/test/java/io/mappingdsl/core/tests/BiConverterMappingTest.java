@@ -4,6 +4,7 @@ import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.builder.MappingDslBuilder;
 import io.mappingdsl.core.common.BiConverter;
 import io.mappingdsl.core.common.Converter;
+import io.mappingdsl.core.execution.NoMappingException;
 import io.mappingdsl.core.tests.fixtures.AddressDto;
 import io.mappingdsl.core.tests.fixtures.AddressDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.AddressEntity;
@@ -32,7 +33,14 @@ class BiConverterMappingTest {
     @MethodSource("simpleConverterTestData")
     void shouldMapUsingSimpleConverter(String testName, MappingDsl mappingDsl, BiMappingTestFlow testFlow) {
         // forward mapping
-        ZipDto zipDto = mappingDsl.map(new ZipEntity(123456), ZipDto.class);
+        ZipDto zipDto;
+
+        try {
+            zipDto = mappingDsl.map(new ZipEntity(123456), ZipDto.class);
+        }
+        catch (NoMappingException ignore) {
+            zipDto = null;
+        }
 
         if (testFlow.isForwardMapped()) {
             assertThat(zipDto.getCode()).isEqualTo("123456");
@@ -45,7 +53,13 @@ class BiConverterMappingTest {
         zipDto = new ZipDto("123456");
 
         // backward mapping
-        ZipEntity zipEntity = mappingDsl.map(zipDto, ZipEntity.class);
+        ZipEntity zipEntity;
+        try {
+            zipEntity = mappingDsl.map(zipDto, ZipEntity.class);
+        }
+        catch (NoMappingException ignore) {
+            zipEntity = null;
+        }
 
         if (testFlow.isBackwardMapped()) {
             assertThat(zipEntity.getCode()).isEqualTo(123456);
@@ -227,7 +241,14 @@ class BiConverterMappingTest {
         AddressEntity addressEntity = new AddressEntity(streetEntity, houseNumberEntity);
 
         // forward mapping
-        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        AddressDto addressDto;
+
+        try {
+            addressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        }
+        catch (NoMappingException ignore) {
+            addressDto = null;
+        }
 
         if (testFlow.isForwardMapped()) {
             assertThat(addressDto.getStreet().getName()).isEqualTo("Baker Street");
@@ -246,7 +267,12 @@ class BiConverterMappingTest {
         addressDto = new AddressDto(streetDto, houseNumberDto);
 
         // backward mapping
-        addressEntity = mappingDsl.map(addressDto, AddressEntity.class);
+        try {
+            addressEntity = mappingDsl.map(addressDto, AddressEntity.class);
+        }
+        catch (NoMappingException ignore) {
+            addressEntity = null;
+        }
 
         if (testFlow.isBackwardMapped()) {
             assertThat(addressEntity.getStreet().getName()).isEqualTo("Baker Street");
