@@ -1,6 +1,7 @@
 package pojo;
 
 import io.mappingdsl.core.expression.DslHostExpression;
+import io.mappingdsl.core.expression.DslHostsCollectionExpression;
 import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.ValuesCollectionExpression;

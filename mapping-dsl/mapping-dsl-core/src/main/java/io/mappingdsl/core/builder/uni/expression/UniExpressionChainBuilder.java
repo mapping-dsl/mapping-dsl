@@ -5,6 +5,7 @@ import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.builder.uni.type.UniTypeInitiatorBuilder;
 import io.mappingdsl.core.expression.DslHostExpression;
+import io.mappingdsl.core.expression.DslHostsCollectionExpression;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.ValuesCollectionExpression;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
@@ -45,6 +46,14 @@ public class UniExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
     // delegate method
     public <SRC_TYPE> UniExpressionCollectionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
             ValuesCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+
+        registerCurrentRule();
+        return this.initialExpressionBuilder.produce(initialExpression);
+    }
+
+    // delegate method
+    public <SRC_TYPE> UniExpressionWrapperTerminatorCollectionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
+            DslHostsCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.produce(initialExpression);

@@ -6,6 +6,7 @@
 package ${ClassUtils.getClassPackage(fullClassName)};
 
 import io.mappingdsl.core.expression.DslHostExpression;
+import io.mappingdsl.core.expression.DslHostsCollectionExpression;
 import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.ValuesCollectionExpression;
@@ -40,7 +41,11 @@ public final class ${dslClassName}<ROOT, FUN extends ExpressionFunction>
                 </#if>
                 <#break>
             <#case "DSL">
-                <@expressions.dslField model=fieldModel />
+                <#if GeneratorUtils.isCollectionFieldModel(fieldModel.class)>
+                    <@expressions.dslCollectionField model=fieldModel />
+                <#else>
+                    <@expressions.dslField model=fieldModel />
+                </#if>
                 <#break>
         </#switch>${'\n'}
     </#list>

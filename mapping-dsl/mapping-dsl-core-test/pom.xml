@@ -33,6 +33,8 @@
                         </goals>
                         <configuration>
                             <testSourceFiles>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.AddressBookDto</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.AddressBookEntity</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.AddressDto</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.AddressEntity</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.Geolocation</testSourceFile>

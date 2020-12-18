@@ -1,6 +1,7 @@
 package pojo;
 
 import io.mappingdsl.core.expression.DslHostExpression;
+import io.mappingdsl.core.expression.DslHostsCollectionExpression;
 import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.ValuesCollectionExpression;
@@ -27,6 +28,9 @@ public final class ComplexFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
 
     public final SimpleFieldMappingDsl<ROOT, PathProcessingFunction> field =
             new SimpleFieldMappingDsl<>(this, new ObjectFieldAccessorFunction(pojo.SimpleField.class, "field"));
+
+    public final DslHostsCollectionExpression<ROOT, pojo.SimpleField, ValueProcessingFunction> collectionField =
+            new DslHostsCollectionExpression<>(this, new CollectionFieldAccessorFunction(java.util.List.class, pojo.SimpleField.class, "collectionField"));
 
     public final DslHostExpression<ROOT, pojo.SimpleField, GetMethodAccessorFunction> getField =
             new SimpleFieldMappingDsl<>(this, new GetMethodAccessorFunction(pojo.SimpleField.class, "getField"));

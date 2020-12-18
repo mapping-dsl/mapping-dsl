@@ -4,6 +4,7 @@ import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.MappingRule.MappingRuleDirection;
 import io.mappingdsl.core.expression.DslHostExpression;
+import io.mappingdsl.core.expression.DslHostsCollectionExpression;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.ValuesCollectionExpression;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
@@ -45,6 +46,17 @@ public class UniExpressionInitiatorBuilder<SRC_ROOT, TRG_ROOT> {
                 .build();
 
         return new UniExpressionCollectionConverterBuilder<>(this.context, mappingRule);
+    }
+
+    public <SRC_TYPE> UniExpressionWrapperTerminatorCollectionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
+            DslHostsCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+
+        MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
+                .mappingRuleDirection(MappingRuleDirection.FORWARD)
+                .initialExpression(initialExpression)
+                .build();
+
+        return new UniExpressionWrapperTerminatorCollectionBuilder<>(this.context, mappingRule);
     }
 
 }

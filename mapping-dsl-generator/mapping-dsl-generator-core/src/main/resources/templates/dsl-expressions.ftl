@@ -16,6 +16,11 @@
     public final ${dslClassName}<ROOT, PathProcessingFunction> ${model.name} =
             new ${dslClassName}<>(this, new ObjectFieldAccessorFunction(${model.type}.class, "${model.name}"));</#macro>
 
+<#macro dslCollectionField model>
+<#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.CollectionFieldModel" -->
+    public final DslHostsCollectionExpression<ROOT, ${model.elementType}, ValueProcessingFunction> ${model.name} =
+            new DslHostsCollectionExpression<>(this, new CollectionFieldAccessorFunction(${model.collectionType}.class, ${model.elementType}.class, "${model.name}"));</#macro>
+
 <#macro valueMethodReference model>
     <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
     <#switch model.modelType>

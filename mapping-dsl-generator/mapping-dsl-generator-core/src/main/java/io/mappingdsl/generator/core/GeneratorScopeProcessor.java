@@ -202,7 +202,7 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
         TypeDefinition fieldTypeDefinition = ExceptionUtils.defaultIfException(
                 () -> LanguageModelUtils.getTypeDefinition(fieldElement), null);
 
-        String fieldTypeName;
+        String fieldTypeName = null;
 
         if (fieldTypeDefinition == null) {
             TypeMirror type = fieldElement.asType();
@@ -210,39 +210,36 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
                 // primitive type, must be boxed
                 fieldTypeName = LanguageModelUtils.getBoxedTypeName(this.typeUtils, type);
             }
-            else {
-                // type is not yet compiled (probably defined in the same source codebase)
-                // thus `Class` representation of it is not available during the compilation,
-                // then string representation can be taken
-                fieldTypeName = type.toString();
-            }
         }
         else {
             // type is compiled and `Class` representation of it was detected
-            fieldTypeName = fieldTypeDefinition.getType().getCanonicalName();
+            fieldTypeName = fieldTypeDefinition.getTypeName();
+        }
+
+        Class<?> fieldType = ClassUtils.getClassByName(fieldTypeName);
+        if (fieldType != null && Iterable.class.isAssignableFrom(fieldType)) {
+            List<String> generics = fieldTypeDefinition.getGenerics();
+
+            String elementTypeName = Object.class.getCanonicalName();
+            if (generics.size() == 1) {
+                elementTypeName = generics.get(0);
+            }
+
+            FieldModelType modelType = this.scope.contains(elementTypeName)
+                    ? FieldModelType.DSL
+                    : FieldModelType.VALUE;
+
+            return CollectionFieldModel.collectionFieldModelBuilder()
+                    .name(fieldName)
+                    .elementType(elementTypeName)
+                    .collectionType(fieldType.getCanonicalName())
+                    .modelType(modelType)
+                    .build();
         }
 
         FieldModelType modelType = this.scope.contains(fieldTypeName)
                 ? FieldModelType.DSL
                 : FieldModelType.VALUE;
-
-        Class<?> fieldType = ClassUtils.getClassByName(fieldTypeName);
-
-        if (fieldType != null && Iterable.class.isAssignableFrom(fieldType)) {
-            List<Class<?>> generics = fieldTypeDefinition.getGenerics();
-
-            Class<?> elementType = Object.class;
-            if (generics.size() == 1) {
-                elementType = ObjectUtils.defaultIfNull(generics.get(0), elementType);
-            }
-
-            return CollectionFieldModel.collectionFieldModelBuilder()
-                    .name(fieldName)
-                    .elementType(elementType.getCanonicalName())
-                    .collectionType(fieldType.getCanonicalName())
-                    .modelType(modelType)
-                    .build();
-        }
 
         return FieldModel.fieldModelBuilder()
                 .name(fieldName)
