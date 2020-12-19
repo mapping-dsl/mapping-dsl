@@ -13,13 +13,12 @@ import io.mappingdsl.generator.core.model.FieldModelType;
 import io.mappingdsl.generator.core.model.MethodModel;
 import io.mappingdsl.generator.core.model.MethodModelType;
 import io.mappingdsl.generator.core.model.PropertyModel;
-import io.mappingdsl.generator.core.model.WrapperClassModel;
+import io.mappingdsl.generator.core.model.DslClassModel;
 import io.mappingdsl.generator.core.utils.GeneratorUtils;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -80,24 +79,24 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
 
                 String className = typeElement.getQualifiedName().toString();
 
-                if (!GeneratorUtils.isDslWrapperClass(className)) {
-                    WrapperClassModel wrapperClassModel = new WrapperClassModel(className);
+                if (!GeneratorUtils.isDslClass(className)) {
+                    DslClassModel dslClassModel = new DslClassModel(className);
 
                     List<TypeElement> classHierarchy = getClassHierarchy(typeElement);
 
                     List<Element> fields = getFields(classHierarchy);
                     List<Element> methods = getMethods(classHierarchy);
-                    register(wrapperClassModel, fields, methods);
+                    register(dslClassModel, fields, methods);
 
                     String fullDslClassName = ClassUtils.getClassPackage(className) + "." +
-                            GeneratorUtils.getDslWrapperClassName(className);
+                            GeneratorUtils.getDslClassName(className);
 
                     JavaFileObject fileObject = IoUtils.runSafe(() ->
                             this.processingEnv.getFiler().createSourceFile(fullDslClassName));
 
                     IoUtils.tryAndClose(
                             fileObject::openWriter,
-                            writer -> SourceCodeGenerator.INSTANCE.generate(wrapperClassModel, writer));
+                            writer -> SourceCodeGenerator.INSTANCE.generate(dslClassModel, writer));
                 }
             }
         }
@@ -130,7 +129,7 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
                 .collect(Collectors.toList());
     }
 
-    private void register(WrapperClassModel model, List<Element> fields, List<Element> methods) {
+    private void register(DslClassModel model, List<Element> fields, List<Element> methods) {
         Map<Element, List<Element>> groupedFields = fields.stream()
                 .collect(Collectors.groupingBy(Element::getEnclosingElement));
 

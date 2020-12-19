@@ -8,11 +8,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 class GeneratorUtilsTest {
 
     @Test
-    void shouldGenerateProperDslWrapperClassName() {
-        assertThat(GeneratorUtils.getDslWrapperClassName("CountryTransport"))
+    void shouldGenerateProperDslClassName() {
+        assertThat(GeneratorUtils.getDslClassName("CountryTransport"))
                 .isEqualTo("CountryTransportMappingDsl");
 
-        assertThat(GeneratorUtils.getDslWrapperClassName("pojo.CountryTransport"))
+        assertThat(GeneratorUtils.getDslClassName("pojo.CountryTransport"))
                 .isEqualTo("CountryTransportMappingDsl");
     }
 

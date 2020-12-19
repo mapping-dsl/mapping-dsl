@@ -10,11 +10,11 @@ public final class GeneratorUtils {
 
     private static final String DSL_CLASS_NAME_SUFFIX = "MappingDsl";
 
-    public static String getDslWrapperClassName(String fullClassName) {
+    public static String getDslClassName(String fullClassName) {
         return ClassUtils.getClassName(fullClassName) + DSL_CLASS_NAME_SUFFIX;
     }
 
-    public static boolean isDslWrapperClass(String fullClassName) {
+    public static boolean isDslClass(String fullClassName) {
         return fullClassName.endsWith(DSL_CLASS_NAME_SUFFIX);
     }
 

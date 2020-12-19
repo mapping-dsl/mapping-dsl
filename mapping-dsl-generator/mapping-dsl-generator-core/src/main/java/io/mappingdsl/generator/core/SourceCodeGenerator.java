@@ -8,7 +8,7 @@ import freemarker.template.TemplateModel;
 import ice.bricks.exceptions.ExceptionUtils;
 import ice.bricks.io.IoUtils;
 import ice.bricks.meta.ClassUtils;
-import io.mappingdsl.generator.core.model.WrapperClassModel;
+import io.mappingdsl.generator.core.model.DslClassModel;
 import io.mappingdsl.generator.core.utils.GeneratorUtils;
 
 import java.io.Writer;
@@ -37,7 +37,7 @@ public class SourceCodeGenerator {
         this.rootTemplate = IoUtils.runSafe(() -> configuration.getTemplate("dsl-class.ftl"));
     }
 
-    public void generate(WrapperClassModel dataModel, Writer writer) {
+    public void generate(DslClassModel dataModel, Writer writer) {
         ExceptionUtils.runSafe(() -> this.rootTemplate.process(dataModel, writer));
     }
 

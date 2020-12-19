@@ -13,7 +13,7 @@ import io.mappingdsl.core.builder.bi.expression.terminator.wrapper.BiWrapperExpr
 import io.mappingdsl.core.builder.bi.type.BiTypeInitiatorBuilder;
 import io.mappingdsl.core.common.BiCondition;
 import io.mappingdsl.core.common.Condition;
-import io.mappingdsl.core.expression.DslHostExpression;
+import io.mappingdsl.core.expression.DslExpression;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
@@ -64,7 +64,7 @@ public class BiExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE
 
     // delegate method
     public <NEW_SRC_TYPE> BiWrapperExpressionTerminatorBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> bind(
-            DslHostExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
+            DslExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
 
         return this.chainBuilder.bind(initialExpression);
     }
@@ -78,7 +78,7 @@ public class BiExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE
 
     // delegate method
     public <NEW_SRC_TYPE> BiProducerWrapperExpressionTerminatorBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> produce(
-            DslHostExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            DslExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         return this.chainBuilder.produce(initialExpression);
     }
@@ -92,7 +92,7 @@ public class BiExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE
 
     // delegate method
     public <NEW_SRC_TYPE> BiConsumerWrapperExpressionTerminatorBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> consume(
-            DslHostExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+            DslExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
         return this.chainBuilder.consume(initialExpression);
     }

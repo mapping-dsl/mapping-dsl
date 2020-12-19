@@ -9,7 +9,7 @@ import io.mappingdsl.core.builder.bi.expression.converter.BiProducerExpressionCo
 import io.mappingdsl.core.builder.bi.expression.terminator.wrapper.BiConsumerWrapperExpressionTerminatorBuilder;
 import io.mappingdsl.core.builder.bi.expression.terminator.wrapper.BiProducerWrapperExpressionTerminatorBuilder;
 import io.mappingdsl.core.builder.bi.expression.terminator.wrapper.BiWrapperExpressionTerminatorBuilder;
-import io.mappingdsl.core.expression.DslHostExpression;
+import io.mappingdsl.core.expression.DslExpression;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
@@ -33,7 +33,7 @@ public class BiExpressionInitiatorBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     public <SRC_TYPE> BiWrapperExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> bind(
-            DslHostExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
+            DslExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.BOTH)
@@ -55,7 +55,7 @@ public class BiExpressionInitiatorBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     public <SRC_TYPE> BiProducerWrapperExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
-            DslHostExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            DslExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.FORWARD)
@@ -77,7 +77,7 @@ public class BiExpressionInitiatorBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     public <SRC_TYPE> BiConsumerWrapperExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
-            DslHostExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+            DslExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.BACKWARD)

@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class LombokSupportTest {
 
     @Test
-    void shouldGenerateDslWrapper() {
+    void shouldGenerateDslClass() {
         String testClassName = SimplePojo.class.getCanonicalName();
         File generatedDsl = getGeneratedFile(testClassName);
         File expectedDsl = getExpectedFile(testClassName);
@@ -29,14 +29,14 @@ class LombokSupportTest {
         return new File(String.join(File.separator,
                 "target/generated-test-sources/java",
                 ClassUtils.getClassPackage(testClassName).replace(".", File.separator),
-                GeneratorUtils.getDslWrapperClassName(testClassName) + ".java"
+                GeneratorUtils.getDslClassName(testClassName) + ".java"
         ));
     }
 
     private File getExpectedFile(String testClassName) {
         return new File(String.join(File.separator,
                 "src/test/resources",
-                GeneratorUtils.getDslWrapperClassName(testClassName) + ".java"));
+                GeneratorUtils.getDslClassName(testClassName) + ".java"));
     }
 
 

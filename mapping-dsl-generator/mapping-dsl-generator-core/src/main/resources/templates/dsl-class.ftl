@@ -1,15 +1,15 @@
 <#-- @ftlvariable name="GeneratorUtils" type="io.mappingdsl.generator.core.utils.GeneratorUtils" -->
 <#-- @ftlvariable name="ClassUtils" type="ice.bricks.meta.ClassUtils.static" -->
-<#-- @ftlvariable name="" type="io.mappingdsl.generator.core.model.WrapperClassModel" -->
+<#-- @ftlvariable name="" type="io.mappingdsl.generator.core.model.DslClassModel" -->
 <#import "dsl-expressions.ftl" as expressions>
-<#assign dslClassName = GeneratorUtils.getDslWrapperClassName(fullClassName)>
+<#assign dslClassName = GeneratorUtils.getDslClassName(fullClassName)>
 package ${ClassUtils.getClassPackage(fullClassName)};
 
-import io.mappingdsl.core.expression.DslHostExpression;
-import io.mappingdsl.core.expression.DslHostsCollectionExpression;
+import io.mappingdsl.core.expression.DslCollectionExpression;
+import io.mappingdsl.core.expression.DslExpression;
 import io.mappingdsl.core.expression.ExpressionBase;
+import io.mappingdsl.core.expression.ValueCollectionExpression;
 import io.mappingdsl.core.expression.ValueExpression;
-import io.mappingdsl.core.expression.ValuesCollectionExpression;
 import io.mappingdsl.core.expression.function.CollectionFieldAccessorFunction;
 import io.mappingdsl.core.expression.function.ExpressionFunction;
 import io.mappingdsl.core.expression.function.GetMethodAccessorFunction;
@@ -26,7 +26,7 @@ import javax.annotation.Generated;
 
 @Generated("MappingDsl")
 public final class ${dslClassName}<ROOT, FUN extends ExpressionFunction>
-        extends DslHostExpression<ROOT, ${fullClassName}, FUN> {
+        extends DslExpression<ROOT, ${fullClassName}, FUN> {
 
     public static final ${dslClassName}<${fullClassName}, ValueProducerFunction> $this =
             new ${dslClassName}<>(new RootIdentityFunction("${ClassUtils.getClassName(fullClassName)}"));

@@ -1,10 +1,10 @@
 package pojo;
 
-import io.mappingdsl.core.expression.DslHostExpression;
-import io.mappingdsl.core.expression.DslHostsCollectionExpression;
+import io.mappingdsl.core.expression.DslCollectionExpression;
+import io.mappingdsl.core.expression.DslExpression;
 import io.mappingdsl.core.expression.ExpressionBase;
+import io.mappingdsl.core.expression.ValueCollectionExpression;
 import io.mappingdsl.core.expression.ValueExpression;
-import io.mappingdsl.core.expression.ValuesCollectionExpression;
 import io.mappingdsl.core.expression.function.CollectionFieldAccessorFunction;
 import io.mappingdsl.core.expression.function.ExpressionFunction;
 import io.mappingdsl.core.expression.function.GetMethodAccessorFunction;
@@ -21,7 +21,7 @@ import javax.annotation.Generated;
 
 @Generated("MappingDsl")
 public final class ComplexFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
-        extends DslHostExpression<ROOT, pojo.ComplexField, FUN> {
+        extends DslExpression<ROOT, pojo.ComplexField, FUN> {
 
     public static final ComplexFieldMappingDsl<pojo.ComplexField, ValueProducerFunction> $this =
             new ComplexFieldMappingDsl<>(new RootIdentityFunction("ComplexField"));
@@ -29,13 +29,13 @@ public final class ComplexFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
     public final SimpleFieldMappingDsl<ROOT, PathProcessingFunction> field =
             new SimpleFieldMappingDsl<>(this, new ObjectFieldAccessorFunction(pojo.SimpleField.class, "field"));
 
-    public final DslHostsCollectionExpression<ROOT, pojo.SimpleField, ValueProcessingFunction> collectionField =
-            new DslHostsCollectionExpression<>(this, new CollectionFieldAccessorFunction(java.util.List.class, pojo.SimpleField.class, "collectionField"));
+    public final DslCollectionExpression<ROOT, pojo.SimpleField, ValueProcessingFunction> collectionField =
+            new DslCollectionExpression<>(this, new CollectionFieldAccessorFunction(java.util.List.class, pojo.SimpleField.class, "collectionField"));
 
-    public final DslHostExpression<ROOT, pojo.SimpleField, GetMethodAccessorFunction> getField =
+    public final DslExpression<ROOT, pojo.SimpleField, GetMethodAccessorFunction> getField =
             new SimpleFieldMappingDsl<>(this, new GetMethodAccessorFunction(pojo.SimpleField.class, "getField"));
 
-    public final DslHostExpression<ROOT, pojo.SimpleField, SetMethodAccessorFunction> setField =
+    public final DslExpression<ROOT, pojo.SimpleField, SetMethodAccessorFunction> setField =
             new SimpleFieldMappingDsl<>(this, new SetMethodAccessorFunction(pojo.SimpleField.class, "setField"));
 
     public final SimpleFieldMappingDsl<ROOT, PropertyAccessorFunction> fieldProperty =

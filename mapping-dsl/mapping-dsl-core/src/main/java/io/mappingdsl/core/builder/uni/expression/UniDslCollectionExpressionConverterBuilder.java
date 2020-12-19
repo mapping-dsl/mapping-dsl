@@ -3,12 +3,12 @@ package io.mappingdsl.core.builder.uni.expression;
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.common.Converter;
-import io.mappingdsl.core.expression.DslHostsCollectionExpression;
+import io.mappingdsl.core.expression.DslCollectionExpression;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class UniExpressionWrapperTerminatorCollectionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
+public class UniDslCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
@@ -36,10 +36,10 @@ public class UniExpressionWrapperTerminatorCollectionBuilder<SRC_ROOT, SRC_TYPE,
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
-        public UniExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
-                DslHostsCollectionExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+        public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
+                DslCollectionExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
-            return new UniExpressionConditionBuilder<>(
+            return new UniMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
         }
 
@@ -51,10 +51,10 @@ public class UniExpressionWrapperTerminatorCollectionBuilder<SRC_ROOT, SRC_TYPE,
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
-        public <TRG_TYPE> UniExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
-                DslHostsCollectionExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+        public <TRG_TYPE> UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
+                DslCollectionExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
-            return new UniExpressionConditionBuilder<>(
+            return new UniMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
         }
 

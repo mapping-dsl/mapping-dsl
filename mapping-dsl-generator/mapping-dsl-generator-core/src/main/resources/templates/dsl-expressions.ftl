@@ -7,19 +7,19 @@
 
 <#macro valuesCollectionField model>
     <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.CollectionFieldModel" -->
-    public final ValuesCollectionExpression<ROOT, ${model.elementType}, ValueProcessingFunction> ${model.name} =
-            new ValuesCollectionExpression<>(this, new CollectionFieldAccessorFunction(${model.collectionType}.class, ${model.elementType}.class, "${model.name}"));</#macro>
+    public final ValueCollectionExpression<ROOT, ${model.elementType}, ValueProcessingFunction> ${model.name} =
+            new ValueCollectionExpression<>(this, new CollectionFieldAccessorFunction(${model.collectionType}.class, ${model.elementType}.class, "${model.name}"));</#macro>
 
 <#macro dslField model>
-    <#assign dslClassName = GeneratorUtils.getDslWrapperClassName(model.type)>
+    <#assign dslClassName = GeneratorUtils.getDslClassName(model.type)>
     <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.FieldModel" -->
     public final ${dslClassName}<ROOT, PathProcessingFunction> ${model.name} =
             new ${dslClassName}<>(this, new ObjectFieldAccessorFunction(${model.type}.class, "${model.name}"));</#macro>
 
 <#macro dslCollectionField model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.CollectionFieldModel" -->
-    public final DslHostsCollectionExpression<ROOT, ${model.elementType}, ValueProcessingFunction> ${model.name} =
-            new DslHostsCollectionExpression<>(this, new CollectionFieldAccessorFunction(${model.collectionType}.class, ${model.elementType}.class, "${model.name}"));</#macro>
+    public final DslCollectionExpression<ROOT, ${model.elementType}, ValueProcessingFunction> ${model.name} =
+            new DslCollectionExpression<>(this, new CollectionFieldAccessorFunction(${model.collectionType}.class, ${model.elementType}.class, "${model.name}"));</#macro>
 
 <#macro valueMethodReference model>
     <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
@@ -34,14 +34,14 @@
 </#macro>
 
 <#macro dslMethodReference model>
-    <#assign dslClassName = GeneratorUtils.getDslWrapperClassName(model.fieldModel.type)>
+    <#assign dslClassName = GeneratorUtils.getDslClassName(model.fieldModel.type)>
     <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
     <#switch model.modelType>
     <#case "GETTER">
-    public final DslHostExpression<ROOT, ${model.fieldModel.type}, GetMethodAccessorFunction> ${model.name} =
+    public final DslExpression<ROOT, ${model.fieldModel.type}, GetMethodAccessorFunction> ${model.name} =
             new ${dslClassName}<>(this, new GetMethodAccessorFunction(${model.fieldModel.type}.class, "${model.name}"));<#break>
     <#case "SETTER">
-    public final DslHostExpression<ROOT, ${model.fieldModel.type}, SetMethodAccessorFunction> ${model.name} =
+    public final DslExpression<ROOT, ${model.fieldModel.type}, SetMethodAccessorFunction> ${model.name} =
             new ${dslClassName}<>(this, new SetMethodAccessorFunction(${model.fieldModel.type}.class, "${model.name}"));<#break>
     </#switch>
 </#macro>
@@ -54,7 +54,7 @@
                     this.${model.setterModel.name}.getExpressionFunction()));</#macro>
 
 <#macro dslProperty model>
-    <#assign dslClassName = GeneratorUtils.getDslWrapperClassName(model.fieldModel.type)>
+    <#assign dslClassName = GeneratorUtils.getDslClassName(model.fieldModel.type)>
     <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.PropertyModel" -->
     public final ${dslClassName}<ROOT, PropertyAccessorFunction> ${model.fieldModel.name}Property =
             new ${dslClassName}<>(this, new PropertyAccessorFunction(

@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Getter
-public class WrapperClassModel {
+public class DslClassModel {
 
     private final String fullClassName;
     private final List<FieldModel> fieldModels = new LinkedList<>();
@@ -15,7 +15,7 @@ public class WrapperClassModel {
     private final List<PropertyModel> propertyModels = new LinkedList<>();
 
     @Builder
-    public WrapperClassModel(String fullClassName) {
+    public DslClassModel(String fullClassName) {
         this.fullClassName = fullClassName;
     }
 
