@@ -10,7 +10,7 @@ import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
 
-public class BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
+public final class BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;

@@ -3,7 +3,7 @@ package io.mappingdsl.core.builder.config;
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.execution.MappingBeanFactory;
 
-public class BeanFactoryConfigurationBuilder<T> extends ConfigurationBuilderBase {
+public final class BeanFactoryConfigurationBuilder<T> extends ConfigurationBuilderBase {
 
     private final Class<T> type;
 

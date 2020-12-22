@@ -8,7 +8,7 @@ import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class UniDslExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
+public final class UniDslExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
@@ -31,7 +31,7 @@ public class UniDslExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
     }
 
     @RequiredArgsConstructor
-    public static class UniTerminalCompatibleDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
+    public static final class UniTerminalCompatibleDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
 
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
@@ -46,7 +46,7 @@ public class UniDslExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
     }
 
     @RequiredArgsConstructor
-    public static class UniTerminalIncompatibleDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
+    public static final class UniTerminalIncompatibleDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;

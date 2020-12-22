@@ -4,7 +4,7 @@ import io.mappingdsl.core.MappingContext;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class ConfigurationBuilderBase {
+class ConfigurationBuilderBase {
 
     protected final ConfigurationBuilder configBuilder;
     protected final MappingContext<?, ?> context;

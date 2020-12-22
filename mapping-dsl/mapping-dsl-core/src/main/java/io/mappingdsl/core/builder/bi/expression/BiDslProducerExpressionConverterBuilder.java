@@ -8,7 +8,7 @@ import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class BiDslProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
+public final class BiDslProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
@@ -29,7 +29,7 @@ public class BiDslProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROO
     }
 
     @RequiredArgsConstructor
-    public static class BiTerminalCompatibleDslProducerExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
+    public static final class BiTerminalCompatibleDslProducerExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
 
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
@@ -44,7 +44,7 @@ public class BiDslProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROO
     }
 
     @RequiredArgsConstructor
-    public static class BiTerminalIncompatibleDslProducerExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
+    public static final class BiTerminalIncompatibleDslProducerExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;

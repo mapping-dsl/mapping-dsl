@@ -4,7 +4,7 @@ import io.mappingdsl.core.MappingContext;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class BiInitialTypeBuilder {
+public final class BiInitialTypeBuilder {
 
     private final MappingContext<?, ?> context;
 

@@ -6,7 +6,7 @@ import io.mappingdsl.core.builder.bi.expression.BiInitialExpressionBuilder;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class BiTerminalTypeBuilder<SRC_ROOT> {
+public final class BiTerminalTypeBuilder<SRC_ROOT> {
 
     private final MappingContext<?, ?> context;
     private final Class<SRC_ROOT> sourceType;

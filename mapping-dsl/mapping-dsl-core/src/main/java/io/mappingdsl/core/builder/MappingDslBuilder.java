@@ -7,7 +7,7 @@ import io.mappingdsl.core.builder.config.ConfigurationBuilder;
 import io.mappingdsl.core.builder.uni.type.UniInitialTypeBuilder;
 import io.mappingdsl.core.config.MappingConfiguration;
 
-public class MappingDslBuilder {
+public final class MappingDslBuilder {
 
     private final MappingContext<?, ?> context = new MappingContext<>()
             .withConfiguration(new MappingConfiguration())

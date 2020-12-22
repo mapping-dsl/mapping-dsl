@@ -6,7 +6,7 @@ import io.mappingdsl.core.builder.uni.type.UniInitialTypeBuilder;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class ConfigurationBuilder {
+public final class ConfigurationBuilder {
 
     private final MappingContext<?, ?> context;
 

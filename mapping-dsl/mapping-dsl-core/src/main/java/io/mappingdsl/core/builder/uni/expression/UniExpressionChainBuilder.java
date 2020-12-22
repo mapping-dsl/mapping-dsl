@@ -10,7 +10,7 @@ import io.mappingdsl.core.expression.ValueCollectionExpression;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
 
-public class UniExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
+public final class UniExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;

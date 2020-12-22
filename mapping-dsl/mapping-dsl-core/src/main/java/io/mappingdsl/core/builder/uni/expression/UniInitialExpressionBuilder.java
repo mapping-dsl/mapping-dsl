@@ -11,7 +11,7 @@ import io.mappingdsl.core.expression.function.ValueProducerFunction;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class UniInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
+public final class UniInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
 

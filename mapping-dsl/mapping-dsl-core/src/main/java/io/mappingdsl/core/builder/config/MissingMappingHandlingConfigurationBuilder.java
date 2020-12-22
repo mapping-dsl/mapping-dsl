@@ -5,7 +5,7 @@ import io.mappingdsl.core.MappingContext;
 import static io.mappingdsl.core.config.MissingMappingHandlingMode.RETURN_NULL;
 import static io.mappingdsl.core.config.MissingMappingHandlingMode.TERMINATE;
 
-public class MissingMappingHandlingConfigurationBuilder extends ConfigurationBuilderBase {
+public final class MissingMappingHandlingConfigurationBuilder extends ConfigurationBuilderBase {
 
     public MissingMappingHandlingConfigurationBuilder(ConfigurationBuilder configBuilder, MappingContext<?, ?> context) {
         super(configBuilder, context);

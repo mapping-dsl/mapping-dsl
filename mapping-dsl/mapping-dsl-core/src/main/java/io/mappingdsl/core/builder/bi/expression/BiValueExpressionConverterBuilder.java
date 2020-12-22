@@ -8,7 +8,7 @@ import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
 import lombok.RequiredArgsConstructor;
 
-public class BiValueExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
+public final class BiValueExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
@@ -54,7 +54,7 @@ public class BiValueExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
     }
 
     @RequiredArgsConstructor
-    public static class BiTerminalValueExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
+    public static final class BiTerminalValueExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
 
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
