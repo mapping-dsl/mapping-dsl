@@ -35,7 +35,7 @@ public final class UniValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TY
     }
 
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-    public final static class UniTerminalValueCollectionExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
+    public static final class UniTerminalValueCollectionExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
 
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
