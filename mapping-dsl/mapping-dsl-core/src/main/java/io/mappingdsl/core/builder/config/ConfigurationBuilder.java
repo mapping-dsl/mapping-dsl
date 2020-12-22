@@ -1,7 +1,7 @@
 package io.mappingdsl.core.builder.config;
 
 import io.mappingdsl.core.MappingContext;
-import io.mappingdsl.core.builder.bi.type.BiTypeInitiatorBuilder;
+import io.mappingdsl.core.builder.bi.type.BiInitialTypeBuilder;
 import io.mappingdsl.core.builder.uni.type.UniInitialTypeBuilder;
 import lombok.RequiredArgsConstructor;
 
@@ -28,8 +28,8 @@ public class ConfigurationBuilder {
     }
 
     // duplicating MappingDslBuilder
-    public BiTypeInitiatorBuilder biMapping() {
-        return new BiTypeInitiatorBuilder(this.context);
+    public BiInitialTypeBuilder biMapping() {
+        return new BiInitialTypeBuilder(this.context);
     }
 
 }

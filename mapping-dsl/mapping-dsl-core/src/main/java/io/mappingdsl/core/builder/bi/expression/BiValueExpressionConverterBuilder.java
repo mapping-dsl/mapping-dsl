@@ -1,29 +1,28 @@
-package io.mappingdsl.core.builder.bi.expression.converter;
+package io.mappingdsl.core.builder.bi.expression;
 
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
-import io.mappingdsl.core.builder.bi.expression.condition.BiExpressionConditionBuilder;
-import io.mappingdsl.core.builder.bi.expression.terminator.value.BiExpressionTerminatorBuilder;
 import io.mappingdsl.core.common.BiConverter;
 import io.mappingdsl.core.common.Converter;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
+import lombok.RequiredArgsConstructor;
 
-public class BiExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
+public class BiValueExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
-    private final BiExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> terminalExpressionBuilder;
+    private final BiTerminalValueExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> terminalExpressionBuilder;
 
-    public BiExpressionConverterBuilder(
+    public BiValueExpressionConverterBuilder(
             MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
 
         this.context = context;
         this.mappingRule = mappingRule;
-        this.terminalExpressionBuilder = new BiExpressionTerminatorBuilder<>(this.context, this.mappingRule);
+        this.terminalExpressionBuilder = new BiTerminalValueExpressionBuilder<>(this.context, this.mappingRule);
     }
 
-    public <TRG_TYPE> BiExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> usingConverters(
+    public <TRG_TYPE> BiTerminalValueExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> usingConverters(
             Converter<SRC_TYPE, TRG_TYPE> initialExpressionConverter,
             Converter<TRG_TYPE, SRC_TYPE> terminalExpressionConverter) {
 
@@ -31,10 +30,10 @@ public class BiExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
                 .withInitialExpressionConverter(initialExpressionConverter)
                 .withTerminalExpressionConverter(terminalExpressionConverter);
 
-        return new BiExpressionTerminatorBuilder<>(this.context, rule);
+        return new BiTerminalValueExpressionBuilder<>(this.context, rule);
     }
 
-    public <TRG_TYPE> BiExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> usingConverter(
+    public <TRG_TYPE> BiTerminalValueExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> usingConverter(
             BiConverter<SRC_TYPE, TRG_TYPE> converters) {
 
         Converter<SRC_TYPE, TRG_TYPE> forwardConverter = converters::convertForward;
@@ -44,14 +43,29 @@ public class BiExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
                 .withInitialExpressionConverter(forwardConverter)
                 .withTerminalExpressionConverter(backwardConverter);
 
-        return new BiExpressionTerminatorBuilder<>(this.context, rule);
+        return new BiTerminalValueExpressionBuilder<>(this.context, rule);
     }
 
     // delegate method
-    public BiExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> with(
+    public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> with(
             ValueExpression<TRG_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> terminalExpression) {
 
         return this.terminalExpressionBuilder.with(terminalExpression);
+    }
+
+    @RequiredArgsConstructor
+    public static class BiTerminalValueExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
+
+        private final MappingContext<SRC_ROOT, TRG_ROOT> context;
+        private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
+
+        public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> with(
+                ValueExpression<TRG_ROOT, TRG_TYPE, ? extends ValueProcessingFunction> terminalExpression) {
+
+            return new BiMappingConditionBuilder<>(
+                    this.context, this.mappingRule.withTerminalExpression(terminalExpression));
+        }
+
     }
 
 }

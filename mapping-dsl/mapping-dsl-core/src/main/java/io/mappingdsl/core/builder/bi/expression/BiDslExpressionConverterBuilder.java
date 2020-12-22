@@ -1,8 +1,7 @@
-package io.mappingdsl.core.builder.bi.expression.terminator.wrapper;
+package io.mappingdsl.core.builder.bi.expression;
 
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
-import io.mappingdsl.core.builder.bi.expression.condition.BiExpressionConditionBuilder;
 import io.mappingdsl.core.common.BiConverter;
 import io.mappingdsl.core.common.Converter;
 import io.mappingdsl.core.expression.DslExpression;
@@ -10,16 +9,16 @@ import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class BiWrapperExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
+public class BiDslExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
-    public BiTerminalCompatibleWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> asIs() {
-        return new BiTerminalCompatibleWrapperExpressionBuilder<>(this.context, this.mappingRule);
+    public BiTerminalCompatibleDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> asIs() {
+        return new BiTerminalCompatibleDslExpressionBuilder<>(this.context, this.mappingRule);
     }
 
-    public <TRG_TYPE> BiTerminalCompatibleWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> usingConverters(
+    public <TRG_TYPE> BiTerminalCompatibleDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> usingConverters(
             Converter<SRC_TYPE, TRG_TYPE> initialExpressionConverter,
             Converter<TRG_TYPE, SRC_TYPE> terminalExpressionConverter) {
 
@@ -27,10 +26,10 @@ public class BiWrapperExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> 
                 .withInitialExpressionConverter(initialExpressionConverter)
                 .withTerminalExpressionConverter(terminalExpressionConverter);
 
-        return new BiTerminalCompatibleWrapperExpressionBuilder<>(this.context, rule);
+        return new BiTerminalCompatibleDslExpressionBuilder<>(this.context, rule);
     }
 
-    public <TRG_TYPE> BiTerminalCompatibleWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> usingConverter(
+    public <TRG_TYPE> BiTerminalCompatibleDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> usingConverter(
             BiConverter<SRC_TYPE, TRG_TYPE> converters) {
 
         Converter<SRC_TYPE, TRG_TYPE> forwardConverter = converters::convertForward;
@@ -39,35 +38,35 @@ public class BiWrapperExpressionTerminatorBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> 
         return usingConverters(forwardConverter, backwardConverter);
     }
 
-    public BiTerminalIncompatibleWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> usingMapping() {
-        return new BiTerminalIncompatibleWrapperExpressionBuilder<>(this.context, this.mappingRule);
+    public BiTerminalIncompatibleDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> usingMapping() {
+        return new BiTerminalIncompatibleDslExpressionBuilder<>(this.context, this.mappingRule);
     }
 
     @RequiredArgsConstructor
-    public static class BiTerminalCompatibleWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
+    public static class BiTerminalCompatibleDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
 
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
-        public BiExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> with(
+        public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> with(
                 DslExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
-            return new BiExpressionConditionBuilder<>(
+            return new BiMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
         }
 
     }
 
     @RequiredArgsConstructor
-    public static class BiTerminalIncompatibleWrapperExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
+    public static class BiTerminalIncompatibleDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
-        public <TRG_TYPE> BiExpressionConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> with(
+        public <TRG_TYPE> BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> with(
                 DslExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
-            return new BiExpressionConditionBuilder<>(
+            return new BiMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
         }
 

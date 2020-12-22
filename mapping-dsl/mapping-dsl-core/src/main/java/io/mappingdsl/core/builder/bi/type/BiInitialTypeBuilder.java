@@ -4,12 +4,12 @@ import io.mappingdsl.core.MappingContext;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class BiTypeInitiatorBuilder {
+public class BiInitialTypeBuilder {
 
     private final MappingContext<?, ?> context;
 
-    public <SRC_ROOT> BiTypeTerminatorBuilder<SRC_ROOT> between(Class<SRC_ROOT> initialType) {
-        return new BiTypeTerminatorBuilder<>(this.context, initialType);
+    public <SRC_ROOT> BiTerminalTypeBuilder<SRC_ROOT> between(Class<SRC_ROOT> initialType) {
+        return new BiTerminalTypeBuilder<>(this.context, initialType);
     }
 
 }
