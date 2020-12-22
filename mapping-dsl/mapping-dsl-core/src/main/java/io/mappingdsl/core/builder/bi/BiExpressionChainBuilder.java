@@ -1,9 +1,8 @@
-package io.mappingdsl.core.builder.bi.expression;
+package io.mappingdsl.core.builder.bi;
 
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.MappingRule;
-import io.mappingdsl.core.builder.bi.type.BiInitialTypeBuilder;
 import io.mappingdsl.core.expression.DslExpression;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;

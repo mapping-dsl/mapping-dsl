@@ -1,9 +1,9 @@
-package io.mappingdsl.core.builder.bi.expression;
+package io.mappingdsl.core.builder.bi;
 
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.MappingRule;
-import io.mappingdsl.core.builder.bi.type.BiInitialTypeBuilder;
+import io.mappingdsl.core.common.BiCondition;
 import io.mappingdsl.core.common.Condition;
 import io.mappingdsl.core.expression.DslExpression;
 import io.mappingdsl.core.expression.ValueExpression;
@@ -11,23 +11,33 @@ import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
 
-public final class BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, TRG_TYPE> {
+public final class BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
     private final BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> chainBuilder;
 
-    public BiConsumerMappingConditionBuilder(
-            MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
-
+    public BiMappingConditionBuilder(MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
         this.context = context;
         this.mappingRule = mappingRule;
         this.chainBuilder = new BiExpressionChainBuilder<>(this.context, this.mappingRule);
     }
 
-    public BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> when(Condition<TRG_TYPE> condition) {
+    public BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> when(
+            Condition<SRC_TYPE> forwardCondition, Condition<TRG_TYPE> backwardCondition) {
+
         MappingRule<SRC_ROOT, TRG_ROOT> rule = this.mappingRule
-                .withInitialCondition(null).withTerminalCondition(condition);
+                .withInitialCondition(forwardCondition).withTerminalCondition(backwardCondition);
+
+        return new BiExpressionChainBuilder<>(this.context, rule);
+    }
+
+    public BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> when(BiCondition<SRC_TYPE, TRG_TYPE> condition) {
+        Condition<SRC_TYPE> forwardCondition = condition::testForward;
+        Condition<TRG_TYPE> backwardCondition = condition::testBackward;
+
+        MappingRule<SRC_ROOT, TRG_ROOT> rule = this.mappingRule
+                .withInitialCondition(forwardCondition).withTerminalCondition(backwardCondition);
 
         return new BiExpressionChainBuilder<>(this.context, rule);
     }

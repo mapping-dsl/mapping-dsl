@@ -1,8 +1,8 @@
 package io.mappingdsl.core.builder.config;
 
 import io.mappingdsl.core.MappingContext;
-import io.mappingdsl.core.builder.bi.type.BiInitialTypeBuilder;
-import io.mappingdsl.core.builder.uni.type.UniInitialTypeBuilder;
+import io.mappingdsl.core.builder.bi.BiInitialTypeBuilder;
+import io.mappingdsl.core.builder.uni.UniInitialTypeBuilder;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

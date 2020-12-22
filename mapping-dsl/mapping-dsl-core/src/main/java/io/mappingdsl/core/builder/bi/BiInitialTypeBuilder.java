@@ -1,4 +1,4 @@
-package io.mappingdsl.core.builder.bi.type;
+package io.mappingdsl.core.builder.bi;
 
 import io.mappingdsl.core.MappingContext;
 import lombok.RequiredArgsConstructor;

@@ -2,9 +2,9 @@ package io.mappingdsl.core.builder;
 
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRules;
-import io.mappingdsl.core.builder.bi.type.BiInitialTypeBuilder;
+import io.mappingdsl.core.builder.bi.BiInitialTypeBuilder;
 import io.mappingdsl.core.builder.config.ConfigurationBuilder;
-import io.mappingdsl.core.builder.uni.type.UniInitialTypeBuilder;
+import io.mappingdsl.core.builder.uni.UniInitialTypeBuilder;
 import io.mappingdsl.core.config.MappingConfiguration;
 
 public final class MappingDslBuilder {
