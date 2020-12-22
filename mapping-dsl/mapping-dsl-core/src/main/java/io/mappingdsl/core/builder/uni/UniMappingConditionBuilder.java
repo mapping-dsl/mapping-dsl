@@ -16,9 +16,7 @@ public final class UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
     private final UniExpressionChainBuilder<SRC_ROOT, TRG_ROOT> chainBuilder;
 
-    public UniMappingConditionBuilder(
-            MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
-
+    UniMappingConditionBuilder(MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
         this.context = context;
         this.mappingRule = mappingRule;
         this.chainBuilder = new UniExpressionChainBuilder<>(context, mappingRule);

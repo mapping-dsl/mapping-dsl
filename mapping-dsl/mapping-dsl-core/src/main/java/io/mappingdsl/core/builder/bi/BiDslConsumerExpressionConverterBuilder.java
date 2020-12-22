@@ -5,9 +5,10 @@ import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.common.Converter;
 import io.mappingdsl.core.expression.DslExpression;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public final class BiDslConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
@@ -28,7 +29,7 @@ public final class BiDslConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, T
         return new BiTerminalIncompatibleDslConsumerExpressionBuilder<>(this.context, this.mappingRule);
     }
 
-    @RequiredArgsConstructor
+    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class BiTerminalCompatibleDslConsumerExpressionBuilder<SRC_ROOT, TRG_ROOT, TRG_TYPE> {
 
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;
@@ -43,7 +44,7 @@ public final class BiDslConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, T
 
     }
 
-    @RequiredArgsConstructor
+    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class BiTerminalIncompatibleDslConsumerExpressionBuilder<SRC_ROOT, TRG_ROOT> {
 
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;

@@ -7,9 +7,7 @@ public final class BeanFactoryConfigurationBuilder<T> extends ConfigurationBuild
 
     private final Class<T> type;
 
-    public BeanFactoryConfigurationBuilder(
-            ConfigurationBuilder configBuilder, MappingContext<?, ?> context, Class<T> type) {
-
+    BeanFactoryConfigurationBuilder(ConfigurationBuilder configBuilder, MappingContext<?, ?> context, Class<T> type) {
         super(configBuilder, context);
         this.type = type;
     }

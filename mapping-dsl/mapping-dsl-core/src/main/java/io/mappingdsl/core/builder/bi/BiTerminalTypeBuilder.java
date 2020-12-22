@@ -2,9 +2,10 @@ package io.mappingdsl.core.builder.bi;
 
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingKey;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public final class BiTerminalTypeBuilder<SRC_ROOT> {
 
     private final MappingContext<?, ?> context;

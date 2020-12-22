@@ -15,7 +15,7 @@ public final class UniExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
     private final UniInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> initialExpressionBuilder;
 
-    public UniExpressionChainBuilder(MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
+    UniExpressionChainBuilder(MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
         this.context = context;
         this.mappingRule = mappingRule;
         this.initialExpressionBuilder = new UniInitialExpressionBuilder<>(this.context);

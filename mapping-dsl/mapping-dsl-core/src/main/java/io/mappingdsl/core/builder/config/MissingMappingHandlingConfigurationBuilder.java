@@ -7,7 +7,7 @@ import static io.mappingdsl.core.config.MissingMappingHandlingMode.TERMINATE;
 
 public final class MissingMappingHandlingConfigurationBuilder extends ConfigurationBuilderBase {
 
-    public MissingMappingHandlingConfigurationBuilder(ConfigurationBuilder configBuilder, MappingContext<?, ?> context) {
+    MissingMappingHandlingConfigurationBuilder(ConfigurationBuilder configBuilder, MappingContext<?, ?> context) {
         super(configBuilder, context);
     }
 

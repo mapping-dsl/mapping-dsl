@@ -6,6 +6,7 @@ import io.mappingdsl.core.common.BiConverter;
 import io.mappingdsl.core.common.Converter;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 public final class BiValueExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
@@ -14,9 +15,7 @@ public final class BiValueExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROO
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
     private final BiTerminalValueExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> terminalExpressionBuilder;
 
-    public BiValueExpressionConverterBuilder(
-            MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
-
+    BiValueExpressionConverterBuilder(MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
         this.context = context;
         this.mappingRule = mappingRule;
         this.terminalExpressionBuilder = new BiTerminalValueExpressionBuilder<>(this.context, this.mappingRule);
@@ -53,7 +52,7 @@ public final class BiValueExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROO
         return this.terminalExpressionBuilder.with(terminalExpression);
     }
 
-    @RequiredArgsConstructor
+    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class BiTerminalValueExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
 
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;

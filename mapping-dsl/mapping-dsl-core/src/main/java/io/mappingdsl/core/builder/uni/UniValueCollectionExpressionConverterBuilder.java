@@ -5,6 +5,7 @@ import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.common.Converter;
 import io.mappingdsl.core.expression.ValueCollectionExpression;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 public final class UniValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
@@ -13,9 +14,7 @@ public final class UniValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TY
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
     private final UniTerminalValueCollectionExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> terminalExpressionBuilder;
 
-    public UniValueCollectionExpressionConverterBuilder(
-            MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
-
+    UniValueCollectionExpressionConverterBuilder(MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
         this.context = context;
         this.mappingRule = mappingRule;
         this.terminalExpressionBuilder = new UniTerminalValueCollectionExpressionBuilder<>(this.context, this.mappingRule);
@@ -35,7 +34,7 @@ public final class UniValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TY
         return this.terminalExpressionBuilder.to(targetExpression);
     }
 
-    @RequiredArgsConstructor
+    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
     public final static class UniTerminalValueCollectionExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
 
         private final MappingContext<SRC_ROOT, TRG_ROOT> context;

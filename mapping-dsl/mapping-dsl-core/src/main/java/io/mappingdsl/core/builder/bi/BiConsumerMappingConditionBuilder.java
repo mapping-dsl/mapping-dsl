@@ -16,9 +16,7 @@ public final class BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, TRG_TYP
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
     private final BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> chainBuilder;
 
-    public BiConsumerMappingConditionBuilder(
-            MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
-
+    BiConsumerMappingConditionBuilder(MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
         this.context = context;
         this.mappingRule = mappingRule;
         this.chainBuilder = new BiExpressionChainBuilder<>(this.context, this.mappingRule);

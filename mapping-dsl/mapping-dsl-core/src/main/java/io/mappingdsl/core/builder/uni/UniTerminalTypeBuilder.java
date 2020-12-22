@@ -2,9 +2,10 @@ package io.mappingdsl.core.builder.uni;
 
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingKey;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public final class UniTerminalTypeBuilder<SRC_ROOT> {
 
     private final MappingContext<?, ?> context;

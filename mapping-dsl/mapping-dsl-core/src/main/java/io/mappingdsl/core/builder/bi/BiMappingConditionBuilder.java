@@ -17,7 +17,7 @@ public final class BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_T
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
     private final BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> chainBuilder;
 
-    public BiMappingConditionBuilder(MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
+    BiMappingConditionBuilder(MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
         this.context = context;
         this.mappingRule = mappingRule;
         this.chainBuilder = new BiExpressionChainBuilder<>(this.context, this.mappingRule);

@@ -15,7 +15,7 @@ public final class BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
     private final BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> initialExpressionBuilder;
 
-    public BiExpressionChainBuilder(MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
+    BiExpressionChainBuilder(MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
         this.context = context;
         this.mappingRule = mappingRule;
         this.initialExpressionBuilder = new BiInitialExpressionBuilder<>(this.context);

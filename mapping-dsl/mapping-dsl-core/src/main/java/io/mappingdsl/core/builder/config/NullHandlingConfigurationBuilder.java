@@ -7,7 +7,7 @@ import static io.mappingdsl.core.config.NullHandlingMode.TERMINATE;
 
 public final class NullHandlingConfigurationBuilder extends ConfigurationBuilderBase {
 
-    public NullHandlingConfigurationBuilder(ConfigurationBuilder configBuilder, MappingContext<?, ?> context) {
+    NullHandlingConfigurationBuilder(ConfigurationBuilder configBuilder, MappingContext<?, ?> context) {
         super(configBuilder, context);
     }
 
