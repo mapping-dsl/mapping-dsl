@@ -477,17 +477,17 @@ class BiConverterMappingTest {
     private static final BiConverter<Integer, String> primitiveConverter =
             new BiConverter<Integer, String>() {
 
-        @Override
-        public String convertForward(Integer source) {
-            return String.valueOf(source);
-        }
+                @Override
+                public String convertForward(Integer source) {
+                    return String.valueOf(source);
+                }
 
-        @Override
-        public Integer convertBackward(String target) {
-            return Integer.valueOf(target);
-        }
+                @Override
+                public Integer convertBackward(String target) {
+                    return Integer.valueOf(target);
+                }
 
-    };
+            };
 
     private static final BiConverter<HouseNumberEntity, HouseNumberDto> houseNumberConverter =
             new BiConverter<HouseNumberEntity, HouseNumberDto>() {
@@ -503,7 +503,6 @@ class BiConverterMappingTest {
                 }
 
             };
-
 
     private static HouseNumberDto convertHouseNumberEntity(HouseNumberEntity houseNumberEntity) {
         HouseNumberDto houseNumberDto = new HouseNumberDto();
