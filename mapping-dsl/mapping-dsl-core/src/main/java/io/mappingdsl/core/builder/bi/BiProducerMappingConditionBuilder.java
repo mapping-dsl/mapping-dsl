@@ -4,7 +4,9 @@ import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.common.Condition;
+import io.mappingdsl.core.expression.DslCollectionExpression;
 import io.mappingdsl.core.expression.DslExpression;
+import io.mappingdsl.core.expression.ValueCollectionExpression;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
@@ -42,8 +44,22 @@ public final class BiProducerMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROO
     }
 
     // delegate method
+    public <NEW_SRC_TYPE> BiValueCollectionExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> bind(
+            ValueCollectionExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
+
+        return this.chainBuilder.bind(initialExpression);
+    }
+
+    // delegate method
     public <NEW_SRC_TYPE> BiDslExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> bind(
             DslExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
+
+        return this.chainBuilder.bind(initialExpression);
+    }
+
+    // delegate method
+    public <NEW_SRC_TYPE> BiDslCollectionExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> bind(
+            DslCollectionExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
 
         return this.chainBuilder.bind(initialExpression);
     }
@@ -56,8 +72,22 @@ public final class BiProducerMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROO
     }
 
     // delegate method
+    public <NEW_SRC_TYPE> BiValueCollectionProducerExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> produce(
+            ValueCollectionExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+
+        return this.chainBuilder.produce(initialExpression);
+    }
+
+    // delegate method
     public <NEW_SRC_TYPE> BiDslProducerExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> produce(
             DslExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+
+        return this.chainBuilder.produce(initialExpression);
+    }
+
+    // delegate method
+    public <NEW_SRC_TYPE> BiDslCollectionProducerExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> produce(
+            DslCollectionExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         return this.chainBuilder.produce(initialExpression);
     }
@@ -70,8 +100,22 @@ public final class BiProducerMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROO
     }
 
     // delegate method
+    public <NEW_SRC_TYPE> BiValueCollectionConsumerExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> consume(
+            ValueCollectionExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+
+        return this.chainBuilder.consume(initialExpression);
+    }
+
+    // delegate method
     public <NEW_SRC_TYPE> BiDslConsumerExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> consume(
             DslExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+
+        return this.chainBuilder.consume(initialExpression);
+    }
+
+    // delegate method
+    public <NEW_SRC_TYPE> BiDslCollectionConsumerExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> consume(
+            DslCollectionExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
         return this.chainBuilder.consume(initialExpression);
     }

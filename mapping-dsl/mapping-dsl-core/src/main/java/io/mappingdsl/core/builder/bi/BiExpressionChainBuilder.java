@@ -3,6 +3,7 @@ package io.mappingdsl.core.builder.bi;
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.MappingRule;
+import io.mappingdsl.core.expression.DslCollectionExpression;
 import io.mappingdsl.core.expression.DslExpression;
 import io.mappingdsl.core.expression.ValueCollectionExpression;
 import io.mappingdsl.core.expression.ValueExpression;
@@ -52,6 +53,14 @@ public final class BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     // delegate method
+    public <SRC_TYPE> BiDslCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> bind(
+            DslCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
+
+        registerCurrentRule();
+        return this.initialExpressionBuilder.bind(initialExpression);
+    }
+
+    // delegate method
     public <SRC_TYPE> BiValueProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
@@ -76,6 +85,14 @@ public final class BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     // delegate method
+    public <SRC_TYPE> BiDslCollectionProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
+            DslCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+
+        registerCurrentRule();
+        return this.initialExpressionBuilder.produce(initialExpression);
+    }
+
+    // delegate method
     public <SRC_TYPE> BiValueConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
             ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
@@ -94,6 +111,14 @@ public final class BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
     // delegate method
     public <SRC_TYPE> BiDslConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
             DslExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+
+        registerCurrentRule();
+        return this.initialExpressionBuilder.consume(initialExpression);
+    }
+
+    // delegate method
+    public <SRC_TYPE> BiDslCollectionConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
+            DslCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.consume(initialExpression);

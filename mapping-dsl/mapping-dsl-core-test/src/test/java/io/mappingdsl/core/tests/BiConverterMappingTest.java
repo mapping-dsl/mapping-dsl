@@ -5,6 +5,10 @@ import io.mappingdsl.core.builder.MappingDslBuilder;
 import io.mappingdsl.core.common.BiConverter;
 import io.mappingdsl.core.common.Converter;
 import io.mappingdsl.core.execution.NoMappingException;
+import io.mappingdsl.core.tests.fixtures.AddressBookDto;
+import io.mappingdsl.core.tests.fixtures.AddressBookDtoMappingDsl;
+import io.mappingdsl.core.tests.fixtures.AddressBookEntity;
+import io.mappingdsl.core.tests.fixtures.AddressBookEntityMappingDsl;
 import io.mappingdsl.core.tests.fixtures.AddressDto;
 import io.mappingdsl.core.tests.fixtures.AddressDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.AddressEntity;
@@ -627,5 +631,188 @@ class BiConverterMappingTest {
             return target + ";";
         }
     };
+
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("complexTestData")
+    void shouldMapCollectionOfComplexConvertedValues(String testName, MappingDsl mappingDsl, BiMappingTestFlow testFlow) {
+        AddressBookEntity addressBookEntity = new AddressBookEntity();
+
+        StreetEntity streetEntity = new StreetEntity("Baker Street");
+        HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B");
+
+        AddressEntity addressEntity = new AddressEntity(streetEntity, houseNumberEntity);
+        addressEntity.setPhoneNumbers(Arrays.asList("123", "456"));
+
+        StreetEntity anotherStreetEntity = new StreetEntity("Privet Drive");
+        HouseNumberEntity anotherHouseNumberEntity = new HouseNumberEntity(4);
+
+        AddressEntity anotherAddressEntity = new AddressEntity(anotherStreetEntity, anotherHouseNumberEntity);
+
+        addressBookEntity.setAddresses(Arrays.asList(addressEntity, anotherAddressEntity));
+
+        // forward mapping
+        AddressBookDto addressBookDto;
+
+        try {
+            addressBookDto = mappingDsl.map(addressBookEntity, AddressBookDto.class);
+        }
+        catch (NoMappingException ignore) {
+            addressBookDto = null;
+        }
+
+        if (testFlow.isForwardMapped()) {
+            assertThat(addressBookDto.getAddresses().size()).isEqualTo(2);
+
+            AddressDto addressDto = addressBookDto.getAddresses().get(0);
+
+            assertThat(addressDto.getStreet().getName()).isEqualTo("Baker Street");
+            assertThat(addressDto.getHouseNumber().getNumber()).isEqualTo(221);
+            assertThat(addressDto.getHouseNumber().getSuffix()).isEqualTo("B");
+            assertThat(addressDto.getPhoneNumbers()).containsExactly("123", "456");
+
+            AddressDto anotherAddressDto = addressBookDto.getAddresses().get(1);
+
+            assertThat(anotherAddressDto.getStreet().getName()).isEqualTo("Privet Drive");
+            assertThat(anotherAddressDto.getHouseNumber().getNumber()).isEqualTo(4);
+        }
+        else {
+            assertThat(addressBookDto).isNull();
+        }
+
+        // refresh test entity for backward mapping
+        StreetDto streetDto = new StreetDto("Baker Street");
+        HouseNumberDto houseNumberDto = new HouseNumberDto(221, "B");
+
+        AddressDto addressDto = new AddressDto(streetDto, houseNumberDto);
+        addressDto.setPhoneNumbers(Arrays.asList("123", "456"));
+
+        StreetDto anotherStreetDto = new StreetDto("Privet Drive");
+        HouseNumberDto anotherHouseNumberDto = new HouseNumberDto(4);
+
+        AddressDto anotherAddressDto = new AddressDto(anotherStreetDto, anotherHouseNumberDto);
+
+        addressBookDto = new AddressBookDto();
+        addressBookDto.setAddresses(Arrays.asList(addressDto, anotherAddressDto));
+
+        // backward mapping
+        try {
+            addressBookEntity = mappingDsl.map(addressBookDto, AddressBookEntity.class);
+        }
+        catch (NoMappingException ignore) {
+            addressBookEntity = null;
+        }
+
+        if (testFlow.isBackwardMapped()) {
+            assertThat(addressBookEntity.getAddresses().size()).isEqualTo(2);
+
+            addressEntity = addressBookEntity.getAddresses().get(0);
+
+            assertThat(addressEntity.getStreet().getName()).isEqualTo("Baker Street");
+            assertThat(addressEntity.getHouseNumber().getNumber()).isEqualTo(221);
+            assertThat(addressEntity.getHouseNumber().getSuffix()).isEqualTo("B");
+            assertThat(addressEntity.getPhoneNumbers()).containsExactly("123", "456");
+
+            anotherAddressEntity = addressBookEntity.getAddresses().get(1);
+
+            assertThat(anotherAddressEntity.getStreet().getName()).isEqualTo("Privet Drive");
+            assertThat(anotherAddressEntity.getHouseNumber().getNumber()).isEqualTo(4);
+        }
+        else {
+            assertThat(addressBookEntity).isNull();
+        }
+    }
+
+    private static Stream<Arguments> complexTestData() {
+        return Stream.of(
+                Arguments.of(
+                        "[bi] collection of complex values mapping",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(AddressBookEntity.class).and(AddressBookDto.class)
+                                .bind(AddressBookEntityMappingDsl.$this.addresses)
+                                .usingConverter(addressConverter)
+                                .with(AddressBookDtoMappingDsl.$this.addresses)
+                                .build(),
+
+                        BiMappingTestFlow.builder()
+                                .forwardMapped(true)
+                                .backwardMapped(true)
+                                .build()),
+                Arguments.of(
+                        "[forward] collection of complex values mapping",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(AddressBookEntity.class).and(AddressBookDto.class)
+                                .produce(AddressBookEntityMappingDsl.$this.addresses)
+                                .usingConverter(BiConverterMappingTest::convertAddressEntity)
+                                .to(AddressBookDtoMappingDsl.$this.addresses)
+                                .build(),
+
+                        BiMappingTestFlow.builder()
+                                .forwardMapped(true)
+                                .backwardMapped(false)
+                                .build()),
+
+                Arguments.of(
+                        "[backward] collection of complex values mapping",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(AddressBookEntity.class).and(AddressBookDto.class)
+                                .consume(AddressBookEntityMappingDsl.$this.addresses)
+                                .usingConverter(BiConverterMappingTest::convertAddressDto)
+                                .from(AddressBookDtoMappingDsl.$this.addresses)
+                                .build(),
+
+                        BiMappingTestFlow.builder()
+                                .forwardMapped(false)
+                                .backwardMapped(true)
+                                .build()));
+    }
+
+    private static final BiConverter<AddressEntity, AddressDto> addressConverter =
+            new BiConverter<AddressEntity, AddressDto>() {
+
+                @Override
+                public AddressDto convertForward(AddressEntity source) {
+                    return convertAddressEntity(source);
+                }
+
+                @Override
+                public AddressEntity convertBackward(AddressDto target) {
+                    return convertAddressDto(target);
+                }
+
+            };
+
+    private static AddressDto convertAddressEntity(AddressEntity addressEntity) {
+        AddressDto addressDto = new AddressDto(
+                convertStreetEntity(addressEntity.getStreet()),
+                convertHouseNumberEntity(addressEntity.getHouseNumber()));
+
+        addressDto.setPhoneNumbers(addressEntity.getPhoneNumbers());
+
+        return addressDto;
+    }
+
+    private static StreetDto convertStreetEntity(StreetEntity streetEntity) {
+        return new StreetDto(streetEntity.getName());
+    }
+
+    private static AddressEntity convertAddressDto(AddressDto addressDto) {
+        AddressEntity addressEntity = new AddressEntity(
+                convertStreetDto(addressDto.getStreet()),
+                convertHouseNumberDto(addressDto.getHouseNumber()));
+
+        addressEntity.setPhoneNumbers(addressDto.getPhoneNumbers());
+
+        return addressEntity;
+    }
+
+    private static StreetEntity convertStreetDto(StreetDto streetDto) {
+        return new StreetEntity(streetDto.getName());
+    }
 
 }
