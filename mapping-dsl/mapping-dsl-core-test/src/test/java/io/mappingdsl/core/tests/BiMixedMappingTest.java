@@ -29,19 +29,20 @@ class BiMixedMappingTest {
     @MethodSource("simpleConverterTestData")
     void shouldMapUsingSimpleConverterConditionally(String testName, MappingDsl mappingDsl) {
         // forward mapping + condition allows mapping
-        ZipDto zipDto = mappingDsl.map(new ZipEntity(123456), ZipDto.class);
-        assertThat(zipDto.getCode()).isNotBlank();
+        ZipDto resultZipDto = mappingDsl.map(new ZipEntity(123456), ZipDto.class);
+        assertThat(resultZipDto.getCode()).isNotBlank();
 
         // forward mapping + condition does not allow mapping
-        zipDto = mappingDsl.map(new ZipEntity(123), ZipDto.class);
-        assertThat(zipDto.getCode()).isNull();
+        resultZipDto = mappingDsl.map(new ZipEntity(123), ZipDto.class);
+        assertThat(resultZipDto.getCode()).isNull();
 
-        // backward mapping
-        ZipEntity zipEntity = mappingDsl.map(new ZipDto("123456"), ZipEntity.class);
-        assertThat(zipEntity.getCode()).isPositive();
+        // backward mapping + condition allows mapping
+        ZipEntity resultZipEntity = mappingDsl.map(new ZipDto("123456"), ZipEntity.class);
+        assertThat(resultZipEntity.getCode()).isPositive();
 
-        zipEntity = mappingDsl.map(new ZipDto("123"), ZipEntity.class);
-        assertThat(zipEntity.getCode()).isNull();
+        // backward mapping + condition does not allow mapping
+        resultZipEntity = mappingDsl.map(new ZipDto("123"), ZipEntity.class);
+        assertThat(resultZipEntity.getCode()).isNull();
     }
 
     private static Stream<Arguments> simpleConverterTestData() {
@@ -100,12 +101,12 @@ class BiMixedMappingTest {
     @MethodSource("simpleConverterForwardTestData")
     void shouldForwardMapUsingSimpleConverterConditionally(String testName, MappingDsl mappingDsl) {
         // forward mapping + condition allows mapping
-        ZipDto zipDto = mappingDsl.map(new ZipEntity(123456), ZipDto.class);
-        assertThat(zipDto.getCode()).isNotBlank();
+        ZipDto resultZipDto = mappingDsl.map(new ZipEntity(123456), ZipDto.class);
+        assertThat(resultZipDto.getCode()).isNotBlank();
 
         // forward mapping + condition does not allow mapping
-        zipDto = mappingDsl.map(new ZipEntity(123), ZipDto.class);
-        assertThat(zipDto.getCode()).isNull();
+        resultZipDto = mappingDsl.map(new ZipEntity(123), ZipDto.class);
+        assertThat(resultZipDto.getCode()).isNull();
     }
 
     private static Stream<Arguments> simpleConverterForwardTestData() {
@@ -151,11 +152,13 @@ class BiMixedMappingTest {
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("simpleConverterBackwardTestData")
     void shouldBackwardMapUsingSimpleConverterConditionally(String testName, MappingDsl mappingDsl) {
-        ZipEntity zipEntity = mappingDsl.map(new ZipDto("123456"), ZipEntity.class);
-        assertThat(zipEntity.getCode()).isPositive();
+        // backward mapping + condition allows mapping
+        ZipEntity resultZipEntity = mappingDsl.map(new ZipDto("123456"), ZipEntity.class);
+        assertThat(resultZipEntity.getCode()).isPositive();
 
-        zipEntity = mappingDsl.map(new ZipDto("123"), ZipEntity.class);
-        assertThat(zipEntity.getCode()).isNull();
+        // backward mapping + condition does not allow mapping
+        resultZipEntity = mappingDsl.map(new ZipDto("123"), ZipEntity.class);
+        assertThat(resultZipEntity.getCode()).isNull();
     }
 
     private static Stream<Arguments> simpleConverterBackwardTestData() {
@@ -201,27 +204,37 @@ class BiMixedMappingTest {
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("complexConverterTestData")
     void shouldMapUsingComplexConverterConditionally(String testName, MappingDsl mappingDsl) {
-        // forward mapping
+        // prepare forward mapping
         HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221);
         AddressEntity addressEntity = new AddressEntity(null, houseNumberEntity);
-        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
-        assertThat(addressDto.getHouseNumber().getNumber()).isPositive();
 
+        // forward mapping + condition allows mapping
+        AddressDto resultAddressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        assertThat(resultAddressDto.getHouseNumber().getNumber()).isPositive();
+
+        // prepare forward mapping
         houseNumberEntity = new HouseNumberEntity(-221);
         addressEntity = new AddressEntity(null, houseNumberEntity);
-        addressDto = mappingDsl.map(addressEntity, AddressDto.class);
-        assertThat(addressDto.getHouseNumber()).isNull();
 
-        // backward mapping
+        // forward mapping + condition does not allow mapping
+        resultAddressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        assertThat(resultAddressDto.getHouseNumber()).isNull();
+
+        // prepare backward mapping
         HouseNumberDto houseNumberDto = new HouseNumberDto(221);
-        addressDto = new AddressDto(null, houseNumberDto);
-        AddressEntity streetEntity = mappingDsl.map(addressDto, AddressEntity.class);
-        assertThat(streetEntity.getHouseNumber().getNumber()).isPositive();
+        resultAddressDto = new AddressDto(null, houseNumberDto);
 
+        // backward mapping + condition allows mapping
+        AddressEntity resultAddressEntity = mappingDsl.map(resultAddressDto, AddressEntity.class);
+        assertThat(resultAddressEntity.getHouseNumber().getNumber()).isPositive();
+
+        // prepare backward mapping
         houseNumberDto = new HouseNumberDto(-221);
-        addressDto = new AddressDto(null, houseNumberDto);
-        streetEntity = mappingDsl.map(addressDto, AddressEntity.class);
-        assertThat(streetEntity.getHouseNumber()).isNull();
+        resultAddressDto = new AddressDto(null, houseNumberDto);
+
+        // backward mapping + condition does not allow mapping
+        resultAddressEntity = mappingDsl.map(resultAddressDto, AddressEntity.class);
+        assertThat(resultAddressEntity.getHouseNumber()).isNull();
     }
 
     private static Stream<Arguments> complexConverterTestData() {
@@ -283,15 +296,21 @@ class BiMixedMappingTest {
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("complexConverterForwardTestData")
     void shouldForwardMapUsingComplexConverterConditionally(String testName, MappingDsl mappingDsl) {
+        // prepare forward mapping
         HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221);
         AddressEntity addressEntity = new AddressEntity(null, houseNumberEntity);
-        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
-        assertThat(addressDto.getHouseNumber().getNumber()).isPositive();
 
+        // forward mapping + condition allows mapping
+        AddressDto resultAddressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        assertThat(resultAddressDto.getHouseNumber().getNumber()).isPositive();
+
+        // prepare forward mapping
         houseNumberEntity = new HouseNumberEntity(-221);
         addressEntity = new AddressEntity(null, houseNumberEntity);
-        addressDto = mappingDsl.map(addressEntity, AddressDto.class);
-        assertThat(addressDto.getHouseNumber()).isNull();
+
+        // forward mapping + condition does not allow mapping
+        resultAddressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        assertThat(resultAddressDto.getHouseNumber()).isNull();
     }
 
     private static Stream<Arguments> complexConverterForwardTestData() {
@@ -337,13 +356,19 @@ class BiMixedMappingTest {
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("complexConverterBackwardTestData")
     void shouldBackwardMapUsingComplexConverterConditionally(String testName, MappingDsl mappingDsl) {
+        // prepare backward mapping
         HouseNumberDto houseNumberDto = new HouseNumberDto(221);
         AddressDto addressDto = new AddressDto(null, houseNumberDto);
+
+        // backward mapping + condition allows mapping
         AddressEntity streetEntity = mappingDsl.map(addressDto, AddressEntity.class);
         assertThat(streetEntity.getHouseNumber().getNumber()).isPositive();
 
+        // prepare backward mapping
         houseNumberDto = new HouseNumberDto(-221);
         addressDto = new AddressDto(null, houseNumberDto);
+
+        // backward mapping + condition does not allow mapping
         streetEntity = mappingDsl.map(addressDto, AddressEntity.class);
         assertThat(streetEntity.getHouseNumber()).isNull();
     }

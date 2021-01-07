@@ -29,19 +29,21 @@ class BiNestedMappingTest {
         StreetEntity streetEntity = new StreetEntity("Baker Street");
         HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B", new Geolocation(51.523772, -0.158539));
 
-        AddressDto addressDto = mappingDsl.map(new AddressEntity(streetEntity, houseNumberEntity), AddressDto.class);
-        assertThat(addressDto.getStreet().getName()).isEqualTo("Baker Street");
-        assertThat(addressDto.getHouseNumber().getNumber()).isEqualTo(221);
-        assertThat(addressDto.getHouseNumber().getSuffix()).isEqualTo("B");
-        assertThat(addressDto.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
-        assertThat(addressDto.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
+        // forward mapping
+        AddressDto resultAddressDto = mappingDsl.map(new AddressEntity(streetEntity, houseNumberEntity), AddressDto.class);
+        assertThat(resultAddressDto.getStreet().getName()).isEqualTo("Baker Street");
+        assertThat(resultAddressDto.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(resultAddressDto.getHouseNumber().getSuffix()).isEqualTo("B");
+        assertThat(resultAddressDto.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
+        assertThat(resultAddressDto.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
 
-        AddressEntity addressEntity = mappingDsl.map(addressDto, AddressEntity.class);
-        assertThat(addressEntity.getStreet().getName()).isEqualTo("Baker Street");
-        assertThat(addressEntity.getHouseNumber().getNumber()).isEqualTo(221);
-        assertThat(addressEntity.getHouseNumber().getSuffix()).isEqualTo("B");
-        assertThat(addressEntity.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
-        assertThat(addressEntity.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
+        // backward mapping
+        AddressEntity resultAddressEntity = mappingDsl.map(resultAddressDto, AddressEntity.class);
+        assertThat(resultAddressEntity.getStreet().getName()).isEqualTo("Baker Street");
+        assertThat(resultAddressEntity.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(resultAddressEntity.getHouseNumber().getSuffix()).isEqualTo("B");
+        assertThat(resultAddressEntity.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
+        assertThat(resultAddressEntity.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
     }
 
     private static Stream<Arguments> testData() {
@@ -154,12 +156,12 @@ class BiNestedMappingTest {
         StreetEntity streetEntity = new StreetEntity("Baker Street");
         HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B", new Geolocation(51.523772, -0.158539));
 
-        AddressDto addressDto = mappingDsl.map(new AddressEntity(streetEntity, houseNumberEntity), AddressDto.class);
-        assertThat(addressDto.getStreet().getName()).isEqualTo("Baker Street");
-        assertThat(addressDto.getHouseNumber().getNumber()).isEqualTo(221);
-        assertThat(addressDto.getHouseNumber().getSuffix()).isEqualTo("B");
-        assertThat(addressDto.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
-        assertThat(addressDto.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
+        AddressDto resultAddressDto = mappingDsl.map(new AddressEntity(streetEntity, houseNumberEntity), AddressDto.class);
+        assertThat(resultAddressDto.getStreet().getName()).isEqualTo("Baker Street");
+        assertThat(resultAddressDto.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(resultAddressDto.getHouseNumber().getSuffix()).isEqualTo("B");
+        assertThat(resultAddressDto.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
+        assertThat(resultAddressDto.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
     }
 
     private static Stream<Arguments> forwardTestData() {
@@ -295,12 +297,12 @@ class BiNestedMappingTest {
         StreetDto streetDto = new StreetDto("Baker Street");
         HouseNumberDto houseNumberDto = new HouseNumberDto(221, "B", new Geolocation(51.523772, -0.158539));
 
-        AddressEntity addressEntity = mappingDsl.map(new AddressDto(streetDto, houseNumberDto), AddressEntity.class);
-        assertThat(addressEntity.getStreet().getName()).isEqualTo("Baker Street");
-        assertThat(addressEntity.getHouseNumber().getNumber()).isEqualTo(221);
-        assertThat(addressEntity.getHouseNumber().getSuffix()).isEqualTo("B");
-        assertThat(addressEntity.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
-        assertThat(addressEntity.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
+        AddressEntity resultAddressEntity = mappingDsl.map(new AddressDto(streetDto, houseNumberDto), AddressEntity.class);
+        assertThat(resultAddressEntity.getStreet().getName()).isEqualTo("Baker Street");
+        assertThat(resultAddressEntity.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(resultAddressEntity.getHouseNumber().getSuffix()).isEqualTo("B");
+        assertThat(resultAddressEntity.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
+        assertThat(resultAddressEntity.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
     }
 
     private static Stream<Arguments> backwardTestData() {

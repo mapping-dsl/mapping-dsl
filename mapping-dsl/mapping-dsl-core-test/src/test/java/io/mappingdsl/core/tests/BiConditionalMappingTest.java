@@ -20,13 +20,13 @@ class BiConditionalMappingTest {
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("testData")
     void shouldMapConditionally(String testName, MappingDsl mappingDsl) {
-        HouseNumberDto houseNumberDto = mappingDsl.map(new HouseNumberEntity(221, "B"), HouseNumberDto.class);
-        assertThat(houseNumberDto.getNumber()).isEqualTo(221);
-        assertThat(houseNumberDto.getSuffix()).isEqualTo("B");
+        HouseNumberDto resultHouseNumberDto = mappingDsl.map(new HouseNumberEntity(221, "B"), HouseNumberDto.class);
+        assertThat(resultHouseNumberDto.getNumber()).isEqualTo(221);
+        assertThat(resultHouseNumberDto.getSuffix()).isEqualTo("B");
 
-        HouseNumberEntity houseNumberEntity = mappingDsl.map(houseNumberDto, HouseNumberEntity.class);
-        assertThat(houseNumberEntity.getNumber()).isNull();
-        assertThat(houseNumberEntity.getSuffix()).isEqualTo("B");
+        HouseNumberEntity resultHouseNumberEntity = mappingDsl.map(resultHouseNumberDto, HouseNumberEntity.class);
+        assertThat(resultHouseNumberEntity.getNumber()).isNull();
+        assertThat(resultHouseNumberEntity.getSuffix()).isEqualTo("B");
 
     }
 
@@ -89,9 +89,9 @@ class BiConditionalMappingTest {
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("forwardTestData")
     void shouldForwardMapConditionally(String testName, MappingDsl mappingDsl) {
-        HouseNumberDto houseNumberDto = mappingDsl.map(new HouseNumberEntity(221, "B"), HouseNumberDto.class);
-        assertThat(houseNumberDto.getNumber()).isEqualTo(221);
-        assertThat(houseNumberDto.getSuffix()).isEqualTo("B");
+        HouseNumberDto resultHouseNumberDto = mappingDsl.map(new HouseNumberEntity(221, "B"), HouseNumberDto.class);
+        assertThat(resultHouseNumberDto.getNumber()).isEqualTo(221);
+        assertThat(resultHouseNumberDto.getSuffix()).isEqualTo("B");
     }
 
     private static Stream<Arguments> forwardTestData() {
@@ -140,9 +140,9 @@ class BiConditionalMappingTest {
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("backwardTestData")
     void shouldBackwardMapConditionally(String testName, MappingDsl mappingDsl) {
-        HouseNumberEntity houseNumberEntity = mappingDsl.map(new HouseNumberDto(221, "B"), HouseNumberEntity.class);
-        assertThat(houseNumberEntity.getNumber()).isNull();
-        assertThat(houseNumberEntity.getSuffix()).isEqualTo("B");
+        HouseNumberEntity resultHouseNumberEntity = mappingDsl.map(new HouseNumberDto(221, "B"), HouseNumberEntity.class);
+        assertThat(resultHouseNumberEntity.getNumber()).isNull();
+        assertThat(resultHouseNumberEntity.getSuffix()).isEqualTo("B");
     }
 
     private static Stream<Arguments> backwardTestData() {

@@ -23,11 +23,11 @@ class BiSimpleMappingTest {
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("singleFiledTestData")
     void shouldMapSinglePrimitiveField(String testName, MappingDsl mappingDsl) {
-        StreetDto streetDto = mappingDsl.map(new StreetEntity("Baker Street"), StreetDto.class);
-        assertThat(streetDto.getName()).isEqualTo("Baker Street");
+        StreetDto resultStreetDto = mappingDsl.map(new StreetEntity("Baker Street"), StreetDto.class);
+        assertThat(resultStreetDto.getName()).isEqualTo("Baker Street");
 
-        StreetEntity streetEntity = mappingDsl.map(streetDto, StreetEntity.class);
-        assertThat(streetEntity.getName()).isEqualTo("Baker Street");
+        StreetEntity resultStreetEntity = mappingDsl.map(resultStreetDto, StreetEntity.class);
+        assertThat(resultStreetEntity.getName()).isEqualTo("Baker Street");
     }
 
     private static Stream<Arguments> singleFiledTestData() {
@@ -57,8 +57,8 @@ class BiSimpleMappingTest {
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("singleFiledForwardTestData")
     void shouldForwardMapSinglePrimitiveField(String testName, MappingDsl mappingDsl) {
-        StreetDto streetDto = mappingDsl.map(new StreetEntity("Baker Street"), StreetDto.class);
-        assertThat(streetDto.getName()).isEqualTo("Baker Street");
+        StreetDto resultStreetDto = mappingDsl.map(new StreetEntity("Baker Street"), StreetDto.class);
+        assertThat(resultStreetDto.getName()).isEqualTo("Baker Street");
     }
 
     private static Stream<Arguments> singleFiledForwardTestData() {
@@ -88,8 +88,8 @@ class BiSimpleMappingTest {
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("singleFiledBackwardTestData")
     void shouldBackwardMapSinglePrimitiveField(String testName, MappingDsl mappingDsl) {
-        StreetEntity streetEntity = mappingDsl.map(new StreetDto("Baker Street"), StreetEntity.class);
-        assertThat(streetEntity.getName()).isEqualTo("Baker Street");
+        StreetEntity resultStreetEntity = mappingDsl.map(new StreetDto("Baker Street"), StreetEntity.class);
+        assertThat(resultStreetEntity.getName()).isEqualTo("Baker Street");
     }
 
     private static Stream<Arguments> singleFiledBackwardTestData() {
@@ -119,13 +119,13 @@ class BiSimpleMappingTest {
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("multiFiledTestData")
     void shouldMapMultiplePrimitiveFields(String testName, MappingDsl mappingDsl) {
-        HouseNumberDto houseNumberDto = mappingDsl.map(new HouseNumberEntity(221, "B"), HouseNumberDto.class);
-        assertThat(houseNumberDto.getNumber()).isEqualTo(221);
-        assertThat(houseNumberDto.getSuffix()).isEqualTo("B");
+        HouseNumberDto resultHouseNumberDto = mappingDsl.map(new HouseNumberEntity(221, "B"), HouseNumberDto.class);
+        assertThat(resultHouseNumberDto.getNumber()).isEqualTo(221);
+        assertThat(resultHouseNumberDto.getSuffix()).isEqualTo("B");
 
-        HouseNumberEntity houseNumberEntity = mappingDsl.map(houseNumberDto, HouseNumberEntity.class);
-        assertThat(houseNumberEntity.getNumber()).isEqualTo(221);
-        assertThat(houseNumberEntity.getSuffix()).isEqualTo("B");
+        HouseNumberEntity resultHouseNumberEntity = mappingDsl.map(resultHouseNumberDto, HouseNumberEntity.class);
+        assertThat(resultHouseNumberEntity.getNumber()).isEqualTo(221);
+        assertThat(resultHouseNumberEntity.getSuffix()).isEqualTo("B");
     }
 
     private static Stream<Arguments> multiFiledTestData() {
@@ -160,9 +160,9 @@ class BiSimpleMappingTest {
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("multiFiledForwardTestData")
     void shouldForwardMapMultiplePrimitiveFields(String testName, MappingDsl mappingDsl) {
-        HouseNumberDto houseNumberDto = mappingDsl.map(new HouseNumberEntity(221, "B"), HouseNumberDto.class);
-        assertThat(houseNumberDto.getNumber()).isEqualTo(221);
-        assertThat(houseNumberDto.getSuffix()).isEqualTo("B");
+        HouseNumberDto resultHouseNumberDto = mappingDsl.map(new HouseNumberEntity(221, "B"), HouseNumberDto.class);
+        assertThat(resultHouseNumberDto.getNumber()).isEqualTo(221);
+        assertThat(resultHouseNumberDto.getSuffix()).isEqualTo("B");
     }
 
     private static Stream<Arguments> multiFiledForwardTestData() {
@@ -209,9 +209,9 @@ class BiSimpleMappingTest {
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("multiFiledBackwardTestData")
     void shouldBackwardMapMultiplePrimitiveFields(String testName, MappingDsl mappingDsl) {
-        HouseNumberEntity houseNumberEntity = mappingDsl.map(new HouseNumberDto(221, "B"), HouseNumberEntity.class);
-        assertThat(houseNumberEntity.getNumber()).isEqualTo(221);
-        assertThat(houseNumberEntity.getSuffix()).isEqualTo("B");
+        HouseNumberEntity resultHouseNumberEntity = mappingDsl.map(new HouseNumberDto(221, "B"), HouseNumberEntity.class);
+        assertThat(resultHouseNumberEntity.getNumber()).isEqualTo(221);
+        assertThat(resultHouseNumberEntity.getSuffix()).isEqualTo("B");
     }
 
     private static Stream<Arguments> multiFiledBackwardTestData() {
