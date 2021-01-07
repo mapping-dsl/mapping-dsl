@@ -19,7 +19,6 @@ import io.mappingdsl.core.tests.fixtures.StreetDto;
 import io.mappingdsl.core.tests.fixtures.StreetDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.StreetEntity;
 import io.mappingdsl.core.tests.fixtures.StreetEntityMappingDsl;
-import io.mappingdsl.core.tests.utils.BiMappingTestFlow;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -33,45 +32,18 @@ class BiCollectionMappingTest {
 
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("simpleTestData")
-    void shouldMapCollectionOfSimpleValues(String testName, MappingDsl mappingDsl, BiMappingTestFlow testFlow) {
+    void shouldMapCollectionOfSimpleValues(String testName, MappingDsl mappingDsl) {
         AddressEntity addressEntity = new AddressEntity();
         addressEntity.setPhoneNumbers(Arrays.asList("123", "456", "789"));
 
-        // forward mapping
-        AddressDto addressDto;
+        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        assertThat(addressDto.getPhoneNumbers()).containsExactly("123", "456", "789");
 
-        try {
-            addressDto = mappingDsl.map(addressEntity, AddressDto.class);
-        }
-        catch (NoMappingException ignore) {
-            addressDto = null;
-        }
-
-        if (testFlow.isForwardMapped()) {
-            assertThat(addressDto.getPhoneNumbers()).containsExactly("123", "456", "789");
-        }
-        else {
-            assertThat(addressDto).isNull();
-        }
-
-        // refresh test entity for backward mapping
         addressDto = new AddressDto();
         addressDto.setPhoneNumbers(Arrays.asList("123", "456", "789"));
 
-        // backward mapping
-        try {
-            addressEntity = mappingDsl.map(addressDto, AddressEntity.class);
-        }
-        catch (NoMappingException ignore) {
-            addressEntity = null;
-        }
-
-        if (testFlow.isBackwardMapped()) {
-            assertThat(addressEntity.getPhoneNumbers()).containsExactly("123", "456", "789");
-        }
-        else {
-            assertThat(addressEntity).isNull();
-        }
+        addressEntity = mappingDsl.map(addressDto, AddressEntity.class);
+        assertThat(addressEntity.getPhoneNumbers()).containsExactly("123", "456", "789");
     }
 
     private static Stream<Arguments> simpleTestData() {
@@ -84,12 +56,22 @@ class BiCollectionMappingTest {
                                 .between(AddressEntity.class).and(AddressDto.class)
                                 .bind(AddressEntityMappingDsl.$this.phoneNumbers)
                                 .with(AddressDtoMappingDsl.$this.phoneNumbers)
-                                .build(),
+                                .build())
+        );
+    }
 
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(true)
-                                .build()),
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("simpleForwardTestData")
+    void shouldForwardMapCollectionOfSimpleValues(String testName, MappingDsl mappingDsl) {
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setPhoneNumbers(Arrays.asList("123", "456", "789"));
+
+        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        assertThat(addressDto.getPhoneNumbers()).containsExactly("123", "456", "789");
+    }
+
+    private static Stream<Arguments> simpleForwardTestData() {
+        return Stream.of(
                 Arguments.of(
                         "[forward] collection of simple values mapping",
 
@@ -98,13 +80,22 @@ class BiCollectionMappingTest {
                                 .between(AddressEntity.class).and(AddressDto.class)
                                 .produce(AddressEntityMappingDsl.$this.phoneNumbers)
                                 .to(AddressDtoMappingDsl.$this.phoneNumbers)
-                                .build(),
+                                .build())
+        );
+    }
 
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(false)
-                                .build()),
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("simpleBackwardTestData")
+    void shouldBackwardMapCollectionOfSimpleValues(String testName, MappingDsl mappingDsl) {
+        AddressDto addressDto = new AddressDto();
+        addressDto.setPhoneNumbers(Arrays.asList("123", "456", "789"));
 
+        AddressEntity addressEntity = mappingDsl.map(addressDto, AddressEntity.class);
+        assertThat(addressEntity.getPhoneNumbers()).containsExactly("123", "456", "789");
+    }
+
+    private static Stream<Arguments> simpleBackwardTestData() {
+        return Stream.of(
                 Arguments.of(
                         "[backward] collection of simple values mapping",
 
@@ -113,28 +104,22 @@ class BiCollectionMappingTest {
                                 .between(AddressEntity.class).and(AddressDto.class)
                                 .consume(AddressEntityMappingDsl.$this.phoneNumbers)
                                 .from(AddressDtoMappingDsl.$this.phoneNumbers)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(false)
-                                .backwardMapped(true)
-                                .build()));
+                                .build())
+        );
     }
 
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("complexTestData")
-    void shouldMapCollectionOfComplexValues(String testName, MappingDsl mappingDsl, BiMappingTestFlow testFlow) {
+    void shouldMapCollectionOfComplexValues(String testName, MappingDsl mappingDsl) {
         AddressBookEntity addressBookEntity = new AddressBookEntity();
 
         StreetEntity streetEntity = new StreetEntity("Baker Street");
         HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B");
-
         AddressEntity addressEntity = new AddressEntity(streetEntity, houseNumberEntity);
         addressEntity.setPhoneNumbers(Arrays.asList("123", "456"));
 
         StreetEntity anotherStreetEntity = new StreetEntity("Privet Drive");
         HouseNumberEntity anotherHouseNumberEntity = new HouseNumberEntity(4);
-
         AddressEntity anotherAddressEntity = new AddressEntity(anotherStreetEntity, anotherHouseNumberEntity);
 
         addressBookEntity.setAddresses(Arrays.asList(addressEntity, anotherAddressEntity));
@@ -149,66 +134,48 @@ class BiCollectionMappingTest {
             addressBookDto = null;
         }
 
-        if (testFlow.isForwardMapped()) {
-            assertThat(addressBookDto.getAddresses().size()).isEqualTo(2);
+        assertThat(addressBookDto.getAddresses().size()).isEqualTo(2);
 
-            AddressDto addressDto = addressBookDto.getAddresses().get(0);
+        AddressDto addressDto = addressBookDto.getAddresses().get(0);
 
-            assertThat(addressDto.getStreet().getName()).isEqualTo("Baker Street");
-            assertThat(addressDto.getHouseNumber().getNumber()).isEqualTo(221);
-            assertThat(addressDto.getHouseNumber().getSuffix()).isEqualTo("B");
-            assertThat(addressDto.getPhoneNumbers()).containsExactly("123", "456");
+        assertThat(addressDto.getStreet().getName()).isEqualTo("Baker Street");
+        assertThat(addressDto.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(addressDto.getHouseNumber().getSuffix()).isEqualTo("B");
+        assertThat(addressDto.getPhoneNumbers()).containsExactly("123", "456");
 
-            AddressDto anotherAddressDto = addressBookDto.getAddresses().get(1);
+        AddressDto anotherAddressDto = addressBookDto.getAddresses().get(1);
 
-            assertThat(anotherAddressDto.getStreet().getName()).isEqualTo("Privet Drive");
-            assertThat(anotherAddressDto.getHouseNumber().getNumber()).isEqualTo(4);
-        }
-        else {
-            assertThat(addressBookDto).isNull();
-        }
+        assertThat(anotherAddressDto.getStreet().getName()).isEqualTo("Privet Drive");
+        assertThat(anotherAddressDto.getHouseNumber().getNumber()).isEqualTo(4);
 
-        // refresh test entity for backward mapping
+        // prepare test entity for backward mapping
         StreetDto streetDto = new StreetDto("Baker Street");
         HouseNumberDto houseNumberDto = new HouseNumberDto(221, "B");
-
-        AddressDto addressDto = new AddressDto(streetDto, houseNumberDto);
+        addressDto = new AddressDto(streetDto, houseNumberDto);
         addressDto.setPhoneNumbers(Arrays.asList("123", "456"));
 
         StreetDto anotherStreetDto = new StreetDto("Privet Drive");
         HouseNumberDto anotherHouseNumberDto = new HouseNumberDto(4);
-
-        AddressDto anotherAddressDto = new AddressDto(anotherStreetDto, anotherHouseNumberDto);
+        anotherAddressDto = new AddressDto(anotherStreetDto, anotherHouseNumberDto);
 
         addressBookDto = new AddressBookDto();
         addressBookDto.setAddresses(Arrays.asList(addressDto, anotherAddressDto));
 
-        // backward mapping
-        try {
-            addressBookEntity = mappingDsl.map(addressBookDto, AddressBookEntity.class);
-        }
-        catch (NoMappingException ignore) {
-            addressBookEntity = null;
-        }
+        addressBookEntity = mappingDsl.map(addressBookDto, AddressBookEntity.class);
 
-        if (testFlow.isBackwardMapped()) {
-            assertThat(addressBookEntity.getAddresses().size()).isEqualTo(2);
+        assertThat(addressBookEntity.getAddresses().size()).isEqualTo(2);
 
-            addressEntity = addressBookEntity.getAddresses().get(0);
+        addressEntity = addressBookEntity.getAddresses().get(0);
 
-            assertThat(addressEntity.getStreet().getName()).isEqualTo("Baker Street");
-            assertThat(addressEntity.getHouseNumber().getNumber()).isEqualTo(221);
-            assertThat(addressEntity.getHouseNumber().getSuffix()).isEqualTo("B");
-            assertThat(addressEntity.getPhoneNumbers()).containsExactly("123", "456");
+        assertThat(addressEntity.getStreet().getName()).isEqualTo("Baker Street");
+        assertThat(addressEntity.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(addressEntity.getHouseNumber().getSuffix()).isEqualTo("B");
+        assertThat(addressEntity.getPhoneNumbers()).containsExactly("123", "456");
 
-            anotherAddressEntity = addressBookEntity.getAddresses().get(1);
+        anotherAddressEntity = addressBookEntity.getAddresses().get(1);
 
-            assertThat(anotherAddressEntity.getStreet().getName()).isEqualTo("Privet Drive");
-            assertThat(anotherAddressEntity.getHouseNumber().getNumber()).isEqualTo(4);
-        }
-        else {
-            assertThat(addressBookEntity).isNull();
-        }
+        assertThat(anotherAddressEntity.getStreet().getName()).isEqualTo("Privet Drive");
+        assertThat(anotherAddressEntity.getHouseNumber().getNumber()).isEqualTo(4);
     }
 
     private static Stream<Arguments> complexTestData() {
@@ -245,12 +212,45 @@ class BiCollectionMappingTest {
                                 .with(HouseNumberDtoMappingDsl.$this.number)
                                 .bind(HouseNumberEntityMappingDsl.$this.suffix)
                                 .with(HouseNumberDtoMappingDsl.$this.suffix)
-                                .build(),
+                                .build())
+          );
+    }
 
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(true)
-                                .build()),
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("complexForwardTestData")
+    void shouldForwardMapCollectionOfComplexValues(String testName, MappingDsl mappingDsl) {
+        AddressBookEntity addressBookEntity = new AddressBookEntity();
+
+        StreetEntity streetEntity = new StreetEntity("Baker Street");
+        HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B");
+        AddressEntity addressEntity = new AddressEntity(streetEntity, houseNumberEntity);
+        addressEntity.setPhoneNumbers(Arrays.asList("123", "456"));
+
+        StreetEntity anotherStreetEntity = new StreetEntity("Privet Drive");
+        HouseNumberEntity anotherHouseNumberEntity = new HouseNumberEntity(4);
+        AddressEntity anotherAddressEntity = new AddressEntity(anotherStreetEntity, anotherHouseNumberEntity);
+
+        addressBookEntity.setAddresses(Arrays.asList(addressEntity, anotherAddressEntity));
+
+        AddressBookDto addressBookDto = mappingDsl.map(addressBookEntity, AddressBookDto.class);
+
+        assertThat(addressBookDto.getAddresses().size()).isEqualTo(2);
+
+        AddressDto addressDto = addressBookDto.getAddresses().get(0);
+
+        assertThat(addressDto.getStreet().getName()).isEqualTo("Baker Street");
+        assertThat(addressDto.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(addressDto.getHouseNumber().getSuffix()).isEqualTo("B");
+        assertThat(addressDto.getPhoneNumbers()).containsExactly("123", "456");
+
+        AddressDto anotherAddressDto = addressBookDto.getAddresses().get(1);
+
+        assertThat(anotherAddressDto.getStreet().getName()).isEqualTo("Privet Drive");
+        assertThat(anotherAddressDto.getHouseNumber().getNumber()).isEqualTo(4);
+    }
+
+    private static Stream<Arguments> complexForwardTestData() {
+        return Stream.of(
                 Arguments.of(
                         "[forward] collection of complex values mapping",
 
@@ -283,13 +283,44 @@ class BiCollectionMappingTest {
                                 .to(HouseNumberDtoMappingDsl.$this.number)
                                 .produce(HouseNumberEntityMappingDsl.$this.suffix)
                                 .to(HouseNumberDtoMappingDsl.$this.suffix)
-                                .build(),
+                                .build())
+        );
+    }
 
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(false)
-                                .build()),
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("complexBackwardTestData")
+    void shouldBackwardMapCollectionOfComplexValues(String testName, MappingDsl mappingDsl) {
+        StreetDto streetDto = new StreetDto("Baker Street");
+        HouseNumberDto houseNumberDto = new HouseNumberDto(221, "B");
+        AddressDto addressDto = new AddressDto(streetDto, houseNumberDto);
+        addressDto.setPhoneNumbers(Arrays.asList("123", "456"));
 
+        StreetDto anotherStreetDto = new StreetDto("Privet Drive");
+        HouseNumberDto anotherHouseNumberDto = new HouseNumberDto(4);
+        AddressDto anotherAddressDto = new AddressDto(anotherStreetDto, anotherHouseNumberDto);
+
+        AddressBookDto addressBookDto = new AddressBookDto();
+        addressBookDto.setAddresses(Arrays.asList(addressDto, anotherAddressDto));
+
+        AddressBookEntity addressBookEntity = mappingDsl.map(addressBookDto, AddressBookEntity.class);
+
+        assertThat(addressBookEntity.getAddresses().size()).isEqualTo(2);
+
+        AddressEntity addressEntity = addressBookEntity.getAddresses().get(0);
+
+        assertThat(addressEntity.getStreet().getName()).isEqualTo("Baker Street");
+        assertThat(addressEntity.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(addressEntity.getHouseNumber().getSuffix()).isEqualTo("B");
+        assertThat(addressEntity.getPhoneNumbers()).containsExactly("123", "456");
+
+        AddressEntity anotherAddressEntity = addressBookEntity.getAddresses().get(1);
+
+        assertThat(anotherAddressEntity.getStreet().getName()).isEqualTo("Privet Drive");
+        assertThat(anotherAddressEntity.getHouseNumber().getNumber()).isEqualTo(4);
+    }
+
+    private static Stream<Arguments> complexBackwardTestData() {
+        return Stream.of(
                 Arguments.of(
                         "[backward] collection of complex values mapping",
 
@@ -322,12 +353,8 @@ class BiCollectionMappingTest {
                                 .from(HouseNumberDtoMappingDsl.$this.number)
                                 .consume(HouseNumberEntityMappingDsl.$this.suffix)
                                 .from(HouseNumberDtoMappingDsl.$this.suffix)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(false)
-                                .backwardMapped(true)
-                                .build()));
+                                .build())
+        );
     }
 
 }

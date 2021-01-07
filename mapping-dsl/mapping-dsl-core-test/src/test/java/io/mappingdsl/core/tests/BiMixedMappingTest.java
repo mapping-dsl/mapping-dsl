@@ -15,7 +15,6 @@ import io.mappingdsl.core.tests.fixtures.ZipDto;
 import io.mappingdsl.core.tests.fixtures.ZipDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.ZipEntity;
 import io.mappingdsl.core.tests.fixtures.ZipEntityMappingDsl;
-import io.mappingdsl.core.tests.utils.BiMappingTestFlow;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -28,25 +27,21 @@ class BiMixedMappingTest {
 
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("simpleConverterTestData")
-    void shouldMapUsingSimpleConverterConditionally(String testName, MappingDsl mappingDsl, BiMappingTestFlow testFlow) {
-        if (testFlow.isForwardMapped()) {
-            // forward mapping + condition allows mapping
-            ZipDto zipDto = mappingDsl.map(new ZipEntity(123456), ZipDto.class);
-            assertThat(zipDto.getCode()).isNotBlank();
+    void shouldMapUsingSimpleConverterConditionally(String testName, MappingDsl mappingDsl) {
+        // forward mapping + condition allows mapping
+        ZipDto zipDto = mappingDsl.map(new ZipEntity(123456), ZipDto.class);
+        assertThat(zipDto.getCode()).isNotBlank();
 
-            // forward mapping + condition does not allow mapping
-            zipDto = mappingDsl.map(new ZipEntity(123), ZipDto.class);
-            assertThat(zipDto.getCode()).isNull();
-        }
+        // forward mapping + condition does not allow mapping
+        zipDto = mappingDsl.map(new ZipEntity(123), ZipDto.class);
+        assertThat(zipDto.getCode()).isNull();
 
         // backward mapping
-        if (testFlow.isBackwardMapped()) {
-            ZipEntity zipEntity = mappingDsl.map(new ZipDto("123456"), ZipEntity.class);
-            assertThat(zipEntity.getCode()).isPositive();
+        ZipEntity zipEntity = mappingDsl.map(new ZipDto("123456"), ZipEntity.class);
+        assertThat(zipEntity.getCode()).isPositive();
 
-            zipEntity = mappingDsl.map(new ZipDto("123"), ZipEntity.class);
-            assertThat(zipEntity.getCode()).isNull();
-        }
+        zipEntity = mappingDsl.map(new ZipDto("123"), ZipEntity.class);
+        assertThat(zipEntity.getCode()).isNull();
     }
 
     private static Stream<Arguments> simpleConverterTestData() {
@@ -61,11 +56,6 @@ class BiMixedMappingTest {
                                 .usingConverters(String::valueOf, Integer::valueOf)
                                 .with(ZipDtoMappingDsl.$this.code)
                                 .when(source -> source > 1000, target -> target.length() > 5)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(true)
                                 .build()),
 
                 Arguments.of(
@@ -78,11 +68,6 @@ class BiMixedMappingTest {
                                 .usingConverters(String::valueOf, Integer::valueOf)
                                 .with(ZipDtoMappingDsl.$this.codeProperty)
                                 .when(source -> source > 1000, target -> target.length() > 5)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(true)
                                 .build()),
 
                 Arguments.of(
@@ -95,11 +80,6 @@ class BiMixedMappingTest {
                                 .usingConverter(primitiveConverter)
                                 .with(ZipDtoMappingDsl.$this.code)
                                 .when(source -> source > 1000, target -> target.length() > 5)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(true)
                                 .build()),
 
                 Arguments.of(
@@ -112,13 +92,24 @@ class BiMixedMappingTest {
                                 .usingConverter(primitiveConverter)
                                 .with(ZipDtoMappingDsl.$this.codeProperty)
                                 .when(source -> source > 1000, target -> target.length() > 5)
-                                .build(),
+                                .build())
+        );
+    }
 
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(true)
-                                .build()),
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("simpleConverterForwardTestData")
+    void shouldForwardMapUsingSimpleConverterConditionally(String testName, MappingDsl mappingDsl) {
+        // forward mapping + condition allows mapping
+        ZipDto zipDto = mappingDsl.map(new ZipEntity(123456), ZipDto.class);
+        assertThat(zipDto.getCode()).isNotBlank();
 
+        // forward mapping + condition does not allow mapping
+        zipDto = mappingDsl.map(new ZipEntity(123), ZipDto.class);
+        assertThat(zipDto.getCode()).isNull();
+    }
+
+    private static Stream<Arguments> simpleConverterForwardTestData() {
+        return Stream.of(
                 Arguments.of(
                         "[forward] lambda converter over fields with condition",
 
@@ -129,11 +120,6 @@ class BiMixedMappingTest {
                                 .usingConverter(String::valueOf)
                                 .to(ZipDtoMappingDsl.$this.code)
                                 .when(source -> source > 1000)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(false)
                                 .build()),
 
                 Arguments.of(
@@ -146,11 +132,6 @@ class BiMixedMappingTest {
                                 .usingConverter(String::valueOf)
                                 .to(ZipDtoMappingDsl.$this.codeProperty)
                                 .when(source -> source > 1000)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(false)
                                 .build()),
 
                 Arguments.of(
@@ -163,13 +144,22 @@ class BiMixedMappingTest {
                                 .usingConverter(String::valueOf)
                                 .to(ZipDtoMappingDsl.$this.setCode)
                                 .when(source -> source > 1000)
-                                .build(),
+                                .build())
+        );
+    }
 
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(false)
-                                .build()),
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("simpleConverterBackwardTestData")
+    void shouldBackwardMapUsingSimpleConverterConditionally(String testName, MappingDsl mappingDsl) {
+        ZipEntity zipEntity = mappingDsl.map(new ZipDto("123456"), ZipEntity.class);
+        assertThat(zipEntity.getCode()).isPositive();
 
+        zipEntity = mappingDsl.map(new ZipDto("123"), ZipEntity.class);
+        assertThat(zipEntity.getCode()).isNull();
+    }
+
+    private static Stream<Arguments> simpleConverterBackwardTestData() {
+        return Stream.of(
                 Arguments.of(
                         "[backward] lambda converter over fields with condition",
 
@@ -180,11 +170,6 @@ class BiMixedMappingTest {
                                 .usingConverter((Converter<String, Integer>) Integer::new)
                                 .from(ZipDtoMappingDsl.$this.code)
                                 .when(target -> target.length() > 5)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(false)
-                                .backwardMapped(true)
                                 .build()),
 
                 Arguments.of(
@@ -197,11 +182,6 @@ class BiMixedMappingTest {
                                 .usingConverter((Converter<String, Integer>) Integer::new)
                                 .from(ZipDtoMappingDsl.$this.codeProperty)
                                 .when(target -> target.length() > 5)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(false)
-                                .backwardMapped(true)
                                 .build()),
 
                 Arguments.of(
@@ -214,41 +194,34 @@ class BiMixedMappingTest {
                                 .usingConverter((Converter<String, Integer>) Integer::new)
                                 .from(ZipDtoMappingDsl.$this.getCode)
                                 .when(target -> target.length() > 5)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(false)
-                                .backwardMapped(true)
                                 .build())
         );
     }
 
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("complexConverterTestData")
-    void shouldMapUsingComplexConverterConditionally(String testName, MappingDsl mappingDsl, BiMappingTestFlow testFlow) {
-        if (testFlow.isForwardMapped()) {
-            HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221);
-            AddressEntity addressEntity = new AddressEntity(null, houseNumberEntity);
-            AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
-            assertThat(addressDto.getHouseNumber().getNumber()).isPositive();
+    void shouldMapUsingComplexConverterConditionally(String testName, MappingDsl mappingDsl) {
+        // forward mapping
+        HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221);
+        AddressEntity addressEntity = new AddressEntity(null, houseNumberEntity);
+        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        assertThat(addressDto.getHouseNumber().getNumber()).isPositive();
 
-            houseNumberEntity = new HouseNumberEntity(-221);
-            addressEntity = new AddressEntity(null, houseNumberEntity);
-            addressDto = mappingDsl.map(addressEntity, AddressDto.class);
-            assertThat(addressDto.getHouseNumber()).isNull();
-        }
+        houseNumberEntity = new HouseNumberEntity(-221);
+        addressEntity = new AddressEntity(null, houseNumberEntity);
+        addressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        assertThat(addressDto.getHouseNumber()).isNull();
 
-        if (testFlow.isBackwardMapped()) {
-            HouseNumberDto houseNumberDto = new HouseNumberDto(221);
-            AddressDto addressDto = new AddressDto(null, houseNumberDto);
-            AddressEntity streetEntity = mappingDsl.map(addressDto, AddressEntity.class);
-            assertThat(streetEntity.getHouseNumber().getNumber()).isPositive();
+        // backward mapping
+        HouseNumberDto houseNumberDto = new HouseNumberDto(221);
+        addressDto = new AddressDto(null, houseNumberDto);
+        AddressEntity streetEntity = mappingDsl.map(addressDto, AddressEntity.class);
+        assertThat(streetEntity.getHouseNumber().getNumber()).isPositive();
 
-            houseNumberDto = new HouseNumberDto(-221);
-            addressDto = new AddressDto(null, houseNumberDto);
-            streetEntity = mappingDsl.map(addressDto, AddressEntity.class);
-            assertThat(streetEntity.getHouseNumber()).isNull();
-        }
+        houseNumberDto = new HouseNumberDto(-221);
+        addressDto = new AddressDto(null, houseNumberDto);
+        streetEntity = mappingDsl.map(addressDto, AddressEntity.class);
+        assertThat(streetEntity.getHouseNumber()).isNull();
     }
 
     private static Stream<Arguments> complexConverterTestData() {
@@ -263,11 +236,6 @@ class BiMixedMappingTest {
                                 .usingConverter(houseNumberConverter)
                                 .with(AddressDtoMappingDsl.$this.houseNumber)
                                 .when(houseNumberCondition)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(true)
                                 .build()),
 
                 Arguments.of(
@@ -280,11 +248,6 @@ class BiMixedMappingTest {
                                 .usingConverter(houseNumberConverter)
                                 .with(AddressDtoMappingDsl.$this.houseNumberProperty)
                                 .when(houseNumberCondition)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(true)
                                 .build()),
 
                 Arguments.of(
@@ -299,11 +262,6 @@ class BiMixedMappingTest {
                                         BiMixedMappingTest::convertHouseNumberDto)
                                 .with(AddressDtoMappingDsl.$this.houseNumber)
                                 .when(houseNumberCondition)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(true)
                                 .build()),
 
                 Arguments.of(
@@ -318,13 +276,26 @@ class BiMixedMappingTest {
                                         BiMixedMappingTest::convertHouseNumberDto)
                                 .with(AddressDtoMappingDsl.$this.houseNumberProperty)
                                 .when(houseNumberCondition)
-                                .build(),
+                                .build())
+        );
+    }
 
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(true)
-                                .build()),
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("complexConverterForwardTestData")
+    void shouldForwardMapUsingComplexConverterConditionally(String testName, MappingDsl mappingDsl) {
+        HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221);
+        AddressEntity addressEntity = new AddressEntity(null, houseNumberEntity);
+        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        assertThat(addressDto.getHouseNumber().getNumber()).isPositive();
 
+        houseNumberEntity = new HouseNumberEntity(-221);
+        addressEntity = new AddressEntity(null, houseNumberEntity);
+        addressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        assertThat(addressDto.getHouseNumber()).isNull();
+    }
+
+    private static Stream<Arguments> complexConverterForwardTestData() {
+        return Stream.of(
                 Arguments.of(
                         "[forward] lambda converter over fields with condition",
 
@@ -335,11 +306,6 @@ class BiMixedMappingTest {
                                 .usingConverter(BiMixedMappingTest::convertHouseNumberEntity)
                                 .to(AddressDtoMappingDsl.$this.houseNumber)
                                 .when(houseNumberEntity -> houseNumberEntity.getNumber() > 100)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(false)
                                 .build()),
 
                 Arguments.of(
@@ -352,11 +318,6 @@ class BiMixedMappingTest {
                                 .usingConverter(BiMixedMappingTest::convertHouseNumberEntity)
                                 .to(AddressDtoMappingDsl.$this.houseNumberProperty)
                                 .when(houseNumberEntity -> houseNumberEntity.getNumber() > 100)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(false)
                                 .build()),
 
                 Arguments.of(
@@ -369,13 +330,26 @@ class BiMixedMappingTest {
                                 .usingConverter(BiMixedMappingTest::convertHouseNumberEntity)
                                 .to(AddressDtoMappingDsl.$this.setHouseNumber)
                                 .when(houseNumberEntity -> houseNumberEntity.getNumber() > 100)
-                                .build(),
+                                .build())
+        );
+    }
 
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(false)
-                                .build()),
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("complexConverterBackwardTestData")
+    void shouldBackwardMapUsingComplexConverterConditionally(String testName, MappingDsl mappingDsl) {
+        HouseNumberDto houseNumberDto = new HouseNumberDto(221);
+        AddressDto addressDto = new AddressDto(null, houseNumberDto);
+        AddressEntity streetEntity = mappingDsl.map(addressDto, AddressEntity.class);
+        assertThat(streetEntity.getHouseNumber().getNumber()).isPositive();
 
+        houseNumberDto = new HouseNumberDto(-221);
+        addressDto = new AddressDto(null, houseNumberDto);
+        streetEntity = mappingDsl.map(addressDto, AddressEntity.class);
+        assertThat(streetEntity.getHouseNumber()).isNull();
+    }
+
+    private static Stream<Arguments> complexConverterBackwardTestData() {
+        return Stream.of(
                 Arguments.of(
                         "[backward] lambda converter over fields with condition",
 
@@ -386,11 +360,6 @@ class BiMixedMappingTest {
                                 .usingConverter(BiMixedMappingTest::convertHouseNumberDto)
                                 .from(AddressDtoMappingDsl.$this.houseNumber)
                                 .when(houseNumberDto -> houseNumberDto.getNumber() > 100)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(false)
-                                .backwardMapped(true)
                                 .build()),
 
                 Arguments.of(
@@ -403,11 +372,6 @@ class BiMixedMappingTest {
                                 .usingConverter(BiMixedMappingTest::convertHouseNumberDto)
                                 .from(AddressDtoMappingDsl.$this.houseNumberProperty)
                                 .when(houseNumberDto -> houseNumberDto.getNumber() > 100)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(false)
-                                .backwardMapped(true)
                                 .build()),
 
                 Arguments.of(
@@ -420,11 +384,6 @@ class BiMixedMappingTest {
                                 .usingConverter(BiMixedMappingTest::convertHouseNumberDto)
                                 .from(AddressDtoMappingDsl.$this.getHouseNumber)
                                 .when(houseNumberDto -> houseNumberDto.getNumber() > 100)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(false)
-                                .backwardMapped(true)
                                 .build())
         );
     }

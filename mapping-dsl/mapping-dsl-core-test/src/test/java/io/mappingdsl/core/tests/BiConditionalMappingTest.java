@@ -3,12 +3,10 @@ package io.mappingdsl.core.tests;
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.builder.MappingDslBuilder;
 import io.mappingdsl.core.common.BiCondition;
-import io.mappingdsl.core.execution.NoMappingException;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDto;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntity;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntityMappingDsl;
-import io.mappingdsl.core.tests.utils.BiMappingTestFlow;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -21,45 +19,15 @@ class BiConditionalMappingTest {
 
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("testData")
-    void shouldMapConditionally(String testName, MappingDsl mappingDsl, BiMappingTestFlow testFlow) {
-        HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B");
+    void shouldMapConditionally(String testName, MappingDsl mappingDsl) {
+        HouseNumberDto houseNumberDto = mappingDsl.map(new HouseNumberEntity(221, "B"), HouseNumberDto.class);
+        assertThat(houseNumberDto.getNumber()).isEqualTo(221);
+        assertThat(houseNumberDto.getSuffix()).isEqualTo("B");
 
-        // forward mapping
-        HouseNumberDto houseNumberDto;
+        HouseNumberEntity houseNumberEntity = mappingDsl.map(houseNumberDto, HouseNumberEntity.class);
+        assertThat(houseNumberEntity.getNumber()).isNull();
+        assertThat(houseNumberEntity.getSuffix()).isEqualTo("B");
 
-        try {
-            houseNumberDto = mappingDsl.map(houseNumberEntity, HouseNumberDto.class);
-        }
-        catch (NoMappingException ignore) {
-            houseNumberDto = null;
-        }
-
-        if (testFlow.isForwardMapped()) {
-            assertThat(houseNumberDto.getNumber()).isEqualTo(221);
-            assertThat(houseNumberDto.getSuffix()).isEqualTo("B");
-        }
-        else {
-            assertThat(houseNumberDto).isNull();
-        }
-
-        // refresh test entity for backward mapping
-        houseNumberDto = new HouseNumberDto(221, "B");
-
-        // backward mapping
-        try {
-            houseNumberEntity = mappingDsl.map(houseNumberDto, HouseNumberEntity.class);
-        }
-        catch (NoMappingException ignore) {
-            houseNumberEntity = null;
-        }
-
-        if (testFlow.isBackwardMapped()) {
-            assertThat(houseNumberEntity.getNumber()).isNull();
-            assertThat(houseNumberEntity.getSuffix()).isEqualTo("B");
-        }
-        else {
-            assertThat(houseNumberEntity).isNull();
-        }
     }
 
     private static Stream<Arguments> testData() {
@@ -75,11 +43,6 @@ class BiConditionalMappingTest {
                                 .when(source -> source > 100, target -> target < 100)
                                 .bind(HouseNumberEntityMappingDsl.$this.suffix)
                                 .with(HouseNumberDtoMappingDsl.$this.suffix)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(true)
                                 .build()),
 
                 Arguments.of(
@@ -93,119 +56,6 @@ class BiConditionalMappingTest {
                                 .when(source -> source > 100, target -> target < 100)
                                 .bind(HouseNumberEntityMappingDsl.$this.suffixProperty)
                                 .with(HouseNumberDtoMappingDsl.$this.suffixProperty)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(true)
-                                .build()),
-
-                Arguments.of(
-                        "[forward] lambda condition over fields",
-
-                        new MappingDslBuilder()
-                                .biMapping()
-                                .between(HouseNumberEntity.class).and(HouseNumberDto.class)
-                                .produce(HouseNumberEntityMappingDsl.$this.number)
-                                .to(HouseNumberDtoMappingDsl.$this.number)
-                                .when(source -> source > 100)
-                                .produce(HouseNumberEntityMappingDsl.$this.suffix)
-                                .to(HouseNumberDtoMappingDsl.$this.suffix)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(false)
-                                .build()),
-
-                Arguments.of(
-                        "[forward] lambda condition over properties",
-
-                        new MappingDslBuilder()
-                                .biMapping()
-                                .between(HouseNumberEntity.class).and(HouseNumberDto.class)
-                                .produce(HouseNumberEntityMappingDsl.$this.numberProperty)
-                                .to(HouseNumberDtoMappingDsl.$this.numberProperty)
-                                .when(source -> source > 100)
-                                .produce(HouseNumberEntityMappingDsl.$this.suffixProperty)
-                                .to(HouseNumberDtoMappingDsl.$this.suffixProperty)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(false)
-                                .build()),
-
-                Arguments.of(
-                        "[forward] lambda condition over methods",
-
-                        new MappingDslBuilder()
-                                .biMapping()
-                                .between(HouseNumberEntity.class).and(HouseNumberDto.class)
-                                .produce(HouseNumberEntityMappingDsl.$this.getNumber)
-                                .to(HouseNumberDtoMappingDsl.$this.setNumber)
-                                .when(source -> source > 100)
-                                .produce(HouseNumberEntityMappingDsl.$this.getSuffix)
-                                .to(HouseNumberDtoMappingDsl.$this.setSuffix)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(false)
-                                .build()),
-
-                Arguments.of(
-                        "[backward] lambda condition over fields",
-
-                        new MappingDslBuilder()
-                                .biMapping()
-                                .between(HouseNumberEntity.class).and(HouseNumberDto.class)
-                                .consume(HouseNumberEntityMappingDsl.$this.number)
-                                .from(HouseNumberDtoMappingDsl.$this.number)
-                                .when(target -> target < 100)
-                                .consume(HouseNumberEntityMappingDsl.$this.suffix)
-                                .from(HouseNumberDtoMappingDsl.$this.suffix)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(false)
-                                .backwardMapped(true)
-                                .build()),
-
-                Arguments.of(
-                        "[backward] lambda condition over properties",
-
-                        new MappingDslBuilder()
-                                .biMapping()
-                                .between(HouseNumberEntity.class).and(HouseNumberDto.class)
-                                .consume(HouseNumberEntityMappingDsl.$this.numberProperty)
-                                .from(HouseNumberDtoMappingDsl.$this.numberProperty)
-                                .when(target -> target < 100)
-                                .consume(HouseNumberEntityMappingDsl.$this.suffixProperty)
-                                .from(HouseNumberDtoMappingDsl.$this.suffixProperty)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(false)
-                                .backwardMapped(true)
-                                .build()),
-
-                Arguments.of(
-                        "[backward] lambda condition over methods",
-
-                        new MappingDslBuilder()
-                                .biMapping()
-                                .between(HouseNumberEntity.class).and(HouseNumberDto.class)
-                                .consume(HouseNumberEntityMappingDsl.$this.setNumber)
-                                .from(HouseNumberDtoMappingDsl.$this.getNumber)
-                                .when(target -> target < 100)
-                                .consume(HouseNumberEntityMappingDsl.$this.setSuffix)
-                                .from(HouseNumberDtoMappingDsl.$this.getSuffix)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(false)
-                                .backwardMapped(true)
                                 .build()),
 
                 Arguments.of(
@@ -219,11 +69,6 @@ class BiConditionalMappingTest {
                                 .when(BiConditionalMappingTest.condition)
                                 .bind(HouseNumberEntityMappingDsl.$this.suffix)
                                 .with(HouseNumberDtoMappingDsl.$this.suffix)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(true)
                                 .build()),
 
                 Arguments.of(
@@ -237,11 +82,108 @@ class BiConditionalMappingTest {
                                 .when(BiConditionalMappingTest.condition)
                                 .bind(HouseNumberEntityMappingDsl.$this.suffixProperty)
                                 .with(HouseNumberDtoMappingDsl.$this.suffixProperty)
-                                .build(),
+                                .build())
+        );
+    }
 
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(true)
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("forwardTestData")
+    void shouldForwardMapConditionally(String testName, MappingDsl mappingDsl) {
+        HouseNumberDto houseNumberDto = mappingDsl.map(new HouseNumberEntity(221, "B"), HouseNumberDto.class);
+        assertThat(houseNumberDto.getNumber()).isEqualTo(221);
+        assertThat(houseNumberDto.getSuffix()).isEqualTo("B");
+    }
+
+    private static Stream<Arguments> forwardTestData() {
+        return Stream.of(
+                Arguments.of(
+                        "[forward] lambda condition over fields",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(HouseNumberEntity.class).and(HouseNumberDto.class)
+                                .produce(HouseNumberEntityMappingDsl.$this.number)
+                                .to(HouseNumberDtoMappingDsl.$this.number)
+                                .when(source -> source > 100)
+                                .produce(HouseNumberEntityMappingDsl.$this.suffix)
+                                .to(HouseNumberDtoMappingDsl.$this.suffix)
+                                .build()),
+
+                Arguments.of(
+                        "[forward] lambda condition over properties",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(HouseNumberEntity.class).and(HouseNumberDto.class)
+                                .produce(HouseNumberEntityMappingDsl.$this.numberProperty)
+                                .to(HouseNumberDtoMappingDsl.$this.numberProperty)
+                                .when(source -> source > 100)
+                                .produce(HouseNumberEntityMappingDsl.$this.suffixProperty)
+                                .to(HouseNumberDtoMappingDsl.$this.suffixProperty)
+                                .build()),
+
+                Arguments.of(
+                        "[forward] lambda condition over methods",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(HouseNumberEntity.class).and(HouseNumberDto.class)
+                                .produce(HouseNumberEntityMappingDsl.$this.getNumber)
+                                .to(HouseNumberDtoMappingDsl.$this.setNumber)
+                                .when(source -> source > 100)
+                                .produce(HouseNumberEntityMappingDsl.$this.getSuffix)
+                                .to(HouseNumberDtoMappingDsl.$this.setSuffix)
+                                .build())
+        );
+    }
+
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("backwardTestData")
+    void shouldBackwardMapConditionally(String testName, MappingDsl mappingDsl) {
+        HouseNumberEntity houseNumberEntity = mappingDsl.map(new HouseNumberDto(221, "B"), HouseNumberEntity.class);
+        assertThat(houseNumberEntity.getNumber()).isNull();
+        assertThat(houseNumberEntity.getSuffix()).isEqualTo("B");
+    }
+
+    private static Stream<Arguments> backwardTestData() {
+        return Stream.of(
+                Arguments.of(
+                        "[backward] lambda condition over fields",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(HouseNumberEntity.class).and(HouseNumberDto.class)
+                                .consume(HouseNumberEntityMappingDsl.$this.number)
+                                .from(HouseNumberDtoMappingDsl.$this.number)
+                                .when(target -> target < 100)
+                                .consume(HouseNumberEntityMappingDsl.$this.suffix)
+                                .from(HouseNumberDtoMappingDsl.$this.suffix)
+                                .build()),
+
+                Arguments.of(
+                        "[backward] lambda condition over properties",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(HouseNumberEntity.class).and(HouseNumberDto.class)
+                                .consume(HouseNumberEntityMappingDsl.$this.numberProperty)
+                                .from(HouseNumberDtoMappingDsl.$this.numberProperty)
+                                .when(target -> target < 100)
+                                .consume(HouseNumberEntityMappingDsl.$this.suffixProperty)
+                                .from(HouseNumberDtoMappingDsl.$this.suffixProperty)
+                                .build()),
+
+                Arguments.of(
+                        "[backward] lambda condition over methods",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(HouseNumberEntity.class).and(HouseNumberDto.class)
+                                .consume(HouseNumberEntityMappingDsl.$this.setNumber)
+                                .from(HouseNumberDtoMappingDsl.$this.getNumber)
+                                .when(target -> target < 100)
+                                .consume(HouseNumberEntityMappingDsl.$this.setSuffix)
+                                .from(HouseNumberDtoMappingDsl.$this.getSuffix)
                                 .build())
         );
     }

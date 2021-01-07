@@ -2,7 +2,6 @@ package io.mappingdsl.core.tests;
 
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.builder.MappingDslBuilder;
-import io.mappingdsl.core.execution.NoMappingException;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDto;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntity;
@@ -11,7 +10,6 @@ import io.mappingdsl.core.tests.fixtures.StreetDto;
 import io.mappingdsl.core.tests.fixtures.StreetDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.StreetEntity;
 import io.mappingdsl.core.tests.fixtures.StreetEntityMappingDsl;
-import io.mappingdsl.core.tests.utils.BiMappingTestFlow;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -24,43 +22,12 @@ class BiSimpleMappingTest {
 
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("singleFiledTestData")
-    void shouldMapSinglePrimitiveField(String testName, MappingDsl mappingDsl, BiMappingTestFlow testFlow) {
-        StreetEntity streetEntity = new StreetEntity("Baker Street");
+    void shouldMapSinglePrimitiveField(String testName, MappingDsl mappingDsl) {
+        StreetDto streetDto = mappingDsl.map(new StreetEntity("Baker Street"), StreetDto.class);
+        assertThat(streetDto.getName()).isEqualTo("Baker Street");
 
-        // forward mapping
-        StreetDto streetDto;
-
-        try {
-            streetDto = mappingDsl.map(streetEntity, StreetDto.class);
-        }
-        catch (NoMappingException ignore) {
-            streetDto = null;
-        }
-
-        if (testFlow.isForwardMapped()) {
-            assertThat(streetDto.getName()).isEqualTo("Baker Street");
-        }
-        else {
-            assertThat(streetDto).isNull();
-        }
-
-        // refresh test entity for backward mapping
-        streetDto = new StreetDto("Baker Street");
-
-        // backward mapping
-        try {
-            streetEntity = mappingDsl.map(streetDto, StreetEntity.class);
-        }
-        catch (NoMappingException ignore) {
-            streetEntity = null;
-        }
-
-        if (testFlow.isBackwardMapped()) {
-            assertThat(streetEntity.getName()).isEqualTo("Baker Street");
-        }
-        else {
-            assertThat(streetEntity).isNull();
-        }
+        StreetEntity streetEntity = mappingDsl.map(streetDto, StreetEntity.class);
+        assertThat(streetEntity.getName()).isEqualTo("Baker Street");
     }
 
     private static Stream<Arguments> singleFiledTestData() {
@@ -73,41 +40,6 @@ class BiSimpleMappingTest {
                                 .between(StreetEntity.class).and(StreetDto.class)
                                 .bind(StreetEntityMappingDsl.$this.name)
                                 .with(StreetDtoMappingDsl.$this.name)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(true)
-                                .build()),
-
-                Arguments.of(
-                        "[forward] mapping over fields",
-
-                        new MappingDslBuilder()
-                                .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .produce(StreetEntityMappingDsl.$this.name)
-                                .to(StreetDtoMappingDsl.$this.name)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(false)
-                                .build()),
-
-                Arguments.of(
-                        "[backward] mapping over fields",
-
-                        new MappingDslBuilder()
-                                .biMapping()
-                                .between(StreetEntity.class).and(StreetDto.class)
-                                .consume(StreetEntityMappingDsl.$this.name)
-                                .from(StreetDtoMappingDsl.$this.name)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(false)
-                                .backwardMapped(true)
                                 .build()),
 
                 Arguments.of(
@@ -118,11 +50,27 @@ class BiSimpleMappingTest {
                                 .between(StreetEntity.class).and(StreetDto.class)
                                 .bind(StreetEntityMappingDsl.$this.nameProperty)
                                 .with(StreetDtoMappingDsl.$this.nameProperty)
-                                .build(),
+                                .build())
+        );
+    }
 
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(true)
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("singleFiledForwardTestData")
+    void shouldForwardMapSinglePrimitiveField(String testName, MappingDsl mappingDsl) {
+        StreetDto streetDto = mappingDsl.map(new StreetEntity("Baker Street"), StreetDto.class);
+        assertThat(streetDto.getName()).isEqualTo("Baker Street");
+    }
+
+    private static Stream<Arguments> singleFiledForwardTestData() {
+        return Stream.of(
+                Arguments.of(
+                        "[forward] mapping over fields",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(StreetEntity.class).and(StreetDto.class)
+                                .produce(StreetEntityMappingDsl.$this.name)
+                                .to(StreetDtoMappingDsl.$this.name)
                                 .build()),
 
                 Arguments.of(
@@ -133,11 +81,27 @@ class BiSimpleMappingTest {
                                 .between(StreetEntity.class).and(StreetDto.class)
                                 .produce(StreetEntityMappingDsl.$this.nameProperty)
                                 .to(StreetDtoMappingDsl.$this.nameProperty)
-                                .build(),
+                                .build())
+        );
+    }
 
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(false)
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("singleFiledBackwardTestData")
+    void shouldBackwardMapSinglePrimitiveField(String testName, MappingDsl mappingDsl) {
+        StreetEntity streetEntity = mappingDsl.map(new StreetDto("Baker Street"), StreetEntity.class);
+        assertThat(streetEntity.getName()).isEqualTo("Baker Street");
+    }
+
+    private static Stream<Arguments> singleFiledBackwardTestData() {
+        return Stream.of(
+                Arguments.of(
+                        "[backward] mapping over fields",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(StreetEntity.class).and(StreetDto.class)
+                                .consume(StreetEntityMappingDsl.$this.name)
+                                .from(StreetDtoMappingDsl.$this.name)
                                 .build()),
 
                 Arguments.of(
@@ -148,56 +112,20 @@ class BiSimpleMappingTest {
                                 .between(StreetEntity.class).and(StreetDto.class)
                                 .consume(StreetEntityMappingDsl.$this.nameProperty)
                                 .from(StreetDtoMappingDsl.$this.nameProperty)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(false)
-                                .backwardMapped(true)
                                 .build())
         );
     }
 
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("multiFiledTestData")
-    void shouldMapMultiplePrimitiveFields(String testName, MappingDsl mappingDsl, BiMappingTestFlow testFlow) {
-        HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B");
+    void shouldMapMultiplePrimitiveFields(String testName, MappingDsl mappingDsl) {
+        HouseNumberDto houseNumberDto = mappingDsl.map(new HouseNumberEntity(221, "B"), HouseNumberDto.class);
+        assertThat(houseNumberDto.getNumber()).isEqualTo(221);
+        assertThat(houseNumberDto.getSuffix()).isEqualTo("B");
 
-        // forward mapping
-        HouseNumberDto houseNumberDto;
-
-        try {
-            houseNumberDto = mappingDsl.map(houseNumberEntity, HouseNumberDto.class);
-        }
-        catch (NoMappingException ignore) {
-            houseNumberDto = null;
-        }
-
-        if (testFlow.isForwardMapped()) {
-            assertThat(houseNumberDto.getNumber()).isEqualTo(221);
-            assertThat(houseNumberDto.getSuffix()).isEqualTo("B");
-        }
-        else {
-            assertThat(houseNumberDto).isNull();
-        }
-
-        // refresh test entity for backward mapping
-        houseNumberDto = new HouseNumberDto(221, "B");
-
-        // backward mapping
-        try {
-            houseNumberEntity = mappingDsl.map(houseNumberDto, HouseNumberEntity.class);
-        }
-        catch (NoMappingException ignore) {
-            houseNumberEntity = null;
-        }
-
-        if (testFlow.isBackwardMapped()) {
-            assertThat(houseNumberEntity.getNumber()).isEqualTo(221);
-            assertThat(houseNumberEntity.getSuffix()).isEqualTo("B");
-        }
-        else {
-            assertThat(houseNumberEntity).isNull();
-        }
+        HouseNumberEntity houseNumberEntity = mappingDsl.map(houseNumberDto, HouseNumberEntity.class);
+        assertThat(houseNumberEntity.getNumber()).isEqualTo(221);
+        assertThat(houseNumberEntity.getSuffix()).isEqualTo("B");
     }
 
     private static Stream<Arguments> multiFiledTestData() {
@@ -212,11 +140,6 @@ class BiSimpleMappingTest {
                                 .with(HouseNumberDtoMappingDsl.$this.number)
                                 .bind(HouseNumberEntityMappingDsl.$this.suffix)
                                 .with(HouseNumberDtoMappingDsl.$this.suffix)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(true)
                                 .build()),
 
                 Arguments.of(
@@ -229,13 +152,21 @@ class BiSimpleMappingTest {
                                 .with(HouseNumberDtoMappingDsl.$this.numberProperty)
                                 .bind(HouseNumberEntityMappingDsl.$this.suffixProperty)
                                 .with(HouseNumberDtoMappingDsl.$this.suffixProperty)
-                                .build(),
+                                .build())
+        );
+    }
 
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(true)
-                                .build()),
 
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("multiFiledForwardTestData")
+    void shouldForwardMapMultiplePrimitiveFields(String testName, MappingDsl mappingDsl) {
+        HouseNumberDto houseNumberDto = mappingDsl.map(new HouseNumberEntity(221, "B"), HouseNumberDto.class);
+        assertThat(houseNumberDto.getNumber()).isEqualTo(221);
+        assertThat(houseNumberDto.getSuffix()).isEqualTo("B");
+    }
+
+    private static Stream<Arguments> multiFiledForwardTestData() {
+        return Stream.of(
                 Arguments.of(
                         "[forward] mapping over fields",
 
@@ -246,11 +177,6 @@ class BiSimpleMappingTest {
                                 .to(HouseNumberDtoMappingDsl.$this.number)
                                 .produce(HouseNumberEntityMappingDsl.$this.suffix)
                                 .to(HouseNumberDtoMappingDsl.$this.suffix)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(false)
                                 .build()),
 
                 Arguments.of(
@@ -263,11 +189,6 @@ class BiSimpleMappingTest {
                                 .to(HouseNumberDtoMappingDsl.$this.numberProperty)
                                 .produce(HouseNumberEntityMappingDsl.$this.suffixProperty)
                                 .to(HouseNumberDtoMappingDsl.$this.suffixProperty)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(false)
                                 .build()),
 
                 Arguments.of(
@@ -280,13 +201,21 @@ class BiSimpleMappingTest {
                                 .to(HouseNumberDtoMappingDsl.$this.setNumber)
                                 .produce(HouseNumberEntityMappingDsl.$this.getSuffix)
                                 .to(HouseNumberDtoMappingDsl.$this.setSuffix)
-                                .build(),
+                                .build())
+        );
+    }
 
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(true)
-                                .backwardMapped(false)
-                                .build()),
 
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("multiFiledBackwardTestData")
+    void shouldBackwardMapMultiplePrimitiveFields(String testName, MappingDsl mappingDsl) {
+        HouseNumberEntity houseNumberEntity = mappingDsl.map(new HouseNumberDto(221, "B"), HouseNumberEntity.class);
+        assertThat(houseNumberEntity.getNumber()).isEqualTo(221);
+        assertThat(houseNumberEntity.getSuffix()).isEqualTo("B");
+    }
+
+    private static Stream<Arguments> multiFiledBackwardTestData() {
+        return Stream.of(
                 Arguments.of(
                         "[backward] mapping over fields",
 
@@ -297,11 +226,6 @@ class BiSimpleMappingTest {
                                 .from(HouseNumberDtoMappingDsl.$this.number)
                                 .consume(HouseNumberEntityMappingDsl.$this.suffix)
                                 .from(HouseNumberDtoMappingDsl.$this.suffix)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(false)
-                                .backwardMapped(true)
                                 .build()),
 
                 Arguments.of(
@@ -314,11 +238,6 @@ class BiSimpleMappingTest {
                                 .from(HouseNumberDtoMappingDsl.$this.numberProperty)
                                 .consume(HouseNumberEntityMappingDsl.$this.suffixProperty)
                                 .from(HouseNumberDtoMappingDsl.$this.suffixProperty)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(false)
-                                .backwardMapped(true)
                                 .build()),
 
                 Arguments.of(
@@ -331,11 +250,6 @@ class BiSimpleMappingTest {
                                 .from(HouseNumberDtoMappingDsl.$this.getNumber)
                                 .consume(HouseNumberEntityMappingDsl.$this.setSuffix)
                                 .from(HouseNumberDtoMappingDsl.$this.getSuffix)
-                                .build(),
-
-                        BiMappingTestFlow.builder()
-                                .forwardMapped(false)
-                                .backwardMapped(true)
                                 .build())
         );
     }
