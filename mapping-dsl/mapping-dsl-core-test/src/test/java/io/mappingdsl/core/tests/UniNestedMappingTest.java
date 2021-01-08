@@ -33,13 +33,12 @@ class UniNestedMappingTest {
         HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B", new Geolocation(51.523772, -0.158539));
         AddressEntity addressEntity = new AddressEntity(streetEntity, houseNumberEntity);
 
-        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
-
-        assertThat(addressDto.getStreet().getName()).isEqualTo("Baker Street");
-        assertThat(addressDto.getHouseNumber().getNumber()).isEqualTo(221);
-        assertThat(addressDto.getHouseNumber().getSuffix()).isEqualTo("B");
-        assertThat(addressDto.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
-        assertThat(addressDto.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
+        AddressDto resultAddressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        assertThat(resultAddressDto.getStreet().getName()).isEqualTo("Baker Street");
+        assertThat(resultAddressDto.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(resultAddressDto.getHouseNumber().getSuffix()).isEqualTo("B");
+        assertThat(resultAddressDto.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
+        assertThat(resultAddressDto.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
     }
 
     private static Stream<Arguments> testData() {
@@ -186,9 +185,8 @@ class UniNestedMappingTest {
                 .to(StreetDtoMappingDsl.$this.name)
                 .build();
 
-        StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
-
-        assertThat(streetDto.getName()).isEqualTo("Baker Street");
+        StreetDto resultStreetDto = mappingDsl.map(streetEntity, StreetDto.class);
+        assertThat(resultStreetDto.getName()).isEqualTo("Baker Street");
     }
 
 }

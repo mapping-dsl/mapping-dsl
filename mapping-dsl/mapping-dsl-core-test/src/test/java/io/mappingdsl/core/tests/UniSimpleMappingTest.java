@@ -23,10 +23,8 @@ class UniSimpleMappingTest {
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("singleFiledTestData")
     void shouldMapSinglePrimitiveField(String testName, MappingDsl mappingDsl) {
-        StreetEntity streetEntity = new StreetEntity("Baker Street");
-        StreetDto streetDto = mappingDsl.map(streetEntity, StreetDto.class);
-
-        assertThat(streetDto.getName()).isEqualTo("Baker Street");
+        StreetDto resultStreetDto = mappingDsl.map(new StreetEntity("Baker Street"), StreetDto.class);
+        assertThat(resultStreetDto.getName()).isEqualTo("Baker Street");
     }
 
     private static Stream<Arguments> singleFiledTestData() {
@@ -66,11 +64,9 @@ class UniSimpleMappingTest {
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("multiFiledTestData")
     void shouldMapMultiplePrimitiveFields(String testName, MappingDsl mappingDsl) {
-        HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B");
-        HouseNumberDto houseNumberDto = mappingDsl.map(houseNumberEntity, HouseNumberDto.class);
-
-        assertThat(houseNumberDto.getNumber()).isEqualTo(221);
-        assertThat(houseNumberDto.getSuffix()).isEqualTo("B");
+        HouseNumberDto resultHouseNumberDto = mappingDsl.map(new HouseNumberEntity(221, "B"), HouseNumberDto.class);
+        assertThat(resultHouseNumberDto.getNumber()).isEqualTo(221);
+        assertThat(resultHouseNumberDto.getSuffix()).isEqualTo("B");
     }
 
     private static Stream<Arguments> multiFiledTestData() {

@@ -30,10 +30,8 @@ class UniConverterMappingTest {
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("primitiveFieldTestData")
     void shouldMapConvertedPrimitiveField(String testName, MappingDsl mappingDsl) {
-        ZipEntity zipEntity = new ZipEntity(123456);
-        ZipDto zipDto = mappingDsl.map(zipEntity, ZipDto.class);
-
-        assertThat(zipDto.getCode()).isEqualTo("123456");
+        ZipDto resultZipDto = mappingDsl.map(new ZipEntity(123456), ZipDto.class);
+        assertThat(resultZipDto.getCode()).isEqualTo("123456");
     }
 
     private static Stream<Arguments> primitiveFieldTestData() {
@@ -80,13 +78,12 @@ class UniConverterMappingTest {
         HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B", new Geolocation(51.523772, -0.158539));
         AddressEntity addressEntity = new AddressEntity(streetEntity, houseNumberEntity);
 
-        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
-
-        assertThat(addressDto.getStreet().getName()).isEqualTo("Baker Street");
-        assertThat(addressDto.getHouseNumber().getNumber()).isEqualTo(221);
-        assertThat(addressDto.getHouseNumber().getSuffix()).isEqualTo("B");
-        assertThat(addressDto.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
-        assertThat(addressDto.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
+        AddressDto resultAddressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        assertThat(resultAddressDto.getStreet().getName()).isEqualTo("Baker Street");
+        assertThat(resultAddressDto.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(resultAddressDto.getHouseNumber().getSuffix()).isEqualTo("B");
+        assertThat(resultAddressDto.getHouseNumber().getGeolocation().getLatitude()).isEqualTo(51.523772);
+        assertThat(resultAddressDto.getHouseNumber().getGeolocation().getLongitude()).isEqualTo(-0.158539);
     }
 
     private static Stream<Arguments> complexFieldTestData() {
@@ -145,9 +142,8 @@ class UniConverterMappingTest {
                 .to(AddressDtoMappingDsl.$this.phoneNumbers)
                 .build();
 
-        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
-
-        assertThat(addressDto.getPhoneNumbers()).containsExactly("+123", "+456", "+789");
+        AddressDto resultAddressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        assertThat(resultAddressDto.getPhoneNumbers()).containsExactly("+123", "+456", "+789");
     }
 
 }

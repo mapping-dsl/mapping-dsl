@@ -56,8 +56,8 @@ class NoDefinedMappingTest {
                 .produce(StreetEntityMappingDsl.$this.name).to(StreetDtoMappingDsl.$this.name)
                 .build();
 
-        Integer mappedValue = mappingDsl.map(BigInteger.valueOf(123), Integer.class);
-        assertThat(mappedValue).isNull();
+        Integer result = mappingDsl.map(BigInteger.valueOf(123), Integer.class);
+        assertThat(result).isNull();
     }
 
 }

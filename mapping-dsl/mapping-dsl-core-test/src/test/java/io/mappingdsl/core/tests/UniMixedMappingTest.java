@@ -27,16 +27,12 @@ class UniMixedMappingTest {
     @MethodSource("primitiveFieldTestData")
     void shouldMapConvertedPrimitiveFieldConditionally(String testName, MappingDsl mappingDsl) {
         // condition allows mapping
-        ZipEntity zipEntity = new ZipEntity(123456);
-        ZipDto zipDto = mappingDsl.map(zipEntity, ZipDto.class);
-
-        assertThat(zipDto.getCode()).isNotBlank();
+        ZipDto resultZipDto = mappingDsl.map(new ZipEntity(123456), ZipDto.class);
+        assertThat(resultZipDto.getCode()).isNotBlank();
 
         // condition does not allow mapping
-        zipEntity = new ZipEntity(123);
-        zipDto = mappingDsl.map(zipEntity, ZipDto.class);
-
-        assertThat(zipDto.getCode()).isNull();
+        resultZipDto = mappingDsl.map(new ZipEntity(123), ZipDto.class);
+        assertThat(resultZipDto.getCode()).isNull();
     }
 
     private static Stream<Arguments> primitiveFieldTestData() {
@@ -86,15 +82,15 @@ class UniMixedMappingTest {
         AddressEntity addressEntity = new AddressEntity();
         HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221);
         addressEntity.setHouseNumber(houseNumberEntity);
-        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
 
-        assertThat(addressDto.getHouseNumber()).isNotNull();
+        AddressDto resultAddressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        assertThat(resultAddressDto.getHouseNumber()).isNotNull();
 
         // condition does not allow mapping
         addressEntity.setHouseNumber(new HouseNumberEntity(-221));
-        addressDto = mappingDsl.map(addressEntity, AddressDto.class);
 
-        assertThat(addressDto.getHouseNumber()).isNull();
+        resultAddressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        assertThat(resultAddressDto.getHouseNumber()).isNull();
     }
 
     private static Stream<Arguments> complexFieldTestData() {

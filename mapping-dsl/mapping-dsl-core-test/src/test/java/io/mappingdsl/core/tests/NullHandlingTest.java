@@ -132,7 +132,6 @@ class NullHandlingTest {
         addressEntity.setHouseNumber(new HouseNumberEntity(221, null));
 
         AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
-
         assertThat(addressDto.getHouseNumber().getSuffix()).isNull();
     }
 

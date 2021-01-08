@@ -38,26 +38,22 @@ class UniCollectionMappingTest {
                 .to(AddressDtoMappingDsl.$this.phoneNumbers)
                 .build();
 
-        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
-
-        assertThat(addressDto.getPhoneNumbers()).containsExactly("123", "456", "789");
+        AddressDto resultAddressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        assertThat(resultAddressDto.getPhoneNumbers()).containsExactly("123", "456", "789");
     }
 
     @Test
     void shouldMapCollectionOfComplexValues() {
-        AddressBookEntity addressBookEntity = new AddressBookEntity();
-
         StreetEntity streetEntity = new StreetEntity("Baker Street");
         HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B");
-
         AddressEntity addressEntity = new AddressEntity(streetEntity, houseNumberEntity);
         addressEntity.setPhoneNumbers(Arrays.asList("123", "456"));
 
         StreetEntity anotherStreetEntity = new StreetEntity("Privet Drive");
         HouseNumberEntity anotherHouseNumberEntity = new HouseNumberEntity(4);
-
         AddressEntity anotherAddressEntity = new AddressEntity(anotherStreetEntity, anotherHouseNumberEntity);
 
+        AddressBookEntity addressBookEntity = new AddressBookEntity();
         addressBookEntity.setAddresses(Arrays.asList(addressEntity, anotherAddressEntity));
 
         MappingDsl mappingDsl = new MappingDslBuilder()
@@ -91,21 +87,19 @@ class UniCollectionMappingTest {
                 .to(HouseNumberDtoMappingDsl.$this.suffix)
                 .build();
 
-        AddressBookDto addressBookDto = mappingDsl.map(addressBookEntity, AddressBookDto.class);
+        AddressBookDto resultAddressBookDto = mappingDsl.map(addressBookEntity, AddressBookDto.class);
+        assertThat(resultAddressBookDto.getAddresses().size()).isEqualTo(2);
 
-        assertThat(addressBookDto.getAddresses().size()).isEqualTo(2);
+        AddressDto resultAddressDto = resultAddressBookDto.getAddresses().get(0);
 
-        AddressDto addressDto = addressBookDto.getAddresses().get(0);
+        assertThat(resultAddressDto.getStreet().getName()).isEqualTo("Baker Street");
+        assertThat(resultAddressDto.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(resultAddressDto.getHouseNumber().getSuffix()).isEqualTo("B");
+        assertThat(resultAddressDto.getPhoneNumbers()).containsExactly("123", "456");
 
-        assertThat(addressDto.getStreet().getName()).isEqualTo("Baker Street");
-        assertThat(addressDto.getHouseNumber().getNumber()).isEqualTo(221);
-        assertThat(addressDto.getHouseNumber().getSuffix()).isEqualTo("B");
-        assertThat(addressDto.getPhoneNumbers()).containsExactly("123", "456");
-
-        AddressDto anotherAddressDto = addressBookDto.getAddresses().get(1);
-
-        assertThat(anotherAddressDto.getStreet().getName()).isEqualTo("Privet Drive");
-        assertThat(anotherAddressDto.getHouseNumber().getNumber()).isEqualTo(4);
+        AddressDto resultAnotherAddressDto = resultAddressBookDto.getAddresses().get(1);
+        assertThat(resultAnotherAddressDto.getStreet().getName()).isEqualTo("Privet Drive");
+        assertThat(resultAnotherAddressDto.getHouseNumber().getNumber()).isEqualTo(4);
     }
 
 }

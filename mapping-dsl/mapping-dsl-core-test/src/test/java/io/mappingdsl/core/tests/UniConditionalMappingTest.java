@@ -27,17 +27,15 @@ class UniConditionalMappingTest {
     void shouldMapConditionally(String testName, MappingDsl mappingDsl) {
         // passed condition
         HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B");
-        HouseNumberDto houseNumberDto = mappingDsl.map(houseNumberEntity, HouseNumberDto.class);
-
-        assertThat(houseNumberDto.getNumber()).isEqualTo(221);
-        assertThat(houseNumberDto.getSuffix()).isEqualTo("B");
+        HouseNumberDto resultHouseNumberDto = mappingDsl.map(houseNumberEntity, HouseNumberDto.class);
+        assertThat(resultHouseNumberDto.getNumber()).isEqualTo(221);
+        assertThat(resultHouseNumberDto.getSuffix()).isEqualTo("B");
 
         // rejected condition
         houseNumberEntity = new HouseNumberEntity(-221, "B");
-        houseNumberDto = mappingDsl.map(houseNumberEntity, HouseNumberDto.class);
-
-        assertThat(houseNumberDto.getNumber()).isNull();
-        assertThat(houseNumberDto.getSuffix()).isEqualTo("B");
+        resultHouseNumberDto = mappingDsl.map(houseNumberEntity, HouseNumberDto.class);
+        assertThat(resultHouseNumberDto.getNumber()).isNull();
+        assertThat(resultHouseNumberDto.getSuffix()).isEqualTo("B");
     }
 
     private static Stream<Arguments> testData() {
@@ -96,9 +94,8 @@ class UniConditionalMappingTest {
                 .when(phoneNumber -> phoneNumber.startsWith("+"))
                 .build();
 
-        AddressDto addressDto = mappingDsl.map(addressEntity, AddressDto.class);
-
-        assertThat(addressDto.getPhoneNumbers()).containsExactly("+123", "+456");
+        AddressDto resultAddressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        assertThat(resultAddressDto.getPhoneNumbers()).containsExactly("+123", "+456");
     }
 
 }
