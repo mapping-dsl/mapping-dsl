@@ -2,8 +2,6 @@ package io.mappingdsl.core.tests;
 
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.builder.MappingDslBuilder;
-import io.mappingdsl.core.common.BiCondition;
-import io.mappingdsl.core.common.BiConverter;
 import io.mappingdsl.core.common.Converter;
 import io.mappingdsl.core.tests.fixtures.AddressDto;
 import io.mappingdsl.core.tests.fixtures.AddressDtoMappingDsl;
@@ -15,6 +13,8 @@ import io.mappingdsl.core.tests.fixtures.ZipDto;
 import io.mappingdsl.core.tests.fixtures.ZipDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.ZipEntity;
 import io.mappingdsl.core.tests.fixtures.ZipEntityMappingDsl;
+import io.mappingdsl.core.tests.utils.TestConditions;
+import io.mappingdsl.core.tests.utils.TestConverters;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -78,7 +78,7 @@ class BiMixedMappingTest {
                                 .biMapping()
                                 .between(ZipEntity.class).and(ZipDto.class)
                                 .bind(ZipEntityMappingDsl.$this.code)
-                                .usingConverter(primitiveConverter)
+                                .usingConverter(TestConverters.intToStringConverter)
                                 .with(ZipDtoMappingDsl.$this.code)
                                 .when(source -> source > 1000, target -> target.length() > 5)
                                 .build()),
@@ -90,7 +90,7 @@ class BiMixedMappingTest {
                                 .biMapping()
                                 .between(ZipEntity.class).and(ZipDto.class)
                                 .bind(ZipEntityMappingDsl.$this.codeProperty)
-                                .usingConverter(primitiveConverter)
+                                .usingConverter(TestConverters.intToStringConverter)
                                 .with(ZipDtoMappingDsl.$this.codeProperty)
                                 .when(source -> source > 1000, target -> target.length() > 5)
                                 .build())
@@ -246,9 +246,9 @@ class BiMixedMappingTest {
                                 .biMapping()
                                 .between(AddressEntity.class).and(AddressDto.class)
                                 .bind(AddressEntityMappingDsl.$this.houseNumber)
-                                .usingConverter(houseNumberConverter)
+                                .usingConverter(TestConverters.houseNumberConverter)
                                 .with(AddressDtoMappingDsl.$this.houseNumber)
-                                .when(houseNumberCondition)
+                                .when(TestConditions.greaterThanHouseNumberCondition(100))
                                 .build()),
 
                 Arguments.of(
@@ -258,9 +258,9 @@ class BiMixedMappingTest {
                                 .biMapping()
                                 .between(AddressEntity.class).and(AddressDto.class)
                                 .bind(AddressEntityMappingDsl.$this.houseNumberProperty)
-                                .usingConverter(houseNumberConverter)
+                                .usingConverter(TestConverters.houseNumberConverter)
                                 .with(AddressDtoMappingDsl.$this.houseNumberProperty)
-                                .when(houseNumberCondition)
+                                .when(TestConditions.greaterThanHouseNumberCondition(100))
                                 .build()),
 
                 Arguments.of(
@@ -271,10 +271,10 @@ class BiMixedMappingTest {
                                 .between(AddressEntity.class).and(AddressDto.class)
                                 .bind(AddressEntityMappingDsl.$this.houseNumber)
                                 .usingConverters(
-                                        BiMixedMappingTest::convertHouseNumberEntity,
-                                        BiMixedMappingTest::convertHouseNumberDto)
+                                        TestConverters::convertHouseNumberEntity,
+                                        TestConverters::convertHouseNumberDto)
                                 .with(AddressDtoMappingDsl.$this.houseNumber)
-                                .when(houseNumberCondition)
+                                .when(TestConditions.greaterThanHouseNumberCondition(100))
                                 .build()),
 
                 Arguments.of(
@@ -285,10 +285,10 @@ class BiMixedMappingTest {
                                 .between(AddressEntity.class).and(AddressDto.class)
                                 .bind(AddressEntityMappingDsl.$this.houseNumberProperty)
                                 .usingConverters(
-                                        BiMixedMappingTest::convertHouseNumberEntity,
-                                        BiMixedMappingTest::convertHouseNumberDto)
+                                        TestConverters::convertHouseNumberEntity,
+                                        TestConverters::convertHouseNumberDto)
                                 .with(AddressDtoMappingDsl.$this.houseNumberProperty)
-                                .when(houseNumberCondition)
+                                .when(TestConditions.greaterThanHouseNumberCondition(100))
                                 .build())
         );
     }
@@ -322,7 +322,7 @@ class BiMixedMappingTest {
                                 .biMapping()
                                 .between(AddressEntity.class).and(AddressDto.class)
                                 .produce(AddressEntityMappingDsl.$this.houseNumber)
-                                .usingConverter(BiMixedMappingTest::convertHouseNumberEntity)
+                                .usingConverter(TestConverters::convertHouseNumberEntity)
                                 .to(AddressDtoMappingDsl.$this.houseNumber)
                                 .when(houseNumberEntity -> houseNumberEntity.getNumber() > 100)
                                 .build()),
@@ -334,7 +334,7 @@ class BiMixedMappingTest {
                                 .biMapping()
                                 .between(AddressEntity.class).and(AddressDto.class)
                                 .produce(AddressEntityMappingDsl.$this.houseNumberProperty)
-                                .usingConverter(BiMixedMappingTest::convertHouseNumberEntity)
+                                .usingConverter(TestConverters::convertHouseNumberEntity)
                                 .to(AddressDtoMappingDsl.$this.houseNumberProperty)
                                 .when(houseNumberEntity -> houseNumberEntity.getNumber() > 100)
                                 .build()),
@@ -346,7 +346,7 @@ class BiMixedMappingTest {
                                 .biMapping()
                                 .between(AddressEntity.class).and(AddressDto.class)
                                 .produce(AddressEntityMappingDsl.$this.getHouseNumber)
-                                .usingConverter(BiMixedMappingTest::convertHouseNumberEntity)
+                                .usingConverter(TestConverters::convertHouseNumberEntity)
                                 .to(AddressDtoMappingDsl.$this.setHouseNumber)
                                 .when(houseNumberEntity -> houseNumberEntity.getNumber() > 100)
                                 .build())
@@ -382,7 +382,7 @@ class BiMixedMappingTest {
                                 .biMapping()
                                 .between(AddressEntity.class).and(AddressDto.class)
                                 .consume(AddressEntityMappingDsl.$this.houseNumber)
-                                .usingConverter(BiMixedMappingTest::convertHouseNumberDto)
+                                .usingConverter(TestConverters::convertHouseNumberDto)
                                 .from(AddressDtoMappingDsl.$this.houseNumber)
                                 .when(houseNumberDto -> houseNumberDto.getNumber() > 100)
                                 .build()),
@@ -394,7 +394,7 @@ class BiMixedMappingTest {
                                 .biMapping()
                                 .between(AddressEntity.class).and(AddressDto.class)
                                 .consume(AddressEntityMappingDsl.$this.houseNumberProperty)
-                                .usingConverter(BiMixedMappingTest::convertHouseNumberDto)
+                                .usingConverter(TestConverters::convertHouseNumberDto)
                                 .from(AddressDtoMappingDsl.$this.houseNumberProperty)
                                 .when(houseNumberDto -> houseNumberDto.getNumber() > 100)
                                 .build()),
@@ -406,72 +406,11 @@ class BiMixedMappingTest {
                                 .biMapping()
                                 .between(AddressEntity.class).and(AddressDto.class)
                                 .consume(AddressEntityMappingDsl.$this.setHouseNumber)
-                                .usingConverter(BiMixedMappingTest::convertHouseNumberDto)
+                                .usingConverter(TestConverters::convertHouseNumberDto)
                                 .from(AddressDtoMappingDsl.$this.getHouseNumber)
                                 .when(houseNumberDto -> houseNumberDto.getNumber() > 100)
                                 .build())
         );
-    }
-
-    private static final BiConverter<Integer, String> primitiveConverter =
-            new BiConverter<Integer, String>() {
-
-        @Override
-        public String convertForward(Integer source) {
-            return String.valueOf(source);
-        }
-
-        @Override
-        public Integer convertBackward(String target) {
-            return Integer.valueOf(target);
-        }
-
-    };
-
-    private static final BiCondition<HouseNumberEntity, HouseNumberDto> houseNumberCondition =
-            new BiCondition<HouseNumberEntity, HouseNumberDto>() {
-
-        @Override
-        public boolean testForward(HouseNumberEntity source) {
-            return source.getNumber() > 100;
-        }
-
-        @Override
-        public boolean testBackward(HouseNumberDto target) {
-            return target.getNumber() > 100;
-        }
-    };
-
-    private static final BiConverter<HouseNumberEntity, HouseNumberDto> houseNumberConverter =
-            new BiConverter<HouseNumberEntity, HouseNumberDto>() {
-
-                @Override
-                public HouseNumberDto convertForward(HouseNumberEntity source) {
-                    return convertHouseNumberEntity(source);
-                }
-
-                @Override
-                public HouseNumberEntity convertBackward(HouseNumberDto target) {
-                    return convertHouseNumberDto(target);
-                }
-
-            };
-
-
-    private static HouseNumberDto convertHouseNumberEntity(HouseNumberEntity houseNumberEntity) {
-        HouseNumberDto houseNumberDto = new HouseNumberDto();
-        houseNumberDto.setNumber(houseNumberEntity.getNumber());
-        houseNumberDto.setSuffix(houseNumberEntity.getSuffix());
-        houseNumberDto.setGeolocation(houseNumberEntity.getGeolocation());
-        return houseNumberDto;
-    }
-
-    private static HouseNumberEntity convertHouseNumberDto(HouseNumberDto houseNumberDto) {
-        HouseNumberEntity houseNumberEntity = new HouseNumberEntity();
-        houseNumberEntity.setNumber(houseNumberDto.getNumber());
-        houseNumberEntity.setSuffix(houseNumberDto.getSuffix());
-        houseNumberEntity.setGeolocation(houseNumberDto.getGeolocation());
-        return houseNumberEntity;
     }
 
 }

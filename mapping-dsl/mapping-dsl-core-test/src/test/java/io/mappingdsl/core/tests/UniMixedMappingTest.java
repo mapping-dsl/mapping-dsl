@@ -12,6 +12,7 @@ import io.mappingdsl.core.tests.fixtures.ZipDto;
 import io.mappingdsl.core.tests.fixtures.ZipDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.ZipEntity;
 import io.mappingdsl.core.tests.fixtures.ZipEntityMappingDsl;
+import io.mappingdsl.core.tests.utils.TestConverters;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -105,7 +106,7 @@ class UniMixedMappingTest {
                                 .uniMapping()
                                 .from(AddressEntity.class).to(AddressDto.class)
                                 .produce(AddressEntityMappingDsl.$this.houseNumber)
-                                .usingConverter(UniMixedMappingTest::convertHouseNumber)
+                                .usingConverter(TestConverters::convertHouseNumberEntity)
                                 .to(AddressDtoMappingDsl.$this.houseNumber)
                                 .when(houseNumberEntity -> houseNumberEntity.getNumber() > 0)
                                 .build()),
@@ -117,7 +118,7 @@ class UniMixedMappingTest {
                                 .uniMapping()
                                 .from(AddressEntity.class).to(AddressDto.class)
                                 .produce(AddressEntityMappingDsl.$this.houseNumberProperty)
-                                .usingConverter(UniMixedMappingTest::convertHouseNumber)
+                                .usingConverter(TestConverters::convertHouseNumberEntity)
                                 .to(AddressDtoMappingDsl.$this.houseNumberProperty)
                                 .when(houseNumberEntity -> houseNumberEntity.getNumber() > 0)
                                 .build()),
@@ -129,19 +130,11 @@ class UniMixedMappingTest {
                                 .uniMapping()
                                 .from(AddressEntity.class).to(AddressDto.class)
                                 .produce(AddressEntityMappingDsl.$this.getHouseNumber)
-                                .usingConverter(UniMixedMappingTest::convertHouseNumber)
+                                .usingConverter(TestConverters::convertHouseNumberEntity)
                                 .to(AddressDtoMappingDsl.$this.setHouseNumber)
                                 .when(houseNumberEntity -> houseNumberEntity.getNumber() > 0)
                                 .build())
         );
-    }
-
-    private static HouseNumberDto convertHouseNumber(HouseNumberEntity houseNumberEntity) {
-        HouseNumberDto houseNumberDto = new HouseNumberDto();
-        houseNumberDto.setNumber(houseNumberEntity.getNumber());
-        houseNumberDto.setSuffix(houseNumberEntity.getSuffix());
-        houseNumberDto.setGeolocation(houseNumberEntity.getGeolocation());
-        return houseNumberDto;
     }
 
 }

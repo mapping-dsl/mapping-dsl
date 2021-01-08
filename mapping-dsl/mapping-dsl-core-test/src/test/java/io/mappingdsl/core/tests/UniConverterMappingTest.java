@@ -14,6 +14,7 @@ import io.mappingdsl.core.tests.fixtures.ZipDto;
 import io.mappingdsl.core.tests.fixtures.ZipDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.ZipEntity;
 import io.mappingdsl.core.tests.fixtures.ZipEntityMappingDsl;
+import io.mappingdsl.core.tests.utils.TestConverters;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -99,7 +100,7 @@ class UniConverterMappingTest {
                                 .produce(AddressEntityMappingDsl.$this.street.name)
                                 .to(AddressDtoMappingDsl.$this.street.name)
                                 .produce(AddressEntityMappingDsl.$this.houseNumber)
-                                .usingConverter(UniConverterMappingTest::convertHouseNumber)
+                                .usingConverter(TestConverters::convertHouseNumberEntity)
                                 .to(AddressDtoMappingDsl.$this.houseNumber)
                                 .build()),
 
@@ -112,7 +113,7 @@ class UniConverterMappingTest {
                                 .produce(AddressEntityMappingDsl.$this.street.nameProperty)
                                 .to(AddressDtoMappingDsl.$this.street.nameProperty)
                                 .produce(AddressEntityMappingDsl.$this.houseNumberProperty)
-                                .usingConverter(UniConverterMappingTest::convertHouseNumber)
+                                .usingConverter(TestConverters::convertHouseNumberEntity)
                                 .to(AddressDtoMappingDsl.$this.houseNumberProperty)
                                 .build()),
 
@@ -125,18 +126,10 @@ class UniConverterMappingTest {
                                 .produce(AddressEntityMappingDsl.$this.street.getName)
                                 .to(AddressDtoMappingDsl.$this.street.setName)
                                 .produce(AddressEntityMappingDsl.$this.getHouseNumber)
-                                .usingConverter(UniConverterMappingTest::convertHouseNumber)
+                                .usingConverter(TestConverters::convertHouseNumberEntity)
                                 .to(AddressDtoMappingDsl.$this.setHouseNumber)
                                 .build())
         );
-    }
-
-    private static HouseNumberDto convertHouseNumber(HouseNumberEntity houseNumberEntity) {
-        HouseNumberDto houseNumberDto = new HouseNumberDto();
-        houseNumberDto.setNumber(houseNumberEntity.getNumber());
-        houseNumberDto.setSuffix(houseNumberEntity.getSuffix());
-        houseNumberDto.setGeolocation(houseNumberEntity.getGeolocation());
-        return houseNumberDto;
     }
 
     @Test
