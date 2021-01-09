@@ -40,7 +40,8 @@ public class CollectionFieldAccessorFunction implements ValueProcessingFunction 
 
     @Override
     public String toString() {
-        return String.format("%s (collection field access)", this.name);
+        return String.format("collection %s of type %s with elements of type %s",
+                this.name, this.collectionType.getCanonicalName(), this.elementType.getCanonicalName());
     }
 
 }

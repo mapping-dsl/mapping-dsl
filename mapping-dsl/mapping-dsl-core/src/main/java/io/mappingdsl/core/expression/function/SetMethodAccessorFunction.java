@@ -24,7 +24,7 @@ public class SetMethodAccessorFunction implements ValueConsumerFunction {
 
     @Override
     public String toString() {
-        return String.format("%s (setter access)", this.name);
+        return String.format("setter %s consuming %s", this.name, this.type.getCanonicalName());
     }
 
 }

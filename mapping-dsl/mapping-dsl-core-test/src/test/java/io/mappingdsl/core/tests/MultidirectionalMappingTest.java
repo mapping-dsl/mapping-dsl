@@ -100,8 +100,8 @@ class MultidirectionalMappingTest {
         // backward mapping
         assertThatExceptionOfType(IllegalAssignmentException.class)
                 .isThrownBy(() -> mappingDsl.map(resultAddressDto, AddressEntity.class))
-                .withMessage("houseNumber (field access) cannot consume value of type " +
-                        "io.mappingdsl.core.tests.fixtures.HouseNumberDto");
+                .withMessage("field houseNumber of type io.mappingdsl.core.tests.fixtures.HouseNumberEntity " +
+                        "cannot consume value of type io.mappingdsl.core.tests.fixtures.HouseNumberDto");
     }
 
     private static Stream<Arguments> restrictiveTestData() {
