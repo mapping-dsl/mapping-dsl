@@ -3,6 +3,7 @@ package io.mappingdsl.core.builder.bi;
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.MappingRule;
+import io.mappingdsl.core.builder.uni.UniInitialTypeBuilder;
 import io.mappingdsl.core.common.Condition;
 import io.mappingdsl.core.expression.DslCollectionExpression;
 import io.mappingdsl.core.expression.DslExpression;
@@ -29,6 +30,11 @@ public final class BiProducerMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROO
                 .withInitialCondition(condition).withTerminalCondition(null);
 
         return new BiExpressionChainBuilder<>(this.context, rule);
+    }
+
+    // delegate method
+    public UniInitialTypeBuilder uniMapping() {
+        return this.chainBuilder.uniMapping();
     }
 
     // delegate method

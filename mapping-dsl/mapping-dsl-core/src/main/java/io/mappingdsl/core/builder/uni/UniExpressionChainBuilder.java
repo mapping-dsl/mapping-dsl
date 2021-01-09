@@ -3,6 +3,7 @@ package io.mappingdsl.core.builder.uni;
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.MappingRule;
+import io.mappingdsl.core.builder.bi.BiInitialTypeBuilder;
 import io.mappingdsl.core.expression.DslCollectionExpression;
 import io.mappingdsl.core.expression.DslExpression;
 import io.mappingdsl.core.expression.ValueCollectionExpression;
@@ -24,6 +25,11 @@ public final class UniExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
     public UniInitialTypeBuilder uniMapping() {
         registerCurrentRule();
         return new UniInitialTypeBuilder(this.context);
+    }
+
+    public BiInitialTypeBuilder biMapping() {
+        registerCurrentRule();
+        return new BiInitialTypeBuilder(this.context);
     }
 
     // delegate method
