@@ -8,12 +8,12 @@ import ice.bricks.lang.model.LanguageModelUtils;
 import ice.bricks.lang.model.LanguageModelUtils.TypeDefinition;
 import ice.bricks.meta.ClassUtils;
 import io.mappingdsl.generator.core.model.CollectionFieldModel;
+import io.mappingdsl.generator.core.model.DslClassModel;
 import io.mappingdsl.generator.core.model.FieldModel;
 import io.mappingdsl.generator.core.model.FieldModelType;
 import io.mappingdsl.generator.core.model.MethodModel;
 import io.mappingdsl.generator.core.model.MethodModelType;
 import io.mappingdsl.generator.core.model.PropertyModel;
-import io.mappingdsl.generator.core.model.DslClassModel;
 import io.mappingdsl.generator.core.utils.GeneratorUtils;
 import lombok.Data;
 import lombok.Getter;
@@ -36,6 +36,7 @@ import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -216,7 +217,7 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
         }
 
         Class<?> fieldType = ClassUtils.getClassByName(fieldTypeName);
-        if (fieldType != null && Iterable.class.isAssignableFrom(fieldType)) {
+        if (fieldType != null && Collection.class.isAssignableFrom(fieldType)) {
             List<String> generics = fieldTypeDefinition.getGenerics();
 
             String elementTypeName = Object.class.getCanonicalName();

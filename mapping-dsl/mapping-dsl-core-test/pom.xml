@@ -35,6 +35,8 @@
                             <testSourceFiles>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.AddressBookDto</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.AddressBookEntity</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.AddressBookSummaryDto</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.AddressBookSummaryEntity</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.AddressDto</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.AddressEntity</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.Geolocation</testSourceFile>

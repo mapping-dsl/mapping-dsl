@@ -6,6 +6,8 @@ import io.mappingdsl.core.tests.fixtures.AddressBookDto;
 import io.mappingdsl.core.tests.fixtures.AddressBookDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.AddressBookEntity;
 import io.mappingdsl.core.tests.fixtures.AddressBookEntityMappingDsl;
+import io.mappingdsl.core.tests.fixtures.AddressBookSummaryDto;
+import io.mappingdsl.core.tests.fixtures.AddressBookSummaryDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.AddressDto;
 import io.mappingdsl.core.tests.fixtures.AddressDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.AddressEntity;
@@ -21,6 +23,7 @@ import io.mappingdsl.core.tests.fixtures.StreetEntityMappingDsl;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,6 +43,24 @@ class UniCollectionMappingTest {
 
         AddressDto resultAddressDto = mappingDsl.map(addressEntity, AddressDto.class);
         assertThat(resultAddressDto.getPhoneNumbers()).containsExactly("123", "456", "789");
+    }
+
+    @Test
+    void shouldMapCollectionSize() {
+        AddressBookEntity addressBookEntity = new AddressBookEntity();
+        addressBookEntity.setAddresses(Collections.nCopies(42, new AddressEntity()));
+
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .uniMapping()
+                .from(AddressBookEntity.class).to(AddressBookSummaryDto.class)
+                .produce(AddressBookEntityMappingDsl.$this.addresses.size())
+                .to(AddressBookSummaryDtoMappingDsl.$this.numberOfAddresses)
+                .build();
+
+        AddressBookSummaryDto resultAddressBookSummaryDto =
+                mappingDsl.map(addressBookEntity, AddressBookSummaryDto.class);
+
+        assertThat(resultAddressBookSummaryDto.getNumberOfAddresses()).isEqualTo(42);
     }
 
     @Test
