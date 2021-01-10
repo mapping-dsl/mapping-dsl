@@ -9,4 +9,8 @@ public class AddressBookSummaryEntity {
     @Setter
     private Integer numberOfAddresses;
 
+    @Getter
+    @Setter
+    private Integer numberOfBookmarks;
+
 }

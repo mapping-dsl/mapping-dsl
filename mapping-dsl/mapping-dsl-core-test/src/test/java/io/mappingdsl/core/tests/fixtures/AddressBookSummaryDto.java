@@ -9,4 +9,8 @@ public class AddressBookSummaryDto {
     @Setter
     private Integer numberOfAddresses;
 
+    @Getter
+    @Setter
+    private Integer numberOfBookmarks;
+
 }

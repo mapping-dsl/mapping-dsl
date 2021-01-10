@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,18 +50,22 @@ class UniCollectionMappingTest {
     void shouldMapCollectionSize() {
         AddressBookEntity addressBookEntity = new AddressBookEntity();
         addressBookEntity.setAddresses(Collections.nCopies(42, new AddressEntity()));
+        addressBookEntity.setBookmarks(new HashSet<>(Arrays.asList(new AddressEntity(), new AddressEntity())));
 
         MappingDsl mappingDsl = new MappingDslBuilder()
                 .uniMapping()
                 .from(AddressBookEntity.class).to(AddressBookSummaryDto.class)
                 .produce(AddressBookEntityMappingDsl.$this.addresses.size())
                 .to(AddressBookSummaryDtoMappingDsl.$this.numberOfAddresses)
+                .produce(AddressBookEntityMappingDsl.$this.bookmarks.size())
+                .to(AddressBookSummaryDtoMappingDsl.$this.numberOfBookmarks)
                 .build();
 
         AddressBookSummaryDto resultAddressBookSummaryDto =
                 mappingDsl.map(addressBookEntity, AddressBookSummaryDto.class);
 
         assertThat(resultAddressBookSummaryDto.getNumberOfAddresses()).isEqualTo(42);
+        assertThat(resultAddressBookSummaryDto.getNumberOfBookmarks()).isEqualTo(2);
     }
 
     @Test
