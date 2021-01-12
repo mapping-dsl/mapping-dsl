@@ -20,6 +20,7 @@ import io.mappingdsl.core.tests.fixtures.StreetDto;
 import io.mappingdsl.core.tests.fixtures.StreetDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.StreetEntity;
 import io.mappingdsl.core.tests.fixtures.StreetEntityMappingDsl;
+import io.mappingdsl.core.tests.utils.TestConverters;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -66,6 +67,32 @@ class UniCollectionMappingTest {
 
         assertThat(resultAddressBookSummaryDto.getNumberOfAddresses()).isEqualTo(42);
         assertThat(resultAddressBookSummaryDto.getNumberOfBookmarks()).isEqualTo(2);
+    }
+
+    @Test
+    void shouldMapCollectionElement() {
+        StreetEntity streetEntity = new StreetEntity("Baker Street");
+        HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B");
+        AddressEntity addressEntity = new AddressEntity(streetEntity, houseNumberEntity);
+
+        AddressBookEntity addressBookEntity = new AddressBookEntity();
+        addressBookEntity.setAddresses(Collections.singletonList(addressEntity));
+
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .uniMapping()
+                .from(AddressBookEntity.class).to(AddressBookSummaryDto.class)
+                .produce(AddressBookEntityMappingDsl.$this.addresses.get(0))
+                .usingConverter(TestConverters::convertAddressEntity)
+                .to(AddressBookSummaryDtoMappingDsl.$this.ownerAddress)
+                .build();
+
+        AddressBookSummaryDto resultAddressBookSummaryDto =
+                mappingDsl.map(addressBookEntity, AddressBookSummaryDto.class);
+
+        AddressDto resultAddressDto = resultAddressBookSummaryDto.getOwnerAddress();
+        assertThat(resultAddressDto.getStreet().getName()).isEqualTo("Baker Street");
+        assertThat(resultAddressDto.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(resultAddressDto.getHouseNumber().getSuffix()).isEqualTo("B");
     }
 
     @Test

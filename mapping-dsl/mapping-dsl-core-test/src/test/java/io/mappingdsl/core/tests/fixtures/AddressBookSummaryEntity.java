@@ -7,6 +7,10 @@ public class AddressBookSummaryEntity {
 
     @Getter
     @Setter
+    private AddressEntity ownerAddress;
+
+    @Getter
+    @Setter
     private Integer numberOfAddresses;
 
     @Getter

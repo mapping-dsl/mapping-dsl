@@ -7,6 +7,10 @@ public class AddressBookSummaryDto {
 
     @Getter
     @Setter
+    private AddressDto ownerAddress;
+
+    @Getter
+    @Setter
     private Integer numberOfAddresses;
 
     @Getter
