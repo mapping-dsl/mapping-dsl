@@ -27,15 +27,20 @@ public class CollectionFieldAccessorFunction implements ValueProcessingFunction 
     }
 
     @Override
+    public boolean collectionConsumer() {
+        return true;
+    }
+
+    @Override
     public void consume(Object target, Object value) {
-        Collection<Object> collection = (Collection<Object>) produce(target);
+        Collection<Object> collection = ReflectionUtils.readField(target, this.name);
 
         if (collection == null) {
             collection = ReflectionUtils.generateNewCollectionInstance(this.collectionType);
             ReflectionUtils.writeField(target, this.name, collection);
         }
 
-        collection.add(value);
+        collection.addAll((Collection<?>) value);
     }
 
     @Override

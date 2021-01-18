@@ -6,12 +6,14 @@ import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.ValueCollectionExpression;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.CollectionFieldAccessorFunction;
+import io.mappingdsl.core.expression.function.CollectionPropertyAccessorFunction;
 import io.mappingdsl.core.expression.function.ExpressionFunction;
 import io.mappingdsl.core.expression.function.GetMethodAccessorFunction;
 import io.mappingdsl.core.expression.function.ObjectFieldAccessorFunction;
 import io.mappingdsl.core.expression.function.PathProcessingFunction;
 import io.mappingdsl.core.expression.function.PropertyAccessorFunction;
 import io.mappingdsl.core.expression.function.RootIdentityFunction;
+import io.mappingdsl.core.expression.function.SetCollectionMethodAccessorFunction;
 import io.mappingdsl.core.expression.function.SetMethodAccessorFunction;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
@@ -38,10 +40,21 @@ public final class ComplexFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
     public final DslExpression<ROOT, pojo.SimpleField, SetMethodAccessorFunction> setField =
             new SimpleFieldMappingDsl<>(this, new SetMethodAccessorFunction(pojo.SimpleField.class, "setField"));
 
+    public final DslCollectionExpression<ROOT, pojo.SimpleField, GetMethodAccessorFunction> getCollectionField =
+            new DslCollectionExpression<>(this, new GetMethodAccessorFunction(java.util.List.class, "getCollectionField"));
+
+    public final DslCollectionExpression<ROOT, pojo.SimpleField, SetCollectionMethodAccessorFunction> setCollectionField =
+            new DslCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(java.util.List.class, pojo.SimpleField.class, "setCollectionField"));
+
     public final SimpleFieldMappingDsl<ROOT, PropertyAccessorFunction> fieldProperty =
             new SimpleFieldMappingDsl<>(this, new PropertyAccessorFunction(
                     this.getField.getExpressionFunction(),
                     this.setField.getExpressionFunction()));
+
+    public final DslCollectionExpression<ROOT, pojo.SimpleField, CollectionPropertyAccessorFunction> collectionFieldProperty =
+            new DslCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
+                    this.getCollectionField.getExpressionFunction(),
+                    this.setCollectionField.getExpressionFunction()));
 
     public ComplexFieldMappingDsl(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
         super(parentExpression, expressionFunction);

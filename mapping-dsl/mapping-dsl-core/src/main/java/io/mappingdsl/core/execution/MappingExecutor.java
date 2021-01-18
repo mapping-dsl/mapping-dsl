@@ -21,8 +21,10 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -69,24 +71,33 @@ public class MappingExecutor {
                 continue;
             }
 
-            Stream<Object> sourceValues = wrapSourceValue(sourceValue);
+            Stream<Object> sourceValues = splitSourceValue(sourceValue);
             Condition<Object> condition = (Condition<Object>) rule.getInitialCondition();
             Converter<Object, Object> converter = (Converter<Object, Object>) rule.getInitialExpressionConverter();
 
             Deque<ExpressionBase<?, ?, ?>> targetPath = unwindPath(rule.getTerminalExpression());
             ValueConsumer valueConsumer = getValueConsumer(target, targetPath);
 
-            sourceValues
+            Stream<Object> mappedValues = sourceValues
                     .filter(Objects::nonNull)
                     .filter(value -> condition == null || condition.test(value))
                     .map(value -> (converter == null) ? value : converter.convert(value))
-                    .forEach(value -> consumeValue(valueConsumer, value));
+                    .map(value -> mapValue(valueConsumer, value));
+
+            ValueConsumerFunction consumerFunction = valueConsumer.consumerFunction;
+            if (consumerFunction.collectionConsumer()) {
+                List<Object> targetValues = mappedValues.collect(Collectors.toList());
+                consumerFunction.consume(valueConsumer.target, targetValues);
+            }
+            else {
+                mappedValues.forEach(targetValue -> consumerFunction.consume(valueConsumer.target, targetValue));
+            }
         }
 
         return target;
     }
 
-    private void consumeValue(ValueConsumer valueConsumer, Object sourceValue) {
+    private Object mapValue(ValueConsumer valueConsumer, Object sourceValue) {
         ValueConsumerFunction consumerFunction = valueConsumer.consumerFunction;
         Class<?> targetType = consumerFunction.getConsumerType();
 
@@ -101,10 +112,10 @@ public class MappingExecutor {
             throw new IllegalAssignmentException(consumerFunction, sourceValue.getClass());
         }
 
-        consumerFunction.consume(valueConsumer.target, sourceValue);
+        return sourceValue;
     }
 
-    private Stream<Object> wrapSourceValue(Object sourceValue) {
+    private Stream<Object> splitSourceValue(Object sourceValue) {
         if (sourceValue instanceof Iterable) {
             return StreamSupport.stream(((Iterable<Object>) sourceValue).spliterator(), false);
         }

@@ -199,23 +199,11 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
         String fieldName = fieldElement.getSimpleName().toString();
 
         TypeDefinition fieldTypeDefinition = ExceptionUtils.defaultIfException(
-                () -> LanguageModelUtils.getTypeDefinition(fieldElement), null);
+                () -> LanguageModelUtils.getTypeDefinition(this.typeUtils, fieldElement), null);
 
-        String fieldTypeName = null;
-
-        if (fieldTypeDefinition == null) {
-            TypeMirror type = fieldElement.asType();
-            if (type.getKind().isPrimitive()) {
-                // primitive type, must be boxed
-                fieldTypeName = LanguageModelUtils.getBoxedTypeName(this.typeUtils, type);
-            }
-        }
-        else {
-            // type is compiled and `Class` representation of it was detected
-            fieldTypeName = fieldTypeDefinition.getTypeName();
-        }
-
+        String fieldTypeName = fieldTypeDefinition.getTypeName();
         Class<?> fieldType = ClassUtils.getClassByName(fieldTypeName);
+
         if (fieldType != null && Iterable.class.isAssignableFrom(fieldType)) {
             List<String> generics = fieldTypeDefinition.getGenerics();
 

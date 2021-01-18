@@ -6,12 +6,14 @@ import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.ValueCollectionExpression;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.CollectionFieldAccessorFunction;
+import io.mappingdsl.core.expression.function.CollectionPropertyAccessorFunction;
 import io.mappingdsl.core.expression.function.ExpressionFunction;
 import io.mappingdsl.core.expression.function.GetMethodAccessorFunction;
 import io.mappingdsl.core.expression.function.ObjectFieldAccessorFunction;
 import io.mappingdsl.core.expression.function.PathProcessingFunction;
 import io.mappingdsl.core.expression.function.PropertyAccessorFunction;
 import io.mappingdsl.core.expression.function.RootIdentityFunction;
+import io.mappingdsl.core.expression.function.SetCollectionMethodAccessorFunction;
 import io.mappingdsl.core.expression.function.SetMethodAccessorFunction;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
@@ -74,6 +76,12 @@ public final class SimpleFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
     public final ValueExpression<ROOT, java.lang.Boolean, SetMethodAccessorFunction> setAnotherBooleanValue =
             new ValueExpression<>(this, new SetMethodAccessorFunction(java.lang.Boolean.class, "setAnotherBooleanValue"));
 
+    public final ValueCollectionExpression<ROOT, java.lang.String, GetMethodAccessorFunction> getListOfString =
+            new ValueCollectionExpression<>(this, new GetMethodAccessorFunction(java.util.List.class, "getListOfString"));
+
+    public final ValueCollectionExpression<ROOT, java.lang.String, SetCollectionMethodAccessorFunction> setListOfString =
+            new ValueCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(java.util.List.class, java.lang.String.class, "setListOfString"));
+
     public final ValueExpression<ROOT, java.lang.String, PropertyAccessorFunction> stringValueProperty =
             new ValueExpression<>(this, new PropertyAccessorFunction(
                     this.getStringValue.getExpressionFunction(),
@@ -98,6 +106,11 @@ public final class SimpleFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
             new ValueExpression<>(this, new PropertyAccessorFunction(
                     this.getAnotherBooleanValue.getExpressionFunction(),
                     this.setAnotherBooleanValue.getExpressionFunction()));
+
+    public final ValueCollectionExpression<ROOT, java.lang.String, CollectionPropertyAccessorFunction> listOfStringProperty =
+            new ValueCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
+                    this.getListOfString.getExpressionFunction(),
+                    this.setListOfString.getExpressionFunction()));
 
     public SimpleFieldMappingDsl(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
         super(parentExpression, expressionFunction);

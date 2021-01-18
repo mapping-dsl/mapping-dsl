@@ -12,39 +12,65 @@ import io.mappingdsl.core.tests.fixtures.AddressDto;
 import io.mappingdsl.core.tests.fixtures.AddressDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.AddressEntity;
 import io.mappingdsl.core.tests.fixtures.AddressEntityMappingDsl;
-import io.mappingdsl.core.tests.fixtures.HouseNumberDto;
-import io.mappingdsl.core.tests.fixtures.HouseNumberDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntity;
-import io.mappingdsl.core.tests.fixtures.HouseNumberEntityMappingDsl;
-import io.mappingdsl.core.tests.fixtures.StreetDto;
-import io.mappingdsl.core.tests.fixtures.StreetDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.StreetEntity;
-import io.mappingdsl.core.tests.fixtures.StreetEntityMappingDsl;
 import io.mappingdsl.core.tests.utils.TestConverters;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class UniCollectionMappingTest {
 
-    @Test
-    void shouldMapCollectionOfSimpleValues() {
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("simpleValuesTestData")
+    void shouldMapCollectionOfSimpleValues(String testName, MappingDsl mappingDsl) {
         AddressEntity addressEntity = new AddressEntity();
         addressEntity.setPhoneNumbers(Arrays.asList("123", "456", "789"));
 
-        MappingDsl mappingDsl = new MappingDslBuilder()
-                .uniMapping()
-                .from(AddressEntity.class).to(AddressDto.class)
-                .produce(AddressEntityMappingDsl.$this.phoneNumbers)
-                .to(AddressDtoMappingDsl.$this.phoneNumbers)
-                .build();
-
         AddressDto resultAddressDto = mappingDsl.map(addressEntity, AddressDto.class);
         assertThat(resultAddressDto.getPhoneNumbers()).containsExactly("123", "456", "789");
+    }
+
+    private static Stream<Arguments> simpleValuesTestData() {
+        return Stream.of(
+                Arguments.of(
+                        "[uni] collection mapping over fields",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(AddressEntity.class).to(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.phoneNumbers)
+                                .to(AddressDtoMappingDsl.$this.phoneNumbers)
+                                .build()),
+
+                Arguments.of(
+                        "[uni] collection mapping over properties",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(AddressEntity.class).to(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.phoneNumbersProperty)
+                                .to(AddressDtoMappingDsl.$this.phoneNumbersProperty)
+                                .build()),
+
+                Arguments.of(
+                        "[uni] collection mapping over methods",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(AddressEntity.class).to(AddressDto.class)
+                                .produce(AddressEntityMappingDsl.$this.getPhoneNumbers)
+                                .to(AddressDtoMappingDsl.$this.setPhoneNumbers)
+                                .build())
+        );
     }
 
     @Test
@@ -95,8 +121,9 @@ class UniCollectionMappingTest {
         assertThat(resultAddressDto.getHouseNumber().getSuffix()).isEqualTo("B");
     }
 
-    @Test
-    void shouldMapCollectionOfComplexValues() {
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("complexValuesTestData")
+    void shouldMapCollectionOfComplexValues(String testName, MappingDsl mappingDsl) {
         StreetEntity streetEntity = new StreetEntity("Baker Street");
         HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B");
         AddressEntity addressEntity = new AddressEntity(streetEntity, houseNumberEntity);
@@ -108,37 +135,6 @@ class UniCollectionMappingTest {
 
         AddressBookEntity addressBookEntity = new AddressBookEntity();
         addressBookEntity.setAddresses(Arrays.asList(addressEntity, anotherAddressEntity));
-
-        MappingDsl mappingDsl = new MappingDslBuilder()
-                .uniMapping()
-                .from(AddressBookEntity.class).to(AddressBookDto.class)
-                .produce(AddressBookEntityMappingDsl.$this.addresses)
-                .usingMapping()
-                .to(AddressBookDtoMappingDsl.$this.addresses)
-
-                .uniMapping()
-                .from(AddressEntity.class).to(AddressDto.class)
-                .produce(AddressEntityMappingDsl.$this.street)
-                .usingMapping()
-                .to(AddressDtoMappingDsl.$this.street)
-                .produce(AddressEntityMappingDsl.$this.houseNumber)
-                .usingMapping()
-                .to(AddressDtoMappingDsl.$this.houseNumber)
-                .produce(AddressEntityMappingDsl.$this.phoneNumbers)
-                .to(AddressDtoMappingDsl.$this.phoneNumbers)
-
-                .uniMapping()
-                .from(StreetEntity.class).to(StreetDto.class)
-                .produce(StreetEntityMappingDsl.$this.name)
-                .to(StreetDtoMappingDsl.$this.name)
-
-                .uniMapping()
-                .from(HouseNumberEntity.class).to(HouseNumberDto.class)
-                .produce(HouseNumberEntityMappingDsl.$this.number)
-                .to(HouseNumberDtoMappingDsl.$this.number)
-                .produce(HouseNumberEntityMappingDsl.$this.suffix)
-                .to(HouseNumberDtoMappingDsl.$this.suffix)
-                .build();
 
         AddressBookDto resultAddressBookDto = mappingDsl.map(addressBookEntity, AddressBookDto.class);
         assertThat(resultAddressBookDto.getAddresses().size()).isEqualTo(2);
@@ -153,6 +149,43 @@ class UniCollectionMappingTest {
         AddressDto resultAnotherAddressDto = resultAddressBookDto.getAddresses().get(1);
         assertThat(resultAnotherAddressDto.getStreet().getName()).isEqualTo("Privet Drive");
         assertThat(resultAnotherAddressDto.getHouseNumber().getNumber()).isEqualTo(4);
+    }
+
+    private static Stream<Arguments> complexValuesTestData() {
+        return Stream.of(
+                Arguments.of(
+                        "[uni] collection mapping over fields",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(AddressBookEntity.class).to(AddressBookDto.class)
+                                .produce(AddressBookEntityMappingDsl.$this.addresses)
+                                .usingConverter(TestConverters::convertAddressEntity)
+                                .to(AddressBookDtoMappingDsl.$this.addresses)
+                                .build()),
+
+                Arguments.of(
+                        "[uni] collection mapping over properties",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(AddressBookEntity.class).to(AddressBookDto.class)
+                                .produce(AddressBookEntityMappingDsl.$this.addressesProperty)
+                                .usingConverter(TestConverters::convertAddressEntity)
+                                .to(AddressBookDtoMappingDsl.$this.addressesProperty)
+                                .build()),
+
+                Arguments.of(
+                        "[uni] collection mapping over methods",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(AddressBookEntity.class).to(AddressBookDto.class)
+                                .produce(AddressBookEntityMappingDsl.$this.getAddresses)
+                                .usingConverter(TestConverters::convertAddressEntity)
+                                .to(AddressBookDtoMappingDsl.$this.setAddresses)
+                                .build())
+        );
     }
 
 }

@@ -18,6 +18,11 @@ public class SetMethodAccessorFunction implements ValueConsumerFunction {
     }
 
     @Override
+    public boolean collectionConsumer() {
+        return false;
+    }
+
+    @Override
     public void consume(Object target, Object value) {
         ReflectionUtils.invokeMethod(target, this.name, new Class<?> [] { this.type }, new Object [] { value });
     }

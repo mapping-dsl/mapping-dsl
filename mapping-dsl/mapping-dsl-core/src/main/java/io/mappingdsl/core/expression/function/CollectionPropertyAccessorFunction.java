@@ -2,13 +2,13 @@ package io.mappingdsl.core.expression.function;
 
 import ice.bricks.reflection.ReflectionUtils;
 
-public class PropertyAccessorFunction implements PathProcessingFunction {
+public class CollectionPropertyAccessorFunction implements PathProcessingFunction {
 
     private final GetMethodAccessorFunction getMethodAccessorFunction;
-    private final SetMethodAccessorFunction setMethodAccessorFunction;
+    private final SetCollectionMethodAccessorFunction setMethodAccessorFunction;
 
-    public PropertyAccessorFunction(GetMethodAccessorFunction getMethodAccessorFunction,
-                                    SetMethodAccessorFunction setMethodAccessorFunction) {
+    public CollectionPropertyAccessorFunction(GetMethodAccessorFunction getMethodAccessorFunction,
+                                              SetCollectionMethodAccessorFunction setMethodAccessorFunction) {
 
         this.getMethodAccessorFunction = getMethodAccessorFunction;
         this.setMethodAccessorFunction = setMethodAccessorFunction;
@@ -22,7 +22,7 @@ public class PropertyAccessorFunction implements PathProcessingFunction {
 
     @Override
     public boolean collectionConsumer() {
-        return false;
+        return true;
     }
 
     // delegate method
@@ -51,7 +51,7 @@ public class PropertyAccessorFunction implements PathProcessingFunction {
 
     @Override
     public String toString() {
-        return String.format("property [%s / %s]",
+        return String.format("collection property [%s / %s]",
                 this.getMethodAccessorFunction.toString(), this.setMethodAccessorFunction.toString());
     }
 

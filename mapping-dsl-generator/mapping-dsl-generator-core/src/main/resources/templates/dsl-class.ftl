@@ -11,12 +11,14 @@ import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.ValueCollectionExpression;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.CollectionFieldAccessorFunction;
+import io.mappingdsl.core.expression.function.CollectionPropertyAccessorFunction;
 import io.mappingdsl.core.expression.function.ExpressionFunction;
 import io.mappingdsl.core.expression.function.GetMethodAccessorFunction;
 import io.mappingdsl.core.expression.function.ObjectFieldAccessorFunction;
 import io.mappingdsl.core.expression.function.PathProcessingFunction;
 import io.mappingdsl.core.expression.function.PropertyAccessorFunction;
 import io.mappingdsl.core.expression.function.RootIdentityFunction;
+import io.mappingdsl.core.expression.function.SetCollectionMethodAccessorFunction;
 import io.mappingdsl.core.expression.function.SetMethodAccessorFunction;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
@@ -52,20 +54,36 @@ public final class ${dslClassName}<ROOT, FUN extends ExpressionFunction>
     <#list methodModels as methodModel>
         <#switch methodModel.fieldModel.modelType>
             <#case "VALUE">
-                <@expressions.valueMethodReference model=methodModel />
+                <#if GeneratorUtils.isCollectionFieldModel(methodModel.fieldModel.class)>
+                    <@expressions.valueCollectionMethodReference model=methodModel />
+                <#else>
+                    <@expressions.valueMethodReference model=methodModel />
+                </#if>
                 <#break>
             <#case "DSL">
-                <@expressions.dslMethodReference model=methodModel />
+                <#if GeneratorUtils.isCollectionFieldModel(methodModel.fieldModel.class)>
+                    <@expressions.dslCollectionMethodReference model=methodModel />
+                <#else>
+                    <@expressions.dslMethodReference model=methodModel />
+                </#if>
                 <#break>
         </#switch>${'\n'}
     </#list>
     <#list propertyModels as propertyModel>
         <#switch propertyModel.fieldModel.modelType>
             <#case "VALUE">
-                <@expressions.valueProperty model=propertyModel />
+                <#if GeneratorUtils.isCollectionFieldModel(propertyModel.fieldModel.class)>
+                    <@expressions.valueCollectionProperty model=propertyModel />
+                <#else>
+                    <@expressions.valueProperty model=propertyModel />
+                </#if>
                 <#break>
             <#case "DSL">
-                <@expressions.dslProperty model=propertyModel />
+                <#if GeneratorUtils.isCollectionFieldModel(propertyModel.fieldModel.class)>
+                    <@expressions.dslCollectionProperty model=propertyModel />
+                <#else>
+                    <@expressions.dslProperty model=propertyModel />
+                </#if>
                 <#break>
         </#switch>${'\n'}
     </#list>
