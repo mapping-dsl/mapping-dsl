@@ -6,6 +6,10 @@ public interface ValueConsumerFunction extends ExpressionFunction {
 
     boolean collectionConsumer();
 
+    default boolean canConsume(Class<?> type) {
+        return getConsumerType().isAssignableFrom(type);
+    }
+
     void consume(Object target, Object value);
 
 }

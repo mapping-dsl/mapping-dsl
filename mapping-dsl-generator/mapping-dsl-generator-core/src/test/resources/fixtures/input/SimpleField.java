@@ -16,6 +16,8 @@ public class SimpleField {
 
     private List<String> listOfString;
 
+    private String[] arrayOfString;
+
     public String getStringValue() {
         return stringValue;
     }
@@ -62,6 +64,14 @@ public class SimpleField {
 
     public void setListOfString(List<String> listOfString) {
         this.listOfString = listOfString;
+    }
+
+    public String[] getArrayOfString() {
+        return arrayOfString;
+    }
+
+    public void setArrayOfString(String[] arrayOfString) {
+        this.arrayOfString = arrayOfString;
     }
 
 }

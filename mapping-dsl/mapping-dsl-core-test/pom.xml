@@ -39,6 +39,10 @@
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.AddressBookSummaryEntity</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.AddressDto</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.AddressEntity</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.CityDto</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.CityEntity</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.DistrictDto</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.DistrictEntity</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.Geolocation</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.HouseNumberDto</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.HouseNumberEntity</testSourceFile>

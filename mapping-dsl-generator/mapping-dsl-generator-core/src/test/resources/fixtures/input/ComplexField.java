@@ -8,6 +8,8 @@ public class ComplexField {
 
     private List<SimpleField> collectionField;
 
+    private SimpleField[] arrayField;
+
     public SimpleField getField() {
         return field;
     }
@@ -22,6 +24,14 @@ public class ComplexField {
 
     public void setCollectionField(List<SimpleField> collectionField) {
         this.collectionField = collectionField;
+    }
+
+    public SimpleField[] getArrayField() {
+        return arrayField;
+    }
+
+    public void setArrayField(SimpleField[] arrayField) {
+        this.arrayField = arrayField;
     }
 
 }

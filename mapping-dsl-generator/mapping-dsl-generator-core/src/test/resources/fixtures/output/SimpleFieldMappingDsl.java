@@ -5,6 +5,8 @@ import io.mappingdsl.core.expression.DslExpression;
 import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.ValueCollectionExpression;
 import io.mappingdsl.core.expression.ValueExpression;
+import io.mappingdsl.core.expression.function.ArrayFieldAccessorFunction;
+import io.mappingdsl.core.expression.function.ArrayPropertyAccessorFunction;
 import io.mappingdsl.core.expression.function.CollectionFieldAccessorFunction;
 import io.mappingdsl.core.expression.function.CollectionPropertyAccessorFunction;
 import io.mappingdsl.core.expression.function.ExpressionFunction;
@@ -13,6 +15,7 @@ import io.mappingdsl.core.expression.function.ObjectFieldAccessorFunction;
 import io.mappingdsl.core.expression.function.PathProcessingFunction;
 import io.mappingdsl.core.expression.function.PropertyAccessorFunction;
 import io.mappingdsl.core.expression.function.RootIdentityFunction;
+import io.mappingdsl.core.expression.function.SetArrayMethodAccessorFunction;
 import io.mappingdsl.core.expression.function.SetCollectionMethodAccessorFunction;
 import io.mappingdsl.core.expression.function.SetMethodAccessorFunction;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
@@ -46,71 +49,85 @@ public final class SimpleFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
     public final ValueCollectionExpression<ROOT, java.lang.String, ValueProcessingFunction> listOfString =
             new ValueCollectionExpression<>(this, new CollectionFieldAccessorFunction(java.util.List.class, java.lang.String.class, "listOfString"));
 
-    public final ValueExpression<ROOT, java.lang.String, GetMethodAccessorFunction> getStringValue =
+    public final ValueCollectionExpression<ROOT, java.lang.String, ValueProcessingFunction> arrayOfString =
+            new ValueCollectionExpression<>(this, new ArrayFieldAccessorFunction(java.lang.String.class, "arrayOfString"));
+
+    public final ValueExpression<ROOT, java.lang.String, ValueProducerFunction> getStringValue =
             new ValueExpression<>(this, new GetMethodAccessorFunction(java.lang.String.class, "getStringValue"));
 
-    public final ValueExpression<ROOT, java.lang.String, SetMethodAccessorFunction> setStringValue =
+    public final ValueExpression<ROOT, java.lang.String, ValueConsumerFunction> setStringValue =
             new ValueExpression<>(this, new SetMethodAccessorFunction(java.lang.String.class, "setStringValue"));
 
-    public final ValueExpression<ROOT, java.lang.Integer, GetMethodAccessorFunction> getIntValue =
+    public final ValueExpression<ROOT, java.lang.Integer, ValueProducerFunction> getIntValue =
             new ValueExpression<>(this, new GetMethodAccessorFunction(java.lang.Integer.class, "getIntValue"));
 
-    public final ValueExpression<ROOT, java.lang.Integer, SetMethodAccessorFunction> setIntValue =
+    public final ValueExpression<ROOT, java.lang.Integer, ValueConsumerFunction> setIntValue =
             new ValueExpression<>(this, new SetMethodAccessorFunction(java.lang.Integer.class, "setIntValue"));
 
-    public final ValueExpression<ROOT, java.lang.Integer, GetMethodAccessorFunction> getAnotherIntegerValue =
+    public final ValueExpression<ROOT, java.lang.Integer, ValueProducerFunction> getAnotherIntegerValue =
             new ValueExpression<>(this, new GetMethodAccessorFunction(java.lang.Integer.class, "getAnotherIntegerValue"));
 
-    public final ValueExpression<ROOT, java.lang.Integer, SetMethodAccessorFunction> setAnotherIntegerValue =
+    public final ValueExpression<ROOT, java.lang.Integer, ValueConsumerFunction> setAnotherIntegerValue =
             new ValueExpression<>(this, new SetMethodAccessorFunction(java.lang.Integer.class, "setAnotherIntegerValue"));
 
-    public final ValueExpression<ROOT, java.lang.Boolean, GetMethodAccessorFunction> isBooleanValue =
+    public final ValueExpression<ROOT, java.lang.Boolean, ValueProducerFunction> isBooleanValue =
             new ValueExpression<>(this, new GetMethodAccessorFunction(java.lang.Boolean.class, "isBooleanValue"));
 
-    public final ValueExpression<ROOT, java.lang.Boolean, SetMethodAccessorFunction> setBooleanValue =
+    public final ValueExpression<ROOT, java.lang.Boolean, ValueConsumerFunction> setBooleanValue =
             new ValueExpression<>(this, new SetMethodAccessorFunction(java.lang.Boolean.class, "setBooleanValue"));
 
-    public final ValueExpression<ROOT, java.lang.Boolean, GetMethodAccessorFunction> getAnotherBooleanValue =
+    public final ValueExpression<ROOT, java.lang.Boolean, ValueProducerFunction> getAnotherBooleanValue =
             new ValueExpression<>(this, new GetMethodAccessorFunction(java.lang.Boolean.class, "getAnotherBooleanValue"));
 
-    public final ValueExpression<ROOT, java.lang.Boolean, SetMethodAccessorFunction> setAnotherBooleanValue =
+    public final ValueExpression<ROOT, java.lang.Boolean, ValueConsumerFunction> setAnotherBooleanValue =
             new ValueExpression<>(this, new SetMethodAccessorFunction(java.lang.Boolean.class, "setAnotherBooleanValue"));
 
-    public final ValueCollectionExpression<ROOT, java.lang.String, GetMethodAccessorFunction> getListOfString =
+    public final ValueCollectionExpression<ROOT, java.lang.String, ValueProducerFunction> getListOfString =
             new ValueCollectionExpression<>(this, new GetMethodAccessorFunction(java.util.List.class, "getListOfString"));
 
-    public final ValueCollectionExpression<ROOT, java.lang.String, SetCollectionMethodAccessorFunction> setListOfString =
+    public final ValueCollectionExpression<ROOT, java.lang.String, ValueConsumerFunction> setListOfString =
             new ValueCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(java.util.List.class, java.lang.String.class, "setListOfString"));
 
-    public final ValueExpression<ROOT, java.lang.String, PropertyAccessorFunction> stringValueProperty =
+    public final ValueCollectionExpression<ROOT, java.lang.String, ValueProducerFunction> getArrayOfString =
+            new ValueCollectionExpression<>(this, new GetMethodAccessorFunction(java.lang.String[].class, "getArrayOfString"));
+
+    public final ValueCollectionExpression<ROOT, java.lang.String, ValueConsumerFunction> setArrayOfString =
+            new ValueCollectionExpression<>(this, new SetArrayMethodAccessorFunction(java.lang.String[].class, java.lang.String.class, "setArrayOfString"));
+
+    public final ValueExpression<ROOT, java.lang.String, ValueProcessingFunction> stringValueProperty =
             new ValueExpression<>(this, new PropertyAccessorFunction(
                     this.getStringValue.getExpressionFunction(),
                     this.setStringValue.getExpressionFunction()));
 
-    public final ValueExpression<ROOT, java.lang.Integer, PropertyAccessorFunction> intValueProperty =
+    public final ValueExpression<ROOT, java.lang.Integer, ValueProcessingFunction> intValueProperty =
             new ValueExpression<>(this, new PropertyAccessorFunction(
                     this.getIntValue.getExpressionFunction(),
                     this.setIntValue.getExpressionFunction()));
 
-    public final ValueExpression<ROOT, java.lang.Integer, PropertyAccessorFunction> anotherIntegerValueProperty =
+    public final ValueExpression<ROOT, java.lang.Integer, ValueProcessingFunction> anotherIntegerValueProperty =
             new ValueExpression<>(this, new PropertyAccessorFunction(
                     this.getAnotherIntegerValue.getExpressionFunction(),
                     this.setAnotherIntegerValue.getExpressionFunction()));
 
-    public final ValueExpression<ROOT, java.lang.Boolean, PropertyAccessorFunction> booleanValueProperty =
+    public final ValueExpression<ROOT, java.lang.Boolean, ValueProcessingFunction> booleanValueProperty =
             new ValueExpression<>(this, new PropertyAccessorFunction(
                     this.isBooleanValue.getExpressionFunction(),
                     this.setBooleanValue.getExpressionFunction()));
 
-    public final ValueExpression<ROOT, java.lang.Boolean, PropertyAccessorFunction> anotherBooleanValueProperty =
+    public final ValueExpression<ROOT, java.lang.Boolean, ValueProcessingFunction> anotherBooleanValueProperty =
             new ValueExpression<>(this, new PropertyAccessorFunction(
                     this.getAnotherBooleanValue.getExpressionFunction(),
                     this.setAnotherBooleanValue.getExpressionFunction()));
 
-    public final ValueCollectionExpression<ROOT, java.lang.String, CollectionPropertyAccessorFunction> listOfStringProperty =
+    public final ValueCollectionExpression<ROOT, java.lang.String, ValueProcessingFunction> listOfStringProperty =
             new ValueCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
                     this.getListOfString.getExpressionFunction(),
                     this.setListOfString.getExpressionFunction()));
+
+    public final ValueCollectionExpression<ROOT, java.lang.String, ValueProcessingFunction> arrayOfStringProperty =
+            new ValueCollectionExpression<>(this, new ArrayPropertyAccessorFunction(
+                    this.getArrayOfString.getExpressionFunction(),
+                    this.setArrayOfString.getExpressionFunction()));
 
     public SimpleFieldMappingDsl(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
         super(parentExpression, expressionFunction);

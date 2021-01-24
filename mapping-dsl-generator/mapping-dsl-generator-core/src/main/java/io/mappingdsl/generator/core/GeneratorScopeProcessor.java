@@ -204,11 +204,15 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
         String fieldTypeName = fieldTypeDefinition.getTypeName();
         Class<?> fieldType = ClassUtils.getClassByName(fieldTypeName);
 
-        if (fieldType != null && Iterable.class.isAssignableFrom(fieldType)) {
+        if ((fieldType != null && Iterable.class.isAssignableFrom(fieldType)) || fieldTypeDefinition.isArray()) {
             List<String> generics = fieldTypeDefinition.getGenerics();
 
             String elementTypeName = Object.class.getCanonicalName();
-            if (generics.size() == 1) {
+
+            if (fieldTypeDefinition.isArray()) {
+                elementTypeName = fieldTypeName;
+            }
+            else if (generics.size() == 1) {
                 elementTypeName = generics.get(0);
             }
 
@@ -216,11 +220,16 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
                     ? FieldModelType.DSL
                     : FieldModelType.VALUE;
 
+            String collectionType = fieldTypeDefinition.isArray()
+                    ? null
+                    : fieldType.getCanonicalName();
+
             return CollectionFieldModel.collectionFieldModelBuilder()
                     .name(fieldName)
                     .elementType(elementTypeName)
-                    .collectionType(fieldType.getCanonicalName())
                     .modelType(modelType)
+                    .collectionType(collectionType)
+                    .isArray(fieldTypeDefinition.isArray())
                     .build();
         }
 

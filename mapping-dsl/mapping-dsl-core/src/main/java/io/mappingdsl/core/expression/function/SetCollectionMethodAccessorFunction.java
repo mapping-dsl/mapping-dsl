@@ -1,6 +1,10 @@
 package io.mappingdsl.core.expression.function;
 
 import ice.bricks.reflection.ReflectionUtils;
+import ice.bricks.streams.StreamUtils;
+
+import java.util.Collection;
+import java.util.stream.Stream;
 
 public class SetCollectionMethodAccessorFunction implements ValueConsumerFunction {
 
@@ -26,7 +30,8 @@ public class SetCollectionMethodAccessorFunction implements ValueConsumerFunctio
 
     @Override
     public void consume(Object target, Object value) {
-        ReflectionUtils.invokeMethod(target, this.name, new Class<?> [] { this.collectionType }, new Object [] { value });
+        Collection<?> values = StreamUtils.collectStream((Stream<?>) value, this.collectionType);
+        ReflectionUtils.invokeMethod(target, this.name, new Class<?> [] { this.collectionType }, new Object [] { values });
     }
 
     @Override

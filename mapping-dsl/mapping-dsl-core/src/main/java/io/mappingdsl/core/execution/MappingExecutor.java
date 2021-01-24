@@ -21,10 +21,8 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -86,8 +84,7 @@ public class MappingExecutor {
 
             ValueConsumerFunction consumerFunction = valueConsumer.consumerFunction;
             if (consumerFunction.collectionConsumer()) {
-                List<Object> targetValues = mappedValues.collect(Collectors.toList());
-                consumerFunction.consume(valueConsumer.target, targetValues);
+                consumerFunction.consume(valueConsumer.target, mappedValues);
             }
             else {
                 mappedValues.forEach(targetValue -> consumerFunction.consume(valueConsumer.target, targetValue));
@@ -108,7 +105,7 @@ public class MappingExecutor {
         }
 
         // fail if types are incompatible
-        if (!targetType.isInstance(sourceValue)) {
+        if (!consumerFunction.canConsume(sourceValue.getClass())) {
             throw new IllegalAssignmentException(consumerFunction, sourceValue.getClass());
         }
 

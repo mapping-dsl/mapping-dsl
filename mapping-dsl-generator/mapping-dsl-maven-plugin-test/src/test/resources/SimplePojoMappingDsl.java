@@ -5,6 +5,8 @@ import io.mappingdsl.core.expression.DslExpression;
 import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.ValueCollectionExpression;
 import io.mappingdsl.core.expression.ValueExpression;
+import io.mappingdsl.core.expression.function.ArrayFieldAccessorFunction;
+import io.mappingdsl.core.expression.function.ArrayPropertyAccessorFunction;
 import io.mappingdsl.core.expression.function.CollectionFieldAccessorFunction;
 import io.mappingdsl.core.expression.function.CollectionPropertyAccessorFunction;
 import io.mappingdsl.core.expression.function.ExpressionFunction;
@@ -13,6 +15,7 @@ import io.mappingdsl.core.expression.function.ObjectFieldAccessorFunction;
 import io.mappingdsl.core.expression.function.PathProcessingFunction;
 import io.mappingdsl.core.expression.function.PropertyAccessorFunction;
 import io.mappingdsl.core.expression.function.RootIdentityFunction;
+import io.mappingdsl.core.expression.function.SetArrayMethodAccessorFunction;
 import io.mappingdsl.core.expression.function.SetCollectionMethodAccessorFunction;
 import io.mappingdsl.core.expression.function.SetMethodAccessorFunction;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
@@ -40,30 +43,30 @@ public final class SimplePojoMappingDsl<ROOT, FUN extends ExpressionFunction>
     public final ValueExpression<ROOT, java.lang.String, ValueProcessingFunction> regularValue =
             new ValueExpression<>(this, new ObjectFieldAccessorFunction(java.lang.String.class, "regularValue"));
 
-    public final ValueExpression<ROOT, java.lang.String, GetMethodAccessorFunction> getGettableValue =
+    public final ValueExpression<ROOT, java.lang.String, ValueProducerFunction> getGettableValue =
             new ValueExpression<>(this, new GetMethodAccessorFunction(java.lang.String.class, "getGettableValue"));
 
-    public final ValueExpression<ROOT, java.lang.String, SetMethodAccessorFunction> setSettableValue =
+    public final ValueExpression<ROOT, java.lang.String, ValueConsumerFunction> setSettableValue =
             new ValueExpression<>(this, new SetMethodAccessorFunction(java.lang.String.class, "setSettableValue"));
 
-    public final ValueExpression<ROOT, java.lang.String, GetMethodAccessorFunction> getPropertyValue =
+    public final ValueExpression<ROOT, java.lang.String, ValueProducerFunction> getPropertyValue =
             new ValueExpression<>(this, new GetMethodAccessorFunction(java.lang.String.class, "getPropertyValue"));
 
-    public final ValueExpression<ROOT, java.lang.String, SetMethodAccessorFunction> setPropertyValue =
+    public final ValueExpression<ROOT, java.lang.String, ValueConsumerFunction> setPropertyValue =
             new ValueExpression<>(this, new SetMethodAccessorFunction(java.lang.String.class, "setPropertyValue"));
 
-    public final ValueExpression<ROOT, java.lang.String, GetMethodAccessorFunction> getRegularValue =
+    public final ValueExpression<ROOT, java.lang.String, ValueProducerFunction> getRegularValue =
             new ValueExpression<>(this, new GetMethodAccessorFunction(java.lang.String.class, "getRegularValue"));
 
-    public final ValueExpression<ROOT, java.lang.String, SetMethodAccessorFunction> setRegularValue =
+    public final ValueExpression<ROOT, java.lang.String, ValueConsumerFunction> setRegularValue =
             new ValueExpression<>(this, new SetMethodAccessorFunction(java.lang.String.class, "setRegularValue"));
 
-    public final ValueExpression<ROOT, java.lang.String, PropertyAccessorFunction> propertyValueProperty =
+    public final ValueExpression<ROOT, java.lang.String, ValueProcessingFunction> propertyValueProperty =
             new ValueExpression<>(this, new PropertyAccessorFunction(
                     this.getPropertyValue.getExpressionFunction(),
                     this.setPropertyValue.getExpressionFunction()));
 
-    public final ValueExpression<ROOT, java.lang.String, PropertyAccessorFunction> regularValueProperty =
+    public final ValueExpression<ROOT, java.lang.String, ValueProcessingFunction> regularValueProperty =
             new ValueExpression<>(this, new PropertyAccessorFunction(
                     this.getRegularValue.getExpressionFunction(),
                     this.setRegularValue.getExpressionFunction()));

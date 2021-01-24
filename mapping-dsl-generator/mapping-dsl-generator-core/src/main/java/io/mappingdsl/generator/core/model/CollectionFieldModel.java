@@ -7,11 +7,15 @@ import lombok.Getter;
 public class CollectionFieldModel extends FieldModel {
 
     private final String collectionType;
+    private final boolean isArray;
 
     @Builder(builderMethodName = "collectionFieldModelBuilder")
-    public CollectionFieldModel(String name, String elementType, String collectionType, FieldModelType modelType) {
+    public CollectionFieldModel(String name, String elementType, FieldModelType modelType, String collectionType,
+                                boolean isArray) {
+
         super(name, elementType, modelType);
         this.collectionType = collectionType;
+        this.isArray = isArray;
     }
 
     public String getElementType() {

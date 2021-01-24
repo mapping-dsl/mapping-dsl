@@ -1,14 +1,12 @@
 package io.mappingdsl.core.expression.function;
 
-import ice.bricks.reflection.ReflectionUtils;
+public class CollectionPropertyAccessorFunction implements ValueProcessingFunction {
 
-public class CollectionPropertyAccessorFunction implements PathProcessingFunction {
+    private final ValueProducerFunction getMethodAccessorFunction;
+    private final ValueConsumerFunction setMethodAccessorFunction;
 
-    private final GetMethodAccessorFunction getMethodAccessorFunction;
-    private final SetCollectionMethodAccessorFunction setMethodAccessorFunction;
-
-    public CollectionPropertyAccessorFunction(GetMethodAccessorFunction getMethodAccessorFunction,
-                                              SetCollectionMethodAccessorFunction setMethodAccessorFunction) {
+    public CollectionPropertyAccessorFunction(ValueProducerFunction getMethodAccessorFunction,
+                                              ValueConsumerFunction setMethodAccessorFunction) {
 
         this.getMethodAccessorFunction = getMethodAccessorFunction;
         this.setMethodAccessorFunction = setMethodAccessorFunction;
@@ -35,18 +33,6 @@ public class CollectionPropertyAccessorFunction implements PathProcessingFunctio
     @Override
     public Object produce(Object source) {
         return this.getMethodAccessorFunction.produce(source);
-    }
-
-    @Override
-    public Object step(Object target) {
-        Object property = produce(target);
-
-        if (property == null) {
-            property = ReflectionUtils.generateNewInstance(getConsumerType());
-            consume(target, property);
-        }
-
-        return property;
     }
 
     @Override

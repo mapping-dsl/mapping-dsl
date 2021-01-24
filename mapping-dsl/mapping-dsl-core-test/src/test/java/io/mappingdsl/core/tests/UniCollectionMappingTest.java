@@ -95,6 +95,62 @@ class UniCollectionMappingTest {
         assertThat(resultAddressBookSummaryDto.getNumberOfBookmarks()).isEqualTo(2);
     }
 
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("setCollectionTestData")
+    void shouldMapSet(String testName, MappingDsl mappingDsl) {
+        StreetEntity streetEntity = new StreetEntity("Baker Street");
+        HouseNumberEntity houseNumberEntity = new HouseNumberEntity(221, "B");
+        AddressEntity addressEntity = new AddressEntity(streetEntity, houseNumberEntity);
+
+        AddressBookEntity addressBookEntity = new AddressBookEntity();
+        addressBookEntity.setBookmarks(new HashSet<>(Collections.singletonList(addressEntity)));
+
+        AddressBookDto resultAddressBookDto = mappingDsl.map(addressBookEntity, AddressBookDto.class);
+        assertThat(resultAddressBookDto.getBookmarks().size()).isEqualTo(1);
+
+        AddressDto resultAddressDto = resultAddressBookDto.getBookmarks().iterator().next();
+        assertThat(resultAddressDto.getStreet().getName()).isEqualTo("Baker Street");
+        assertThat(resultAddressDto.getHouseNumber().getNumber()).isEqualTo(221);
+        assertThat(resultAddressDto.getHouseNumber().getSuffix()).isEqualTo("B");
+    }
+
+    private static Stream<Arguments> setCollectionTestData() {
+        return Stream.of(
+                Arguments.of(
+                        "[uni] set mapping over fields",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(AddressBookEntity.class).to(AddressBookDto.class)
+                                .produce(AddressBookEntityMappingDsl.$this.bookmarks)
+                                .usingConverter(TestConverters::convertAddressEntity)
+                                .to(AddressBookDtoMappingDsl.$this.bookmarks)
+                                .build()),
+
+                Arguments.of(
+                        "[uni] set mapping over properties",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(AddressBookEntity.class).to(AddressBookDto.class)
+                                .produce(AddressBookEntityMappingDsl.$this.bookmarksProperty)
+                                .usingConverter(TestConverters::convertAddressEntity)
+                                .to(AddressBookDtoMappingDsl.$this.bookmarksProperty)
+                                .build()),
+
+                Arguments.of(
+                        "[uni] set mapping over methods",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(AddressBookEntity.class).to(AddressBookDto.class)
+                                .produce(AddressBookEntityMappingDsl.$this.getBookmarks)
+                                .usingConverter(TestConverters::convertAddressEntity)
+                                .to(AddressBookDtoMappingDsl.$this.setBookmarks)
+                                .build())
+        );
+    }
+
     @Test
     void shouldMapCollectionElement() {
         StreetEntity streetEntity = new StreetEntity("Baker Street");

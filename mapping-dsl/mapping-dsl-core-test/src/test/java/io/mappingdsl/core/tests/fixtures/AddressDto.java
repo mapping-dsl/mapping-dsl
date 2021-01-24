@@ -25,6 +25,10 @@ public class AddressDto {
     @Setter
     private List<String> phoneNumbers;
 
+    @Getter
+    @Setter
+    private String[] remarks;
+
     public AddressDto(StreetDto street, HouseNumberDto houseNumber) {
         this.street = street;
         this.houseNumber = houseNumber;

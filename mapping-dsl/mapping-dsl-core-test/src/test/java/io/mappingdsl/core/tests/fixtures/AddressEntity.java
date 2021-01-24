@@ -25,6 +25,10 @@ public class AddressEntity {
     @Setter
     private List<String> phoneNumbers;
 
+    @Getter
+    @Setter
+    private String[] remarks;
+
     public AddressEntity(StreetEntity street, HouseNumberEntity houseNumber) {
         this.street = street;
         this.houseNumber = houseNumber;

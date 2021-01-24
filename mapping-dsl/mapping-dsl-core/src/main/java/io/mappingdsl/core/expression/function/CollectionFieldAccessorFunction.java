@@ -1,8 +1,10 @@
 package io.mappingdsl.core.expression.function;
 
 import ice.bricks.reflection.ReflectionUtils;
+import ice.bricks.streams.StreamUtils;
 
 import java.util.Collection;
+import java.util.stream.Stream;
 
 public class CollectionFieldAccessorFunction implements ValueProcessingFunction {
 
@@ -40,7 +42,8 @@ public class CollectionFieldAccessorFunction implements ValueProcessingFunction 
             ReflectionUtils.writeField(target, this.name, collection);
         }
 
-        collection.addAll((Collection<?>) value);
+        Collection<?> values = StreamUtils.collectStream((Stream<?>) value, this.collectionType);
+        collection.addAll(values);
     }
 
     @Override
