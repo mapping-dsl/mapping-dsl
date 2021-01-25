@@ -12,4 +12,9 @@ public class CityOverviewEntity {
     @Getter
     @Setter
     private int numberOfDistricts;
+
+    @Getter
+    @Setter
+    private DistrictEntity centralDistrict;
+
 }

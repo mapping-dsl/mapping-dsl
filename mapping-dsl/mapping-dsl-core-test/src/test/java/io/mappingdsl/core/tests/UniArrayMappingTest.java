@@ -158,4 +158,29 @@ class UniArrayMappingTest {
         assertThat(resultCityOverviewDto.getNumberOfDistricts()).isEqualTo(2);
     }
 
+    @Test
+    void shouldMapArrayElementByIndex() {
+        DistrictEntity[] districtEntities = new DistrictEntity[] {
+                new DistrictEntity("Marylebone"),
+                new DistrictEntity("Westminster")
+        };
+        CityEntity cityEntity = new CityEntity(districtEntities);
+
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .uniMapping()
+                .from(CityEntity.class).to(CityOverviewDto.class)
+                .produce(CityEntityMappingDsl.$this.districts.get(0))
+                .usingMapping()
+                .to(CityOverviewDtoMappingDsl.$this.centralDistrict)
+
+                .uniMapping()
+                .from(DistrictEntity.class).to(DistrictDto.class)
+                .produce(DistrictEntityMappingDsl.$this.name)
+                .to(DistrictDtoMappingDsl.$this.name)
+                .build();
+
+        CityOverviewDto resultCityOverviewDto = mappingDsl.map(cityEntity, CityOverviewDto.class);
+        assertThat(resultCityOverviewDto.getCentralDistrict().getName()).isEqualTo("Marylebone");
+    }
+
 }

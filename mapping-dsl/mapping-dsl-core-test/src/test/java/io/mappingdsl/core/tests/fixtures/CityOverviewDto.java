@@ -13,4 +13,8 @@ public class CityOverviewDto {
     @Setter
     private int numberOfDistricts;
 
+    @Getter
+    @Setter
+    private DistrictDto centralDistrict;
+
 }
