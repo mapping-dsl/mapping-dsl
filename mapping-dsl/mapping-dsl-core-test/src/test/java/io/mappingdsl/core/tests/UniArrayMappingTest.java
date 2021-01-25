@@ -10,11 +10,14 @@ import io.mappingdsl.core.tests.fixtures.CityDto;
 import io.mappingdsl.core.tests.fixtures.CityDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.CityEntity;
 import io.mappingdsl.core.tests.fixtures.CityEntityMappingDsl;
+import io.mappingdsl.core.tests.fixtures.CityOverviewDto;
+import io.mappingdsl.core.tests.fixtures.CityOverviewDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.DistrictDto;
 import io.mappingdsl.core.tests.fixtures.DistrictDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.DistrictEntity;
 import io.mappingdsl.core.tests.fixtures.DistrictEntityMappingDsl;
 import io.mappingdsl.core.tests.fixtures.NamedObject;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -134,6 +137,25 @@ class UniArrayMappingTest {
                                 .to(DistrictDtoMappingDsl.$this.name)
                                 .build())
         );
+    }
+
+    @Test
+    void shouldMapArraySize() {
+        DistrictEntity[] districtEntities = new DistrictEntity[] {
+                new DistrictEntity("Marylebone"),
+                new DistrictEntity("Westminster")
+        };
+        CityEntity cityEntity = new CityEntity(districtEntities);
+
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .uniMapping()
+                .from(CityEntity.class).to(CityOverviewDto.class)
+                .produce(CityEntityMappingDsl.$this.districts.size())
+                .to(CityOverviewDtoMappingDsl.$this.numberOfDistricts)
+                .build();
+
+        CityOverviewDto resultCityOverviewDto = mappingDsl.map(cityEntity, CityOverviewDto.class);
+        assertThat(resultCityOverviewDto.getNumberOfDistricts()).isEqualTo(2);
     }
 
 }

@@ -14,6 +14,8 @@ public final class CollectionSizeAccessorFunction implements ValueProducerFuncti
             long count = StreamSupport.stream(((Iterable<?>) source).spliterator(), false).count();
             // returns Integer.MAX_VALUE if more elements exist according to the spec for Collection#size()
             return (int) Math.min(Integer.MAX_VALUE, count);
+        } else if (source.getClass().isArray()) {
+            return ((Object[]) source).length;
         }
 
         throw new IllegalArgumentException(String.format(
