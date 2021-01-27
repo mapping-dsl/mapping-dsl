@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class NamedObject {
+public abstract class NamedObject {
 
     @Getter
     @Setter
