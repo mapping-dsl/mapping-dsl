@@ -40,54 +40,54 @@ public final class ${dslClassName}<ROOT, FUN extends ExpressionFunction>
         <#switch fieldModel.modelType>
             <#case "VALUE">
                 <#if GeneratorUtils.isCollectionFieldModel(fieldModel.class)>
-                    <@expressions.valuesCollectionField model=fieldModel />
+                    <@expressions.multielementValueField model=fieldModel />
                 <#else>
                     <@expressions.valueField model=fieldModel />
                 </#if>
-                <#break>
+            <#break>
             <#case "DSL">
                 <#if GeneratorUtils.isCollectionFieldModel(fieldModel.class)>
-                    <@expressions.dslCollectionField model=fieldModel />
+                    <@expressions.multielementDslField model=fieldModel />
                 <#else>
                     <@expressions.dslField model=fieldModel />
                 </#if>
-                <#break>
+            <#break>
         </#switch>${'\n'}
     </#list>
     <#list methodModels as methodModel>
         <#switch methodModel.fieldModel.modelType>
             <#case "VALUE">
                 <#if GeneratorUtils.isCollectionFieldModel(methodModel.fieldModel.class)>
-                    <@expressions.valueCollectionMethodReference model=methodModel />
+                    <@expressions.multielementValueMethodReference model=methodModel />
                 <#else>
                     <@expressions.valueMethodReference model=methodModel />
                 </#if>
-                <#break>
+            <#break>
             <#case "DSL">
                 <#if GeneratorUtils.isCollectionFieldModel(methodModel.fieldModel.class)>
-                    <@expressions.dslCollectionMethodReference model=methodModel />
+                    <@expressions.multielementDslMethodReference model=methodModel />
                 <#else>
                     <@expressions.dslMethodReference model=methodModel />
                 </#if>
-                <#break>
+            <#break>
         </#switch>${'\n'}
     </#list>
     <#list propertyModels as propertyModel>
         <#switch propertyModel.fieldModel.modelType>
             <#case "VALUE">
                 <#if GeneratorUtils.isCollectionFieldModel(propertyModel.fieldModel.class)>
-                    <@expressions.valueCollectionProperty model=propertyModel />
+                    <@expressions.multielementValueProperty model=propertyModel />
                 <#else>
                     <@expressions.valueProperty model=propertyModel />
                 </#if>
-                <#break>
+            <#break>
             <#case "DSL">
                 <#if GeneratorUtils.isCollectionFieldModel(propertyModel.fieldModel.class)>
-                    <@expressions.dslCollectionProperty model=propertyModel />
+                    <@expressions.multielementDslProperty model=propertyModel />
                 <#else>
                     <@expressions.dslProperty model=propertyModel />
                 </#if>
-                <#break>
+            <#break>
         </#switch>${'\n'}
     </#list>
     public ${dslClassName}(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
