@@ -18,6 +18,18 @@ public class SimpleField {
 
     private String[] arrayOfString;
 
+    private Number abstractNumberValue;
+
+    private Number[] arrayOfAbstractNumberValue;
+
+    private List<Number> listOfAbstractNumberValue;
+
+    private CharSequence interfaceValue;
+
+    private CharSequence[] arrayOfInterfaceValue;
+
+    private List<CharSequence> listOfInterfaceValue;
+
     public String getStringValue() {
         return stringValue;
     }
@@ -72,6 +84,54 @@ public class SimpleField {
 
     public void setArrayOfString(String[] arrayOfString) {
         this.arrayOfString = arrayOfString;
+    }
+
+    public Number getAbstractNumberValue() {
+        return abstractNumberValue;
+    }
+
+    public void setAbstractNumberValue(Number abstractNumberValue) {
+        this.abstractNumberValue = abstractNumberValue;
+    }
+
+    public Number[] getArrayOfAbstractNumberValue() {
+        return arrayOfAbstractNumberValue;
+    }
+
+    public void setArrayOfAbstractNumberValue(Number[] arrayOfAbstractNumberValue) {
+        this.arrayOfAbstractNumberValue = arrayOfAbstractNumberValue;
+    }
+
+    public List<Number> getListOfAbstractNumberValue() {
+        return listOfAbstractNumberValue;
+    }
+
+    public void setListOfAbstractNumberValue(List<Number> listOfAbstractNumberValue) {
+        this.listOfAbstractNumberValue = listOfAbstractNumberValue;
+    }
+
+    public CharSequence getInterfaceValue() {
+        return interfaceValue;
+    }
+
+    public void setInterfaceValue(CharSequence interfaceValue) {
+        this.interfaceValue = interfaceValue;
+    }
+
+    public CharSequence[] getArrayOfInterfaceValue() {
+        return arrayOfInterfaceValue;
+    }
+
+    public void setArrayOfInterfaceValue(CharSequence[] arrayOfInterfaceValue) {
+        this.arrayOfInterfaceValue = arrayOfInterfaceValue;
+    }
+
+    public List<CharSequence> getListOfInterfaceValue() {
+        return listOfInterfaceValue;
+    }
+
+    public void setListOfInterfaceValue(List<CharSequence> listOfInterfaceValue) {
+        this.listOfInterfaceValue = listOfInterfaceValue;
     }
 
 }

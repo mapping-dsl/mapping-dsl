@@ -5,7 +5,7 @@ import ice.bricks.beans.BeansUtils;
 import ice.bricks.exceptions.ExceptionUtils;
 import ice.bricks.io.IoUtils;
 import ice.bricks.lang.model.LanguageModelUtils;
-import ice.bricks.lang.model.LanguageModelUtils.TypeDefinition;
+import ice.bricks.lang.model.LanguageModelUtils.TypeDetails;
 import ice.bricks.meta.ClassUtils;
 import io.mappingdsl.generator.core.model.CollectionFieldModel;
 import io.mappingdsl.generator.core.model.DslClassModel;
@@ -31,7 +31,6 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
@@ -198,29 +197,33 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
     private FieldModel buildFieldModel(Element fieldElement) {
         String fieldName = fieldElement.getSimpleName().toString();
 
-        TypeDefinition fieldTypeDefinition = ExceptionUtils.defaultIfException(
-                () -> LanguageModelUtils.getTypeDefinition(this.typeUtils, fieldElement), null);
+        TypeDetails typeDetails = ExceptionUtils.defaultIfException(
+                () -> LanguageModelUtils.getTypeDetails(this.typeUtils, fieldElement.asType()), null);
 
-        String fieldTypeName = fieldTypeDefinition.getTypeName();
+        String fieldTypeName = typeDetails.getTypeName();
         Class<?> fieldType = ClassUtils.getClassByName(fieldTypeName);
 
-        if ((fieldType != null && Iterable.class.isAssignableFrom(fieldType)) || fieldTypeDefinition.isArray()) {
-            List<String> generics = fieldTypeDefinition.getGenerics();
+        if ((fieldType != null && Iterable.class.isAssignableFrom(fieldType)) || typeDetails.isArray()) {
+            List<TypeDetails> generics = typeDetails.getGenerics();
 
             String elementTypeName = Object.class.getCanonicalName();
+            boolean isAbstract = false;
 
-            if (fieldTypeDefinition.isArray()) {
+            if (typeDetails.isArray()) {
                 elementTypeName = fieldTypeName;
+                isAbstract = typeDetails.isAbstract();
             }
             else if (generics.size() == 1) {
-                elementTypeName = generics.get(0);
+                TypeDetails typeGeneric = generics.get(0);
+                elementTypeName = typeGeneric.getTypeName();
+                isAbstract = typeGeneric.isAbstract() || typeGeneric.isInterface();
             }
 
             FieldModelType modelType = this.scope.contains(elementTypeName)
                     ? FieldModelType.DSL
                     : FieldModelType.VALUE;
 
-            String collectionType = fieldTypeDefinition.isArray()
+            String collectionType = typeDetails.isArray()
                     ? null
                     : fieldType.getCanonicalName();
 
@@ -229,7 +232,8 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
                     .elementType(elementTypeName)
                     .modelType(modelType)
                     .collectionType(collectionType)
-                    .isArray(fieldTypeDefinition.isArray())
+                    .isArray(typeDetails.isArray())
+                    .isAbstract(isAbstract)
                     .build();
         }
 
@@ -241,6 +245,7 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
                 .name(fieldName)
                 .type(fieldTypeName)
                 .modelType(modelType)
+                .isAbstract(typeDetails.isAbstract() || typeDetails.isInterface())
                 .build();
     }
 

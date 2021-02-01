@@ -11,9 +11,9 @@ public class CollectionFieldModel extends FieldModel {
 
     @Builder(builderMethodName = "collectionFieldModelBuilder")
     public CollectionFieldModel(String name, String elementType, FieldModelType modelType, String collectionType,
-                                boolean isArray) {
+                                boolean isArray, boolean isAbstract) {
 
-        super(name, elementType, modelType);
+        super(name, elementType, modelType, isAbstract);
         this.collectionType = collectionType;
         this.isArray = isArray;
     }

@@ -5,6 +5,8 @@
 <#assign dslClassName = GeneratorUtils.getDslClassName(fullClassName)>
 package ${ClassUtils.getClassPackage(fullClassName)};
 
+import io.mappingdsl.core.expression.AbstractValueCollectionExpression;
+import io.mappingdsl.core.expression.AbstractValueExpression;
 import io.mappingdsl.core.expression.DslCollectionExpression;
 import io.mappingdsl.core.expression.DslExpression;
 import io.mappingdsl.core.expression.ExpressionBase;
