@@ -1,5 +1,7 @@
 package pojo;
 
+import io.mappingdsl.core.expression.AbstractValueCollectionExpression;
+import io.mappingdsl.core.expression.AbstractValueExpression;
 import io.mappingdsl.core.expression.DslCollectionExpression;
 import io.mappingdsl.core.expression.DslExpression;
 import io.mappingdsl.core.expression.ExpressionBase;
@@ -40,6 +42,24 @@ public final class ComplexFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
     public final DslCollectionExpression<ROOT, pojo.SimpleField, ValueProcessingFunction> arrayField =
             new DslCollectionExpression<>(this, new ArrayFieldAccessorFunction(pojo.SimpleField.class, "arrayField"));
 
+    public final AbstractValueExpression<ROOT, pojo.AbstractValue, ValueProcessingFunction> abstractValue =
+            new AbstractValueExpression<>(this, new ObjectFieldAccessorFunction(pojo.AbstractValue.class, "abstractValue"));
+
+    public final AbstractValueCollectionExpression<ROOT, pojo.AbstractValue, ValueProcessingFunction> arrayOfAbstractValue =
+            new AbstractValueCollectionExpression<>(this, new ArrayFieldAccessorFunction(pojo.AbstractValue.class, "arrayOfAbstractValue"));
+
+    public final AbstractValueCollectionExpression<ROOT, pojo.AbstractValue, ValueProcessingFunction> listOfAbstractValue =
+            new AbstractValueCollectionExpression<>(this, new CollectionFieldAccessorFunction(java.util.List.class, pojo.AbstractValue.class, "listOfAbstractValue"));
+
+    public final AbstractValueExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceValue =
+            new AbstractValueExpression<>(this, new ObjectFieldAccessorFunction(pojo.InterfaceValue.class, "interfaceValue"));
+
+    public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceValues =
+            new AbstractValueCollectionExpression<>(this, new ArrayFieldAccessorFunction(pojo.InterfaceValue.class, "interfaceValues"));
+
+    public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceValuesList =
+            new AbstractValueCollectionExpression<>(this, new CollectionFieldAccessorFunction(java.util.List.class, pojo.InterfaceValue.class, "interfaceValuesList"));
+
     public final DslExpression<ROOT, pojo.SimpleField, ValueProducerFunction> getField =
             new SimpleFieldMappingDsl<>(this, new GetMethodAccessorFunction(pojo.SimpleField.class, "getField"));
 
@@ -58,6 +78,42 @@ public final class ComplexFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
     public final DslCollectionExpression<ROOT, pojo.SimpleField, ValueConsumerFunction> setArrayField =
             new DslCollectionExpression<>(this, new SetArrayMethodAccessorFunction(pojo.SimpleField[].class, pojo.SimpleField.class, "setArrayField"));
 
+    public final AbstractValueExpression<ROOT, pojo.AbstractValue, ValueProducerFunction> getAbstractValue =
+            new AbstractValueExpression<>(this, new GetMethodAccessorFunction(pojo.AbstractValue.class, "getAbstractValue"));
+
+    public final AbstractValueExpression<ROOT, pojo.AbstractValue, ValueConsumerFunction> setAbstractValue =
+            new AbstractValueExpression<>(this, new SetMethodAccessorFunction(pojo.AbstractValue.class, "setAbstractValue"));
+
+    public final AbstractValueCollectionExpression<ROOT, pojo.AbstractValue, ValueProducerFunction> getArrayOfAbstractValue =
+            new AbstractValueCollectionExpression<>(this, new GetMethodAccessorFunction(pojo.AbstractValue[].class, "getArrayOfAbstractValue"));
+
+    public final AbstractValueCollectionExpression<ROOT, pojo.AbstractValue, ValueConsumerFunction> setArrayOfAbstractValue =
+            new AbstractValueCollectionExpression<>(this, new SetArrayMethodAccessorFunction(pojo.AbstractValue[].class, pojo.AbstractValue.class, "setArrayOfAbstractValue"));
+
+    public final AbstractValueCollectionExpression<ROOT, pojo.AbstractValue, ValueProducerFunction> getListOfAbstractValue =
+            new AbstractValueCollectionExpression<>(this, new GetMethodAccessorFunction(java.util.List.class, "getListOfAbstractValue"));
+
+    public final AbstractValueCollectionExpression<ROOT, pojo.AbstractValue, ValueConsumerFunction> setListOfAbstractValue =
+            new AbstractValueCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(java.util.List.class, pojo.AbstractValue.class, "setListOfAbstractValue"));
+
+    public final AbstractValueExpression<ROOT, pojo.InterfaceValue, ValueProducerFunction> getInterfaceValue =
+            new AbstractValueExpression<>(this, new GetMethodAccessorFunction(pojo.InterfaceValue.class, "getInterfaceValue"));
+
+    public final AbstractValueExpression<ROOT, pojo.InterfaceValue, ValueConsumerFunction> setInterfaceValue =
+            new AbstractValueExpression<>(this, new SetMethodAccessorFunction(pojo.InterfaceValue.class, "setInterfaceValue"));
+
+    public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueProducerFunction> getInterfaceValues =
+            new AbstractValueCollectionExpression<>(this, new GetMethodAccessorFunction(pojo.InterfaceValue[].class, "getInterfaceValues"));
+
+    public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueConsumerFunction> setInterfaceValues =
+            new AbstractValueCollectionExpression<>(this, new SetArrayMethodAccessorFunction(pojo.InterfaceValue[].class, pojo.InterfaceValue.class, "setInterfaceValues"));
+
+    public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueProducerFunction> getInterfaceValuesList =
+            new AbstractValueCollectionExpression<>(this, new GetMethodAccessorFunction(java.util.List.class, "getInterfaceValuesList"));
+
+    public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueConsumerFunction> setInterfaceValuesList =
+            new AbstractValueCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(java.util.List.class, pojo.InterfaceValue.class, "setInterfaceValuesList"));
+
     public final SimpleFieldMappingDsl<ROOT, PathProcessingFunction> fieldProperty =
             new SimpleFieldMappingDsl<>(this, new PropertyAccessorFunction(
                     this.getField.getExpressionFunction(),
@@ -72,6 +128,36 @@ public final class ComplexFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
             new DslCollectionExpression<>(this, new ArrayPropertyAccessorFunction(
                     this.getArrayField.getExpressionFunction(),
                     this.setArrayField.getExpressionFunction()));
+
+    public final AbstractValueExpression<ROOT, pojo.AbstractValue, ValueProcessingFunction> abstractValueProperty =
+            new AbstractValueExpression<>(this, new PropertyAccessorFunction(
+                    this.getAbstractValue.getExpressionFunction(),
+                    this.setAbstractValue.getExpressionFunction()));
+
+    public final AbstractValueCollectionExpression<ROOT, pojo.AbstractValue, ValueProcessingFunction> arrayOfAbstractValueProperty =
+            new AbstractValueCollectionExpression<>(this, new ArrayPropertyAccessorFunction(
+                    this.getArrayOfAbstractValue.getExpressionFunction(),
+                    this.setArrayOfAbstractValue.getExpressionFunction()));
+
+    public final AbstractValueCollectionExpression<ROOT, pojo.AbstractValue, ValueProcessingFunction> listOfAbstractValueProperty =
+            new AbstractValueCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
+                    this.getListOfAbstractValue.getExpressionFunction(),
+                    this.setListOfAbstractValue.getExpressionFunction()));
+
+    public final AbstractValueExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceValueProperty =
+            new AbstractValueExpression<>(this, new PropertyAccessorFunction(
+                    this.getInterfaceValue.getExpressionFunction(),
+                    this.setInterfaceValue.getExpressionFunction()));
+
+    public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceValuesProperty =
+            new AbstractValueCollectionExpression<>(this, new ArrayPropertyAccessorFunction(
+                    this.getInterfaceValues.getExpressionFunction(),
+                    this.setInterfaceValues.getExpressionFunction()));
+
+    public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceValuesListProperty =
+            new AbstractValueCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
+                    this.getInterfaceValuesList.getExpressionFunction(),
+                    this.setInterfaceValuesList.getExpressionFunction()));
 
     public ComplexFieldMappingDsl(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
         super(parentExpression, expressionFunction);

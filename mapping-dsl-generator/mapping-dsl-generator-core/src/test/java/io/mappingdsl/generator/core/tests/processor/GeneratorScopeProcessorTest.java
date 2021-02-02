@@ -31,7 +31,9 @@ class GeneratorScopeProcessorTest {
                 .withOptions("-Ascope=pojo.SimpleField,pojo.ComplexField")
                 .compile(
                         forResource("fixtures/input/SimpleField.java"),
-                        forResource("fixtures/input/ComplexField.java"));
+                        forResource("fixtures/input/ComplexField.java"),
+                        forResource("fixtures/input/AbstractValue.java"),
+                        forResource("fixtures/input/InterfaceValue.java"));
 
         assertThat(compilation).succeeded();
 
