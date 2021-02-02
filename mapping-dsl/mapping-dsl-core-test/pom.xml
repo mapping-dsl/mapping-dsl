@@ -43,6 +43,8 @@
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.CityEntity</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.CityOverviewDto</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.CityOverviewEntity</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.CountryDto</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.CountryEntity</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.DistrictDto</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.DistrictEntity</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.Geolocation</testSourceFile>
@@ -50,6 +52,8 @@
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.HouseNumberEntity</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.StreetDto</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.StreetEntity</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.TownDto</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.TownEntity</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.ZipDto</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.ZipEntity</testSourceFile>
                             </testSourceFiles>

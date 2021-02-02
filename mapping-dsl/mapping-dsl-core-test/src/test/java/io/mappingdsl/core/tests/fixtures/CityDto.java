@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class CityDto extends NamedObject {
+public class CityDto extends SettlementDto {
 
     @Getter
     @Setter
