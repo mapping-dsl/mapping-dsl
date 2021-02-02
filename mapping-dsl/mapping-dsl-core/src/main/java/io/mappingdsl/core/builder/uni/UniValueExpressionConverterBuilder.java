@@ -3,6 +3,7 @@ package io.mappingdsl.core.builder.uni;
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.common.Converter;
+import io.mappingdsl.core.expression.AbstractValueExpression;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import lombok.AccessLevel;
@@ -32,6 +33,13 @@ public final class UniValueExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_RO
             ValueExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
         return this.terminalExpressionBuilder.to(targetExpression);
+    }
+
+    public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
+            AbstractValueExpression<TRG_ROOT, ? super SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+
+        return new UniMappingConditionBuilder<>(
+                this.context, this.mappingRule.withTerminalExpression(targetExpression));
     }
 
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)

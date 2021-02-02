@@ -11,6 +11,10 @@ public class CountryDto extends NamedObject {
     @Setter
     private SettlementDto capital;
 
+    @Getter
+    @Setter
+    private Number population;
+
     public CountryDto(String name) {
         super(name);
     }

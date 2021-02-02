@@ -11,6 +11,10 @@ public class CountryEntity extends NamedObject {
     @Setter
     private SettlementEntity capital;
 
+    @Getter
+    @Setter
+    private Number population;
+
     public CountryEntity(String name) {
         super(name);
     }
