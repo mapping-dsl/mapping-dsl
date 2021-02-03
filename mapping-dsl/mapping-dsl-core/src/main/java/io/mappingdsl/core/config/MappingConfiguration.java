@@ -16,4 +16,7 @@ public class MappingConfiguration {
     @Setter
     private MissingMappingHandlingMode missingMappingHandlingMode = MissingMappingHandlingMode.TERMINATE;
 
+    @Getter
+    private final HintConfiguration hintConfiguration = new HintConfiguration();
+
 }

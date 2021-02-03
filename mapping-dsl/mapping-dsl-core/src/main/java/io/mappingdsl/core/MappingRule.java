@@ -18,6 +18,8 @@ public class MappingRule<SRC_ROOT, TRG_ROOT> {
     private final Converter<?, ?> terminalExpressionConverter;
     private final Condition<?> initialCondition;
     private final Condition<?> terminalCondition;
+    private final Class<?> initialHint;
+    private final Class<?> terminalHint;
 
     public MappingRule<SRC_ROOT, TRG_ROOT> withInitialExpressionConverter(
             Converter<?, ?> initialExpressionConverter) {
@@ -30,6 +32,8 @@ public class MappingRule<SRC_ROOT, TRG_ROOT> {
                 .terminalExpressionConverter(this.terminalExpressionConverter)
                 .initialCondition(this.initialCondition)
                 .terminalCondition(this.terminalCondition)
+                .initialHint(this.initialHint)
+                .terminalHint(this.terminalHint)
                 .build();
     }
 
@@ -44,6 +48,8 @@ public class MappingRule<SRC_ROOT, TRG_ROOT> {
                 .terminalExpressionConverter(terminalExpressionConverter)
                 .initialCondition(this.initialCondition)
                 .terminalCondition(this.terminalCondition)
+                .initialHint(this.initialHint)
+                .terminalHint(this.terminalHint)
                 .build();
     }
 
@@ -58,11 +64,12 @@ public class MappingRule<SRC_ROOT, TRG_ROOT> {
                 .terminalExpressionConverter(this.terminalExpressionConverter)
                 .initialCondition(this.initialCondition)
                 .terminalCondition(this.terminalCondition)
+                .initialHint(this.initialHint)
+                .terminalHint(this.terminalHint)
                 .build();
     }
 
     public MappingRule<SRC_ROOT, TRG_ROOT> withInitialCondition(Condition<?> initialCondition) {
-
         return MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(this.mappingRuleDirection)
                 .initialExpression(this.initialExpression)
@@ -71,19 +78,50 @@ public class MappingRule<SRC_ROOT, TRG_ROOT> {
                 .terminalExpressionConverter(this.terminalExpressionConverter)
                 .initialCondition(initialCondition)
                 .terminalCondition(this.terminalCondition)
+                .initialHint(this.initialHint)
+                .terminalHint(this.terminalHint)
                 .build();
     }
 
     public MappingRule<SRC_ROOT, TRG_ROOT> withTerminalCondition(Condition<?> terminalCondition) {
-
         return MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(this.mappingRuleDirection)
                 .initialExpression(this.initialExpression)
-                .terminalExpression(terminalExpression)
+                .terminalExpression(this.terminalExpression)
                 .initialExpressionConverter(this.initialExpressionConverter)
                 .terminalExpressionConverter(this.terminalExpressionConverter)
                 .initialCondition(this.initialCondition)
                 .terminalCondition(terminalCondition)
+                .initialHint(this.initialHint)
+                .terminalHint(this.terminalHint)
+                .build();
+    }
+
+    public MappingRule<SRC_ROOT, TRG_ROOT> withInitialHint(Class<?> initialHint) {
+        return MappingRule.<SRC_ROOT, TRG_ROOT>builder()
+                .mappingRuleDirection(this.mappingRuleDirection)
+                .initialExpression(this.initialExpression)
+                .terminalExpression(this.terminalExpression)
+                .initialExpressionConverter(this.initialExpressionConverter)
+                .terminalExpressionConverter(this.terminalExpressionConverter)
+                .initialCondition(this.initialCondition)
+                .terminalCondition(this.terminalCondition)
+                .initialHint(initialHint)
+                .terminalHint(this.terminalHint)
+                .build();
+    }
+
+    public MappingRule<SRC_ROOT, TRG_ROOT> withTerminalHint(Class<?> terminalHint) {
+        return MappingRule.<SRC_ROOT, TRG_ROOT>builder()
+                .mappingRuleDirection(this.mappingRuleDirection)
+                .initialExpression(this.initialExpression)
+                .terminalExpression(this.terminalExpression)
+                .initialExpressionConverter(this.initialExpressionConverter)
+                .terminalExpressionConverter(this.terminalExpressionConverter)
+                .initialCondition(this.initialCondition)
+                .terminalCondition(this.terminalCondition)
+                .initialHint(this.initialHint)
+                .terminalHint(terminalHint)
                 .build();
     }
 
@@ -96,6 +134,8 @@ public class MappingRule<SRC_ROOT, TRG_ROOT> {
                 .terminalExpressionConverter(this.initialExpressionConverter)
                 .initialCondition(this.terminalCondition)
                 .terminalCondition(this.initialCondition)
+                .initialHint(this.terminalHint)
+                .terminalHint(this.initialHint)
                 .build();
     }
 

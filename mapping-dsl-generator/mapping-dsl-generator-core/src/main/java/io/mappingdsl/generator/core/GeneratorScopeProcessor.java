@@ -30,6 +30,7 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
@@ -79,7 +80,8 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
                 String className = typeElement.getQualifiedName().toString();
 
                 if (!GeneratorUtils.isDslClass(className)) {
-                    DslClassModel dslClassModel = new DslClassModel(className);
+                    boolean isAbstract = typeElement.getModifiers().contains(Modifier.ABSTRACT);
+                    DslClassModel dslClassModel = new DslClassModel(className, isAbstract);
 
                     List<TypeElement> classHierarchy = getClassHierarchy(typeElement);
 

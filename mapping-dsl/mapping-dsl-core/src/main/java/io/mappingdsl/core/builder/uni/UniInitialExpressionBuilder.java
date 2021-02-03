@@ -3,6 +3,7 @@ package io.mappingdsl.core.builder.uni;
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.MappingRule.MappingRuleDirection;
+import io.mappingdsl.core.expression.AbstractDslExpression;
 import io.mappingdsl.core.expression.AbstractValueExpression;
 import io.mappingdsl.core.expression.DslCollectionExpression;
 import io.mappingdsl.core.expression.DslExpression;
@@ -52,6 +53,17 @@ public final class UniInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
 
     public <SRC_TYPE> UniDslExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
             DslExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+
+        MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
+                .mappingRuleDirection(MappingRuleDirection.FORWARD)
+                .initialExpression(initialExpression)
+                .build();
+
+        return new UniDslExpressionConverterBuilder<>(this.context, mappingRule);
+    }
+
+    public <SRC_TYPE> UniDslExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
+            AbstractDslExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.FORWARD)

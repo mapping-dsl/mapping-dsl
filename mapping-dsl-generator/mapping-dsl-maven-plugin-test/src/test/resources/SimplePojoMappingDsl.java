@@ -1,5 +1,7 @@
 package io.mappingdsl.mavenplugin.test.lombok.fixtures;
 
+import io.mappingdsl.core.expression.AbstractDslCollectionExpression;
+import io.mappingdsl.core.expression.AbstractDslExpression;
 import io.mappingdsl.core.expression.AbstractValueCollectionExpression;
 import io.mappingdsl.core.expression.AbstractValueExpression;
 import io.mappingdsl.core.expression.DslCollectionExpression;

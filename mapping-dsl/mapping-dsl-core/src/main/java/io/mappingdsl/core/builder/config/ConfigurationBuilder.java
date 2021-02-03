@@ -22,6 +22,10 @@ public final class ConfigurationBuilder {
         return new MissingMappingHandlingConfigurationBuilder(this, this.context);
     }
 
+    public <T> HintConfigurationBuilder<T> onAbstract(Class<T> type) {
+        return new HintConfigurationBuilder<>(this, this.context, type);
+    }
+
     // duplicating MappingDslBuilder
     public UniInitialTypeBuilder uniMapping() {
         return new UniInitialTypeBuilder(this.context);

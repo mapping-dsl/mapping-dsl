@@ -50,6 +50,8 @@
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.Geolocation</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.HouseNumberDto</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.HouseNumberEntity</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.SettlementDto</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.SettlementEntity</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.StreetDto</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.StreetEntity</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.TownDto</testSourceFile>

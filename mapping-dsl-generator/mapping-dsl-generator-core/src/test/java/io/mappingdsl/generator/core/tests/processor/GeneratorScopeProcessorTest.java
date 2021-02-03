@@ -28,7 +28,7 @@ class GeneratorScopeProcessorTest {
     void shouldGenerateNestedDsl() {
         Compilation compilation = javac()
                 .withProcessors(new GeneratorScopeProcessor())
-                .withOptions("-Ascope=pojo.SimpleField,pojo.ComplexField")
+                .withOptions("-Ascope=pojo.SimpleField,pojo.ComplexField,pojo.AbstractValue")
                 .compile(
                         forResource("fixtures/input/SimpleField.java"),
                         forResource("fixtures/input/ComplexField.java"),
@@ -36,6 +36,10 @@ class GeneratorScopeProcessorTest {
                         forResource("fixtures/input/InterfaceValue.java"));
 
         assertThat(compilation).succeeded();
+
+        assertThat(compilation)
+                .generatedSourceFile("pojo.AbstractValueMappingDsl")
+                .hasSourceEquivalentTo(forResource("fixtures/output/AbstractValueMappingDsl.java"));
 
         assertThat(compilation)
                 .generatedSourceFile("pojo.SimpleFieldMappingDsl")

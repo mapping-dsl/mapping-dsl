@@ -80,7 +80,7 @@ public class MappingExecutor {
                     .filter(Objects::nonNull)
                     .filter(value -> condition == null || condition.test(value))
                     .map(value -> (converter == null) ? value : converter.convert(value))
-                    .map(value -> mapValue(valueConsumer, value));
+                    .map(value -> mapValue(rule, valueConsumer, value));
 
             ValueConsumerFunction consumerFunction = valueConsumer.consumerFunction;
             if (consumerFunction.collectionConsumer()) {
@@ -94,7 +94,7 @@ public class MappingExecutor {
         return target;
     }
 
-    private Object mapValue(ValueConsumer valueConsumer, Object sourceValue) {
+    private Object mapValue(MappingRule<?, ?> rule, ValueConsumer valueConsumer, Object sourceValue) {
         ValueConsumerFunction consumerFunction = valueConsumer.consumerFunction;
         Class<?> targetType = consumerFunction.getConsumerType();
 
@@ -102,6 +102,19 @@ public class MappingExecutor {
         MappingKey<?, ?> nestedMappingKey = new MappingKey<>(sourceValue.getClass(), targetType);
         if (this.mappingRules.containsMappingRules(nestedMappingKey)) {
             sourceValue = executeMapping(sourceValue, targetType);
+        }
+
+        // check if hint and related mapping are defined
+        Class<?> targetHintType = rule.getTerminalHint();
+        if (targetHintType == null) {
+            targetHintType = this.mappingConfiguration.getHintConfiguration().getHint(targetType);
+        }
+
+        if (targetHintType != null) {
+            MappingKey<?, ?> hintMappingKey = new MappingKey<>(sourceValue.getClass(), targetHintType);
+            if (this.mappingRules.containsMappingRules(hintMappingKey)) {
+                sourceValue = executeMapping(sourceValue, targetHintType);
+            }
         }
 
         // fail if types are incompatible

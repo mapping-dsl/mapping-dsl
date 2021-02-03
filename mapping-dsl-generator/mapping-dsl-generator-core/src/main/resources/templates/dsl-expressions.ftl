@@ -88,13 +88,13 @@
 
 <#macro dslArrayField model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.CollectionFieldModel" -->
-    public final DslCollectionExpression<ROOT, ${model.elementType}, ValueProcessingFunction> ${model.name} =
-            new DslCollectionExpression<>(this, new ArrayFieldAccessorFunction(${model.elementType}.class, "${model.name}"));</#macro>
+    public final ${model.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<ROOT, ${model.elementType}, ValueProcessingFunction> ${model.name} =
+            new ${model.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<>(this, new ArrayFieldAccessorFunction(${model.elementType}.class, "${model.name}"));</#macro>
 
 <#macro dslCollectionField model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.CollectionFieldModel" -->
-    public final DslCollectionExpression<ROOT, ${model.elementType}, ValueProcessingFunction> ${model.name} =
-            new DslCollectionExpression<>(this, new CollectionFieldAccessorFunction(${model.collectionType}.class, ${model.elementType}.class, "${model.name}"));</#macro>
+    public final ${model.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<ROOT, ${model.elementType}, ValueProcessingFunction> ${model.name} =
+            new ${model.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<>(this, new CollectionFieldAccessorFunction(${model.collectionType}.class, ${model.elementType}.class, "${model.name}"));</#macro>
 
 <#macro valueMethodReference model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
@@ -251,13 +251,13 @@
 <#macro dslGetterReference model>
 <#assign dslClassName = GeneratorUtils.getDslClassName(model.fieldModel.type)>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final DslExpression<ROOT, ${model.fieldModel.type}, ValueProducerFunction> ${model.name} =
+    public final ${dslClassName}<ROOT, ValueProducerFunction> ${model.name} =
             new ${dslClassName}<>(this, new GetMethodAccessorFunction(${model.fieldModel.type}.class, "${model.name}"));</#macro>
 
 <#macro dslSetterReference model>
 <#assign dslClassName = GeneratorUtils.getDslClassName(model.fieldModel.type)>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final DslExpression<ROOT, ${model.fieldModel.type}, ValueConsumerFunction> ${model.name} =
+    public final ${model.fieldModel.abstract?then("AbstractDslExpression", "DslExpression")}<ROOT, ${model.fieldModel.type}, ValueConsumerFunction> ${model.name} =
             new ${dslClassName}<>(this, new SetMethodAccessorFunction(${model.fieldModel.type}.class, "${model.name}"));</#macro>
 
 <#macro multielementDslMethodReference model>
@@ -288,23 +288,23 @@
 
 <#macro dslArrayGetterReference model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final DslCollectionExpression<ROOT, ${model.fieldModel.type}, ValueProducerFunction> ${model.name} =
-            new DslCollectionExpression<>(this, new GetMethodAccessorFunction(${model.fieldModel.elementType}[].class, "${model.name}"));</#macro>
+    public final ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<ROOT, ${model.fieldModel.type}, ValueProducerFunction> ${model.name} =
+            new ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<>(this, new GetMethodAccessorFunction(${model.fieldModel.elementType}[].class, "${model.name}"));</#macro>
 
 <#macro dslArraySetterReference model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final DslCollectionExpression<ROOT, ${model.fieldModel.type}, ValueConsumerFunction> ${model.name} =
-            new DslCollectionExpression<>(this, new SetArrayMethodAccessorFunction(${model.fieldModel.elementType}[].class, ${model.fieldModel.elementType}.class, "${model.name}"));</#macro>
+    public final ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<ROOT, ${model.fieldModel.type}, ValueConsumerFunction> ${model.name} =
+            new ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<>(this, new SetArrayMethodAccessorFunction(${model.fieldModel.elementType}[].class, ${model.fieldModel.elementType}.class, "${model.name}"));</#macro>
 
 <#macro dslCollectionGetterReference model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final DslCollectionExpression<ROOT, ${model.fieldModel.type}, ValueProducerFunction> ${model.name} =
-            new DslCollectionExpression<>(this, new GetMethodAccessorFunction(${model.fieldModel.collectionType}.class, "${model.name}"));</#macro>
+    public final ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<ROOT, ${model.fieldModel.type}, ValueProducerFunction> ${model.name} =
+            new ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<>(this, new GetMethodAccessorFunction(${model.fieldModel.collectionType}.class, "${model.name}"));</#macro>
 
 <#macro dslCollectionSetterReference model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final DslCollectionExpression<ROOT, ${model.fieldModel.type}, ValueConsumerFunction> ${model.name} =
-            new DslCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(${model.fieldModel.collectionType}.class, ${model.fieldModel.elementType}.class, "${model.name}"));</#macro>
+    public final ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<ROOT, ${model.fieldModel.type}, ValueConsumerFunction> ${model.name} =
+            new ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<>(this, new SetCollectionMethodAccessorFunction(${model.fieldModel.collectionType}.class, ${model.fieldModel.elementType}.class, "${model.name}"));</#macro>
 
 <#macro valueProperty model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.PropertyModel" -->
@@ -408,14 +408,14 @@
 
 <#macro dslArrayProperty model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.PropertyModel" -->
-    public final DslCollectionExpression<ROOT, ${model.fieldModel.type}, ValueProcessingFunction> ${model.fieldModel.name}Property =
-            new DslCollectionExpression<>(this, new ArrayPropertyAccessorFunction(
+    public final ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<ROOT, ${model.fieldModel.type}, ValueProcessingFunction> ${model.fieldModel.name}Property =
+            new ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<>(this, new ArrayPropertyAccessorFunction(
                     this.${model.getterModel.name}.getExpressionFunction(),
                     this.${model.setterModel.name}.getExpressionFunction()));</#macro>
 
 <#macro dslCollectionProperty model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.PropertyModel" -->
-    public final DslCollectionExpression<ROOT, ${model.fieldModel.type}, ValueProcessingFunction> ${model.fieldModel.name}Property =
-            new DslCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
+    public final ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<ROOT, ${model.fieldModel.type}, ValueProcessingFunction> ${model.fieldModel.name}Property =
+            new ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<>(this, new CollectionPropertyAccessorFunction(
                     this.${model.getterModel.name}.getExpressionFunction(),
                     this.${model.setterModel.name}.getExpressionFunction()));</#macro>

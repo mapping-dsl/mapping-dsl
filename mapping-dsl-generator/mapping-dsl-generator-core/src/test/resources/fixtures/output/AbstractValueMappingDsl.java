@@ -1,4 +1,4 @@
-package io.mappingdsl.mavenplugin.test.lombok.fixtures;
+package pojo;
 
 import io.mappingdsl.core.expression.AbstractDslCollectionExpression;
 import io.mappingdsl.core.expression.AbstractDslExpression;
@@ -29,31 +29,17 @@ import io.mappingdsl.core.expression.function.ValueProducerFunction;
 import javax.annotation.Generated;
 
 @Generated("MappingDsl")
-public final class SimpleDataPojoMappingDsl<ROOT, FUN extends ExpressionFunction>
-        extends DslExpression<ROOT, io.mappingdsl.mavenplugin.test.lombok.fixtures.SimpleDataPojo, FUN> {
+public final class AbstractValueMappingDsl<ROOT, FUN extends ExpressionFunction>
+        extends AbstractDslExpression<ROOT, pojo.AbstractValue, FUN> {
 
-    public static final SimpleDataPojoMappingDsl<io.mappingdsl.mavenplugin.test.lombok.fixtures.SimpleDataPojo, ValueProducerFunction> $this =
-            new SimpleDataPojoMappingDsl<>(new RootIdentityFunction("SimpleDataPojo"));
+    public static final AbstractValueMappingDsl<pojo.AbstractValue, ValueProducerFunction> $this =
+            new AbstractValueMappingDsl<>(new RootIdentityFunction("AbstractValue"));
 
-    public final ValueExpression<ROOT, java.lang.String, ValueProcessingFunction> simpleValue =
-            new ValueExpression<>(this, new ObjectFieldAccessorFunction(java.lang.String.class, "simpleValue"));
-
-    public final ValueExpression<ROOT, java.lang.String, ValueProducerFunction> getSimpleValue =
-            new ValueExpression<>(this, new GetMethodAccessorFunction(java.lang.String.class, "getSimpleValue"));
-
-    public final ValueExpression<ROOT, java.lang.String, ValueConsumerFunction> setSimpleValue =
-            new ValueExpression<>(this, new SetMethodAccessorFunction(java.lang.String.class, "setSimpleValue"));
-
-    public final ValueExpression<ROOT, java.lang.String, ValueProcessingFunction> simpleValueProperty =
-            new ValueExpression<>(this, new PropertyAccessorFunction(
-                    this.getSimpleValue.getExpressionFunction(),
-                    this.setSimpleValue.getExpressionFunction()));
-
-    public SimpleDataPojoMappingDsl(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
+    public AbstractValueMappingDsl(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
         super(parentExpression, expressionFunction);
     }
 
-    private SimpleDataPojoMappingDsl(FUN expressionFunction) {
+    private AbstractValueMappingDsl(FUN expressionFunction) {
         super(expressionFunction);
     }
 

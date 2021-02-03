@@ -5,6 +5,8 @@
 <#assign dslClassName = GeneratorUtils.getDslClassName(fullClassName)>
 package ${ClassUtils.getClassPackage(fullClassName)};
 
+import io.mappingdsl.core.expression.AbstractDslCollectionExpression;
+import io.mappingdsl.core.expression.AbstractDslExpression;
 import io.mappingdsl.core.expression.AbstractValueCollectionExpression;
 import io.mappingdsl.core.expression.AbstractValueExpression;
 import io.mappingdsl.core.expression.DslCollectionExpression;
@@ -33,7 +35,7 @@ import javax.annotation.Generated;
 
 @Generated("MappingDsl")
 public final class ${dslClassName}<ROOT, FUN extends ExpressionFunction>
-        extends DslExpression<ROOT, ${fullClassName}, FUN> {
+        extends ${abstract?then("AbstractDslExpression", "DslExpression")}<ROOT, ${fullClassName}, FUN> {
 
     public static final ${dslClassName}<${fullClassName}, ValueProducerFunction> $this =
             new ${dslClassName}<>(new RootIdentityFunction("${ClassUtils.getClassName(fullClassName)}"));
