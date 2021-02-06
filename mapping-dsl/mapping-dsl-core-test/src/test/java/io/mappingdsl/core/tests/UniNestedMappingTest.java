@@ -116,7 +116,6 @@ class UniNestedMappingTest {
                                 .produce(HouseNumberEntityMappingDsl.$this.suffix)
                                 .to(HouseNumberDtoMappingDsl.$this.suffix)
                                 .produce(HouseNumberEntityMappingDsl.$this.geolocation)
-                                .asIs()
                                 .to(HouseNumberDtoMappingDsl.$this.geolocation)
                                 .build()),
 
@@ -139,7 +138,6 @@ class UniNestedMappingTest {
                                 .produce(HouseNumberEntityMappingDsl.$this.suffix)
                                 .to(HouseNumberDtoMappingDsl.$this.suffix)
                                 .produce(HouseNumberEntityMappingDsl.$this.geolocationProperty)
-                                .asIs()
                                 .to(HouseNumberDtoMappingDsl.$this.geolocationProperty)
                                 .build()),
 
@@ -162,7 +160,6 @@ class UniNestedMappingTest {
                                 .produce(HouseNumberEntityMappingDsl.$this.suffix)
                                 .to(HouseNumberDtoMappingDsl.$this.suffix)
                                 .produce(HouseNumberEntityMappingDsl.$this.getGeolocation)
-                                .asIs()
                                 .to(HouseNumberDtoMappingDsl.$this.setGeolocation)
                                 .build())
         );

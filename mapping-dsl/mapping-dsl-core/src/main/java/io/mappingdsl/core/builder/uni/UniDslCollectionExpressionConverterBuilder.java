@@ -14,8 +14,11 @@ public final class UniDslCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
-    public UniTerminalCompatibleDslCollectionExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> asIs() {
-        return new UniTerminalCompatibleDslCollectionExpressionBuilder<>(this.context, this.mappingRule);
+    public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
+            DslCollectionExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+
+        return new UniMappingConditionBuilder<>(
+                this.context, this.mappingRule.withTerminalExpression(targetExpression));
     }
 
     public <TRG_TYPE> UniTerminalCompatibleDslCollectionExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> usingConverter(

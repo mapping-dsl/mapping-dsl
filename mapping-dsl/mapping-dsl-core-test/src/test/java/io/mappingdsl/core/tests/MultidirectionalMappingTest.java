@@ -76,7 +76,6 @@ class MultidirectionalMappingTest {
                                 .bind(HouseNumberEntityMappingDsl.$this.suffix)
                                 .with(HouseNumberDtoMappingDsl.$this.suffix)
                                 .bind(HouseNumberEntityMappingDsl.$this.geolocation)
-                                .asIs()
                                 .with(HouseNumberDtoMappingDsl.$this.geolocation)
                                 .build())
         );
@@ -125,7 +124,6 @@ class MultidirectionalMappingTest {
                                 .produce(HouseNumberEntityMappingDsl.$this.suffix)
                                 .to(HouseNumberDtoMappingDsl.$this.suffix)
                                 .produce(HouseNumberEntityMappingDsl.$this.geolocation)
-                                .asIs()
                                 .to(HouseNumberDtoMappingDsl.$this.geolocation)
                                 .build())
         );

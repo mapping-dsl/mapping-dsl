@@ -14,8 +14,11 @@ public final class BiDslCollectionProducerExpressionConverterBuilder<SRC_ROOT, S
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
-    public BiTerminalCompatibleDslCollectionProducerExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> asIs() {
-        return new BiTerminalCompatibleDslCollectionProducerExpressionBuilder<>(this.context, this.mappingRule);
+    public BiProducerMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
+            DslCollectionExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+
+        return new BiProducerMappingConditionBuilder<>(
+                this.context, this.mappingRule.withTerminalExpression(targetExpression));
     }
 
     public <TRG_TYPE> BiTerminalCompatibleDslCollectionProducerExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> usingConverter(

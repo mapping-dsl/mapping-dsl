@@ -103,7 +103,6 @@ class BiNestedMappingTest {
                                 .bind(HouseNumberEntityMappingDsl.$this.suffix)
                                 .with(HouseNumberDtoMappingDsl.$this.suffix)
                                 .bind(HouseNumberEntityMappingDsl.$this.geolocation)
-                                .asIs()
                                 .with(HouseNumberDtoMappingDsl.$this.geolocation)
                                 .build()),
 
@@ -126,7 +125,6 @@ class BiNestedMappingTest {
                                 .bind(HouseNumberEntityMappingDsl.$this.suffixProperty)
                                 .with(HouseNumberDtoMappingDsl.$this.suffixProperty)
                                 .bind(HouseNumberEntityMappingDsl.$this.geolocationProperty)
-                                .asIs()
                                 .with(HouseNumberDtoMappingDsl.$this.geolocationProperty)
                                 .build()),
 
@@ -239,7 +237,6 @@ class BiNestedMappingTest {
                                 .produce(HouseNumberEntityMappingDsl.$this.suffix)
                                 .to(HouseNumberDtoMappingDsl.$this.suffix)
                                 .produce(HouseNumberEntityMappingDsl.$this.geolocation)
-                                .asIs()
                                 .to(HouseNumberDtoMappingDsl.$this.geolocation)
                                 .build()),
 
@@ -262,7 +259,6 @@ class BiNestedMappingTest {
                                 .produce(HouseNumberEntityMappingDsl.$this.suffixProperty)
                                 .to(HouseNumberDtoMappingDsl.$this.suffixProperty)
                                 .produce(HouseNumberEntityMappingDsl.$this.geolocationProperty)
-                                .asIs()
                                 .to(HouseNumberDtoMappingDsl.$this.geolocationProperty)
                                 .build()),
 
@@ -285,7 +281,6 @@ class BiNestedMappingTest {
                                 .produce(HouseNumberEntityMappingDsl.$this.getSuffix)
                                 .to(HouseNumberDtoMappingDsl.$this.setSuffix)
                                 .produce(HouseNumberEntityMappingDsl.$this.getGeolocation)
-                                .asIs()
                                 .to(HouseNumberDtoMappingDsl.$this.setGeolocation)
                                 .build())
                 );
@@ -380,7 +375,6 @@ class BiNestedMappingTest {
                                 .consume(HouseNumberEntityMappingDsl.$this.suffix)
                                 .from(HouseNumberDtoMappingDsl.$this.suffix)
                                 .consume(HouseNumberEntityMappingDsl.$this.geolocation)
-                                .asIs()
                                 .from(HouseNumberDtoMappingDsl.$this.geolocation)
                                 .build()),
 
@@ -403,7 +397,6 @@ class BiNestedMappingTest {
                                 .consume(HouseNumberEntityMappingDsl.$this.suffixProperty)
                                 .from(HouseNumberDtoMappingDsl.$this.suffixProperty)
                                 .consume(HouseNumberEntityMappingDsl.$this.geolocationProperty)
-                                .asIs()
                                 .from(HouseNumberDtoMappingDsl.$this.geolocationProperty)
                                 .build())
                 );
