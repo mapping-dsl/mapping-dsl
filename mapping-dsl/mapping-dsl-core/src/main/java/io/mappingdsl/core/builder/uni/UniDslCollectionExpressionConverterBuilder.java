@@ -3,6 +3,7 @@ package io.mappingdsl.core.builder.uni;
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.common.Converter;
+import io.mappingdsl.core.expression.AbstractDslCollectionExpression;
 import io.mappingdsl.core.expression.DslCollectionExpression;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import lombok.AccessLevel;
@@ -60,6 +61,29 @@ public final class UniDslCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE
 
             return new UniMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
+        }
+
+        public <TRG_TYPE> UniDslExpressionHintsBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> to(
+                AbstractDslCollectionExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+
+            return new UniDslExpressionHintsBuilder<>(
+                    this.context, this.mappingRule.withTerminalExpression(targetExpression));
+        }
+
+    }
+
+    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class UniDslExpressionHintsBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
+
+        private final MappingContext<SRC_ROOT, TRG_ROOT> context;
+        private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
+
+        public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> usingHint(Class<? extends TRG_TYPE> hint) {
+            return new UniMappingConditionBuilder<>(this.context, this.mappingRule.withTerminalHint(hint));
+        }
+
+        public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> usingGlobalHint() {
+            return new UniMappingConditionBuilder<>(this.context, this.mappingRule);
         }
 
     }
