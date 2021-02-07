@@ -22,6 +22,10 @@ public class ComplexField {
 
     private List<InterfaceValue> interfaceValuesList;
 
+    private List<? extends InterfaceValue> interfaceSuccessorsList;
+
+    private List<? super InterfaceValue> interfacePredecessorsList;
+
     public SimpleField getField() {
         return field;
     }
@@ -92,6 +96,22 @@ public class ComplexField {
 
     public void setInterfaceValuesList(List<InterfaceValue> interfaceValuesList) {
         this.interfaceValuesList = interfaceValuesList;
+    }
+
+    public List<? extends InterfaceValue> getInterfaceSuccessorsList() {
+        return interfaceSuccessorsList;
+    }
+
+    public void setInterfaceSuccessorsList(List<? extends InterfaceValue> interfaceSuccessorsList) {
+        this.interfaceSuccessorsList = interfaceSuccessorsList;
+    }
+
+    public List<? super InterfaceValue> getInterfacePredecessorsList() {
+        return interfacePredecessorsList;
+    }
+
+    public void setInterfacePredecessorsList(List<? super InterfaceValue> interfacePredecessorsList) {
+        this.interfacePredecessorsList = interfacePredecessorsList;
     }
 
 }

@@ -62,6 +62,12 @@ public final class ComplexFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
     public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceValuesList =
             new AbstractValueCollectionExpression<>(this, new CollectionFieldAccessorFunction(java.util.List.class, pojo.InterfaceValue.class, "interfaceValuesList"));
 
+    public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceSuccessorsList =
+            new AbstractValueCollectionExpression<>(this, new CollectionFieldAccessorFunction(java.util.List.class, pojo.InterfaceValue.class, "interfaceSuccessorsList"));
+
+    public final ValueCollectionExpression<ROOT, java.lang.Object, ValueProcessingFunction> interfacePredecessorsList =
+            new ValueCollectionExpression<>(this, new CollectionFieldAccessorFunction(java.util.List.class, java.lang.Object.class, "interfacePredecessorsList"));
+
     public final SimpleFieldMappingDsl<ROOT, ValueProducerFunction> getField =
             new SimpleFieldMappingDsl<>(this, new GetMethodAccessorFunction(pojo.SimpleField.class, "getField"));
 
@@ -116,6 +122,18 @@ public final class ComplexFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
     public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueConsumerFunction> setInterfaceValuesList =
             new AbstractValueCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(java.util.List.class, pojo.InterfaceValue.class, "setInterfaceValuesList"));
 
+    public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueProducerFunction> getInterfaceSuccessorsList =
+            new AbstractValueCollectionExpression<>(this, new GetMethodAccessorFunction(java.util.List.class, "getInterfaceSuccessorsList"));
+
+    public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueConsumerFunction> setInterfaceSuccessorsList =
+            new AbstractValueCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(java.util.List.class, pojo.InterfaceValue.class, "setInterfaceSuccessorsList"));
+
+    public final ValueCollectionExpression<ROOT, java.lang.Object, ValueProducerFunction> getInterfacePredecessorsList =
+            new ValueCollectionExpression<>(this, new GetMethodAccessorFunction(java.util.List.class, "getInterfacePredecessorsList"));
+
+    public final ValueCollectionExpression<ROOT, java.lang.Object, ValueConsumerFunction> setInterfacePredecessorsList =
+            new ValueCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(java.util.List.class, java.lang.Object.class, "setInterfacePredecessorsList"));
+
     public final SimpleFieldMappingDsl<ROOT, PathProcessingFunction> fieldProperty =
             new SimpleFieldMappingDsl<>(this, new PropertyAccessorFunction(
                     this.getField.getExpressionFunction(),
@@ -160,6 +178,16 @@ public final class ComplexFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
             new AbstractValueCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
                     this.getInterfaceValuesList.getExpressionFunction(),
                     this.setInterfaceValuesList.getExpressionFunction()));
+
+    public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceSuccessorsListProperty =
+            new AbstractValueCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
+                    this.getInterfaceSuccessorsList.getExpressionFunction(),
+                    this.setInterfaceSuccessorsList.getExpressionFunction()));
+
+    public final ValueCollectionExpression<ROOT, java.lang.Object, ValueProcessingFunction> interfacePredecessorsListProperty =
+            new ValueCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
+                    this.getInterfacePredecessorsList.getExpressionFunction(),
+                    this.setInterfacePredecessorsList.getExpressionFunction()));
 
     public ComplexFieldMappingDsl(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
         super(parentExpression, expressionFunction);
