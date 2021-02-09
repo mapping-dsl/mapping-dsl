@@ -50,22 +50,22 @@
 
 <#macro abstractValuesArrayField model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.CollectionFieldModel" -->
-    public final AbstractValueCollectionExpression<ROOT, ${model.elementType}, ValueProcessingFunction> ${model.name} =
-            new AbstractValueCollectionExpression<>(this, new ArrayFieldAccessorFunction(${model.elementType}.class, "${model.name}"));</#macro>
+    public final AbstractValueArrayExpression<ROOT, ${model.elementType}, ValueProcessingFunction> ${model.name} =
+            new AbstractValueArrayExpression<>(this, new ArrayFieldAccessorFunction(${model.elementType}.class, "${model.name}"));</#macro>
 
 <#macro concreteValuesArrayField model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.CollectionFieldModel" -->
-    public final ValueCollectionExpression<ROOT, ${model.elementType}, ValueProcessingFunction> ${model.name} =
-            new ValueCollectionExpression<>(this, new ArrayFieldAccessorFunction(${model.elementType}.class, "${model.name}"));</#macro>
+    public final ValueArrayExpression<ROOT, ${model.elementType}, ValueProcessingFunction> ${model.name} =
+            new ValueArrayExpression<>(this, new ArrayFieldAccessorFunction(${model.elementType}.class, "${model.name}"));</#macro>
 
 <#macro abstractValuesCollectionField model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.CollectionFieldModel" -->
-    public final AbstractValueCollectionExpression<ROOT, ${model.elementType}, ValueProcessingFunction> ${model.name} =
+    public final AbstractValueCollectionExpression<ROOT, ${model.collectionType}, ${model.elementType}, ValueProcessingFunction> ${model.name} =
             new AbstractValueCollectionExpression<>(this, new CollectionFieldAccessorFunction(${model.collectionType}.class, ${model.elementType}.class, "${model.name}"));</#macro>
 
 <#macro concreteValuesCollectionField model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.CollectionFieldModel" -->
-    public final ValueCollectionExpression<ROOT, ${model.elementType}, ValueProcessingFunction> ${model.name} =
+    public final ValueCollectionExpression<ROOT, ${model.collectionType}, ${model.elementType}, ValueProcessingFunction> ${model.name} =
             new ValueCollectionExpression<>(this, new CollectionFieldAccessorFunction(${model.collectionType}.class, ${model.elementType}.class, "${model.name}"));</#macro>
 
 <#macro dslField model>
@@ -88,12 +88,12 @@
 
 <#macro dslArrayField model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.CollectionFieldModel" -->
-    public final ${model.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<ROOT, ${model.elementType}, ValueProcessingFunction> ${model.name} =
-            new ${model.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<>(this, new ArrayFieldAccessorFunction(${model.elementType}.class, "${model.name}"));</#macro>
+    public final ${model.abstract?then("AbstractDslArrayExpression", "DslArrayExpression")}<ROOT, ${model.elementType}, ValueProcessingFunction> ${model.name} =
+            new ${model.abstract?then("AbstractDslArrayExpression", "DslArrayExpression")}<>(this, new ArrayFieldAccessorFunction(${model.elementType}.class, "${model.name}"));</#macro>
 
 <#macro dslCollectionField model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.CollectionFieldModel" -->
-    public final ${model.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<ROOT, ${model.elementType}, ValueProcessingFunction> ${model.name} =
+    public final ${model.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<ROOT, ${model.collectionType}, ${model.elementType}, ValueProcessingFunction> ${model.name} =
             new ${model.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<>(this, new CollectionFieldAccessorFunction(${model.collectionType}.class, ${model.elementType}.class, "${model.name}"));</#macro>
 
 <#macro valueMethodReference model>
@@ -198,42 +198,42 @@
 
 <#macro abstractValueArrayGetterReference model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final AbstractValueCollectionExpression<ROOT, ${model.fieldModel.type}, ValueProducerFunction> ${model.name} =
-            new AbstractValueCollectionExpression<>(this, new GetMethodAccessorFunction(${model.fieldModel.elementType}[].class, "${model.name}"));</#macro>
+    public final AbstractValueArrayExpression<ROOT, ${model.fieldModel.type}, ValueProducerFunction> ${model.name} =
+            new AbstractValueArrayExpression<>(this, new GetMethodAccessorFunction(${model.fieldModel.elementType}[].class, "${model.name}"));</#macro>
 
 <#macro concreteValueArrayGetterReference model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final ValueCollectionExpression<ROOT, ${model.fieldModel.type}, ValueProducerFunction> ${model.name} =
-            new ValueCollectionExpression<>(this, new GetMethodAccessorFunction(${model.fieldModel.elementType}[].class, "${model.name}"));</#macro>
+    public final ValueArrayExpression<ROOT, ${model.fieldModel.type}, ValueProducerFunction> ${model.name} =
+            new ValueArrayExpression<>(this, new GetMethodAccessorFunction(${model.fieldModel.elementType}[].class, "${model.name}"));</#macro>
 
 <#macro abstractValueArraySetterReference model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final AbstractValueCollectionExpression<ROOT, ${model.fieldModel.type}, ValueConsumerFunction> ${model.name} =
-            new AbstractValueCollectionExpression<>(this, new SetArrayMethodAccessorFunction(${model.fieldModel.elementType}[].class, ${model.fieldModel.elementType}.class, "${model.name}"));</#macro>
+    public final AbstractValueArrayExpression<ROOT, ${model.fieldModel.type}, ValueConsumerFunction> ${model.name} =
+            new AbstractValueArrayExpression<>(this, new SetArrayMethodAccessorFunction(${model.fieldModel.elementType}[].class, ${model.fieldModel.elementType}.class, "${model.name}"));</#macro>
 
 <#macro concreteValueArraySetterReference model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final ValueCollectionExpression<ROOT, ${model.fieldModel.type}, ValueConsumerFunction> ${model.name} =
-            new ValueCollectionExpression<>(this, new SetArrayMethodAccessorFunction(${model.fieldModel.elementType}[].class, ${model.fieldModel.elementType}.class, "${model.name}"));</#macro>
+    public final ValueArrayExpression<ROOT, ${model.fieldModel.type}, ValueConsumerFunction> ${model.name} =
+            new ValueArrayExpression<>(this, new SetArrayMethodAccessorFunction(${model.fieldModel.elementType}[].class, ${model.fieldModel.elementType}.class, "${model.name}"));</#macro>
 
 <#macro abstractValueCollectionGetterReference model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final AbstractValueCollectionExpression<ROOT, ${model.fieldModel.type}, ValueProducerFunction> ${model.name} =
+    public final AbstractValueCollectionExpression<ROOT, ${model.fieldModel.collectionType}, ${model.fieldModel.type}, ValueProducerFunction> ${model.name} =
             new AbstractValueCollectionExpression<>(this, new GetMethodAccessorFunction(${model.fieldModel.collectionType}.class, "${model.name}"));</#macro>
 
 <#macro concreteValueCollectionGetterReference model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final ValueCollectionExpression<ROOT, ${model.fieldModel.type}, ValueProducerFunction> ${model.name} =
+    public final ValueCollectionExpression<ROOT, ${model.fieldModel.collectionType}, ${model.fieldModel.type}, ValueProducerFunction> ${model.name} =
             new ValueCollectionExpression<>(this, new GetMethodAccessorFunction(${model.fieldModel.collectionType}.class, "${model.name}"));</#macro>
 
 <#macro abstractValueCollectionSetterReference model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final AbstractValueCollectionExpression<ROOT, ${model.fieldModel.type}, ValueConsumerFunction> ${model.name} =
+    public final AbstractValueCollectionExpression<ROOT, ${model.fieldModel.collectionType}, ${model.fieldModel.type}, ValueConsumerFunction> ${model.name} =
             new AbstractValueCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(${model.fieldModel.collectionType}.class, ${model.fieldModel.elementType}.class, "${model.name}"));</#macro>
 
 <#macro concreteValueCollectionSetterReference model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final ValueCollectionExpression<ROOT, ${model.fieldModel.type}, ValueConsumerFunction> ${model.name} =
+    public final ValueCollectionExpression<ROOT, ${model.fieldModel.collectionType}, ${model.fieldModel.type}, ValueConsumerFunction> ${model.name} =
             new ValueCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(${model.fieldModel.collectionType}.class, ${model.fieldModel.elementType}.class, "${model.name}"));</#macro>
 
 <#macro dslMethodReference model>
@@ -288,22 +288,22 @@
 
 <#macro dslArrayGetterReference model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<ROOT, ${model.fieldModel.type}, ValueProducerFunction> ${model.name} =
-            new ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<>(this, new GetMethodAccessorFunction(${model.fieldModel.elementType}[].class, "${model.name}"));</#macro>
+    public final ${model.fieldModel.abstract?then("AbstractDslArrayExpression", "DslArrayExpression")}<ROOT, ${model.fieldModel.type}, ValueProducerFunction> ${model.name} =
+            new ${model.fieldModel.abstract?then("AbstractDslArrayExpression", "DslArrayExpression")}<>(this, new GetMethodAccessorFunction(${model.fieldModel.elementType}[].class, "${model.name}"));</#macro>
 
 <#macro dslArraySetterReference model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<ROOT, ${model.fieldModel.type}, ValueConsumerFunction> ${model.name} =
-            new ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<>(this, new SetArrayMethodAccessorFunction(${model.fieldModel.elementType}[].class, ${model.fieldModel.elementType}.class, "${model.name}"));</#macro>
+    public final ${model.fieldModel.abstract?then("AbstractDslArrayExpression", "DslArrayExpression")}<ROOT, ${model.fieldModel.type}, ValueConsumerFunction> ${model.name} =
+            new ${model.fieldModel.abstract?then("AbstractDslArrayExpression", "DslArrayExpression")}<>(this, new SetArrayMethodAccessorFunction(${model.fieldModel.elementType}[].class, ${model.fieldModel.elementType}.class, "${model.name}"));</#macro>
 
 <#macro dslCollectionGetterReference model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<ROOT, ${model.fieldModel.type}, ValueProducerFunction> ${model.name} =
+    public final ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<ROOT, ${model.fieldModel.collectionType}, ${model.fieldModel.type}, ValueProducerFunction> ${model.name} =
             new ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<>(this, new GetMethodAccessorFunction(${model.fieldModel.collectionType}.class, "${model.name}"));</#macro>
 
 <#macro dslCollectionSetterReference model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<ROOT, ${model.fieldModel.type}, ValueConsumerFunction> ${model.name} =
+    public final ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<ROOT, ${model.fieldModel.collectionType}, ${model.fieldModel.type}, ValueConsumerFunction> ${model.name} =
             new ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<>(this, new SetCollectionMethodAccessorFunction(${model.fieldModel.collectionType}.class, ${model.fieldModel.elementType}.class, "${model.name}"));</#macro>
 
 <#macro valueProperty model>
@@ -360,28 +360,28 @@
 
 <#macro abstractValueArrayProperty model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.PropertyModel" -->
-    public final AbstractValueCollectionExpression<ROOT, ${model.fieldModel.type}, ValueProcessingFunction> ${model.fieldModel.name}Property =
-            new AbstractValueCollectionExpression<>(this, new ArrayPropertyAccessorFunction(
+    public final AbstractValueArrayExpression<ROOT, ${model.fieldModel.type}, ValueProcessingFunction> ${model.fieldModel.name}Property =
+            new AbstractValueArrayExpression<>(this, new ArrayPropertyAccessorFunction(
                     this.${model.getterModel.name}.getExpressionFunction(),
                     this.${model.setterModel.name}.getExpressionFunction()));</#macro>
 
 <#macro concreteValueArrayProperty model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.PropertyModel" -->
-    public final ValueCollectionExpression<ROOT, ${model.fieldModel.type}, ValueProcessingFunction> ${model.fieldModel.name}Property =
-            new ValueCollectionExpression<>(this, new ArrayPropertyAccessorFunction(
+    public final ValueArrayExpression<ROOT, ${model.fieldModel.type}, ValueProcessingFunction> ${model.fieldModel.name}Property =
+            new ValueArrayExpression<>(this, new ArrayPropertyAccessorFunction(
                     this.${model.getterModel.name}.getExpressionFunction(),
                     this.${model.setterModel.name}.getExpressionFunction()));</#macro>
 
 <#macro abstractValueCollectionProperty model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.PropertyModel" -->
-    public final AbstractValueCollectionExpression<ROOT, ${model.fieldModel.type}, ValueProcessingFunction> ${model.fieldModel.name}Property =
+    public final AbstractValueCollectionExpression<ROOT, ${model.fieldModel.collectionType}, ${model.fieldModel.type}, ValueProcessingFunction> ${model.fieldModel.name}Property =
             new AbstractValueCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
                     this.${model.getterModel.name}.getExpressionFunction(),
                     this.${model.setterModel.name}.getExpressionFunction()));</#macro>
 
 <#macro concreteValueCollectionProperty model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.PropertyModel" -->
-    public final ValueCollectionExpression<ROOT, ${model.fieldModel.type}, ValueProcessingFunction> ${model.fieldModel.name}Property =
+    public final ValueCollectionExpression<ROOT, ${model.fieldModel.collectionType}, ${model.fieldModel.type}, ValueProcessingFunction> ${model.fieldModel.name}Property =
             new ValueCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
                     this.${model.getterModel.name}.getExpressionFunction(),
                     this.${model.setterModel.name}.getExpressionFunction()));</#macro>
@@ -408,14 +408,14 @@
 
 <#macro dslArrayProperty model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.PropertyModel" -->
-    public final ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<ROOT, ${model.fieldModel.type}, ValueProcessingFunction> ${model.fieldModel.name}Property =
-            new ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<>(this, new ArrayPropertyAccessorFunction(
+    public final ${model.fieldModel.abstract?then("AbstractDslArrayExpression", "DslArrayExpression")}<ROOT, ${model.fieldModel.type}, ValueProcessingFunction> ${model.fieldModel.name}Property =
+            new ${model.fieldModel.abstract?then("AbstractDslArrayExpression", "DslArrayExpression")}<>(this, new ArrayPropertyAccessorFunction(
                     this.${model.getterModel.name}.getExpressionFunction(),
                     this.${model.setterModel.name}.getExpressionFunction()));</#macro>
 
 <#macro dslCollectionProperty model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.PropertyModel" -->
-    public final ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<ROOT, ${model.fieldModel.type}, ValueProcessingFunction> ${model.fieldModel.name}Property =
+    public final ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<ROOT, ${model.fieldModel.collectionType}, ${model.fieldModel.type}, ValueProcessingFunction> ${model.fieldModel.name}Property =
             new ${model.fieldModel.abstract?then("AbstractDslCollectionExpression", "DslCollectionExpression")}<>(this, new CollectionPropertyAccessorFunction(
                     this.${model.getterModel.name}.getExpressionFunction(),
                     this.${model.setterModel.name}.getExpressionFunction()));</#macro>

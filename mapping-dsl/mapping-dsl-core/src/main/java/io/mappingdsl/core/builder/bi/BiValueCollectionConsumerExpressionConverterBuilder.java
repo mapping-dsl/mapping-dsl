@@ -3,6 +3,7 @@ package io.mappingdsl.core.builder.bi;
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.common.Converter;
+import io.mappingdsl.core.expression.ValueArrayExpression;
 import io.mappingdsl.core.expression.ValueCollectionExpression;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
 import lombok.AccessLevel;
@@ -29,7 +30,14 @@ public final class BiValueCollectionConsumerExpressionConverterBuilder<SRC_ROOT,
 
     // delegate method
     public BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, SRC_TYPE> from(
-            ValueCollectionExpression<TRG_ROOT, SRC_TYPE, ? extends ValueProducerFunction> targetExpression) {
+            ValueCollectionExpression<TRG_ROOT, ?, SRC_TYPE, ? extends ValueProducerFunction> targetExpression) {
+
+        return this.terminalExpressionBuilder.from(targetExpression);
+    }
+
+    // delegate method
+    public BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, SRC_TYPE> from(
+            ValueArrayExpression<TRG_ROOT, SRC_TYPE, ? extends ValueProducerFunction> targetExpression) {
 
         return this.terminalExpressionBuilder.from(targetExpression);
     }
@@ -41,7 +49,14 @@ public final class BiValueCollectionConsumerExpressionConverterBuilder<SRC_ROOT,
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
         public BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, TRG_TYPE> from(
-                ValueCollectionExpression<TRG_ROOT, TRG_TYPE, ? extends ValueProducerFunction> targetExpression) {
+                ValueCollectionExpression<TRG_ROOT, ?, TRG_TYPE, ? extends ValueProducerFunction> targetExpression) {
+
+            return new BiConsumerMappingConditionBuilder<>(
+                    this.context, this.mappingRule.withTerminalExpression(targetExpression));
+        }
+
+        public BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, TRG_TYPE> from(
+                ValueArrayExpression<TRG_ROOT, TRG_TYPE, ? extends ValueProducerFunction> targetExpression) {
 
             return new BiConsumerMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));

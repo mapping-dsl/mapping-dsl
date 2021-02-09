@@ -1,12 +1,16 @@
 package pojo;
 
+import io.mappingdsl.core.expression.AbstractDslArrayExpression;
 import io.mappingdsl.core.expression.AbstractDslCollectionExpression;
 import io.mappingdsl.core.expression.AbstractDslExpression;
+import io.mappingdsl.core.expression.AbstractValueArrayExpression;
 import io.mappingdsl.core.expression.AbstractValueCollectionExpression;
 import io.mappingdsl.core.expression.AbstractValueExpression;
+import io.mappingdsl.core.expression.DslArrayExpression;
 import io.mappingdsl.core.expression.DslCollectionExpression;
 import io.mappingdsl.core.expression.DslExpression;
 import io.mappingdsl.core.expression.ExpressionBase;
+import io.mappingdsl.core.expression.ValueArrayExpression;
 import io.mappingdsl.core.expression.ValueCollectionExpression;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ArrayFieldAccessorFunction;
@@ -50,28 +54,28 @@ public final class SimpleFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
     public final ValueExpression<ROOT, java.lang.Boolean, ValueProcessingFunction> anotherBooleanValue =
             new ValueExpression<>(this, new ObjectFieldAccessorFunction(java.lang.Boolean.class, "anotherBooleanValue"));
 
-    public final ValueCollectionExpression<ROOT, java.lang.String, ValueProcessingFunction> listOfString =
+    public final ValueCollectionExpression<ROOT, java.util.List, java.lang.String, ValueProcessingFunction> listOfString =
             new ValueCollectionExpression<>(this, new CollectionFieldAccessorFunction(java.util.List.class, java.lang.String.class, "listOfString"));
 
-    public final ValueCollectionExpression<ROOT, java.lang.String, ValueProcessingFunction> arrayOfString =
-            new ValueCollectionExpression<>(this, new ArrayFieldAccessorFunction(java.lang.String.class, "arrayOfString"));
+    public final ValueArrayExpression<ROOT, java.lang.String, ValueProcessingFunction> arrayOfString =
+            new ValueArrayExpression<>(this, new ArrayFieldAccessorFunction(java.lang.String.class, "arrayOfString"));
 
     public final AbstractValueExpression<ROOT, java.lang.Number, ValueProcessingFunction> abstractNumberValue =
             new AbstractValueExpression<>(this, new ObjectFieldAccessorFunction(java.lang.Number.class, "abstractNumberValue"));
 
-    public final AbstractValueCollectionExpression<ROOT, java.lang.Number, ValueProcessingFunction> arrayOfAbstractNumberValue =
-            new AbstractValueCollectionExpression<>(this, new ArrayFieldAccessorFunction(java.lang.Number.class, "arrayOfAbstractNumberValue"));
+    public final AbstractValueArrayExpression<ROOT, java.lang.Number, ValueProcessingFunction> arrayOfAbstractNumberValue =
+            new AbstractValueArrayExpression<>(this, new ArrayFieldAccessorFunction(java.lang.Number.class, "arrayOfAbstractNumberValue"));
 
-    public final AbstractValueCollectionExpression<ROOT, java.lang.Number, ValueProcessingFunction> listOfAbstractNumberValue =
+    public final AbstractValueCollectionExpression<ROOT, java.util.List, java.lang.Number, ValueProcessingFunction> listOfAbstractNumberValue =
             new AbstractValueCollectionExpression<>(this, new CollectionFieldAccessorFunction(java.util.List.class, java.lang.Number.class, "listOfAbstractNumberValue"));
 
     public final AbstractValueExpression<ROOT, java.lang.CharSequence, ValueProcessingFunction> interfaceValue =
             new AbstractValueExpression<>(this, new ObjectFieldAccessorFunction(java.lang.CharSequence.class, "interfaceValue"));
 
-    public final AbstractValueCollectionExpression<ROOT, java.lang.CharSequence, ValueProcessingFunction> arrayOfInterfaceValue =
-            new AbstractValueCollectionExpression<>(this, new ArrayFieldAccessorFunction(java.lang.CharSequence.class, "arrayOfInterfaceValue"));
+    public final AbstractValueArrayExpression<ROOT, java.lang.CharSequence, ValueProcessingFunction> arrayOfInterfaceValue =
+            new AbstractValueArrayExpression<>(this, new ArrayFieldAccessorFunction(java.lang.CharSequence.class, "arrayOfInterfaceValue"));
 
-    public final AbstractValueCollectionExpression<ROOT, java.lang.CharSequence, ValueProcessingFunction> listOfInterfaceValue =
+    public final AbstractValueCollectionExpression<ROOT, java.util.List, java.lang.CharSequence, ValueProcessingFunction> listOfInterfaceValue =
             new AbstractValueCollectionExpression<>(this, new CollectionFieldAccessorFunction(java.util.List.class, java.lang.CharSequence.class, "listOfInterfaceValue"));
 
     public final ValueExpression<ROOT, java.lang.String, ValueProducerFunction> getStringValue =
@@ -104,17 +108,17 @@ public final class SimpleFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
     public final ValueExpression<ROOT, java.lang.Boolean, ValueConsumerFunction> setAnotherBooleanValue =
             new ValueExpression<>(this, new SetMethodAccessorFunction(java.lang.Boolean.class, "setAnotherBooleanValue"));
 
-    public final ValueCollectionExpression<ROOT, java.lang.String, ValueProducerFunction> getListOfString =
+    public final ValueCollectionExpression<ROOT, java.util.List, java.lang.String, ValueProducerFunction> getListOfString =
             new ValueCollectionExpression<>(this, new GetMethodAccessorFunction(java.util.List.class, "getListOfString"));
 
-    public final ValueCollectionExpression<ROOT, java.lang.String, ValueConsumerFunction> setListOfString =
+    public final ValueCollectionExpression<ROOT, java.util.List, java.lang.String, ValueConsumerFunction> setListOfString =
             new ValueCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(java.util.List.class, java.lang.String.class, "setListOfString"));
 
-    public final ValueCollectionExpression<ROOT, java.lang.String, ValueProducerFunction> getArrayOfString =
-            new ValueCollectionExpression<>(this, new GetMethodAccessorFunction(java.lang.String[].class, "getArrayOfString"));
+    public final ValueArrayExpression<ROOT, java.lang.String, ValueProducerFunction> getArrayOfString =
+            new ValueArrayExpression<>(this, new GetMethodAccessorFunction(java.lang.String[].class, "getArrayOfString"));
 
-    public final ValueCollectionExpression<ROOT, java.lang.String, ValueConsumerFunction> setArrayOfString =
-            new ValueCollectionExpression<>(this, new SetArrayMethodAccessorFunction(java.lang.String[].class, java.lang.String.class, "setArrayOfString"));
+    public final ValueArrayExpression<ROOT, java.lang.String, ValueConsumerFunction> setArrayOfString =
+            new ValueArrayExpression<>(this, new SetArrayMethodAccessorFunction(java.lang.String[].class, java.lang.String.class, "setArrayOfString"));
 
     public final AbstractValueExpression<ROOT, java.lang.Number, ValueProducerFunction> getAbstractNumberValue =
             new AbstractValueExpression<>(this, new GetMethodAccessorFunction(java.lang.Number.class, "getAbstractNumberValue"));
@@ -122,16 +126,16 @@ public final class SimpleFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
     public final AbstractValueExpression<ROOT, java.lang.Number, ValueConsumerFunction> setAbstractNumberValue =
             new AbstractValueExpression<>(this, new SetMethodAccessorFunction(java.lang.Number.class, "setAbstractNumberValue"));
 
-    public final AbstractValueCollectionExpression<ROOT, java.lang.Number, ValueProducerFunction> getArrayOfAbstractNumberValue =
-            new AbstractValueCollectionExpression<>(this, new GetMethodAccessorFunction(java.lang.Number[].class, "getArrayOfAbstractNumberValue"));
+    public final AbstractValueArrayExpression<ROOT, java.lang.Number, ValueProducerFunction> getArrayOfAbstractNumberValue =
+            new AbstractValueArrayExpression<>(this, new GetMethodAccessorFunction(java.lang.Number[].class, "getArrayOfAbstractNumberValue"));
 
-    public final AbstractValueCollectionExpression<ROOT, java.lang.Number, ValueConsumerFunction> setArrayOfAbstractNumberValue =
-            new AbstractValueCollectionExpression<>(this, new SetArrayMethodAccessorFunction(java.lang.Number[].class, java.lang.Number.class, "setArrayOfAbstractNumberValue"));
+    public final AbstractValueArrayExpression<ROOT, java.lang.Number, ValueConsumerFunction> setArrayOfAbstractNumberValue =
+            new AbstractValueArrayExpression<>(this, new SetArrayMethodAccessorFunction(java.lang.Number[].class, java.lang.Number.class, "setArrayOfAbstractNumberValue"));
 
-    public final AbstractValueCollectionExpression<ROOT, java.lang.Number, ValueProducerFunction> getListOfAbstractNumberValue =
+    public final AbstractValueCollectionExpression<ROOT, java.util.List, java.lang.Number, ValueProducerFunction> getListOfAbstractNumberValue =
             new AbstractValueCollectionExpression<>(this, new GetMethodAccessorFunction(java.util.List.class, "getListOfAbstractNumberValue"));
 
-    public final AbstractValueCollectionExpression<ROOT, java.lang.Number, ValueConsumerFunction> setListOfAbstractNumberValue =
+    public final AbstractValueCollectionExpression<ROOT, java.util.List, java.lang.Number, ValueConsumerFunction> setListOfAbstractNumberValue =
             new AbstractValueCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(java.util.List.class, java.lang.Number.class, "setListOfAbstractNumberValue"));
 
     public final AbstractValueExpression<ROOT, java.lang.CharSequence, ValueProducerFunction> getInterfaceValue =
@@ -140,16 +144,16 @@ public final class SimpleFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
     public final AbstractValueExpression<ROOT, java.lang.CharSequence, ValueConsumerFunction> setInterfaceValue =
             new AbstractValueExpression<>(this, new SetMethodAccessorFunction(java.lang.CharSequence.class, "setInterfaceValue"));
 
-    public final AbstractValueCollectionExpression<ROOT, java.lang.CharSequence, ValueProducerFunction> getArrayOfInterfaceValue =
-            new AbstractValueCollectionExpression<>(this, new GetMethodAccessorFunction(java.lang.CharSequence[].class, "getArrayOfInterfaceValue"));
+    public final AbstractValueArrayExpression<ROOT, java.lang.CharSequence, ValueProducerFunction> getArrayOfInterfaceValue =
+            new AbstractValueArrayExpression<>(this, new GetMethodAccessorFunction(java.lang.CharSequence[].class, "getArrayOfInterfaceValue"));
 
-    public final AbstractValueCollectionExpression<ROOT, java.lang.CharSequence, ValueConsumerFunction> setArrayOfInterfaceValue =
-            new AbstractValueCollectionExpression<>(this, new SetArrayMethodAccessorFunction(java.lang.CharSequence[].class, java.lang.CharSequence.class, "setArrayOfInterfaceValue"));
+    public final AbstractValueArrayExpression<ROOT, java.lang.CharSequence, ValueConsumerFunction> setArrayOfInterfaceValue =
+            new AbstractValueArrayExpression<>(this, new SetArrayMethodAccessorFunction(java.lang.CharSequence[].class, java.lang.CharSequence.class, "setArrayOfInterfaceValue"));
 
-    public final AbstractValueCollectionExpression<ROOT, java.lang.CharSequence, ValueProducerFunction> getListOfInterfaceValue =
+    public final AbstractValueCollectionExpression<ROOT, java.util.List, java.lang.CharSequence, ValueProducerFunction> getListOfInterfaceValue =
             new AbstractValueCollectionExpression<>(this, new GetMethodAccessorFunction(java.util.List.class, "getListOfInterfaceValue"));
 
-    public final AbstractValueCollectionExpression<ROOT, java.lang.CharSequence, ValueConsumerFunction> setListOfInterfaceValue =
+    public final AbstractValueCollectionExpression<ROOT, java.util.List, java.lang.CharSequence, ValueConsumerFunction> setListOfInterfaceValue =
             new AbstractValueCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(java.util.List.class, java.lang.CharSequence.class, "setListOfInterfaceValue"));
 
     public final ValueExpression<ROOT, java.lang.String, ValueProcessingFunction> stringValueProperty =
@@ -177,13 +181,13 @@ public final class SimpleFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
                     this.getAnotherBooleanValue.getExpressionFunction(),
                     this.setAnotherBooleanValue.getExpressionFunction()));
 
-    public final ValueCollectionExpression<ROOT, java.lang.String, ValueProcessingFunction> listOfStringProperty =
+    public final ValueCollectionExpression<ROOT, java.util.List, java.lang.String, ValueProcessingFunction> listOfStringProperty =
             new ValueCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
                     this.getListOfString.getExpressionFunction(),
                     this.setListOfString.getExpressionFunction()));
 
-    public final ValueCollectionExpression<ROOT, java.lang.String, ValueProcessingFunction> arrayOfStringProperty =
-            new ValueCollectionExpression<>(this, new ArrayPropertyAccessorFunction(
+    public final ValueArrayExpression<ROOT, java.lang.String, ValueProcessingFunction> arrayOfStringProperty =
+            new ValueArrayExpression<>(this, new ArrayPropertyAccessorFunction(
                     this.getArrayOfString.getExpressionFunction(),
                     this.setArrayOfString.getExpressionFunction()));
 
@@ -192,12 +196,12 @@ public final class SimpleFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
                     this.getAbstractNumberValue.getExpressionFunction(),
                     this.setAbstractNumberValue.getExpressionFunction()));
 
-    public final AbstractValueCollectionExpression<ROOT, java.lang.Number, ValueProcessingFunction> arrayOfAbstractNumberValueProperty =
-            new AbstractValueCollectionExpression<>(this, new ArrayPropertyAccessorFunction(
+    public final AbstractValueArrayExpression<ROOT, java.lang.Number, ValueProcessingFunction> arrayOfAbstractNumberValueProperty =
+            new AbstractValueArrayExpression<>(this, new ArrayPropertyAccessorFunction(
                     this.getArrayOfAbstractNumberValue.getExpressionFunction(),
                     this.setArrayOfAbstractNumberValue.getExpressionFunction()));
 
-    public final AbstractValueCollectionExpression<ROOT, java.lang.Number, ValueProcessingFunction> listOfAbstractNumberValueProperty =
+    public final AbstractValueCollectionExpression<ROOT, java.util.List, java.lang.Number, ValueProcessingFunction> listOfAbstractNumberValueProperty =
             new AbstractValueCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
                     this.getListOfAbstractNumberValue.getExpressionFunction(),
                     this.setListOfAbstractNumberValue.getExpressionFunction()));
@@ -207,12 +211,12 @@ public final class SimpleFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
                     this.getInterfaceValue.getExpressionFunction(),
                     this.setInterfaceValue.getExpressionFunction()));
 
-    public final AbstractValueCollectionExpression<ROOT, java.lang.CharSequence, ValueProcessingFunction> arrayOfInterfaceValueProperty =
-            new AbstractValueCollectionExpression<>(this, new ArrayPropertyAccessorFunction(
+    public final AbstractValueArrayExpression<ROOT, java.lang.CharSequence, ValueProcessingFunction> arrayOfInterfaceValueProperty =
+            new AbstractValueArrayExpression<>(this, new ArrayPropertyAccessorFunction(
                     this.getArrayOfInterfaceValue.getExpressionFunction(),
                     this.setArrayOfInterfaceValue.getExpressionFunction()));
 
-    public final AbstractValueCollectionExpression<ROOT, java.lang.CharSequence, ValueProcessingFunction> listOfInterfaceValueProperty =
+    public final AbstractValueCollectionExpression<ROOT, java.util.List, java.lang.CharSequence, ValueProcessingFunction> listOfInterfaceValueProperty =
             new AbstractValueCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
                     this.getListOfInterfaceValue.getExpressionFunction(),
                     this.setListOfInterfaceValue.getExpressionFunction()));

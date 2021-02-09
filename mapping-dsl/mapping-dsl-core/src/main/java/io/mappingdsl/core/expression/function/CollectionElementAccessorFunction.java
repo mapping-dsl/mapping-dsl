@@ -15,8 +15,6 @@ public final class CollectionElementAccessorFunction implements ValueProducerFun
         if (source instanceof Iterable) {
             SkippingIterator<?> iterator = new SkippingIterator<>(((Iterable<?>) source).iterator(), this.index);
             return iterator.next();
-        } else if (source.getClass().isArray()) {
-            return ((Object[]) source)[this.index];
         }
 
         throw new IllegalArgumentException(String.format(

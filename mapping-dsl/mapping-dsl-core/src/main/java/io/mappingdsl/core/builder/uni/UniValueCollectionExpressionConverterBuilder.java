@@ -3,6 +3,7 @@ package io.mappingdsl.core.builder.uni;
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.common.Converter;
+import io.mappingdsl.core.expression.ValueArrayExpression;
 import io.mappingdsl.core.expression.ValueCollectionExpression;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import lombok.AccessLevel;
@@ -29,7 +30,14 @@ public final class UniValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TY
 
     // delegate method
     public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
-            ValueCollectionExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+            ValueCollectionExpression<TRG_ROOT, ?, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+
+        return this.terminalExpressionBuilder.to(targetExpression);
+    }
+
+    // delegate method
+    public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
+            ValueArrayExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
         return this.terminalExpressionBuilder.to(targetExpression);
     }
@@ -41,7 +49,14 @@ public final class UniValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TY
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
         public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
-                ValueCollectionExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+                ValueCollectionExpression<TRG_ROOT, ?, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+
+            return new UniMappingConditionBuilder<>(
+                    this.context, this.mappingRule.withTerminalExpression(targetExpression));
+        }
+
+        public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
+                ValueArrayExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
             return new UniMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));

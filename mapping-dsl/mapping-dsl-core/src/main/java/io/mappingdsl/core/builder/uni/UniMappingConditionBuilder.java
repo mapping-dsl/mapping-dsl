@@ -5,8 +5,10 @@ import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.builder.bi.BiInitialTypeBuilder;
 import io.mappingdsl.core.common.Condition;
+import io.mappingdsl.core.expression.DslArrayExpression;
 import io.mappingdsl.core.expression.DslCollectionExpression;
 import io.mappingdsl.core.expression.DslExpression;
+import io.mappingdsl.core.expression.ValueArrayExpression;
 import io.mappingdsl.core.expression.ValueCollectionExpression;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
@@ -53,14 +55,28 @@ public final class UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
     // delegate method
     public <NEW_SRC_TYPE> UniValueCollectionExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> produce(
-            ValueCollectionExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            ValueCollectionExpression<SRC_ROOT, ?, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+
+        return this.chainBuilder.produce(initialExpression);
+    }
+
+    // delegate method
+    public <NEW_SRC_TYPE> UniValueCollectionExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> produce(
+            ValueArrayExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         return this.chainBuilder.produce(initialExpression);
     }
 
     // delegate method
     public <NEW_SRC_TYPE> UniDslCollectionExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> produce(
-            DslCollectionExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            DslCollectionExpression<SRC_ROOT, ?, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+
+        return this.chainBuilder.produce(initialExpression);
+    }
+
+    // delegate method
+    public <NEW_SRC_TYPE> UniDslCollectionExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> produce(
+            DslArrayExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         return this.chainBuilder.produce(initialExpression);
     }

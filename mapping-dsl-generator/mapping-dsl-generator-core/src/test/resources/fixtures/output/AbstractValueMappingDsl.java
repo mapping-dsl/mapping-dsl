@@ -1,12 +1,16 @@
 package pojo;
 
+import io.mappingdsl.core.expression.AbstractDslArrayExpression;
 import io.mappingdsl.core.expression.AbstractDslCollectionExpression;
 import io.mappingdsl.core.expression.AbstractDslExpression;
+import io.mappingdsl.core.expression.AbstractValueArrayExpression;
 import io.mappingdsl.core.expression.AbstractValueCollectionExpression;
 import io.mappingdsl.core.expression.AbstractValueExpression;
+import io.mappingdsl.core.expression.DslArrayExpression;
 import io.mappingdsl.core.expression.DslCollectionExpression;
 import io.mappingdsl.core.expression.DslExpression;
 import io.mappingdsl.core.expression.ExpressionBase;
+import io.mappingdsl.core.expression.ValueArrayExpression;
 import io.mappingdsl.core.expression.ValueCollectionExpression;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ArrayFieldAccessorFunction;

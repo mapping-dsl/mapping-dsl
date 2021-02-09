@@ -150,7 +150,7 @@ class UniArrayMappingTest {
         MappingDsl mappingDsl = new MappingDslBuilder()
                 .uniMapping()
                 .from(CityEntity.class).to(CityOverviewDto.class)
-                .produce(CityEntityMappingDsl.$this.districts.size())
+                .produce(CityEntityMappingDsl.$this.districts.length)
                 .to(CityOverviewDtoMappingDsl.$this.numberOfDistricts)
                 .build();
 
