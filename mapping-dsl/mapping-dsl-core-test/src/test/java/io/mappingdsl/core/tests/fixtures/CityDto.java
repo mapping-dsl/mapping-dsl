@@ -1,12 +1,10 @@
 package io.mappingdsl.core.tests.fixtures;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
-@AllArgsConstructor
 public class CityDto extends SettlementDto {
 
     @Getter
@@ -15,6 +13,15 @@ public class CityDto extends SettlementDto {
 
     public CityDto(String name) {
         super(name);
+    }
+
+    public CityDto(DistrictDto[] districts) {
+        this.districts = districts;
+    }
+
+    public CityDto(String name, DistrictDto[] districts) {
+        super(name);
+        this.districts = districts;
     }
 
 }

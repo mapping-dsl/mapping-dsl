@@ -3,12 +3,20 @@ package io.mappingdsl.core.tests.utils;
 import io.mappingdsl.core.common.BiConverter;
 import io.mappingdsl.core.tests.fixtures.AddressDto;
 import io.mappingdsl.core.tests.fixtures.AddressEntity;
+import io.mappingdsl.core.tests.fixtures.CityDto;
+import io.mappingdsl.core.tests.fixtures.CityEntity;
+import io.mappingdsl.core.tests.fixtures.DistrictDto;
+import io.mappingdsl.core.tests.fixtures.DistrictEntity;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDto;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntity;
+import io.mappingdsl.core.tests.fixtures.SettlementDto;
+import io.mappingdsl.core.tests.fixtures.SettlementEntity;
 import io.mappingdsl.core.tests.fixtures.StreetDto;
 import io.mappingdsl.core.tests.fixtures.StreetEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+
+import java.util.Arrays;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TestConverters {
@@ -114,5 +122,20 @@ public final class TestConverters {
                 }
 
             };
+
+    public static DistrictDto convertDistrictEntity(DistrictEntity districtEntity) {
+        return new DistrictDto(districtEntity.getName());
+    }
+
+    public static SettlementDto convertCityEntity(SettlementEntity settlementEntity) {
+        CityEntity cityEntity = (CityEntity) settlementEntity;
+        DistrictDto[] districts = cityEntity.getDistricts() == null
+                ? new DistrictDto[] {}
+                : Arrays.stream(cityEntity.getDistricts())
+                        .map(TestConverters::convertDistrictEntity)
+                        .toArray(DistrictDto[]::new);
+
+        return new CityDto(settlementEntity.getName(), districts);
+    }
 
 }

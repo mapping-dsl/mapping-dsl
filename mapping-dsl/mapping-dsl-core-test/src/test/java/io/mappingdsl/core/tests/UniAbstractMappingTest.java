@@ -11,6 +11,7 @@ import io.mappingdsl.core.tests.fixtures.CountryDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.CountryEntity;
 import io.mappingdsl.core.tests.fixtures.CountryEntityMappingDsl;
 import io.mappingdsl.core.tests.fixtures.SettlementDto;
+import io.mappingdsl.core.tests.utils.TestConverters;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -90,6 +91,17 @@ class UniAbstractMappingTest {
 
     private static Stream<Arguments> complexAbstractValueTestData() {
         return Stream.of(
+                Arguments.of(
+                        "[uni] no hint, mapping over converter",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(CountryEntity.class).to(CountryDto.class)
+                                .produce(CountryEntityMappingDsl.$this.capital)
+                                .usingConverter(TestConverters::convertCityEntity)
+                                .to(CountryDtoMappingDsl.$this.capital)
+                                .build()),
+
                 Arguments.of(
                         "[uni] local hint, mapping over fields",
 
