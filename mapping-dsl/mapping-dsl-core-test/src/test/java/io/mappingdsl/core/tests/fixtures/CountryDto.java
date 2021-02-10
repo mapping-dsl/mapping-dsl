@@ -21,6 +21,10 @@ public class CountryDto extends NamedObject {
     @Setter
     private Number population;
 
+    @Getter
+    @Setter
+    private CharSequence[] nationalLanguages;
+
     public CountryDto(String name) {
         super(name);
     }

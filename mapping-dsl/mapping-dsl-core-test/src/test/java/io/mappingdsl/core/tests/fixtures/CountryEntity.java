@@ -21,6 +21,10 @@ public class CountryEntity extends NamedObject {
     @Setter
     private Number population;
 
+    @Getter
+    @Setter
+    private CharSequence[] nationalLanguages;
+
     public CountryEntity(String name) {
         super(name);
     }

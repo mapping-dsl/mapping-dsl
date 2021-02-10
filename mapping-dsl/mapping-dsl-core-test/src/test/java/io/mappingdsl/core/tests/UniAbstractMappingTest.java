@@ -24,17 +24,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 class UniAbstractMappingTest {
 
     @ParameterizedTest(name = "[{index}] {0}")
-    @MethodSource("abstractFiledTestData")
-    void shouldMapPrimitiveAbstractField(String testName, MappingDsl mappingDsl) {
+    @MethodSource("abstractFieldsTestData")
+    void shouldMapPrimitiveAbstractsField(String testName, MappingDsl mappingDsl) {
         CountryEntity countryEntity = new CountryEntity();
         countryEntity.setPopulation(56_286_961);
+        countryEntity.setNationalLanguages(new CharSequence[]{ "English" });
 
         CountryDto resultCountryDto = mappingDsl.map(countryEntity, CountryDto.class);
 
         assertThat(resultCountryDto.getPopulation().longValue()).isEqualTo(56_286_961);
+        assertThat(resultCountryDto.getNationalLanguages()).hasSize(1);
+        assertThat(resultCountryDto.getNationalLanguages()[0]).isEqualTo("English");
     }
 
-    private static Stream<Arguments> abstractFiledTestData() {
+    private static Stream<Arguments> abstractFieldsTestData() {
         return Stream.of(
                 Arguments.of(
                         "[uni] mapping over fields",
@@ -44,6 +47,8 @@ class UniAbstractMappingTest {
                                 .from(CountryEntity.class).to(CountryDto.class)
                                 .produce(CountryEntityMappingDsl.$this.population)
                                 .to(CountryDtoMappingDsl.$this.population)
+                                .produce(CountryEntityMappingDsl.$this.nationalLanguages)
+                                .to(CountryDtoMappingDsl.$this.nationalLanguages)
                                 .build()),
 
                 Arguments.of(
@@ -54,6 +59,8 @@ class UniAbstractMappingTest {
                                 .from(CountryEntity.class).to(CountryDto.class)
                                 .produce(CountryEntityMappingDsl.$this.populationProperty)
                                 .to(CountryDtoMappingDsl.$this.populationProperty)
+                                .produce(CountryEntityMappingDsl.$this.nationalLanguagesProperty)
+                                .to(CountryDtoMappingDsl.$this.nationalLanguagesProperty)
                                 .build()),
 
                 Arguments.of(
@@ -64,6 +71,8 @@ class UniAbstractMappingTest {
                                 .from(CountryEntity.class).to(CountryDto.class)
                                 .produce(CountryEntityMappingDsl.$this.getPopulation)
                                 .to(CountryDtoMappingDsl.$this.setPopulation)
+                                .produce(CountryEntityMappingDsl.$this.getNationalLanguages)
+                                .to(CountryDtoMappingDsl.$this.setNationalLanguages)
                                 .build())
         );
     }
