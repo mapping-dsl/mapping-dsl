@@ -35,11 +35,11 @@ public final class UniValueExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_RO
         return this.terminalExpressionBuilder.to(targetExpression);
     }
 
+    // delegate method
     public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
             AbstractValueExpression<TRG_ROOT, ? super SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
-        return new UniMappingConditionBuilder<>(
-                this.context, this.mappingRule.withTerminalExpression(targetExpression));
+        return this.terminalExpressionBuilder.to(targetExpression);
     }
 
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -50,6 +50,13 @@ public final class UniValueExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_RO
 
         public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
                 ValueExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+
+            return new UniMappingConditionBuilder<>(
+                    this.context, this.mappingRule.withTerminalExpression(targetExpression));
+        }
+
+        public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
+                AbstractValueExpression<TRG_ROOT, ? super TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
             return new UniMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
