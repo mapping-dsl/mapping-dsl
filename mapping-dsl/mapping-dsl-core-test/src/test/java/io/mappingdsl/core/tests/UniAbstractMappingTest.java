@@ -92,7 +92,7 @@ class UniAbstractMappingTest {
     private static Stream<Arguments> complexAbstractValueTestData() {
         return Stream.of(
                 Arguments.of(
-                        "[uni] no hint, mapping over converter",
+                        "[uni] no hint, mapping over converter using fields",
 
                         new MappingDslBuilder()
                                 .uniMapping()
@@ -100,6 +100,28 @@ class UniAbstractMappingTest {
                                 .produce(CountryEntityMappingDsl.$this.capital)
                                 .usingConverter(TestConverters::convertCityEntity)
                                 .to(CountryDtoMappingDsl.$this.capital)
+                                .build()),
+
+                Arguments.of(
+                        "[uni] no hint, mapping over converter using properties",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(CountryEntity.class).to(CountryDto.class)
+                                .produce(CountryEntityMappingDsl.$this.capitalProperty)
+                                .usingConverter(TestConverters::convertCityEntity)
+                                .to(CountryDtoMappingDsl.$this.capitalProperty)
+                                .build()),
+
+                Arguments.of(
+                        "[uni] no hint, mapping over converter using methods",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(CountryEntity.class).to(CountryDto.class)
+                                .produce(CountryEntityMappingDsl.$this.getCapital)
+                                .usingConverter(TestConverters::convertCityEntity)
+                                .to(CountryDtoMappingDsl.$this.setCapital)
                                 .build()),
 
                 Arguments.of(
