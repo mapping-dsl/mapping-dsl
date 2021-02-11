@@ -4,6 +4,7 @@ import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.common.BiConverter;
 import io.mappingdsl.core.common.Converter;
+import io.mappingdsl.core.expression.AbstractValueExpression;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
 import lombok.AccessLevel;
@@ -52,6 +53,13 @@ public final class BiValueExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROO
         return this.terminalExpressionBuilder.with(terminalExpression);
     }
 
+    // delegate method
+    public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> with(
+            AbstractValueExpression<TRG_ROOT, ? super SRC_TYPE, ? extends ValueProcessingFunction> terminalExpression) {
+
+        return this.terminalExpressionBuilder.with(terminalExpression);
+    }
+
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class BiTerminalValueExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
 
@@ -60,6 +68,13 @@ public final class BiValueExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROO
 
         public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> with(
                 ValueExpression<TRG_ROOT, TRG_TYPE, ? extends ValueProcessingFunction> terminalExpression) {
+
+            return new BiMappingConditionBuilder<>(
+                    this.context, this.mappingRule.withTerminalExpression(terminalExpression));
+        }
+
+        public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> with(
+                AbstractValueExpression<TRG_ROOT, ? super TRG_TYPE, ? extends ValueProcessingFunction> terminalExpression) {
 
             return new BiMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(terminalExpression));

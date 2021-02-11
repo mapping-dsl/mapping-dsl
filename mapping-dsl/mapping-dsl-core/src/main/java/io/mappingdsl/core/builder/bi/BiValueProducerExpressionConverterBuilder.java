@@ -3,6 +3,7 @@ package io.mappingdsl.core.builder.bi;
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.common.Converter;
+import io.mappingdsl.core.expression.AbstractValueExpression;
 import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import lombok.AccessLevel;
@@ -34,6 +35,13 @@ public final class BiValueProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE,
         return this.terminalExpressionBuilder.to(targetExpression);
     }
 
+    // delegate method
+    public BiProducerMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
+            AbstractValueExpression<TRG_ROOT, ? super SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+
+        return this.terminalExpressionBuilder.to(targetExpression);
+    }
+
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class BiTerminalValueProducerExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
 
@@ -42,6 +50,13 @@ public final class BiValueProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE,
 
         public BiProducerMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
                 ValueExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+
+            return new BiProducerMappingConditionBuilder<>(
+                    this.context, this.mappingRule.withTerminalExpression(targetExpression));
+        }
+
+        public BiProducerMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
+                AbstractValueExpression<TRG_ROOT, ? super TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
             return new BiProducerMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
