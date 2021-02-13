@@ -22,10 +22,10 @@ public final class BiDslProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, T
                 this.context, this.mappingRule.withTerminalExpression(targetExpression));
     }
 
-    public <TRG_TYPE> BiDslProducerExpressionHintsBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> to(
-            AbstractDslExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+    public BiProducerMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
+            AbstractDslExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
-        return new BiDslProducerExpressionHintsBuilder<>(
+        return new BiProducerMappingConditionBuilder<>(
                 this.context, this.mappingRule.withTerminalExpression(targetExpression));
     }
 
@@ -82,20 +82,20 @@ public final class BiDslProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, T
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
         }
 
-    }
+        @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+        public static final class BiDslProducerExpressionHintsBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
 
-    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-    public static final class BiDslProducerExpressionHintsBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
+            private final MappingContext<SRC_ROOT, TRG_ROOT> context;
+            private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
-        private final MappingContext<SRC_ROOT, TRG_ROOT> context;
-        private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
+            public BiProducerMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> usingHint(Class<? extends TRG_TYPE> hint) {
+                return new BiProducerMappingConditionBuilder<>(this.context, this.mappingRule.withTerminalHint(hint));
+            }
 
-        public BiProducerMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> usingHint(Class<? extends TRG_TYPE> hint) {
-            return new BiProducerMappingConditionBuilder<>(this.context, this.mappingRule.withTerminalHint(hint));
-        }
+            public BiProducerMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> usingGlobalHint() {
+                return new BiProducerMappingConditionBuilder<>(this.context, this.mappingRule);
+            }
 
-        public BiProducerMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> usingGlobalHint() {
-            return new BiProducerMappingConditionBuilder<>(this.context, this.mappingRule);
         }
 
     }
