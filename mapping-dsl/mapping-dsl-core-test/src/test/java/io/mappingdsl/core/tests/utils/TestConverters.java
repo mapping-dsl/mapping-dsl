@@ -138,4 +138,19 @@ public final class TestConverters {
         return new CityDto(settlementEntity.getName(), districts);
     }
 
+    public static DistrictEntity convertDistrictDto(DistrictDto districtDto) {
+        return new DistrictEntity(districtDto.getName());
+    }
+
+    public static SettlementEntity convertCityDto(SettlementDto settlementDto) {
+        CityDto cityDto = (CityDto) settlementDto;
+        DistrictEntity[] districts = cityDto.getDistricts() == null
+                ? new DistrictEntity[] {}
+                : Arrays.stream(cityDto.getDistricts())
+                        .map(TestConverters::convertDistrictDto)
+                        .toArray(DistrictEntity[]::new);
+
+        return new CityEntity(settlementDto.getName(), districts);
+    }
+
 }

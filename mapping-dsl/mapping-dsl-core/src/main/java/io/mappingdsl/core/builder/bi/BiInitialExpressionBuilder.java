@@ -3,6 +3,7 @@ package io.mappingdsl.core.builder.bi;
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.MappingRule.MappingRuleDirection;
+import io.mappingdsl.core.expression.AbstractDslExpression;
 import io.mappingdsl.core.expression.AbstractValueArrayExpression;
 import io.mappingdsl.core.expression.AbstractValueCollectionExpression;
 import io.mappingdsl.core.expression.AbstractValueExpression;
@@ -100,6 +101,17 @@ public final class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
         return new BiDslExpressionConverterBuilder<>(this.context, mappingRule);
     }
 
+    public <SRC_TYPE> BiAbstractDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> bind(
+            AbstractDslExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
+
+        MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
+                .mappingRuleDirection(MappingRuleDirection.BOTH)
+                .initialExpression(initialExpression)
+                .build();
+
+        return new BiAbstractDslExpressionBuilder<>(this.context, mappingRule);
+    }
+
     public <SRC_TYPE> BiDslCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> bind(
             DslCollectionExpression<SRC_ROOT, ?, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
 
@@ -190,6 +202,17 @@ public final class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
 
     public <SRC_TYPE> BiDslProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
             DslExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+
+        MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
+                .mappingRuleDirection(MappingRuleDirection.FORWARD)
+                .initialExpression(initialExpression)
+                .build();
+
+        return new BiDslProducerExpressionConverterBuilder<>(this.context, mappingRule);
+    }
+
+    public <SRC_TYPE> BiDslProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
+            AbstractDslExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.FORWARD)
@@ -296,6 +319,17 @@ public final class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
                 .build();
 
         return new BiDslConsumerExpressionConverterBuilder<>(this.context, mappingRule);
+    }
+
+    public <SRC_TYPE> BiAbstractDslConsumerExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
+            AbstractDslExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+
+        MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
+                .mappingRuleDirection(MappingRuleDirection.BACKWARD)
+                .initialExpression(initialExpression)
+                .build();
+
+        return new BiAbstractDslConsumerExpressionBuilder<>(this.context, mappingRule);
     }
 
     public <SRC_TYPE> BiDslCollectionConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
