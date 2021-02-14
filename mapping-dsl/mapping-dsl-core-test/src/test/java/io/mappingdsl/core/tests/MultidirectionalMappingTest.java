@@ -100,7 +100,8 @@ class MultidirectionalMappingTest {
         assertThatExceptionOfType(IllegalAssignmentException.class)
                 .isThrownBy(() -> mappingDsl.map(resultAddressDto, AddressEntity.class))
                 .withMessage("field houseNumber of type io.mappingdsl.core.tests.fixtures.HouseNumberEntity " +
-                        "cannot consume value of type io.mappingdsl.core.tests.fixtures.HouseNumberDto");
+                        "cannot consume value of type io.mappingdsl.core.tests.fixtures.HouseNumberDto. " +
+                        "Probably mapping configuration or hint is missing for this pair of types.");
     }
 
     private static Stream<Arguments> restrictiveTestData() {
