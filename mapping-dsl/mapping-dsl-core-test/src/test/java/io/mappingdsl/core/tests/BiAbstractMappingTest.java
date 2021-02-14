@@ -226,6 +226,7 @@ class BiAbstractMappingTest {
                                 .between(CountryEntity.class).and(CountryDto.class)
                                 .bind(CountryEntityMappingDsl.$this.capital)
                                 .usingHint(CityEntity.class)
+                                .usingMapping()
                                 .with(CountryDtoMappingDsl.$this.capital)
                                 .usingHint(CityDto.class)
 
@@ -243,6 +244,7 @@ class BiAbstractMappingTest {
                                 .between(CountryEntity.class).and(CountryDto.class)
                                 .bind(CountryEntityMappingDsl.$this.capitalProperty)
                                 .usingHint(CityEntity.class)
+                                .usingMapping()
                                 .with(CountryDtoMappingDsl.$this.capitalProperty)
                                 .usingHint(CityDto.class)
 
@@ -263,6 +265,7 @@ class BiAbstractMappingTest {
                                 .between(CountryEntity.class).and(CountryDto.class)
                                 .bind(CountryEntityMappingDsl.$this.capital)
                                 .usingGlobalHint()
+                                .usingMapping()
                                 .with(CountryDtoMappingDsl.$this.capital)
                                 .usingGlobalHint()
 
@@ -283,6 +286,7 @@ class BiAbstractMappingTest {
                                 .between(CountryEntity.class).and(CountryDto.class)
                                 .bind(CountryEntityMappingDsl.$this.capitalProperty)
                                 .usingGlobalHint()
+                                .usingMapping()
                                 .with(CountryDtoMappingDsl.$this.capitalProperty)
                                 .usingGlobalHint()
 
@@ -504,6 +508,7 @@ class BiAbstractMappingTest {
                                 .between(CountryEntity.class).and(CountryDto.class)
                                 .consume(CountryEntityMappingDsl.$this.capital)
                                 .usingHint(CityEntity.class)
+                                .usingMapping()
                                 .from(CountryDtoMappingDsl.$this.capital)
 
                                 .biMapping()
@@ -520,6 +525,7 @@ class BiAbstractMappingTest {
                                 .between(CountryEntity.class).and(CountryDto.class)
                                 .consume(CountryEntityMappingDsl.$this.capitalProperty)
                                 .usingHint(CityEntity.class)
+                                .usingMapping()
                                 .from(CountryDtoMappingDsl.$this.capitalProperty)
 
                                 .biMapping()
@@ -536,6 +542,7 @@ class BiAbstractMappingTest {
                                 .between(CountryEntity.class).and(CountryDto.class)
                                 .consume(CountryEntityMappingDsl.$this.setCapital)
                                 .usingHint(CityEntity.class)
+                                .usingMapping()
                                 .from(CountryDtoMappingDsl.$this.getCapital)
 
                                 .biMapping()
@@ -554,6 +561,7 @@ class BiAbstractMappingTest {
                                 .between(CountryEntity.class).and(CountryDto.class)
                                 .consume(CountryEntityMappingDsl.$this.capital)
                                 .usingGlobalHint()
+                                .usingMapping()
                                 .from(CountryDtoMappingDsl.$this.capital)
 
                                 .biMapping()
@@ -572,6 +580,7 @@ class BiAbstractMappingTest {
                                 .between(CountryEntity.class).and(CountryDto.class)
                                 .consume(CountryEntityMappingDsl.$this.capitalProperty)
                                 .usingGlobalHint()
+                                .usingMapping()
                                 .from(CountryDtoMappingDsl.$this.capitalProperty)
 
                                 .biMapping()
@@ -590,6 +599,7 @@ class BiAbstractMappingTest {
                                 .between(CountryEntity.class).and(CountryDto.class)
                                 .consume(CountryEntityMappingDsl.$this.setCapital)
                                 .usingGlobalHint()
+                                .usingMapping()
                                 .from(CountryDtoMappingDsl.$this.getCapital)
 
                                 .biMapping()

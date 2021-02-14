@@ -3,6 +3,9 @@ package io.mappingdsl.core.builder.bi;
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.common.Converter;
+import io.mappingdsl.core.expression.AbstractDslExpression;
+import io.mappingdsl.core.expression.DslExpression;
+import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -12,15 +15,15 @@ public final class BiAbstractDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
-    public BiTerminalIncompatibleDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> usingHint(
+    public BiTerminalAbstractDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> usingHint(
             Class<? extends SRC_TYPE> hint) {
 
-        return new BiTerminalIncompatibleDslExpressionBuilder<>(
+        return new BiTerminalAbstractDslExpressionBuilder<>(
                 this.context, this.mappingRule.withInitialHint(hint));
     }
 
-    public BiTerminalIncompatibleDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> usingGlobalHint() {
-        return new BiTerminalIncompatibleDslExpressionBuilder<>(this.context, this.mappingRule);
+    public BiTerminalAbstractDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> usingGlobalHint() {
+        return new BiTerminalAbstractDslExpressionBuilder<>(this.context, this.mappingRule);
     }
 
     public <TRG_TYPE> BiTerminalCompatibleDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> usingConverter(
@@ -39,6 +42,40 @@ public final class BiAbstractDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> 
                 .withTerminalExpressionConverter(terminalExpressionConverter);
 
         return new BiTerminalCompatibleDslExpressionBuilder<>(this.context, rule);
+    }
+
+    public static final class BiTerminalAbstractDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> {
+
+        private final MappingContext<SRC_ROOT, TRG_ROOT> context;
+        private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
+        private final BiTerminalCompatibleDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> compatibleDslExpressionBuilder;
+
+        private BiTerminalAbstractDslExpressionBuilder(
+                MappingContext<SRC_ROOT, TRG_ROOT> context, MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
+
+            this.context = context;
+            this.mappingRule = mappingRule;
+            this.compatibleDslExpressionBuilder = new BiTerminalCompatibleDslExpressionBuilder<>(this.context, this.mappingRule);
+        }
+
+        public BiTerminalIncompatibleDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> usingMapping() {
+            return new BiTerminalIncompatibleDslExpressionBuilder<>(this.context, this.mappingRule);
+        }
+
+        // delegate method
+        public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> with(
+                DslExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+
+            return this.compatibleDslExpressionBuilder.with(targetExpression);
+        }
+
+        // delegate method
+        public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> with(
+                AbstractDslExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+
+            return this.compatibleDslExpressionBuilder.with(targetExpression);
+        }
+
     }
 
 }
