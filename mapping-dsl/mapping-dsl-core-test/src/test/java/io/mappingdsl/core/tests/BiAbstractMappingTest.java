@@ -17,6 +17,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -606,6 +608,356 @@ class BiAbstractMappingTest {
                                 .between(CityEntity.class).and(CityDto.class)
                                 .consume(CityEntityMappingDsl.$this.setName)
                                 .from(CityDtoMappingDsl.$this.getName)
+                                .build())
+        );
+    }
+
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("complexAbstractCollectionTestData")
+    void shouldMapComplexAbstractCollection(String testName, MappingDsl mappingDsl) {
+        CountryEntity countryEntity = new CountryEntity();
+        List<CityEntity> cityEntities = Collections.singletonList(new CityEntity("London"));
+        countryEntity.setBiggestCities(cityEntities);
+
+        CountryDto resultCountryDto = mappingDsl.map(countryEntity, CountryDto.class);
+
+        assertThat(resultCountryDto.getBiggestCities().size()).isEqualTo(1);
+        assertThat(resultCountryDto.getBiggestCities().get(0).getName()).isEqualTo("London");
+
+        CountryEntity resultCountryEntity = mappingDsl.map(resultCountryDto, CountryEntity.class);
+
+        assertThat(resultCountryEntity.getBiggestCities().size()).isEqualTo(1);
+        assertThat(resultCountryEntity.getBiggestCities().get(0).getName()).isEqualTo("London");
+    }
+
+    private static Stream<Arguments> complexAbstractCollectionTestData() {
+        return Stream.of(
+                Arguments.of(
+                        "[bi] local hint, mapping over fields",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .bind(CountryEntityMappingDsl.$this.biggestCities)
+                                .usingHint(CityEntity.class)
+                                .usingMapping()
+                                .with(CountryDtoMappingDsl.$this.biggestCities)
+                                .usingHint(CityDto.class)
+
+                                .biMapping()
+                                .between(CityEntity.class).and(CityDto.class)
+                                .bind(CityEntityMappingDsl.$this.name)
+                                .with(CityDtoMappingDsl.$this.name)
+                                .build()),
+
+                Arguments.of(
+                        "[bi] local hint, mapping over properties",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .bind(CountryEntityMappingDsl.$this.biggestCitiesProperty)
+                                .usingHint(CityEntity.class)
+                                .usingMapping()
+                                .with(CountryDtoMappingDsl.$this.biggestCitiesProperty)
+                                .usingHint(CityDto.class)
+
+                                .biMapping()
+                                .between(CityEntity.class).and(CityDto.class)
+                                .bind(CityEntityMappingDsl.$this.nameProperty)
+                                .with(CityDtoMappingDsl.$this.nameProperty)
+                                .build()),
+
+                Arguments.of(
+                        "[bi] global hint, mapping over fields",
+
+                        new MappingDslBuilder()
+                                .configuration()
+                                .onAbstract(SettlementDto.class).useHint(CityDto.class)
+                                .onAbstract(SettlementEntity.class).useHint(CityEntity.class)
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .bind(CountryEntityMappingDsl.$this.biggestCities)
+                                .usingGlobalHint()
+                                .usingMapping()
+                                .with(CountryDtoMappingDsl.$this.biggestCities)
+                                .usingGlobalHint()
+
+                                .biMapping()
+                                .between(CityEntity.class).and(CityDto.class)
+                                .bind(CityEntityMappingDsl.$this.name)
+                                .with(CityDtoMappingDsl.$this.name)
+                                .build()),
+
+                Arguments.of(
+                        "[bi] global hint, mapping over properties",
+
+                        new MappingDslBuilder()
+                                .configuration()
+                                .onAbstract(SettlementDto.class).useHint(CityDto.class)
+                                .onAbstract(SettlementEntity.class).useHint(CityEntity.class)
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .bind(CountryEntityMappingDsl.$this.biggestCitiesProperty)
+                                .usingGlobalHint()
+                                .usingMapping()
+                                .with(CountryDtoMappingDsl.$this.biggestCitiesProperty)
+                                .usingGlobalHint()
+
+                                .biMapping()
+                                .between(CityEntity.class).and(CityDto.class)
+                                .bind(CityEntityMappingDsl.$this.nameProperty)
+                                .with(CityDtoMappingDsl.$this.nameProperty)
+                                .build())
+        );
+    }
+
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("complexAbstractCollectionForwardTestData")
+    void shouldForwardMapComplexAbstractCollection(String testName, MappingDsl mappingDsl) {
+        CountryEntity countryEntity = new CountryEntity();
+        List<CityEntity> cityEntities = Collections.singletonList(new CityEntity("London"));
+        countryEntity.setBiggestCities(cityEntities);
+
+        CountryDto resultCountryDto = mappingDsl.map(countryEntity, CountryDto.class);
+
+        assertThat(resultCountryDto.getBiggestCities().size()).isEqualTo(1);
+        assertThat(resultCountryDto.getBiggestCities().get(0).getName()).isEqualTo("London");
+    }
+
+    private static Stream<Arguments> complexAbstractCollectionForwardTestData() {
+        return Stream.of(
+                Arguments.of(
+                        "[forward] local hint, mapping over fields",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .produce(CountryEntityMappingDsl.$this.biggestCities)
+                                .usingMapping()
+                                .to(CountryDtoMappingDsl.$this.biggestCities)
+                                .usingHint(CityDto.class)
+
+                                .biMapping()
+                                .between(CityEntity.class).and(CityDto.class)
+                                .produce(CityEntityMappingDsl.$this.name)
+                                .to(CityDtoMappingDsl.$this.name)
+                                .build()),
+
+                Arguments.of(
+                        "[forward] local hint, mapping over properties",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .produce(CountryEntityMappingDsl.$this.biggestCitiesProperty)
+                                .usingMapping()
+                                .to(CountryDtoMappingDsl.$this.biggestCitiesProperty)
+                                .usingHint(CityDto.class)
+
+                                .biMapping()
+                                .between(CityEntity.class).and(CityDto.class)
+                                .produce(CityEntityMappingDsl.$this.nameProperty)
+                                .to(CityDtoMappingDsl.$this.nameProperty)
+                                .build()),
+
+                Arguments.of(
+                        "[forward] local hint, mapping over methods",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .produce(CountryEntityMappingDsl.$this.getBiggestCities)
+                                .usingMapping()
+                                .to(CountryDtoMappingDsl.$this.setBiggestCities)
+                                .usingHint(CityDto.class)
+
+                                .biMapping()
+                                .between(CityEntity.class).and(CityDto.class)
+                                .produce(CityEntityMappingDsl.$this.getName)
+                                .to(CityDtoMappingDsl.$this.setName)
+                                .build()),
+
+                Arguments.of(
+                        "[forward] global hint, mapping over fields",
+
+                        new MappingDslBuilder()
+                                .configuration()
+                                .onAbstract(SettlementDto.class).useHint(CityDto.class)
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .produce(CountryEntityMappingDsl.$this.biggestCities)
+                                .usingMapping()
+                                .to(CountryDtoMappingDsl.$this.biggestCities)
+                                .usingGlobalHint()
+
+                                .biMapping()
+                                .between(CityEntity.class).and(CityDto.class)
+                                .produce(CityEntityMappingDsl.$this.name)
+                                .to(CityDtoMappingDsl.$this.name)
+                                .build()),
+
+                Arguments.of(
+                        "[forward] global hint, mapping over properties",
+
+                        new MappingDslBuilder()
+                                .configuration()
+                                .onAbstract(SettlementDto.class).useHint(CityDto.class)
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .produce(CountryEntityMappingDsl.$this.biggestCitiesProperty)
+                                .usingMapping()
+                                .to(CountryDtoMappingDsl.$this.biggestCitiesProperty)
+                                .usingGlobalHint()
+
+                                .biMapping()
+                                .between(CityEntity.class).and(CityDto.class)
+                                .produce(CityEntityMappingDsl.$this.nameProperty)
+                                .to(CityDtoMappingDsl.$this.nameProperty)
+                                .build()),
+
+                Arguments.of(
+                        "[forward] global hint, mapping over methods",
+
+                        new MappingDslBuilder()
+                                .configuration()
+                                .onAbstract(SettlementDto.class).useHint(CityDto.class)
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .produce(CountryEntityMappingDsl.$this.getBiggestCities)
+                                .usingMapping()
+                                .to(CountryDtoMappingDsl.$this.setBiggestCities)
+                                .usingGlobalHint()
+
+                                .biMapping()
+                                .between(CityEntity.class).and(CityDto.class)
+                                .produce(CityEntityMappingDsl.$this.getName)
+                                .to(CityDtoMappingDsl.$this.setName)
+                                .build())
+        );
+    }
+
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("complexAbstractCollectionBackwardTestData")
+    void shouldBackwardMapComplexAbstractCollection(String testName, MappingDsl mappingDsl) {
+        CountryDto countryDto = new CountryDto();
+        List<CityDto> cityDtos = Collections.singletonList(new CityDto("London"));
+        countryDto.setBiggestCities(cityDtos);
+
+        CountryEntity resultCountryEntity = mappingDsl.map(countryDto, CountryEntity.class);
+
+        assertThat(resultCountryEntity.getBiggestCities().size()).isEqualTo(1);
+        assertThat(resultCountryEntity.getBiggestCities().get(0).getName()).isEqualTo("London");
+    }
+
+    private static Stream<Arguments> complexAbstractCollectionBackwardTestData() {
+        return Stream.of(
+                Arguments.of(
+                        "[backward] local hint, mapping over fields",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .consume(CountryEntityMappingDsl.$this.biggestCities)
+                                .usingHint(CityEntity.class)
+                                .usingMapping()
+                                .from(CountryDtoMappingDsl.$this.biggestCities)
+
+                                .biMapping()
+                                .between(CityEntity.class).and(CityDto.class)
+                                .consume(CityEntityMappingDsl.$this.name)
+                                .from(CityDtoMappingDsl.$this.name)
+                                .build()),
+
+                Arguments.of(
+                        "[backward] local hint, mapping over properties",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .consume(CountryEntityMappingDsl.$this.biggestCitiesProperty)
+                                .usingHint(CityEntity.class)
+                                .usingMapping()
+                                .from(CountryDtoMappingDsl.$this.biggestCitiesProperty)
+
+                                .biMapping()
+                                .between(CityEntity.class).and(CityDto.class)
+                                .consume(CityEntityMappingDsl.$this.name)
+                                .from(CityDtoMappingDsl.$this.name)
+                                .build()),
+
+                Arguments.of(
+                        "[backward] local hint, mapping over methods",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .consume(CountryEntityMappingDsl.$this.setBiggestCities)
+                                .usingHint(CityEntity.class)
+                                .usingMapping()
+                                .from(CountryDtoMappingDsl.$this.getBiggestCities)
+
+                                .biMapping()
+                                .between(CityEntity.class).and(CityDto.class)
+                                .consume(CityEntityMappingDsl.$this.name)
+                                .from(CityDtoMappingDsl.$this.name)
+                                .build()),
+
+                Arguments.of(
+                        "[backward] global hint, mapping over fields",
+
+                        new MappingDslBuilder()
+                                .configuration()
+                                .onAbstract(SettlementEntity.class).useHint(CityEntity.class)
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .consume(CountryEntityMappingDsl.$this.biggestCities)
+                                .usingGlobalHint()
+                                .usingMapping()
+                                .from(CountryDtoMappingDsl.$this.biggestCities)
+
+                                .biMapping()
+                                .between(CityEntity.class).and(CityDto.class)
+                                .consume(CityEntityMappingDsl.$this.name)
+                                .from(CityDtoMappingDsl.$this.name)
+                                .build()),
+
+                Arguments.of(
+                        "[backward] global hint, mapping over properties",
+
+                        new MappingDslBuilder()
+                                .configuration()
+                                .onAbstract(SettlementEntity.class).useHint(CityEntity.class)
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .consume(CountryEntityMappingDsl.$this.biggestCitiesProperty)
+                                .usingGlobalHint()
+                                .usingMapping()
+                                .from(CountryDtoMappingDsl.$this.biggestCitiesProperty)
+
+                                .biMapping()
+                                .between(CityEntity.class).and(CityDto.class)
+                                .consume(CityEntityMappingDsl.$this.name)
+                                .from(CityDtoMappingDsl.$this.name)
+                                .build()),
+
+                Arguments.of(
+                        "[backward] global hint, mapping over methods",
+
+                        new MappingDslBuilder()
+                                .configuration()
+                                .onAbstract(SettlementEntity.class).useHint(CityEntity.class)
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .consume(CountryEntityMappingDsl.$this.setBiggestCities)
+                                .usingGlobalHint()
+                                .usingMapping()
+                                .from(CountryDtoMappingDsl.$this.getBiggestCities)
+
+                                .biMapping()
+                                .between(CityEntity.class).and(CityDto.class)
+                                .consume(CityEntityMappingDsl.$this.name)
+                                .from(CityDtoMappingDsl.$this.name)
                                 .build())
         );
     }
