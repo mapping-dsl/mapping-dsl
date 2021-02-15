@@ -25,6 +25,10 @@ public class CountryEntity extends NamedObject {
     @Setter
     private CharSequence[] nationalLanguages;
 
+    @Getter
+    @Setter
+    private Iterable<String> nationalCurrencies;
+
     public CountryEntity(String name) {
         super(name);
     }

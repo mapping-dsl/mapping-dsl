@@ -45,6 +45,8 @@
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.CityOverviewEntity</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.CountryDto</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.CountryEntity</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.CountrySummaryDto</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.CountrySummaryEntity</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.DistrictDto</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.DistrictEntity</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.Geolocation</testSourceFile>

@@ -12,6 +12,12 @@ import io.mappingdsl.core.tests.fixtures.AddressDto;
 import io.mappingdsl.core.tests.fixtures.AddressDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.AddressEntity;
 import io.mappingdsl.core.tests.fixtures.AddressEntityMappingDsl;
+import io.mappingdsl.core.tests.fixtures.CountryDto;
+import io.mappingdsl.core.tests.fixtures.CountryDtoMappingDsl;
+import io.mappingdsl.core.tests.fixtures.CountryEntity;
+import io.mappingdsl.core.tests.fixtures.CountryEntityMappingDsl;
+import io.mappingdsl.core.tests.fixtures.CountrySummaryDto;
+import io.mappingdsl.core.tests.fixtures.CountrySummaryDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntity;
 import io.mappingdsl.core.tests.fixtures.StreetEntity;
 import io.mappingdsl.core.tests.utils.TestConverters;
@@ -36,6 +42,7 @@ class UniCollectionMappingTest {
         addressEntity.setPhoneNumbers(Arrays.asList("123", "456", "789"));
 
         AddressDto resultAddressDto = mappingDsl.map(addressEntity, AddressDto.class);
+
         assertThat(resultAddressDto.getPhoneNumbers()).containsExactly("123", "456", "789");
     }
 
@@ -73,6 +80,51 @@ class UniCollectionMappingTest {
         );
     }
 
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("simpleIterableTestData")
+    void shouldMapIterableOfSimpleValues(String testName, MappingDsl mappingDsl) {
+        CountryEntity countryEntity = new CountryEntity();
+        countryEntity.setNationalCurrencies(Collections.singleton("GBP"));
+
+        CountryDto resultCountryDto = mappingDsl.map(countryEntity, CountryDto.class);
+
+        assertThat(resultCountryDto.getNationalCurrencies()).containsExactly("GBP");
+    }
+
+    private static Stream<Arguments> simpleIterableTestData() {
+        return Stream.of(
+                Arguments.of(
+                        "[uni] iterable mapping over fields",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(CountryEntity.class).to(CountryDto.class)
+                                .produce(CountryEntityMappingDsl.$this.nationalCurrencies)
+                                .to(CountryDtoMappingDsl.$this.nationalCurrencies)
+                                .build()),
+
+                Arguments.of(
+                        "[uni] iterable mapping over properties",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(CountryEntity.class).to(CountryDto.class)
+                                .produce(CountryEntityMappingDsl.$this.nationalCurrenciesProperty)
+                                .to(CountryDtoMappingDsl.$this.nationalCurrenciesProperty)
+                                .build()),
+
+                Arguments.of(
+                        "[uni] iterable mapping over methods",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(CountryEntity.class).to(CountryDto.class)
+                                .produce(CountryEntityMappingDsl.$this.getNationalCurrencies)
+                                .to(CountryDtoMappingDsl.$this.setNationalCurrencies)
+                                .build())
+        );
+    }
+
     @Test
     void shouldMapCollectionSize() {
         AddressBookEntity addressBookEntity = new AddressBookEntity();
@@ -95,6 +147,23 @@ class UniCollectionMappingTest {
         assertThat(resultAddressBookSummaryDto.getNumberOfBookmarks()).isEqualTo(2);
     }
 
+    @Test
+    void shouldMapIterableSize() {
+        CountryEntity countryEntity = new CountryEntity();
+        countryEntity.setNationalCurrencies(Collections.singleton("GBP"));
+
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .uniMapping()
+                .from(CountryEntity.class).to(CountrySummaryDto.class)
+                .produce(CountryEntityMappingDsl.$this.nationalCurrencies.size())
+                .to(CountrySummaryDtoMappingDsl.$this.numberOfCurrencies)
+                .build();
+
+        CountrySummaryDto resultCountrySummaryDto = mappingDsl.map(countryEntity, CountrySummaryDto.class);
+
+        assertThat(resultCountrySummaryDto.getNumberOfCurrencies()).isEqualTo(1);
+    }
+
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("setCollectionTestData")
     void shouldMapSet(String testName, MappingDsl mappingDsl) {
@@ -106,9 +175,11 @@ class UniCollectionMappingTest {
         addressBookEntity.setBookmarks(new HashSet<>(Collections.singletonList(addressEntity)));
 
         AddressBookDto resultAddressBookDto = mappingDsl.map(addressBookEntity, AddressBookDto.class);
+
         assertThat(resultAddressBookDto.getBookmarks().size()).isEqualTo(1);
 
         AddressDto resultAddressDto = resultAddressBookDto.getBookmarks().iterator().next();
+
         assertThat(resultAddressDto.getStreet().getName()).isEqualTo("Baker Street");
         assertThat(resultAddressDto.getHouseNumber().getNumber()).isEqualTo(221);
         assertThat(resultAddressDto.getHouseNumber().getSuffix()).isEqualTo("B");
@@ -172,9 +243,27 @@ class UniCollectionMappingTest {
                 mappingDsl.map(addressBookEntity, AddressBookSummaryDto.class);
 
         AddressDto resultAddressDto = resultAddressBookSummaryDto.getOwnerAddress();
+
         assertThat(resultAddressDto.getStreet().getName()).isEqualTo("Baker Street");
         assertThat(resultAddressDto.getHouseNumber().getNumber()).isEqualTo(221);
         assertThat(resultAddressDto.getHouseNumber().getSuffix()).isEqualTo("B");
+    }
+
+    @Test
+    void shouldMapIterableElement() {
+        CountryEntity countryEntity = new CountryEntity();
+        countryEntity.setNationalCurrencies(Collections.singleton("GBP"));
+
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .uniMapping()
+                .from(CountryEntity.class).to(CountrySummaryDto.class)
+                .produce(CountryEntityMappingDsl.$this.nationalCurrencies.get(0))
+                .to(CountrySummaryDtoMappingDsl.$this.primaryCurrency)
+                .build();
+
+        CountrySummaryDto resultCountrySummaryDto = mappingDsl.map(countryEntity, CountrySummaryDto.class);
+
+        assertThat(resultCountrySummaryDto.getPrimaryCurrency()).isEqualTo("GBP");
     }
 
     @ParameterizedTest(name = "[{index}] {0}")
@@ -193,6 +282,7 @@ class UniCollectionMappingTest {
         addressBookEntity.setAddresses(Arrays.asList(addressEntity, anotherAddressEntity));
 
         AddressBookDto resultAddressBookDto = mappingDsl.map(addressBookEntity, AddressBookDto.class);
+
         assertThat(resultAddressBookDto.getAddresses().size()).isEqualTo(2);
 
         AddressDto resultAddressDto = resultAddressBookDto.getAddresses().get(0);
@@ -203,6 +293,7 @@ class UniCollectionMappingTest {
         assertThat(resultAddressDto.getPhoneNumbers()).containsExactly("123", "456");
 
         AddressDto resultAnotherAddressDto = resultAddressBookDto.getAddresses().get(1);
+
         assertThat(resultAnotherAddressDto.getStreet().getName()).isEqualTo("Privet Drive");
         assertThat(resultAnotherAddressDto.getHouseNumber().getNumber()).isEqualTo(4);
     }

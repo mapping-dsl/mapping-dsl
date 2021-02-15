@@ -25,6 +25,10 @@ public class CountryDto extends NamedObject {
     @Setter
     private CharSequence[] nationalLanguages;
 
+    @Getter
+    @Setter
+    private Iterable<String> nationalCurrencies;
+
     public CountryDto(String name) {
         super(name);
     }

@@ -10,6 +10,10 @@ import io.mappingdsl.core.tests.fixtures.AddressDto;
 import io.mappingdsl.core.tests.fixtures.AddressDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.AddressEntity;
 import io.mappingdsl.core.tests.fixtures.AddressEntityMappingDsl;
+import io.mappingdsl.core.tests.fixtures.CountryDto;
+import io.mappingdsl.core.tests.fixtures.CountryDtoMappingDsl;
+import io.mappingdsl.core.tests.fixtures.CountryEntity;
+import io.mappingdsl.core.tests.fixtures.CountryEntityMappingDsl;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDto;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntity;
@@ -23,6 +27,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -105,6 +110,135 @@ class BiCollectionMappingTest {
                                 .between(AddressEntity.class).and(AddressDto.class)
                                 .consume(AddressEntityMappingDsl.$this.phoneNumbers)
                                 .from(AddressDtoMappingDsl.$this.phoneNumbers)
+                                .build())
+        );
+    }
+
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("simpleIterableTestData")
+    void shouldMapIterableOfSimpleValues(String testName, MappingDsl mappingDsl) {
+        CountryEntity countryEntity = new CountryEntity();
+        countryEntity.setNationalCurrencies(Collections.singleton("GBP"));
+
+        CountryDto resultCountryDto = mappingDsl.map(countryEntity, CountryDto.class);
+
+        assertThat(resultCountryDto.getNationalCurrencies()).containsExactly("GBP");
+
+        CountryEntity resultCountryEntity = mappingDsl.map(resultCountryDto, CountryEntity.class);
+
+        assertThat(resultCountryEntity.getNationalCurrencies()).containsExactly("GBP");
+    }
+
+    private static Stream<Arguments> simpleIterableTestData() {
+        return Stream.of(
+                Arguments.of(
+                        "[bi] iterable mapping over fields",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .bind(CountryEntityMappingDsl.$this.nationalCurrencies)
+                                .with(CountryDtoMappingDsl.$this.nationalCurrencies)
+                                .build()),
+
+                Arguments.of(
+                        "[bi] iterable mapping over properties",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .bind(CountryEntityMappingDsl.$this.nationalCurrenciesProperty)
+                                .with(CountryDtoMappingDsl.$this.nationalCurrenciesProperty)
+                                .build())
+        );
+    }
+
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("simpleIterableForwardTestData")
+    void shouldForwardMapIterableOfSimpleValues(String testName, MappingDsl mappingDsl) {
+        CountryEntity countryEntity = new CountryEntity();
+        countryEntity.setNationalCurrencies(Collections.singleton("GBP"));
+
+        CountryDto resultCountryDto = mappingDsl.map(countryEntity, CountryDto.class);
+
+        assertThat(resultCountryDto.getNationalCurrencies()).containsExactly("GBP");
+    }
+
+    private static Stream<Arguments> simpleIterableForwardTestData() {
+        return Stream.of(
+                Arguments.of(
+                        "[forward] iterable mapping over fields",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .produce(CountryEntityMappingDsl.$this.nationalCurrencies)
+                                .to(CountryDtoMappingDsl.$this.nationalCurrencies)
+                                .build()),
+
+                Arguments.of(
+                        "[forward] iterable mapping over properties",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .produce(CountryEntityMappingDsl.$this.nationalCurrenciesProperty)
+                                .to(CountryDtoMappingDsl.$this.nationalCurrenciesProperty)
+                                .build()),
+
+                Arguments.of(
+                        "[forward] iterable mapping over methods",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .produce(CountryEntityMappingDsl.$this.getNationalCurrencies)
+                                .to(CountryDtoMappingDsl.$this.setNationalCurrencies)
+                                .build())
+        );
+    }
+
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("simpleIterableBackwardTestData")
+    void shouldBackwardMapIterableOfSimpleValues(String testName, MappingDsl mappingDsl) {
+        CountryDto countryDto = new CountryDto();
+        countryDto.setNationalCurrencies(Collections.singleton("GBP"));
+
+        CountryEntity resultCountryEntity = mappingDsl.map(countryDto, CountryEntity.class);
+
+        assertThat(resultCountryEntity.getNationalCurrencies()).containsExactly("GBP");
+    }
+
+    private static Stream<Arguments> simpleIterableBackwardTestData() {
+        return Stream.of(
+                Arguments.of(
+                        "[backward] iterable mapping over fields",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .consume(CountryEntityMappingDsl.$this.nationalCurrencies)
+                                .from(CountryDtoMappingDsl.$this.nationalCurrencies)
+                                .build()),
+
+                Arguments.of(
+                        "[backward] iterable mapping over properties",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .consume(CountryEntityMappingDsl.$this.nationalCurrenciesProperty)
+                                .from(CountryDtoMappingDsl.$this.nationalCurrenciesProperty)
+                                .build()),
+
+                Arguments.of(
+                        "[backward] iterable mapping over methods",
+
+                        new MappingDslBuilder()
+                                .biMapping()
+                                .between(CountryEntity.class).and(CountryDto.class)
+                                .consume(CountryEntityMappingDsl.$this.setNationalCurrencies)
+                                .from(CountryDtoMappingDsl.$this.getNationalCurrencies)
                                 .build())
         );
     }
