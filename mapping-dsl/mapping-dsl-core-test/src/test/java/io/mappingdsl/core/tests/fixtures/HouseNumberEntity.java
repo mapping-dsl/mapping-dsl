@@ -1,5 +1,6 @@
 package io.mappingdsl.core.tests.fixtures;
 
+import io.mappingdsl.core.tests.fixtures.common.Geolocation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

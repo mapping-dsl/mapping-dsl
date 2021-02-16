@@ -11,7 +11,7 @@ import io.mappingdsl.core.tests.fixtures.AddressDto;
 import io.mappingdsl.core.tests.fixtures.AddressDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.AddressEntity;
 import io.mappingdsl.core.tests.fixtures.AddressEntityMappingDsl;
-import io.mappingdsl.core.tests.fixtures.Geolocation;
+import io.mappingdsl.core.tests.fixtures.common.Geolocation;
 import io.mappingdsl.core.tests.fixtures.HouseNumberDto;
 import io.mappingdsl.core.tests.fixtures.HouseNumberEntity;
 import io.mappingdsl.core.tests.fixtures.StreetDto;

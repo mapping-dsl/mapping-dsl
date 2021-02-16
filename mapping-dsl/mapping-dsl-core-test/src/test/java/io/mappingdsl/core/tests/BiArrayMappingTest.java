@@ -14,7 +14,7 @@ import io.mappingdsl.core.tests.fixtures.DistrictDto;
 import io.mappingdsl.core.tests.fixtures.DistrictDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.DistrictEntity;
 import io.mappingdsl.core.tests.fixtures.DistrictEntityMappingDsl;
-import io.mappingdsl.core.tests.fixtures.NamedObject;
+import io.mappingdsl.core.tests.fixtures.common.NamedObject;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;

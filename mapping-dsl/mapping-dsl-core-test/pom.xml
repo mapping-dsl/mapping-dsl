@@ -33,6 +33,12 @@
                         </goals>
                         <configuration>
                             <testSourceFiles>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.common.Geolocation</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.common.timezone.ACST</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.common.timezone.AEST</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.common.timezone.AWST</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.common.timezone.GMT</testSourceFile>
+                                <testSourceFile>io.mappingdsl.core.tests.fixtures.common.timezone.TimeZone</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.AddressBookDto</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.AddressBookEntity</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.AddressBookSummaryDto</testSourceFile>
@@ -49,7 +55,6 @@
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.CountrySummaryEntity</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.DistrictDto</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.DistrictEntity</testSourceFile>
-                                <testSourceFile>io.mappingdsl.core.tests.fixtures.Geolocation</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.HouseNumberDto</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.HouseNumberEntity</testSourceFile>
                                 <testSourceFile>io.mappingdsl.core.tests.fixtures.SettlementDto</testSourceFile>
