@@ -69,7 +69,7 @@
             new ValueCollectionExpression<>(this, new CollectionFieldAccessorFunction(${model.collectionType}.class, ${model.elementType}.class, "${model.name}"));</#macro>
 
 <#macro dslField model>
-<#assign dslClassName = GeneratorUtils.getDslClassName(model.type)>
+<#assign dslClassName = GeneratorUtils.getDslCanonicalClassName(model.type)>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.FieldModel" -->
     public final ${dslClassName}<ROOT, PathProcessingFunction> ${model.name} =
             new ${dslClassName}<>(this, new ObjectFieldAccessorFunction(${model.type}.class, "${model.name}"));</#macro>
@@ -249,13 +249,13 @@
 </#macro>
 
 <#macro dslGetterReference model>
-<#assign dslClassName = GeneratorUtils.getDslClassName(model.fieldModel.type)>
+<#assign dslClassName = GeneratorUtils.getDslCanonicalClassName(model.fieldModel.type)>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
     public final ${dslClassName}<ROOT, ValueProducerFunction> ${model.name} =
             new ${dslClassName}<>(this, new GetMethodAccessorFunction(${model.fieldModel.type}.class, "${model.name}"));</#macro>
 
 <#macro dslSetterReference model>
-<#assign dslClassName = GeneratorUtils.getDslClassName(model.fieldModel.type)>
+<#assign dslClassName = GeneratorUtils.getDslCanonicalClassName(model.fieldModel.type)>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
     public final ${model.fieldModel.abstract?then("AbstractDslExpression", "DslExpression")}<ROOT, ${model.fieldModel.type}, ValueConsumerFunction> ${model.name} =
             new ${dslClassName}<>(this, new SetMethodAccessorFunction(${model.fieldModel.type}.class, "${model.name}"));</#macro>
@@ -387,7 +387,7 @@
                     this.${model.setterModel.name}.getExpressionFunction()));</#macro>
 
 <#macro dslProperty model>
-<#assign dslClassName = GeneratorUtils.getDslClassName(model.fieldModel.type)>
+<#assign dslClassName = GeneratorUtils.getDslCanonicalClassName(model.fieldModel.type)>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.PropertyModel" -->
     public final ${dslClassName}<ROOT, PathProcessingFunction> ${model.fieldModel.name}Property =
             new ${dslClassName}<>(this, new PropertyAccessorFunction(

@@ -14,6 +14,9 @@ class GeneratorUtilsTest {
 
         assertThat(GeneratorUtils.getDslClassName("pojo.CountryTransport"))
                 .isEqualTo("CountryTransportMappingDsl");
+
+        assertThat(GeneratorUtils.getDslCanonicalClassName("pojo.CountryTransport"))
+                .isEqualTo("pojo.CountryTransportMappingDsl");
     }
 
 }

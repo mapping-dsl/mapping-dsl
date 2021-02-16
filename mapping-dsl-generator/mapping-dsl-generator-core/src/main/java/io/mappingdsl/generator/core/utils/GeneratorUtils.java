@@ -14,6 +14,10 @@ public final class GeneratorUtils {
         return ClassUtils.getClassName(fullClassName) + DSL_CLASS_NAME_SUFFIX;
     }
 
+    public static String getDslCanonicalClassName(String fullClassName) {
+        return fullClassName + DSL_CLASS_NAME_SUFFIX;
+    }
+
     public static boolean isDslClass(String fullClassName) {
         return fullClassName.endsWith(DSL_CLASS_NAME_SUFFIX);
     }
