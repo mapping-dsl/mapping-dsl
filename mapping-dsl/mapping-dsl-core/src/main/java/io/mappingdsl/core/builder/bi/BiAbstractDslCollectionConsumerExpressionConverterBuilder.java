@@ -11,11 +11,48 @@ import io.mappingdsl.core.expression.function.ValueProducerFunction;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public final class BiAbstractDslCollectionConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
+    private final BiTerminalCompatibleDslCollectionConsumerExpressionBuilder<SRC_ROOT, TRG_ROOT, SRC_TYPE> dslCollectionConsumerExpressionBuilder;
+
+    BiAbstractDslCollectionConsumerExpressionConverterBuilder(MappingContext<SRC_ROOT, TRG_ROOT> context,
+                                                              MappingRule<SRC_ROOT, TRG_ROOT> mappingRule) {
+
+        this.context = context;
+        this.mappingRule = mappingRule;
+        this.dslCollectionConsumerExpressionBuilder =
+                new BiTerminalCompatibleDslCollectionConsumerExpressionBuilder<>(this.context, this.mappingRule);
+    }
+
+    // delegate method
+    public BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, SRC_TYPE> from(
+            DslCollectionExpression<TRG_ROOT, ?, SRC_TYPE, ? extends ValueProducerFunction> targetExpression) {
+
+        return this.dslCollectionConsumerExpressionBuilder.from(targetExpression);
+    }
+
+    // delegate method
+    public BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, SRC_TYPE> from(
+            DslArrayExpression<TRG_ROOT, SRC_TYPE, ? extends ValueProducerFunction> targetExpression) {
+
+        return this.dslCollectionConsumerExpressionBuilder.from(targetExpression);
+    }
+
+    // delegate method
+    public BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, SRC_TYPE> from(
+            AbstractDslCollectionExpression<TRG_ROOT, ?, SRC_TYPE, ? extends ValueProducerFunction> targetExpression) {
+
+        return this.dslCollectionConsumerExpressionBuilder.from(targetExpression);
+    }
+
+    // delegate method
+    public BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, SRC_TYPE> from(
+            AbstractDslArrayExpression<TRG_ROOT, SRC_TYPE, ? extends ValueProducerFunction> targetExpression) {
+
+        return this.dslCollectionConsumerExpressionBuilder.from(targetExpression);
+    }
 
     public BiAbstractDslCollectionConsumerExpressionBuilder<SRC_ROOT, TRG_ROOT, SRC_TYPE> usingHint(
             Class<? extends SRC_TYPE> hint) {

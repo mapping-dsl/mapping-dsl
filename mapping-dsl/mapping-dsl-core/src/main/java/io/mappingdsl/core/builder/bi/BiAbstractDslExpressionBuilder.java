@@ -15,6 +15,20 @@ public final class BiAbstractDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> 
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
+    public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> with(
+            DslExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+
+        return new BiMappingConditionBuilder<>(
+                this.context, this.mappingRule.withTerminalExpression(targetExpression));
+    }
+
+    public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> with(
+            AbstractDslExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+
+        return new BiMappingConditionBuilder<>(
+                this.context, this.mappingRule.withTerminalExpression(targetExpression));
+    }
+
     public BiTerminalAbstractDslExpressionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> usingHint(
             Class<? extends SRC_TYPE> hint) {
 
