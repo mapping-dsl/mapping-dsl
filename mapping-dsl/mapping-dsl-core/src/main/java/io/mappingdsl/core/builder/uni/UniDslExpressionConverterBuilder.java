@@ -22,10 +22,10 @@ public final class UniDslExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT
                 this.context, this.mappingRule.withTerminalExpression(targetExpression));
     }
 
-    public <TRG_TYPE> UniDslExpressionHintsBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> to(
-            AbstractDslExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+    public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
+            AbstractDslExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
-        return new UniDslExpressionHintsBuilder<>(
+        return new UniMappingConditionBuilder<>(
                 this.context, this.mappingRule.withTerminalExpression(targetExpression));
     }
 

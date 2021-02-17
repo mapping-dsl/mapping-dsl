@@ -10,17 +10,18 @@ import io.mappingdsl.core.tests.fixtures.CountryDto;
 import io.mappingdsl.core.tests.fixtures.CountryDtoMappingDsl;
 import io.mappingdsl.core.tests.fixtures.CountryEntity;
 import io.mappingdsl.core.tests.fixtures.CountryEntityMappingDsl;
+import io.mappingdsl.core.tests.fixtures.SettlementDto;
 import io.mappingdsl.core.tests.fixtures.common.timezone.ACST;
 import io.mappingdsl.core.tests.fixtures.common.timezone.AEST;
 import io.mappingdsl.core.tests.fixtures.common.timezone.AWST;
 import io.mappingdsl.core.tests.fixtures.common.timezone.GMT;
-import io.mappingdsl.core.tests.fixtures.SettlementDto;
 import io.mappingdsl.core.tests.fixtures.common.timezone.TimeZone;
 import io.mappingdsl.core.tests.utils.TestConverters;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
@@ -360,6 +361,98 @@ class UniAbstractMappingTest {
                                 .from(CityEntity.class).to(CityDto.class)
                                 .produce(CityEntityMappingDsl.$this.getName)
                                 .to(CityDtoMappingDsl.$this.setName)
+                                .build())
+        );
+    }
+
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("complexCompatibleAbstractTestData")
+    void shouldMapComplexCompatibleAbstractValue(String testName, MappingDsl mappingDsl) {
+        CityEntity cityEntity = new CityEntity();
+        cityEntity.setTimeZone(new GMT());
+
+        CityDto resultCityDto = mappingDsl.map(cityEntity, CityDto.class);
+
+        assertThat(resultCityDto.getTimeZone().getUtcOffsetHours()).isZero();
+        assertThat(resultCityDto.getTimeZone().getUtcOffsetMinutes()).isZero();
+    }
+
+    private static Stream<Arguments> complexCompatibleAbstractTestData() {
+        return Stream.of(
+                Arguments.of(
+                        "[uni] mapping over fields",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(CityEntity.class).to(CityDto.class)
+                                .produce(CityEntityMappingDsl.$this.timeZone)
+                                .to(CityDtoMappingDsl.$this.timeZone)
+                                .build()),
+
+                Arguments.of(
+                        "[uni] mapping over properties",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(CityEntity.class).to(CityDto.class)
+                                .produce(CityEntityMappingDsl.$this.timeZoneProperty)
+                                .to(CityDtoMappingDsl.$this.timeZoneProperty)
+                                .build()),
+
+                Arguments.of(
+                        "[uni] mapping over methods",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(CityEntity.class).to(CityDto.class)
+                                .produce(CityEntityMappingDsl.$this.getTimeZone)
+                                .to(CityDtoMappingDsl.$this.setTimeZone)
+                                .build())
+        );
+    }
+
+    @ParameterizedTest(name = "[{index}] {0}")
+    @MethodSource("complexComplexCompatibleAbstractCollectionTestData")
+    void shouldMapComplexCompatibleAbstractCollection(String testName, MappingDsl mappingDsl) {
+        CountryEntity countryEntity = new CountryEntity();
+        List<TimeZone> timeZones = Arrays.asList(new AEST(), new ACST(), new AWST());
+        countryEntity.setTimeZones(timeZones);
+
+        CountryDto resultCountryDto = mappingDsl.map(countryEntity, CountryDto.class);
+
+        assertThat(resultCountryDto.getTimeZones()).containsAll(timeZones);
+    }
+
+    private static Stream<Arguments> complexComplexCompatibleAbstractCollectionTestData() {
+        return Stream.of(
+                Arguments.of(
+                        "[uni] mapping over fields",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(CountryEntity.class).to(CountryDto.class)
+                                .produce(CountryEntityMappingDsl.$this.timeZones)
+                                .to(CountryDtoMappingDsl.$this.timeZones)
+                                .build()),
+
+                Arguments.of(
+                        "[uni] mapping over properties",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(CountryEntity.class).to(CountryDto.class)
+                                .produce(CountryEntityMappingDsl.$this.timeZonesProperty)
+                                .to(CountryDtoMappingDsl.$this.timeZonesProperty)
+                                .build()),
+
+                Arguments.of(
+                        "[uni] mapping over methods",
+
+                        new MappingDslBuilder()
+                                .uniMapping()
+                                .from(CountryEntity.class).to(CountryDto.class)
+                                .produce(CountryEntityMappingDsl.$this.getTimeZones)
+                                .to(CountryDtoMappingDsl.$this.setTimeZones)
                                 .build())
         );
     }

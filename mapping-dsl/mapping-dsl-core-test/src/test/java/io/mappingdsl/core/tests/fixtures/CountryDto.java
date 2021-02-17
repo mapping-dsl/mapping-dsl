@@ -31,6 +31,10 @@ public class CountryDto extends NamedObject {
     @Setter
     private Iterable<String> nationalCurrencies;
 
+    @Getter
+    @Setter
+    private List<TimeZone> timeZones;
+
     public CountryDto(String name) {
         super(name);
     }
