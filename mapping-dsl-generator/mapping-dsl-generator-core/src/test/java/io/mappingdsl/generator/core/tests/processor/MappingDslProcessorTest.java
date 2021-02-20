@@ -1,20 +1,21 @@
 package io.mappingdsl.generator.core.tests.processor;
 
 import com.google.testing.compile.Compilation;
-import io.mappingdsl.generator.core.GeneratorScopeProcessor;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 import static com.google.testing.compile.CompilationSubject.assertThat;
 import static com.google.testing.compile.Compiler.javac;
 import static com.google.testing.compile.JavaFileObjects.forResource;
 
-class GeneratorScopeProcessorTest {
+class MappingDslProcessorTest {
 
     @Test
     void shouldGenerateSimpleDsl() {
         Compilation compilation = javac()
-                .withProcessors(new GeneratorScopeProcessor())
-                .withOptions("-Ascope=pojo.SimpleField")
+                .withProcessors(new TestAnnotationProcessor(Collections.singletonList("pojo.SimpleField")))
                 .compile(forResource("fixtures/input/SimpleField.java"));
 
         assertThat(compilation).succeeded();
@@ -27,8 +28,8 @@ class GeneratorScopeProcessorTest {
     @Test
     void shouldGenerateNestedDsl() {
         Compilation compilation = javac()
-                .withProcessors(new GeneratorScopeProcessor())
-                .withOptions("-Ascope=pojo.SimpleField,pojo.ComplexField,pojo.AbstractValue")
+                .withProcessors(new TestAnnotationProcessor(Arrays.asList(
+                        "pojo.SimpleField", "pojo.ComplexField", "pojo.AbstractValue")))
                 .compile(
                         forResource("fixtures/input/SimpleField.java"),
                         forResource("fixtures/input/ComplexField.java"),

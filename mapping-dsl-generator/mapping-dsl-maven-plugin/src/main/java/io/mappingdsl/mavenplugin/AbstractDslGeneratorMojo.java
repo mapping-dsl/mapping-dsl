@@ -2,7 +2,6 @@ package io.mappingdsl.mavenplugin;
 
 import ice.bricks.exceptions.ExceptionUtils;
 import ice.bricks.io.IoUtils;
-import io.mappingdsl.generator.core.GeneratorScopeProcessor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
@@ -152,7 +151,7 @@ public abstract class AbstractDslGeneratorMojo extends AbstractMojo {
         }
 
         compilerOptionsPairs.put("proc:only", null);
-        compilerOptionsPairs.put("processor", GeneratorScopeProcessor.class.getCanonicalName());
+        compilerOptionsPairs.put("processor", MappingDslBatchGenerator.class.getCanonicalName());
 
         compilerOptionsPairs.put("s", outputDirectory.getPath());
 

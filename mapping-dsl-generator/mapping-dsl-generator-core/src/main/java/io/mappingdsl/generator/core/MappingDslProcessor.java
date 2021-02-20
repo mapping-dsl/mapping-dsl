@@ -19,15 +19,10 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 
-import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.Filer;
+import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedOptions;
-import javax.annotation.processing.SupportedSourceVersion;
-import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
@@ -35,7 +30,6 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,66 +37,54 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@SupportedAnnotationTypes("*")
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
-@SupportedOptions(GeneratorScopeProcessor.SCOPE_OPTION)
-public class GeneratorScopeProcessor extends AbstractProcessor {
+public class MappingDslProcessor {
 
-    public static final String SCOPE_OPTION = "scope";
+    private final Types typeUtils;
+    private final Messager messager;
+    private final Filer filer;
 
-    private Types typeUtils;
-    private List<String> scope;
-
-    @Override
-    public synchronized void init(ProcessingEnvironment processingEnv) {
-        super.init(processingEnv);
-        this.typeUtils = processingEnv.getTypeUtils();
-
-        String scopes = processingEnv.getOptions().get(SCOPE_OPTION);
-        if (StringUtils.isNotBlank(scopes)) {
-            this.scope = Arrays.asList(scopes.split(","));
-        }
+    public MappingDslProcessor(ProcessingEnvironment processingEnvironment) {
+        this.typeUtils = processingEnvironment.getTypeUtils();
+        this.messager = processingEnvironment.getMessager();
+        this.filer = processingEnvironment.getFiler();
     }
 
-    @Override
-    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment) {
-        if (CollectionUtils.isEmpty(this.scope)) {
-            this.processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING,
-                    "Scope supplied for Mapping DSL Processor is empty, skipping processing.");
-
-            return false;
+    public void process(List<String> scope, Set<? extends Element> elements) {
+        if (CollectionUtils.isEmpty(scope)) {
+            this.messager.printMessage(Diagnostic.Kind.WARNING, "No classes supplied for Mapping DSL Processor.");
+            return;
         }
 
-        for (Element element: roundEnvironment.getRootElements()) {
-            if (element.getKind() == ElementKind.CLASS) {
-                TypeElement typeElement = (TypeElement) element;
+        for (Element element : elements) {
+            if (element.getKind() != ElementKind.CLASS) {
+                this.messager.printMessage(Diagnostic.Kind.WARNING, element.toString() + " is not a class, skipping.");
+                continue;
+            }
 
-                String className = typeElement.getQualifiedName().toString();
+            TypeElement typeElement = (TypeElement) element;
 
-                if (!GeneratorUtils.isDslClass(className)) {
-                    boolean isAbstract = typeElement.getModifiers().contains(Modifier.ABSTRACT);
-                    DslClassModel dslClassModel = new DslClassModel(className, isAbstract);
+            String className = typeElement.getQualifiedName().toString();
 
-                    List<TypeElement> classHierarchy = getClassHierarchy(typeElement);
+            if (!GeneratorUtils.isDslClass(className)) {
+                boolean isAbstract = typeElement.getModifiers().contains(Modifier.ABSTRACT);
+                DslClassModel dslClassModel = new DslClassModel(className, isAbstract);
 
-                    List<Element> fields = getFields(classHierarchy);
-                    List<Element> methods = getMethods(classHierarchy);
-                    register(dslClassModel, fields, methods);
+                List<TypeElement> classHierarchy = getClassHierarchy(typeElement);
 
-                    String fullDslClassName = ClassUtils.getClassPackage(className) + "." +
-                            GeneratorUtils.getDslClassName(className);
+                List<Element> fields = getFields(classHierarchy);
+                List<Element> methods = getMethods(classHierarchy);
+                register(scope, dslClassModel, fields, methods);
 
-                    JavaFileObject fileObject = IoUtils.runSafe(() ->
-                            this.processingEnv.getFiler().createSourceFile(fullDslClassName));
+                String fullDslClassName = ClassUtils.getClassPackage(className) + "." +
+                        GeneratorUtils.getDslClassName(className);
 
-                    IoUtils.tryAndClose(
-                            fileObject::openWriter,
-                            writer -> SourceCodeGenerator.INSTANCE.generate(dslClassModel, writer));
-                }
+                JavaFileObject fileObject = IoUtils.runSafe(() -> this.filer.createSourceFile(fullDslClassName));
+
+                IoUtils.tryAndClose(
+                        fileObject::openWriter,
+                        writer -> SourceCodeGenerator.INSTANCE.generate(dslClassModel, writer));
             }
         }
-
-        return false;
     }
 
     private List<TypeElement> getClassHierarchy(TypeElement typeElement) {
@@ -130,7 +112,7 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
                 .collect(Collectors.toList());
     }
 
-    private void register(DslClassModel model, List<Element> fields, List<Element> methods) {
+    private void register(List<String> scope, DslClassModel model, List<Element> fields, List<Element> methods) {
         Map<Element, List<Element>> groupedFields = fields.stream()
                 .collect(Collectors.groupingBy(Element::getEnclosingElement));
 
@@ -146,7 +128,7 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
                         .collect(Collectors.toList());
 
                 // register field
-                FieldModel fieldModel = buildFieldModel(field);
+                FieldModel fieldModel = buildFieldModel(scope, field);
                 model.registerFieldModel(fieldModel);
 
                 // register property
@@ -196,7 +178,7 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
         });
     }
 
-    private FieldModel buildFieldModel(Element fieldElement) {
+    private FieldModel buildFieldModel(List<String> scope, Element fieldElement) {
         String fieldName = fieldElement.getSimpleName().toString();
 
         TypeDetails typeDetails = ExceptionUtils.defaultIfException(
@@ -221,7 +203,7 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
                 isAbstract = typeGeneric.isAbstract() || typeGeneric.isInterface();
             }
 
-            FieldModelType modelType = this.scope.contains(elementTypeName)
+            FieldModelType modelType = scope.contains(elementTypeName)
                     ? FieldModelType.DSL
                     : FieldModelType.VALUE;
 
@@ -239,7 +221,7 @@ public class GeneratorScopeProcessor extends AbstractProcessor {
                     .build();
         }
 
-        FieldModelType modelType = this.scope.contains(fieldTypeName)
+        FieldModelType modelType = scope.contains(fieldTypeName)
                 ? FieldModelType.DSL
                 : FieldModelType.VALUE;
 
