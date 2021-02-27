@@ -16,6 +16,8 @@ public class SimpleField {
 
     private List<String> listOfString;
 
+    private int[] arrayOfPrimitiveInt;
+
     private String[] arrayOfString;
 
     private Number abstractNumberValue;
@@ -76,6 +78,14 @@ public class SimpleField {
 
     public void setListOfString(List<String> listOfString) {
         this.listOfString = listOfString;
+    }
+
+    public int[] getArrayOfPrimitiveInt() {
+        return arrayOfPrimitiveInt;
+    }
+
+    public void setArrayOfPrimitiveInt(int[] arrayOfPrimitiveInt) {
+        this.arrayOfPrimitiveInt = arrayOfPrimitiveInt;
     }
 
     public String[] getArrayOfString() {

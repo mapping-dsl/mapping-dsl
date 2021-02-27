@@ -9,6 +9,7 @@ public class FieldModel {
 
     private final String name;
     private final String type;
+    private final String boxedType;
     private final FieldModelType modelType;
     private final boolean isAbstract;
 

@@ -191,15 +191,18 @@ public class MappingDslProcessor {
             List<TypeDetails> generics = typeDetails.getGenerics();
 
             String elementTypeName = Object.class.getCanonicalName();
+            String boxedElementTypeName = elementTypeName;
             boolean isAbstract = false;
 
             if (typeDetails.isArray()) {
                 elementTypeName = fieldTypeName;
+                boxedElementTypeName = typeDetails.getBoxedTypeName();
                 isAbstract = typeDetails.isAbstract();
             }
             else if (generics.size() == 1) {
                 TypeDetails typeGeneric = generics.get(0);
                 elementTypeName = typeGeneric.getTypeName();
+                boxedElementTypeName = typeGeneric.getBoxedTypeName();
                 isAbstract = typeGeneric.isAbstract() || typeGeneric.isInterface();
             }
 
@@ -214,6 +217,7 @@ public class MappingDslProcessor {
             return CollectionFieldModel.collectionFieldModelBuilder()
                     .name(fieldName)
                     .elementType(elementTypeName)
+                    .boxedElementType(boxedElementTypeName)
                     .modelType(modelType)
                     .collectionType(collectionType)
                     .isArray(typeDetails.isArray())
@@ -228,6 +232,7 @@ public class MappingDslProcessor {
         return FieldModel.fieldModelBuilder()
                 .name(fieldName)
                 .type(fieldTypeName)
+                .boxedType(typeDetails.getBoxedTypeName())
                 .modelType(modelType)
                 .isAbstract(typeDetails.isAbstract() || typeDetails.isInterface())
                 .build();

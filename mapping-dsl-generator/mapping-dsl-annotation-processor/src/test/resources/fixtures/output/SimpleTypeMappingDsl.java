@@ -43,7 +43,7 @@ public final class SimpleTypeMappingDsl<ROOT, FUN extends ExpressionFunction>
             new ValueExpression<>(this, new ObjectFieldAccessorFunction(java.lang.String.class, "stringValue"));
 
     public final ValueExpression<ROOT, java.lang.Integer, ValueProcessingFunction> intValue =
-            new ValueExpression<>(this, new ObjectFieldAccessorFunction(java.lang.Integer.class, "intValue"));
+            new ValueExpression<>(this, new ObjectFieldAccessorFunction(int.class, "intValue"));
 
     public final ValueExpression<ROOT, java.lang.String, ValueProducerFunction> getStringValue =
             new ValueExpression<>(this, new GetMethodAccessorFunction(java.lang.String.class, "getStringValue"));
@@ -52,10 +52,10 @@ public final class SimpleTypeMappingDsl<ROOT, FUN extends ExpressionFunction>
             new ValueExpression<>(this, new SetMethodAccessorFunction(java.lang.String.class, "setStringValue"));
 
     public final ValueExpression<ROOT, java.lang.Integer, ValueProducerFunction> getIntValue =
-            new ValueExpression<>(this, new GetMethodAccessorFunction(java.lang.Integer.class, "getIntValue"));
+            new ValueExpression<>(this, new GetMethodAccessorFunction(int.class, "getIntValue"));
 
     public final ValueExpression<ROOT, java.lang.Integer, ValueConsumerFunction> setIntValue =
-            new ValueExpression<>(this, new SetMethodAccessorFunction(java.lang.Integer.class, "setIntValue"));
+            new ValueExpression<>(this, new SetMethodAccessorFunction(int.class, "setIntValue"));
 
     public final ValueExpression<ROOT, java.lang.String, ValueProcessingFunction> stringValueProperty =
             new ValueExpression<>(this, new PropertyAccessorFunction(

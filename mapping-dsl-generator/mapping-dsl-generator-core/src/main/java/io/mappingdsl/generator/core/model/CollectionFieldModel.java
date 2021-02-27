@@ -10,16 +10,20 @@ public class CollectionFieldModel extends FieldModel {
     private final boolean isArray;
 
     @Builder(builderMethodName = "collectionFieldModelBuilder")
-    public CollectionFieldModel(String name, String elementType, FieldModelType modelType, String collectionType,
-                                boolean isArray, boolean isAbstract) {
+    public CollectionFieldModel(String name, String elementType, String boxedElementType, FieldModelType modelType,
+                                String collectionType, boolean isArray, boolean isAbstract) {
 
-        super(name, elementType, modelType, isAbstract);
+        super(name, elementType, boxedElementType, modelType, isAbstract);
         this.collectionType = collectionType;
         this.isArray = isArray;
     }
 
     public String getElementType() {
         return getType();
+    }
+
+    public String getBoxedElementType() {
+        return getBoxedType();
     }
 
 }

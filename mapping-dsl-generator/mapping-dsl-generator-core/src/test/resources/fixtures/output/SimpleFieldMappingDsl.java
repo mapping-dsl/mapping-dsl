@@ -43,19 +43,22 @@ public final class SimpleFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
             new ValueExpression<>(this, new ObjectFieldAccessorFunction(java.lang.String.class, "stringValue"));
 
     public final ValueExpression<ROOT, java.lang.Integer, ValueProcessingFunction> intValue =
-            new ValueExpression<>(this, new ObjectFieldAccessorFunction(java.lang.Integer.class, "intValue"));
+            new ValueExpression<>(this, new ObjectFieldAccessorFunction(int.class, "intValue"));
 
     public final ValueExpression<ROOT, java.lang.Integer, ValueProcessingFunction> anotherIntegerValue =
             new ValueExpression<>(this, new ObjectFieldAccessorFunction(java.lang.Integer.class, "anotherIntegerValue"));
 
     public final ValueExpression<ROOT, java.lang.Boolean, ValueProcessingFunction> booleanValue =
-            new ValueExpression<>(this, new ObjectFieldAccessorFunction(java.lang.Boolean.class, "booleanValue"));
+            new ValueExpression<>(this, new ObjectFieldAccessorFunction(boolean.class, "booleanValue"));
 
     public final ValueExpression<ROOT, java.lang.Boolean, ValueProcessingFunction> anotherBooleanValue =
             new ValueExpression<>(this, new ObjectFieldAccessorFunction(java.lang.Boolean.class, "anotherBooleanValue"));
 
     public final ValueCollectionExpression<ROOT, java.util.List, java.lang.String, ValueProcessingFunction> listOfString =
             new ValueCollectionExpression<>(this, new CollectionFieldAccessorFunction(java.util.List.class, java.lang.String.class, "listOfString"));
+
+    public final ValueArrayExpression<ROOT, java.lang.Integer, ValueProcessingFunction> arrayOfPrimitiveInt =
+            new ValueArrayExpression<>(this, new ArrayFieldAccessorFunction(int.class, "arrayOfPrimitiveInt"));
 
     public final ValueArrayExpression<ROOT, java.lang.String, ValueProcessingFunction> arrayOfString =
             new ValueArrayExpression<>(this, new ArrayFieldAccessorFunction(java.lang.String.class, "arrayOfString"));
@@ -85,10 +88,10 @@ public final class SimpleFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
             new ValueExpression<>(this, new SetMethodAccessorFunction(java.lang.String.class, "setStringValue"));
 
     public final ValueExpression<ROOT, java.lang.Integer, ValueProducerFunction> getIntValue =
-            new ValueExpression<>(this, new GetMethodAccessorFunction(java.lang.Integer.class, "getIntValue"));
+            new ValueExpression<>(this, new GetMethodAccessorFunction(int.class, "getIntValue"));
 
     public final ValueExpression<ROOT, java.lang.Integer, ValueConsumerFunction> setIntValue =
-            new ValueExpression<>(this, new SetMethodAccessorFunction(java.lang.Integer.class, "setIntValue"));
+            new ValueExpression<>(this, new SetMethodAccessorFunction(int.class, "setIntValue"));
 
     public final ValueExpression<ROOT, java.lang.Integer, ValueProducerFunction> getAnotherIntegerValue =
             new ValueExpression<>(this, new GetMethodAccessorFunction(java.lang.Integer.class, "getAnotherIntegerValue"));
@@ -97,10 +100,10 @@ public final class SimpleFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
             new ValueExpression<>(this, new SetMethodAccessorFunction(java.lang.Integer.class, "setAnotherIntegerValue"));
 
     public final ValueExpression<ROOT, java.lang.Boolean, ValueProducerFunction> isBooleanValue =
-            new ValueExpression<>(this, new GetMethodAccessorFunction(java.lang.Boolean.class, "isBooleanValue"));
+            new ValueExpression<>(this, new GetMethodAccessorFunction(boolean.class, "isBooleanValue"));
 
     public final ValueExpression<ROOT, java.lang.Boolean, ValueConsumerFunction> setBooleanValue =
-            new ValueExpression<>(this, new SetMethodAccessorFunction(java.lang.Boolean.class, "setBooleanValue"));
+            new ValueExpression<>(this, new SetMethodAccessorFunction(boolean.class, "setBooleanValue"));
 
     public final ValueExpression<ROOT, java.lang.Boolean, ValueProducerFunction> getAnotherBooleanValue =
             new ValueExpression<>(this, new GetMethodAccessorFunction(java.lang.Boolean.class, "getAnotherBooleanValue"));
@@ -113,6 +116,12 @@ public final class SimpleFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
 
     public final ValueCollectionExpression<ROOT, java.util.List, java.lang.String, ValueConsumerFunction> setListOfString =
             new ValueCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(java.util.List.class, java.lang.String.class, "setListOfString"));
+
+    public final ValueArrayExpression<ROOT, java.lang.Integer, ValueProducerFunction> getArrayOfPrimitiveInt =
+            new ValueArrayExpression<>(this, new GetMethodAccessorFunction(int[].class, "getArrayOfPrimitiveInt"));
+
+    public final ValueArrayExpression<ROOT, java.lang.Integer, ValueConsumerFunction> setArrayOfPrimitiveInt =
+            new ValueArrayExpression<>(this, new SetArrayMethodAccessorFunction(int[].class, int.class, "setArrayOfPrimitiveInt"));
 
     public final ValueArrayExpression<ROOT, java.lang.String, ValueProducerFunction> getArrayOfString =
             new ValueArrayExpression<>(this, new GetMethodAccessorFunction(java.lang.String[].class, "getArrayOfString"));
@@ -185,6 +194,11 @@ public final class SimpleFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
             new ValueCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
                     this.getListOfString.getExpressionFunction(),
                     this.setListOfString.getExpressionFunction()));
+
+    public final ValueArrayExpression<ROOT, java.lang.Integer, ValueProcessingFunction> arrayOfPrimitiveIntProperty =
+            new ValueArrayExpression<>(this, new ArrayPropertyAccessorFunction(
+                    this.getArrayOfPrimitiveInt.getExpressionFunction(),
+                    this.setArrayOfPrimitiveInt.getExpressionFunction()));
 
     public final ValueArrayExpression<ROOT, java.lang.String, ValueProcessingFunction> arrayOfStringProperty =
             new ValueArrayExpression<>(this, new ArrayPropertyAccessorFunction(
