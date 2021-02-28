@@ -26,6 +26,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -78,6 +79,29 @@ class UniCollectionMappingTest {
                                 .to(AddressDtoMappingDsl.$this.setPhoneNumbers)
                                 .build())
         );
+    }
+
+    @Test
+    void shouldMapCollectionOfSimpleValuesAndAppend() {
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setPhoneNumbers(Arrays.asList("123", "456", "789"));
+
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .configuration()
+                .onCreate(AddressDto.class).useFactory((source, targetType) -> {
+                    AddressDto addressDto = new AddressDto();
+                    addressDto.setPhoneNumbers(new ArrayList<>(Collections.singletonList("000")));
+                    return addressDto;
+                })
+                .uniMapping()
+                .from(AddressEntity.class).to(AddressDto.class)
+                .produce(AddressEntityMappingDsl.$this.phoneNumbers)
+                .to(AddressDtoMappingDsl.$this.phoneNumbers)
+                .build();
+
+        AddressDto resultAddressDto = mappingDsl.map(addressEntity, AddressDto.class);
+
+        assertThat(resultAddressDto.getPhoneNumbers()).containsExactly("000", "123", "456", "789");
     }
 
     @ParameterizedTest(name = "[{index}] {0}")

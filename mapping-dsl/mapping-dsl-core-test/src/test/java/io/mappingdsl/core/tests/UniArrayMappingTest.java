@@ -73,6 +73,29 @@ class UniArrayMappingTest {
         );
     }
 
+    @Test
+    void shouldMapArrayOfSimpleValuesAndAppend() {
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setRemarks(new String[]{"friend's address", "not far from the center"});
+
+        MappingDsl mappingDsl = new MappingDslBuilder()
+                .configuration()
+                .onCreate(AddressDto.class).useFactory((source, targetType) -> {
+                    AddressDto addressDto = new AddressDto();
+                    addressDto.setRemarks(new String[]{"my remarks"});
+                    return addressDto;
+                })
+                .uniMapping()
+                .from(AddressEntity.class).to(AddressDto.class)
+                .produce(AddressEntityMappingDsl.$this.remarks)
+                .to(AddressDtoMappingDsl.$this.remarks)
+                .build();
+
+        AddressDto resultAddressDto = mappingDsl.map(addressEntity, AddressDto.class);
+        assertThat(resultAddressDto.getRemarks()).containsExactlyInAnyOrder(
+                "my remarks", "friend's address", "not far from the center");
+    }
+
     @ParameterizedTest(name = "[{index}] {0}")
     @MethodSource("complexValuesTestData")
     void shouldMapArrayOfComplexValues(String testName, MappingDsl mappingDsl) {

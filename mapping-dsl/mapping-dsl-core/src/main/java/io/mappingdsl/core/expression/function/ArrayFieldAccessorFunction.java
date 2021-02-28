@@ -3,6 +3,7 @@ package io.mappingdsl.core.expression.function;
 import ice.bricks.reflection.ReflectionUtils;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class ArrayFieldAccessorFunction implements ValueProcessingFunction {
@@ -34,13 +35,18 @@ public class ArrayFieldAccessorFunction implements ValueProcessingFunction {
     public void consume(Object target, Object value) {
         Object targetArray = ReflectionUtils.readField(target, this.name);
         Object[] sourceArray = ((Stream<?>) value).toArray();
-        int length = sourceArray.length;
+        int sourceLength = sourceArray.length;
 
+        int targetLength = 0;
         if (targetArray == null) {
-            targetArray = Array.newInstance(this.elementType, length);
+            targetArray = Array.newInstance(this.elementType, sourceLength);
+        }
+        else {
+            targetLength = Array.getLength(targetArray);
+            targetArray = Arrays.copyOf((Object[]) targetArray, targetLength + sourceLength);
         }
 
-        System.arraycopy(sourceArray, 0, targetArray, 0, length);
+        System.arraycopy(sourceArray, 0, targetArray, targetLength, sourceLength);
         ReflectionUtils.writeField(target, this.name, targetArray);
     }
 
