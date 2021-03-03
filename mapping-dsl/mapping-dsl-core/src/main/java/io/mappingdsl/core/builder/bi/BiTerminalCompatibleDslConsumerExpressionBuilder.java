@@ -2,9 +2,9 @@ package io.mappingdsl.core.builder.bi;
 
 import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
-import io.mappingdsl.core.expression.AbstractDslExpression;
-import io.mappingdsl.core.expression.DslExpression;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
+import io.mappingdsl.core.expression.simple.AbstractDslExpression;
+import io.mappingdsl.core.expression.simple.DslExpression;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 

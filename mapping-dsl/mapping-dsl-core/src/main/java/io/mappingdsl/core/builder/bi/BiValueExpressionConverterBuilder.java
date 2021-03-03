@@ -4,9 +4,9 @@ import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.common.BiConverter;
 import io.mappingdsl.core.common.Converter;
-import io.mappingdsl.core.expression.AbstractValueExpression;
-import io.mappingdsl.core.expression.ValueExpression;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
+import io.mappingdsl.core.expression.simple.AbstractValueExpression;
+import io.mappingdsl.core.expression.simple.ValueExpression;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 

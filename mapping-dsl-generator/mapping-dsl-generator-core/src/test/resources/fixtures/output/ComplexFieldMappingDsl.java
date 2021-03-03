@@ -1,18 +1,14 @@
 package pojo;
 
-import io.mappingdsl.core.expression.AbstractDslArrayExpression;
-import io.mappingdsl.core.expression.AbstractDslCollectionExpression;
-import io.mappingdsl.core.expression.AbstractDslExpression;
-import io.mappingdsl.core.expression.AbstractValueArrayExpression;
-import io.mappingdsl.core.expression.AbstractValueCollectionExpression;
-import io.mappingdsl.core.expression.AbstractValueExpression;
-import io.mappingdsl.core.expression.DslArrayExpression;
-import io.mappingdsl.core.expression.DslCollectionExpression;
-import io.mappingdsl.core.expression.DslExpression;
 import io.mappingdsl.core.expression.ExpressionBase;
-import io.mappingdsl.core.expression.ValueArrayExpression;
-import io.mappingdsl.core.expression.ValueCollectionExpression;
-import io.mappingdsl.core.expression.ValueExpression;
+import io.mappingdsl.core.expression.array.AbstractDslArrayExpression;
+import io.mappingdsl.core.expression.array.AbstractValueArrayExpression;
+import io.mappingdsl.core.expression.array.DslArrayExpression;
+import io.mappingdsl.core.expression.array.ValueArrayExpression;
+import io.mappingdsl.core.expression.collection.AbstractDslCollectionExpression;
+import io.mappingdsl.core.expression.collection.AbstractValueCollectionExpression;
+import io.mappingdsl.core.expression.collection.DslCollectionExpression;
+import io.mappingdsl.core.expression.collection.ValueCollectionExpression;
 import io.mappingdsl.core.expression.function.ArrayFieldAccessorFunction;
 import io.mappingdsl.core.expression.function.ArrayPropertyAccessorFunction;
 import io.mappingdsl.core.expression.function.CollectionFieldAccessorFunction;
@@ -29,6 +25,10 @@ import io.mappingdsl.core.expression.function.SetMethodAccessorFunction;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
+import io.mappingdsl.core.expression.simple.AbstractDslExpression;
+import io.mappingdsl.core.expression.simple.AbstractValueExpression;
+import io.mappingdsl.core.expression.simple.DslExpression;
+import io.mappingdsl.core.expression.simple.ValueExpression;
 
 import javax.annotation.Generated;
 
