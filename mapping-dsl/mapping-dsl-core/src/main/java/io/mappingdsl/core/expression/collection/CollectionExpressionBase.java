@@ -6,7 +6,7 @@ import io.mappingdsl.core.expression.function.ExpressionFunction;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
 import io.mappingdsl.core.expression.simple.ValueExpression;
 
-public class CollectionExpressionBase<ROOT, COLLECTION_TYPE, ELEMENT_TYPE, FUN extends ExpressionFunction>
+public abstract class CollectionExpressionBase<ROOT, COLLECTION_TYPE, ELEMENT_TYPE, FUN extends ExpressionFunction>
         extends ExpressionBase<ROOT, ELEMENT_TYPE, FUN> {
 
     private final ValueExpression<ROOT, Integer, ValueProducerFunction> size =

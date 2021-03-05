@@ -6,7 +6,7 @@ import io.mappingdsl.core.expression.function.ExpressionFunction;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
 import io.mappingdsl.core.expression.simple.ValueExpression;
 
-public class ArrayExpressionBase<ROOT, ELEMENT_TYPE, FUN extends ExpressionFunction>
+public abstract class ArrayExpressionBase<ROOT, ELEMENT_TYPE, FUN extends ExpressionFunction>
         extends ExpressionBase<ROOT, ELEMENT_TYPE, FUN> {
 
     public final ValueExpression<ROOT, Integer, ValueProducerFunction> length =
