@@ -1,8 +1,8 @@
 <#-- @ftlvariable name="GeneratorUtils" type="io.mappingdsl.generator.core.utils.GeneratorUtils" -->
 <#-- @ftlvariable name="ClassUtils" type="ice.bricks.meta.ClassUtils.static" -->
 <#-- @ftlvariable name="" type="io.mappingdsl.generator.core.model.DslClassModel" -->
-<#import "dsl-expressions.ftl" as expressions>
-<#assign dslClassName = GeneratorUtils.getDslClassName(fullClassName)>
+<#include "dsl-expressions.ftl">
+<#assign rootDslClassName = GeneratorUtils.getDslClassName(fullClassName)>
 package ${ClassUtils.getClassPackage(fullClassName)};
 
 import io.mappingdsl.core.expression.ExpressionBase;
@@ -38,71 +38,35 @@ import io.mappingdsl.core.expression.simple.ValueExpression;
 import javax.annotation.Generated;
 
 @Generated("MappingDsl")
-public final class ${dslClassName}<ROOT, FUN extends ExpressionFunction>
+public final class ${rootDslClassName}<ROOT, FUN extends ExpressionFunction>
         extends ${abstract?then("AbstractDslExpression", "DslExpression")}<ROOT, ${fullClassName}, FUN> {
 
-    public static final ${dslClassName}<${fullClassName}, ValueProducerFunction> $this =
-            new ${dslClassName}<>(new RootIdentityFunction("${ClassUtils.getClassName(fullClassName)}"));
+    public static final ${rootDslClassName}<${fullClassName}, ValueProducerFunction> $this =
+            new ${rootDslClassName}<>(new RootIdentityFunction("${ClassUtils.getClassName(fullClassName)}"));
 
     <#list fieldModels as fieldModel>
-        <#switch fieldModel.modelType>
-            <#case "VALUE">
-                <#if GeneratorUtils.isCollectionFieldModel(fieldModel.class)>
-                    <@expressions.multielementValueField model=fieldModel />
-                <#else>
-                    <@expressions.valueField model=fieldModel />
-                </#if>
-            <#break>
-            <#case "DSL">
-                <#if GeneratorUtils.isCollectionFieldModel(fieldModel.class)>
-                    <@expressions.multielementDslField model=fieldModel />
-                <#else>
-                    <@expressions.dslField model=fieldModel />
-                </#if>
-            <#break>
-        </#switch>${'\n'}
+        <#assign templateName=fieldModel.getTemplateName() />
+        <#lt><@.vars[templateName] model=fieldModel />
+        <#lt><#if fieldModel?has_next>${'\n'}</#if>
     </#list>
+
     <#list methodModels as methodModel>
-        <#switch methodModel.fieldModel.modelType>
-            <#case "VALUE">
-                <#if GeneratorUtils.isCollectionFieldModel(methodModel.fieldModel.class)>
-                    <@expressions.multielementValueMethodReference model=methodModel />
-                <#else>
-                    <@expressions.valueMethodReference model=methodModel />
-                </#if>
-            <#break>
-            <#case "DSL">
-                <#if GeneratorUtils.isCollectionFieldModel(methodModel.fieldModel.class)>
-                    <@expressions.multielementDslMethodReference model=methodModel />
-                <#else>
-                    <@expressions.dslMethodReference model=methodModel />
-                </#if>
-            <#break>
-        </#switch>${'\n'}
+        <#assign templateName=methodModel.getTemplateName() />
+        <#lt><@.vars[templateName] model=methodModel />
+        <#lt><#if methodModel?has_next>${'\n'}</#if>
     </#list>
+
     <#list propertyModels as propertyModel>
-        <#switch propertyModel.fieldModel.modelType>
-            <#case "VALUE">
-                <#if GeneratorUtils.isCollectionFieldModel(propertyModel.fieldModel.class)>
-                    <@expressions.multielementValueProperty model=propertyModel />
-                <#else>
-                    <@expressions.valueProperty model=propertyModel />
-                </#if>
-            <#break>
-            <#case "DSL">
-                <#if GeneratorUtils.isCollectionFieldModel(propertyModel.fieldModel.class)>
-                    <@expressions.multielementDslProperty model=propertyModel />
-                <#else>
-                    <@expressions.dslProperty model=propertyModel />
-                </#if>
-            <#break>
-        </#switch>${'\n'}
+        <#assign templateName=propertyModel.getTemplateName() />
+        <#lt><@.vars[templateName] model=propertyModel />
+        <#lt><#if propertyModel?has_next>${'\n'}</#if>
     </#list>
-    public ${dslClassName}(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
+
+    public ${rootDslClassName}(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
         super(parentExpression, expressionFunction);
     }
 
-    private ${dslClassName}(FUN expressionFunction) {
+    private ${rootDslClassName}(FUN expressionFunction) {
         super(expressionFunction);
     }
 

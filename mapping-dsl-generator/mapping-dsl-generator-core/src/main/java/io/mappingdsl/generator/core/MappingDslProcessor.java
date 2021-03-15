@@ -7,10 +7,8 @@ import ice.bricks.io.IoUtils;
 import ice.bricks.lang.model.LanguageModelUtils;
 import ice.bricks.lang.model.LanguageModelUtils.TypeDetails;
 import ice.bricks.meta.ClassUtils;
-import io.mappingdsl.generator.core.model.CollectionFieldModel;
 import io.mappingdsl.generator.core.model.DslClassModel;
 import io.mappingdsl.generator.core.model.FieldModel;
-import io.mappingdsl.generator.core.model.FieldModelType;
 import io.mappingdsl.generator.core.model.MethodModel;
 import io.mappingdsl.generator.core.model.MethodModelType;
 import io.mappingdsl.generator.core.model.PropertyModel;
@@ -184,57 +182,10 @@ public class MappingDslProcessor {
         TypeDetails typeDetails = ExceptionUtils.defaultIfException(
                 () -> LanguageModelUtils.getTypeDetails(this.typeUtils, fieldElement.asType()), null);
 
-        String fieldTypeName = typeDetails.getTypeName();
-        Class<?> fieldType = ClassUtils.getClassByName(fieldTypeName);
-
-        if ((fieldType != null && Iterable.class.isAssignableFrom(fieldType)) || typeDetails.isArray()) {
-            List<TypeDetails> generics = typeDetails.getGenerics();
-
-            String elementTypeName = Object.class.getCanonicalName();
-            String boxedElementTypeName = elementTypeName;
-            boolean isAbstract = false;
-
-            if (typeDetails.isArray()) {
-                elementTypeName = fieldTypeName;
-                boxedElementTypeName = typeDetails.getBoxedTypeName();
-                isAbstract = typeDetails.isAbstract();
-            }
-            else if (generics.size() == 1) {
-                TypeDetails typeGeneric = generics.get(0);
-                elementTypeName = typeGeneric.getTypeName();
-                boxedElementTypeName = typeGeneric.getBoxedTypeName();
-                isAbstract = typeGeneric.isAbstract() || typeGeneric.isInterface();
-            }
-
-            FieldModelType modelType = scope.contains(elementTypeName)
-                    ? FieldModelType.DSL
-                    : FieldModelType.VALUE;
-
-            String collectionType = typeDetails.isArray()
-                    ? null
-                    : fieldType.getCanonicalName();
-
-            return CollectionFieldModel.collectionFieldModelBuilder()
-                    .name(fieldName)
-                    .elementType(elementTypeName)
-                    .boxedElementType(boxedElementTypeName)
-                    .modelType(modelType)
-                    .collectionType(collectionType)
-                    .isArray(typeDetails.isArray())
-                    .isAbstract(isAbstract)
-                    .build();
-        }
-
-        FieldModelType modelType = scope.contains(fieldTypeName)
-                ? FieldModelType.DSL
-                : FieldModelType.VALUE;
-
-        return FieldModel.fieldModelBuilder()
+        return FieldModel.builder()
                 .name(fieldName)
-                .type(fieldTypeName)
-                .boxedType(typeDetails.getBoxedTypeName())
-                .modelType(modelType)
-                .isAbstract(typeDetails.isAbstract() || typeDetails.isInterface())
+                .metadata(typeDetails)
+                .scope(scope)
                 .build();
     }
 

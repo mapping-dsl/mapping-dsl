@@ -20,6 +20,10 @@ public class PropertyModel {
         this.fieldModel = fieldModel;
     }
 
+    public String getTemplateName() {
+        return this.fieldModel.getTemplateName() + "Property";
+    }
+
     public void registerMethodModel(MethodModel methodModel) {
         if (methodModel.getModelType() == MethodModelType.GETTER) {
             this.getterModel = methodModel;
