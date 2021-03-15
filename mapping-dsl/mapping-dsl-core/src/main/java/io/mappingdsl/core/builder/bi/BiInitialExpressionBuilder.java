@@ -4,20 +4,20 @@ import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.MappingRule.MappingRuleDirection;
 import io.mappingdsl.core.expression.array.AbstractDslArrayExpression;
-import io.mappingdsl.core.expression.array.AbstractValueArrayExpression;
+import io.mappingdsl.core.expression.array.AbstractRawArrayExpression;
 import io.mappingdsl.core.expression.array.DslArrayExpression;
-import io.mappingdsl.core.expression.array.ValueArrayExpression;
+import io.mappingdsl.core.expression.array.RawArrayExpression;
 import io.mappingdsl.core.expression.collection.AbstractDslCollectionExpression;
-import io.mappingdsl.core.expression.collection.AbstractValueCollectionExpression;
+import io.mappingdsl.core.expression.collection.AbstractRawCollectionExpression;
 import io.mappingdsl.core.expression.collection.DslCollectionExpression;
-import io.mappingdsl.core.expression.collection.ValueCollectionExpression;
+import io.mappingdsl.core.expression.collection.RawCollectionExpression;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
 import io.mappingdsl.core.expression.simple.AbstractDslExpression;
-import io.mappingdsl.core.expression.simple.AbstractValueExpression;
+import io.mappingdsl.core.expression.simple.AbstractRawExpression;
 import io.mappingdsl.core.expression.simple.DslExpression;
-import io.mappingdsl.core.expression.simple.ValueExpression;
+import io.mappingdsl.core.expression.simple.RawExpression;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +27,7 @@ public final class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     private final MappingContext<SRC_ROOT, TRG_ROOT> context;
 
     public <SRC_TYPE> BiValueExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> bind(
-            ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
+            RawExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.BOTH)
@@ -38,7 +38,7 @@ public final class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     public <SRC_TYPE> BiValueExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> bind(
-            AbstractValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
+            AbstractRawExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.BOTH)
@@ -49,7 +49,7 @@ public final class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     public <SRC_TYPE> BiValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> bind(
-            ValueCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
+            RawCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.BOTH)
@@ -60,7 +60,7 @@ public final class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     public <SRC_TYPE> BiValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> bind(
-            ValueArrayExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
+            RawArrayExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.BOTH)
@@ -71,7 +71,7 @@ public final class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     public <SRC_TYPE> BiValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> bind(
-            AbstractValueCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
+            AbstractRawCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.BOTH)
@@ -82,7 +82,7 @@ public final class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     public <SRC_TYPE> BiValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> bind(
-            AbstractValueArrayExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
+            AbstractRawArrayExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.BOTH)
@@ -159,7 +159,7 @@ public final class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     public <SRC_TYPE> BiValueProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
-            ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            RawExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.FORWARD)
@@ -170,7 +170,7 @@ public final class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     public <SRC_TYPE> BiValueProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
-            AbstractValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            AbstractRawExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.FORWARD)
@@ -181,7 +181,7 @@ public final class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     public <SRC_TYPE> BiValueCollectionProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
-            ValueCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            RawCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.FORWARD)
@@ -192,7 +192,7 @@ public final class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     public <SRC_TYPE> BiValueCollectionProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
-            ValueArrayExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            RawArrayExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.FORWARD)
@@ -203,7 +203,7 @@ public final class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     public <SRC_TYPE> BiValueCollectionProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
-            AbstractValueCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            AbstractRawCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.FORWARD)
@@ -214,7 +214,7 @@ public final class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     public <SRC_TYPE> BiValueCollectionProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
-            AbstractValueArrayExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            AbstractRawArrayExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.FORWARD)
@@ -291,7 +291,7 @@ public final class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     public <SRC_TYPE> BiValueConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
-            ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+            RawExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.BACKWARD)
@@ -302,7 +302,7 @@ public final class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     public <SRC_TYPE> BiValueConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
-            AbstractValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+            AbstractRawExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.BACKWARD)
@@ -313,7 +313,7 @@ public final class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     public <SRC_TYPE> BiValueCollectionConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
-            ValueCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+            RawCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.BACKWARD)
@@ -324,7 +324,7 @@ public final class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     public <SRC_TYPE> BiValueCollectionConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
-            ValueArrayExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+            RawArrayExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.BACKWARD)
@@ -335,7 +335,7 @@ public final class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     public <SRC_TYPE> BiValueCollectionConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
-            AbstractValueCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+            AbstractRawCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.BACKWARD)
@@ -346,7 +346,7 @@ public final class BiInitialExpressionBuilder<SRC_ROOT, TRG_ROOT> {
     }
 
     public <SRC_TYPE> BiValueCollectionConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
-            AbstractValueArrayExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+            AbstractRawArrayExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
         MappingRule<SRC_ROOT, TRG_ROOT> mappingRule = MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(MappingRuleDirection.BACKWARD)

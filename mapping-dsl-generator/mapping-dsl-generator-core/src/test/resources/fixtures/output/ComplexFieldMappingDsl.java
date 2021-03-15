@@ -2,13 +2,13 @@ package pojo;
 
 import io.mappingdsl.core.expression.ExpressionBase;
 import io.mappingdsl.core.expression.array.AbstractDslArrayExpression;
-import io.mappingdsl.core.expression.array.AbstractValueArrayExpression;
+import io.mappingdsl.core.expression.array.AbstractRawArrayExpression;
 import io.mappingdsl.core.expression.array.DslArrayExpression;
-import io.mappingdsl.core.expression.array.ValueArrayExpression;
+import io.mappingdsl.core.expression.array.RawArrayExpression;
 import io.mappingdsl.core.expression.collection.AbstractDslCollectionExpression;
-import io.mappingdsl.core.expression.collection.AbstractValueCollectionExpression;
+import io.mappingdsl.core.expression.collection.AbstractRawCollectionExpression;
 import io.mappingdsl.core.expression.collection.DslCollectionExpression;
-import io.mappingdsl.core.expression.collection.ValueCollectionExpression;
+import io.mappingdsl.core.expression.collection.RawCollectionExpression;
 import io.mappingdsl.core.expression.function.ArrayFieldAccessorFunction;
 import io.mappingdsl.core.expression.function.ArrayPropertyAccessorFunction;
 import io.mappingdsl.core.expression.function.CollectionFieldAccessorFunction;
@@ -26,9 +26,9 @@ import io.mappingdsl.core.expression.function.ValueConsumerFunction;
 import io.mappingdsl.core.expression.function.ValueProcessingFunction;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
 import io.mappingdsl.core.expression.simple.AbstractDslExpression;
-import io.mappingdsl.core.expression.simple.AbstractValueExpression;
+import io.mappingdsl.core.expression.simple.AbstractRawExpression;
 import io.mappingdsl.core.expression.simple.DslExpression;
-import io.mappingdsl.core.expression.simple.ValueExpression;
+import io.mappingdsl.core.expression.simple.RawExpression;
 
 import javax.annotation.Generated;
 
@@ -57,20 +57,20 @@ public final class ComplexFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
     public final AbstractDslCollectionExpression<ROOT, pojo.AbstractValue, ValueProcessingFunction> listOfAbstractValue =
             new AbstractDslCollectionExpression<>(this, new CollectionFieldAccessorFunction(java.util.List.class, pojo.AbstractValue.class, "listOfAbstractValue"));
 
-    public final AbstractValueExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceValue =
-            new AbstractValueExpression<>(this, new ObjectFieldAccessorFunction(pojo.InterfaceValue.class, "interfaceValue"));
+    public final AbstractRawExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceValue =
+            new AbstractRawExpression<>(this, new ObjectFieldAccessorFunction(pojo.InterfaceValue.class, "interfaceValue"));
 
-    public final AbstractValueArrayExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceValues =
-            new AbstractValueArrayExpression<>(this, new ArrayFieldAccessorFunction(pojo.InterfaceValue.class, "interfaceValues"));
+    public final AbstractRawArrayExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceValues =
+            new AbstractRawArrayExpression<>(this, new ArrayFieldAccessorFunction(pojo.InterfaceValue.class, "interfaceValues"));
 
-    public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceValuesList =
-            new AbstractValueCollectionExpression<>(this, new CollectionFieldAccessorFunction(java.util.List.class, pojo.InterfaceValue.class, "interfaceValuesList"));
+    public final AbstractRawCollectionExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceValuesList =
+            new AbstractRawCollectionExpression<>(this, new CollectionFieldAccessorFunction(java.util.List.class, pojo.InterfaceValue.class, "interfaceValuesList"));
 
-    public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceSuccessorsList =
-            new AbstractValueCollectionExpression<>(this, new CollectionFieldAccessorFunction(java.util.List.class, pojo.InterfaceValue.class, "interfaceSuccessorsList"));
+    public final AbstractRawCollectionExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceSuccessorsList =
+            new AbstractRawCollectionExpression<>(this, new CollectionFieldAccessorFunction(java.util.List.class, pojo.InterfaceValue.class, "interfaceSuccessorsList"));
 
-    public final ValueCollectionExpression<ROOT, java.lang.Object, ValueProcessingFunction> interfacePredecessorsList =
-            new ValueCollectionExpression<>(this, new CollectionFieldAccessorFunction(java.util.List.class, java.lang.Object.class, "interfacePredecessorsList"));
+    public final RawCollectionExpression<ROOT, java.lang.Object, ValueProcessingFunction> interfacePredecessorsList =
+            new RawCollectionExpression<>(this, new CollectionFieldAccessorFunction(java.util.List.class, java.lang.Object.class, "interfacePredecessorsList"));
 
     public final pojo.SimpleFieldMappingDsl<ROOT, ValueProducerFunction> getField =
             new pojo.SimpleFieldMappingDsl<>(this, new GetMethodAccessorFunction(pojo.SimpleField.class, "getField"));
@@ -108,35 +108,35 @@ public final class ComplexFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
     public final AbstractDslCollectionExpression<ROOT, pojo.AbstractValue, ValueConsumerFunction> setListOfAbstractValue =
             new AbstractDslCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(java.util.List.class, pojo.AbstractValue.class, "setListOfAbstractValue"));
 
-    public final AbstractValueExpression<ROOT, pojo.InterfaceValue, ValueProducerFunction> getInterfaceValue =
-            new AbstractValueExpression<>(this, new GetMethodAccessorFunction(pojo.InterfaceValue.class, "getInterfaceValue"));
+    public final AbstractRawExpression<ROOT, pojo.InterfaceValue, ValueProducerFunction> getInterfaceValue =
+            new AbstractRawExpression<>(this, new GetMethodAccessorFunction(pojo.InterfaceValue.class, "getInterfaceValue"));
 
-    public final AbstractValueExpression<ROOT, pojo.InterfaceValue, ValueConsumerFunction> setInterfaceValue =
-            new AbstractValueExpression<>(this, new SetMethodAccessorFunction(pojo.InterfaceValue.class, "setInterfaceValue"));
+    public final AbstractRawExpression<ROOT, pojo.InterfaceValue, ValueConsumerFunction> setInterfaceValue =
+            new AbstractRawExpression<>(this, new SetMethodAccessorFunction(pojo.InterfaceValue.class, "setInterfaceValue"));
 
-    public final AbstractValueArrayExpression<ROOT, pojo.InterfaceValue, ValueProducerFunction> getInterfaceValues =
-            new AbstractValueArrayExpression<>(this, new GetMethodAccessorFunction(pojo.InterfaceValue[].class, "getInterfaceValues"));
+    public final AbstractRawArrayExpression<ROOT, pojo.InterfaceValue, ValueProducerFunction> getInterfaceValues =
+            new AbstractRawArrayExpression<>(this, new GetMethodAccessorFunction(pojo.InterfaceValue[].class, "getInterfaceValues"));
 
-    public final AbstractValueArrayExpression<ROOT, pojo.InterfaceValue, ValueConsumerFunction> setInterfaceValues =
-            new AbstractValueArrayExpression<>(this, new SetArrayMethodAccessorFunction(pojo.InterfaceValue[].class, pojo.InterfaceValue.class, "setInterfaceValues"));
+    public final AbstractRawArrayExpression<ROOT, pojo.InterfaceValue, ValueConsumerFunction> setInterfaceValues =
+            new AbstractRawArrayExpression<>(this, new SetArrayMethodAccessorFunction(pojo.InterfaceValue[].class, pojo.InterfaceValue.class, "setInterfaceValues"));
 
-    public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueProducerFunction> getInterfaceValuesList =
-            new AbstractValueCollectionExpression<>(this, new GetMethodAccessorFunction(java.util.List.class, "getInterfaceValuesList"));
+    public final AbstractRawCollectionExpression<ROOT, pojo.InterfaceValue, ValueProducerFunction> getInterfaceValuesList =
+            new AbstractRawCollectionExpression<>(this, new GetMethodAccessorFunction(java.util.List.class, "getInterfaceValuesList"));
 
-    public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueConsumerFunction> setInterfaceValuesList =
-            new AbstractValueCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(java.util.List.class, pojo.InterfaceValue.class, "setInterfaceValuesList"));
+    public final AbstractRawCollectionExpression<ROOT, pojo.InterfaceValue, ValueConsumerFunction> setInterfaceValuesList =
+            new AbstractRawCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(java.util.List.class, pojo.InterfaceValue.class, "setInterfaceValuesList"));
 
-    public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueProducerFunction> getInterfaceSuccessorsList =
-            new AbstractValueCollectionExpression<>(this, new GetMethodAccessorFunction(java.util.List.class, "getInterfaceSuccessorsList"));
+    public final AbstractRawCollectionExpression<ROOT, pojo.InterfaceValue, ValueProducerFunction> getInterfaceSuccessorsList =
+            new AbstractRawCollectionExpression<>(this, new GetMethodAccessorFunction(java.util.List.class, "getInterfaceSuccessorsList"));
 
-    public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueConsumerFunction> setInterfaceSuccessorsList =
-            new AbstractValueCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(java.util.List.class, pojo.InterfaceValue.class, "setInterfaceSuccessorsList"));
+    public final AbstractRawCollectionExpression<ROOT, pojo.InterfaceValue, ValueConsumerFunction> setInterfaceSuccessorsList =
+            new AbstractRawCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(java.util.List.class, pojo.InterfaceValue.class, "setInterfaceSuccessorsList"));
 
-    public final ValueCollectionExpression<ROOT, java.lang.Object, ValueProducerFunction> getInterfacePredecessorsList =
-            new ValueCollectionExpression<>(this, new GetMethodAccessorFunction(java.util.List.class, "getInterfacePredecessorsList"));
+    public final RawCollectionExpression<ROOT, java.lang.Object, ValueProducerFunction> getInterfacePredecessorsList =
+            new RawCollectionExpression<>(this, new GetMethodAccessorFunction(java.util.List.class, "getInterfacePredecessorsList"));
 
-    public final ValueCollectionExpression<ROOT, java.lang.Object, ValueConsumerFunction> setInterfacePredecessorsList =
-            new ValueCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(java.util.List.class, java.lang.Object.class, "setInterfacePredecessorsList"));
+    public final RawCollectionExpression<ROOT, java.lang.Object, ValueConsumerFunction> setInterfacePredecessorsList =
+            new RawCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(java.util.List.class, java.lang.Object.class, "setInterfacePredecessorsList"));
 
     public final pojo.SimpleFieldMappingDsl<ROOT, PathProcessingFunction> fieldProperty =
             new pojo.SimpleFieldMappingDsl<>(this, new PropertyAccessorFunction(
@@ -168,28 +168,28 @@ public final class ComplexFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
                     this.getListOfAbstractValue.getExpressionFunction(),
                     this.setListOfAbstractValue.getExpressionFunction()));
 
-    public final AbstractValueExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceValueProperty =
-            new AbstractValueExpression<>(this, new PropertyAccessorFunction(
+    public final AbstractRawExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceValueProperty =
+            new AbstractRawExpression<>(this, new PropertyAccessorFunction(
                     this.getInterfaceValue.getExpressionFunction(),
                     this.setInterfaceValue.getExpressionFunction()));
 
-    public final AbstractValueArrayExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceValuesProperty =
-            new AbstractValueArrayExpression<>(this, new ArrayPropertyAccessorFunction(
+    public final AbstractRawArrayExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceValuesProperty =
+            new AbstractRawArrayExpression<>(this, new ArrayPropertyAccessorFunction(
                     this.getInterfaceValues.getExpressionFunction(),
                     this.setInterfaceValues.getExpressionFunction()));
 
-    public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceValuesListProperty =
-            new AbstractValueCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
+    public final AbstractRawCollectionExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceValuesListProperty =
+            new AbstractRawCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
                     this.getInterfaceValuesList.getExpressionFunction(),
                     this.setInterfaceValuesList.getExpressionFunction()));
 
-    public final AbstractValueCollectionExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceSuccessorsListProperty =
-            new AbstractValueCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
+    public final AbstractRawCollectionExpression<ROOT, pojo.InterfaceValue, ValueProcessingFunction> interfaceSuccessorsListProperty =
+            new AbstractRawCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
                     this.getInterfaceSuccessorsList.getExpressionFunction(),
                     this.setInterfaceSuccessorsList.getExpressionFunction()));
 
-    public final ValueCollectionExpression<ROOT, java.lang.Object, ValueProcessingFunction> interfacePredecessorsListProperty =
-            new ValueCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
+    public final RawCollectionExpression<ROOT, java.lang.Object, ValueProcessingFunction> interfacePredecessorsListProperty =
+            new RawCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
                     this.getInterfacePredecessorsList.getExpressionFunction(),
                     this.setInterfacePredecessorsList.getExpressionFunction()));
 

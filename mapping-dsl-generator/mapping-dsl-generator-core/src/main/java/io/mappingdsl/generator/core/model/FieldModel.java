@@ -60,7 +60,7 @@ public class FieldModel {
         String type = isCollection() ? getRawTypeParameter(0) : getRawType();
         return this.scope.contains(type)
                 ? FieldModelType.DSL
-                : FieldModelType.VALUE;
+                : FieldModelType.RAW;
     }
 
 }

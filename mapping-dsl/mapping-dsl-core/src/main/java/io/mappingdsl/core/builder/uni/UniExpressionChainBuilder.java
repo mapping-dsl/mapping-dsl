@@ -4,15 +4,15 @@ import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingDsl;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.builder.bi.BiInitialTypeBuilder;
-import io.mappingdsl.core.expression.array.AbstractValueArrayExpression;
+import io.mappingdsl.core.expression.array.AbstractRawArrayExpression;
 import io.mappingdsl.core.expression.array.DslArrayExpression;
-import io.mappingdsl.core.expression.array.ValueArrayExpression;
-import io.mappingdsl.core.expression.collection.AbstractValueCollectionExpression;
+import io.mappingdsl.core.expression.array.RawArrayExpression;
+import io.mappingdsl.core.expression.collection.AbstractRawCollectionExpression;
 import io.mappingdsl.core.expression.collection.DslCollectionExpression;
-import io.mappingdsl.core.expression.collection.ValueCollectionExpression;
+import io.mappingdsl.core.expression.collection.RawCollectionExpression;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
 import io.mappingdsl.core.expression.simple.DslExpression;
-import io.mappingdsl.core.expression.simple.ValueExpression;
+import io.mappingdsl.core.expression.simple.RawExpression;
 
 public final class UniExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
@@ -38,7 +38,7 @@ public final class UniExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     // delegate method
     public <SRC_TYPE> UniValueExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
-            ValueExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            RawExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.produce(initialExpression);
@@ -54,7 +54,7 @@ public final class UniExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     // delegate method
     public <SRC_TYPE> UniValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
-            ValueCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            RawCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.produce(initialExpression);
@@ -62,7 +62,7 @@ public final class UniExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     // delegate method
     public <SRC_TYPE> UniValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
-            ValueArrayExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            RawArrayExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.produce(initialExpression);
@@ -70,7 +70,7 @@ public final class UniExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     // delegate method
     public <SRC_TYPE> UniValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
-            AbstractValueCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            AbstractRawCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.produce(initialExpression);
@@ -78,7 +78,7 @@ public final class UniExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     // delegate method
     public <SRC_TYPE> UniValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
-            AbstractValueArrayExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            AbstractRawArrayExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.produce(initialExpression);

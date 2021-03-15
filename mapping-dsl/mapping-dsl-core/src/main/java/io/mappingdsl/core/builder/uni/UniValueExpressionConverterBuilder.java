@@ -4,8 +4,8 @@ import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.common.Converter;
 import io.mappingdsl.core.expression.function.ValueConsumerFunction;
-import io.mappingdsl.core.expression.simple.AbstractValueExpression;
-import io.mappingdsl.core.expression.simple.ValueExpression;
+import io.mappingdsl.core.expression.simple.AbstractRawExpression;
+import io.mappingdsl.core.expression.simple.RawExpression;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -30,14 +30,14 @@ public final class UniValueExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_RO
 
     // delegate method
     public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
-            ValueExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+            RawExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
         return this.terminalExpressionBuilder.to(targetExpression);
     }
 
     // delegate method
     public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
-            AbstractValueExpression<TRG_ROOT, ? super SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+            AbstractRawExpression<TRG_ROOT, ? super SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
         return this.terminalExpressionBuilder.to(targetExpression);
     }
@@ -49,14 +49,14 @@ public final class UniValueExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_RO
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
         public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
-                ValueExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+                RawExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
             return new UniMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
         }
 
         public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
-                AbstractValueExpression<TRG_ROOT, ? super TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+                AbstractRawExpression<TRG_ROOT, ? super TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
             return new UniMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));

@@ -4,8 +4,8 @@ import io.mappingdsl.core.MappingContext;
 import io.mappingdsl.core.MappingRule;
 import io.mappingdsl.core.common.Converter;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
-import io.mappingdsl.core.expression.simple.AbstractValueExpression;
-import io.mappingdsl.core.expression.simple.ValueExpression;
+import io.mappingdsl.core.expression.simple.AbstractRawExpression;
+import io.mappingdsl.core.expression.simple.RawExpression;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -30,14 +30,14 @@ public final class BiValueConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE,
 
     // delegate method
     public BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, SRC_TYPE> from(
-            ValueExpression<TRG_ROOT, SRC_TYPE, ? extends ValueProducerFunction> targetExpression) {
+            RawExpression<TRG_ROOT, SRC_TYPE, ? extends ValueProducerFunction> targetExpression) {
 
         return this.terminalExpressionBuilder.from(targetExpression);
     }
 
     // delegate method
     public BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, SRC_TYPE> from(
-            AbstractValueExpression<TRG_ROOT, ? super SRC_TYPE, ? extends ValueProducerFunction> targetExpression) {
+            AbstractRawExpression<TRG_ROOT, ? super SRC_TYPE, ? extends ValueProducerFunction> targetExpression) {
 
         return this.terminalExpressionBuilder.from(targetExpression);
     }
@@ -49,14 +49,14 @@ public final class BiValueConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE,
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
         public BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, TRG_TYPE> from(
-                ValueExpression<TRG_ROOT, TRG_TYPE, ? extends ValueProducerFunction> targetExpression) {
+                RawExpression<TRG_ROOT, TRG_TYPE, ? extends ValueProducerFunction> targetExpression) {
 
             return new BiConsumerMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
         }
 
         public BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, TRG_TYPE> from(
-                AbstractValueExpression<TRG_ROOT, ? super TRG_TYPE, ? extends ValueProducerFunction> targetExpression) {
+                AbstractRawExpression<TRG_ROOT, ? super TRG_TYPE, ? extends ValueProducerFunction> targetExpression) {
 
             return new BiConsumerMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));

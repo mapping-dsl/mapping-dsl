@@ -5,7 +5,7 @@ public enum FieldModelType {
     /**
      * Represents regular field of type that is not defined in the generator scope.
      */
-    VALUE,
+    RAW,
 
     /**
      * Represents field of type that is explicitly defined in the generator scope.
