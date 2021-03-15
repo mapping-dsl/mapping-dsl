@@ -32,7 +32,7 @@ public final class UniValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TY
 
     // delegate method
     public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
-            ValueCollectionExpression<TRG_ROOT, ?, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+            ValueCollectionExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
         return this.terminalExpressionBuilder.to(targetExpression);
     }
@@ -46,7 +46,7 @@ public final class UniValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TY
 
     // delegate method
     public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
-            AbstractValueCollectionExpression<TRG_ROOT, ?, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+            AbstractValueCollectionExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
         return this.terminalExpressionBuilder.to(targetExpression);
     }
@@ -65,7 +65,7 @@ public final class UniValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TY
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
         public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
-                ValueCollectionExpression<TRG_ROOT, ?, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+                ValueCollectionExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
             return new UniMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
@@ -79,7 +79,7 @@ public final class UniValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TY
         }
 
         public UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
-                AbstractValueCollectionExpression<TRG_ROOT, ?, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+                AbstractValueCollectionExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
             return new UniMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));

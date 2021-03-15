@@ -50,7 +50,7 @@ public final class BiValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYP
 
     // delegate method
     public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> with(
-            ValueCollectionExpression<TRG_ROOT, ?, SRC_TYPE, ? extends ValueProcessingFunction> terminalExpression) {
+            ValueCollectionExpression<TRG_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> terminalExpression) {
 
         return this.terminalExpressionBuilder.with(terminalExpression);
     }
@@ -64,7 +64,7 @@ public final class BiValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYP
 
     // delegate method
     public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> with(
-            AbstractValueCollectionExpression<TRG_ROOT, ?, SRC_TYPE, ? extends ValueProcessingFunction> terminalExpression) {
+            AbstractValueCollectionExpression<TRG_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> terminalExpression) {
 
         return this.terminalExpressionBuilder.with(terminalExpression);
     }
@@ -83,7 +83,7 @@ public final class BiValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYP
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
         public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> with(
-                ValueCollectionExpression<TRG_ROOT, ?, TRG_TYPE, ? extends ValueProcessingFunction> terminalExpression) {
+                ValueCollectionExpression<TRG_ROOT, TRG_TYPE, ? extends ValueProcessingFunction> terminalExpression) {
 
             return new BiMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(terminalExpression));
@@ -97,7 +97,7 @@ public final class BiValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYP
         }
 
         public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> with(
-                AbstractValueCollectionExpression<TRG_ROOT, ?, TRG_TYPE, ? extends ValueProcessingFunction> terminalExpression) {
+                AbstractValueCollectionExpression<TRG_ROOT, TRG_TYPE, ? extends ValueProcessingFunction> terminalExpression) {
 
             return new BiMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(terminalExpression));

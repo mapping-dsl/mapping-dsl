@@ -17,7 +17,7 @@ public final class BiDslCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE,
     private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
     public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> with(
-            DslCollectionExpression<TRG_ROOT, ?, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+            DslCollectionExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
         return new BiMappingConditionBuilder<>(
                 this.context, this.mappingRule.withTerminalExpression(targetExpression));
@@ -61,7 +61,7 @@ public final class BiDslCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE,
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
         public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> with(
-                DslCollectionExpression<TRG_ROOT, ?, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+                DslCollectionExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
             return new BiMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
@@ -83,7 +83,7 @@ public final class BiDslCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE,
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
         public <TRG_TYPE> BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> with(
-                DslCollectionExpression<TRG_ROOT, ?, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+                DslCollectionExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
             return new BiMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));

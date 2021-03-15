@@ -6,8 +6,8 @@ import io.mappingdsl.core.expression.function.ExpressionFunction;
 import io.mappingdsl.core.expression.function.ValueProducerFunction;
 import io.mappingdsl.core.expression.simple.ValueExpression;
 
-public class ValueCollectionExpression<ROOT, COLLECTION_TYPE, ELEMENT_TYPE, FUN extends ExpressionFunction>
-        extends CollectionExpressionBase<ROOT, COLLECTION_TYPE, ELEMENT_TYPE, FUN> {
+public class ValueCollectionExpression<ROOT, ELEMENT_TYPE, FUN extends ExpressionFunction>
+        extends CollectionExpressionBase<ROOT, ELEMENT_TYPE, FUN> {
 
     public ValueCollectionExpression(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
         super(parentExpression, expressionFunction);

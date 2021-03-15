@@ -22,12 +22,12 @@
 
 <#macro abstractValueCollectionField model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.FieldModel" -->
-    public final AbstractValueCollectionExpression<ROOT, ${model.parametrizedBoxedType}, ${model.getParametrizedBoxedTypeParameter(0)}, ValueProcessingFunction> ${model.name} =
+    public final AbstractValueCollectionExpression<ROOT, ${model.getParametrizedBoxedTypeParameter(0)}, ValueProcessingFunction> ${model.name} =
             new AbstractValueCollectionExpression<>(this, new CollectionFieldAccessorFunction(${model.rawType}.class, ${model.getRawTypeParameter(0)}.class, "${model.name}"));</#macro>
 
 <#macro concreteValueCollectionField model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.FieldModel" -->
-    public final ValueCollectionExpression<ROOT, ${model.parametrizedBoxedType}, ${model.getParametrizedBoxedTypeParameter(0)}, ValueProcessingFunction> ${model.name} =
+    public final ValueCollectionExpression<ROOT, ${model.getParametrizedBoxedTypeParameter(0)}, ValueProcessingFunction> ${model.name} =
             new ValueCollectionExpression<>(this, new CollectionFieldAccessorFunction(${model.rawType}.class, ${model.getRawTypeParameter(0)}.class, "${model.name}"));</#macro>
 
 <#-- identical to concreteDslField -->
@@ -56,12 +56,12 @@
 
 <#macro abstractDslCollectionField model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.FieldModel" -->
-    public final AbstractDslCollectionExpression<ROOT, ${model.parametrizedBoxedType}, ${model.getParametrizedBoxedTypeParameter(0)}, ValueProcessingFunction> ${model.name} =
+    public final AbstractDslCollectionExpression<ROOT, ${model.getParametrizedBoxedTypeParameter(0)}, ValueProcessingFunction> ${model.name} =
             new AbstractDslCollectionExpression<>(this, new CollectionFieldAccessorFunction(${model.rawType}.class, ${model.getRawTypeParameter(0)}.class, "${model.name}"));</#macro>
 
 <#macro concreteDslCollectionField model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.FieldModel" -->
-    public final DslCollectionExpression<ROOT, ${model.parametrizedBoxedType}, ${model.getParametrizedBoxedTypeParameter(0)}, ValueProcessingFunction> ${model.name} =
+    public final DslCollectionExpression<ROOT, ${model.getParametrizedBoxedTypeParameter(0)}, ValueProcessingFunction> ${model.name} =
             new DslCollectionExpression<>(this, new CollectionFieldAccessorFunction(${model.rawType}.class, ${model.getRawTypeParameter(0)}.class, "${model.name}"));</#macro>
 
 <#macro abstractValueFieldGetter model>
@@ -106,22 +106,22 @@
 
 <#macro abstractValueCollectionFieldGetter model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final AbstractValueCollectionExpression<ROOT, ${model.fieldModel.parametrizedBoxedType}, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueProducerFunction> ${model.name} =
+    public final AbstractValueCollectionExpression<ROOT, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueProducerFunction> ${model.name} =
             new AbstractValueCollectionExpression<>(this, new GetMethodAccessorFunction(${model.fieldModel.rawType}.class, "${model.name}"));</#macro>
 
 <#macro concreteValueCollectionFieldGetter model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final ValueCollectionExpression<ROOT, ${model.fieldModel.parametrizedBoxedType}, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueProducerFunction> ${model.name} =
+    public final ValueCollectionExpression<ROOT, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueProducerFunction> ${model.name} =
             new ValueCollectionExpression<>(this, new GetMethodAccessorFunction(${model.fieldModel.rawType}.class, "${model.name}"));</#macro>
 
 <#macro abstractValueCollectionFieldSetter model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final AbstractValueCollectionExpression<ROOT, ${model.fieldModel.parametrizedBoxedType}, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueConsumerFunction> ${model.name} =
+    public final AbstractValueCollectionExpression<ROOT, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueConsumerFunction> ${model.name} =
             new AbstractValueCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(${model.fieldModel.rawType}.class, ${model.fieldModel.getRawTypeParameter(0)}.class, "${model.name}"));</#macro>
 
 <#macro concreteValueCollectionFieldSetter model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final ValueCollectionExpression<ROOT, ${model.fieldModel.parametrizedBoxedType}, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueConsumerFunction> ${model.name} =
+    public final ValueCollectionExpression<ROOT, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueConsumerFunction> ${model.name} =
             new ValueCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(${model.fieldModel.rawType}.class, ${model.fieldModel.getRawTypeParameter(0)}.class, "${model.name}"));</#macro>
 
 <#-- identical to concreteDslFieldGetter -->
@@ -172,22 +172,22 @@
 
 <#macro abstractDslCollectionFieldGetter model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final AbstractDslCollectionExpression<ROOT, ${model.fieldModel.parametrizedBoxedType}, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueProducerFunction> ${model.name} =
+    public final AbstractDslCollectionExpression<ROOT, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueProducerFunction> ${model.name} =
             new AbstractDslCollectionExpression<>(this, new GetMethodAccessorFunction(${model.fieldModel.rawType}.class, "${model.name}"));</#macro>
 
 <#macro concreteDslCollectionFieldGetter model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final DslCollectionExpression<ROOT, ${model.fieldModel.parametrizedBoxedType}, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueProducerFunction> ${model.name} =
+    public final DslCollectionExpression<ROOT, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueProducerFunction> ${model.name} =
             new DslCollectionExpression<>(this, new GetMethodAccessorFunction(${model.fieldModel.rawType}.class, "${model.name}"));</#macro>
 
 <#macro abstractDslCollectionFieldSetter model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final AbstractDslCollectionExpression<ROOT, ${model.fieldModel.parametrizedBoxedType}, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueConsumerFunction> ${model.name} =
+    public final AbstractDslCollectionExpression<ROOT, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueConsumerFunction> ${model.name} =
             new AbstractDslCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(${model.fieldModel.rawType}.class, ${model.fieldModel.getRawTypeParameter(0)}.class, "${model.name}"));</#macro>
 
 <#macro concreteDslCollectionFieldSetter model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.MethodModel" -->
-    public final DslCollectionExpression<ROOT, ${model.fieldModel.parametrizedBoxedType}, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueConsumerFunction> ${model.name} =
+    public final DslCollectionExpression<ROOT, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueConsumerFunction> ${model.name} =
             new DslCollectionExpression<>(this, new SetCollectionMethodAccessorFunction(${model.fieldModel.rawType}.class, ${model.fieldModel.getRawTypeParameter(0)}.class, "${model.name}"));</#macro>
 
 <#macro abstractValueFieldProperty model>
@@ -220,14 +220,14 @@
 
 <#macro abstractValueCollectionFieldProperty model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.PropertyModel" -->
-    public final AbstractValueCollectionExpression<ROOT, ${model.fieldModel.parametrizedBoxedType}, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueProcessingFunction> ${model.fieldModel.name}Property =
+    public final AbstractValueCollectionExpression<ROOT, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueProcessingFunction> ${model.fieldModel.name}Property =
             new AbstractValueCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
                     this.${model.getterModel.name}.getExpressionFunction(),
                     this.${model.setterModel.name}.getExpressionFunction()));</#macro>
 
 <#macro concreteValueCollectionFieldProperty model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.PropertyModel" -->
-    public final ValueCollectionExpression<ROOT, ${model.fieldModel.parametrizedBoxedType}, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueProcessingFunction> ${model.fieldModel.name}Property =
+    public final ValueCollectionExpression<ROOT, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueProcessingFunction> ${model.fieldModel.name}Property =
             new ValueCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
                     this.${model.getterModel.name}.getExpressionFunction(),
                     this.${model.setterModel.name}.getExpressionFunction()));</#macro>
@@ -266,14 +266,14 @@
 
 <#macro abstractDslCollectionFieldProperty model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.PropertyModel" -->
-    public final AbstractDslCollectionExpression<ROOT, ${model.fieldModel.parametrizedBoxedType}, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueProcessingFunction> ${model.fieldModel.name}Property =
+    public final AbstractDslCollectionExpression<ROOT, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueProcessingFunction> ${model.fieldModel.name}Property =
             new AbstractDslCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
                     this.${model.getterModel.name}.getExpressionFunction(),
                     this.${model.setterModel.name}.getExpressionFunction()));</#macro>
 
 <#macro concreteDslCollectionFieldProperty model>
 <#-- @ftlvariable name="model" type="io.mappingdsl.generator.core.model.PropertyModel" -->
-    public final DslCollectionExpression<ROOT, ${model.fieldModel.parametrizedBoxedType}, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueProcessingFunction> ${model.fieldModel.name}Property =
+    public final DslCollectionExpression<ROOT, ${model.fieldModel.getParametrizedBoxedTypeParameter(0)}, ValueProcessingFunction> ${model.fieldModel.name}Property =
             new DslCollectionExpression<>(this, new CollectionPropertyAccessorFunction(
                     this.${model.getterModel.name}.getExpressionFunction(),
                     this.${model.setterModel.name}.getExpressionFunction()));</#macro>

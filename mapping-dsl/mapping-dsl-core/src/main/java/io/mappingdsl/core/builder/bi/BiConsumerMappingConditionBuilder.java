@@ -64,7 +64,7 @@ public final class BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, TRG_TYP
 
     // delegate method
     public <NEW_SRC_TYPE> BiValueCollectionExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> bind(
-            ValueCollectionExpression<SRC_ROOT, ?, NEW_SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
+            ValueCollectionExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
 
         return this.chainBuilder.bind(initialExpression);
     }
@@ -78,7 +78,7 @@ public final class BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, TRG_TYP
 
     // delegate method
     public <NEW_SRC_TYPE> BiValueCollectionExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> bind(
-            AbstractValueCollectionExpression<SRC_ROOT, ?, NEW_SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
+            AbstractValueCollectionExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
 
         return this.chainBuilder.bind(initialExpression);
     }
@@ -106,7 +106,7 @@ public final class BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, TRG_TYP
 
     // delegate method
     public <NEW_SRC_TYPE> BiDslCollectionExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> bind(
-            DslCollectionExpression<SRC_ROOT, ?, NEW_SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
+            DslCollectionExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
 
         return this.chainBuilder.bind(initialExpression);
     }
@@ -134,7 +134,7 @@ public final class BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, TRG_TYP
 
     // delegate method
     public <NEW_SRC_TYPE> BiValueCollectionProducerExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> produce(
-            ValueCollectionExpression<SRC_ROOT, ?, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            ValueCollectionExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         return this.chainBuilder.produce(initialExpression);
     }
@@ -148,7 +148,7 @@ public final class BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, TRG_TYP
 
     // delegate method
     public <NEW_SRC_TYPE> BiValueCollectionProducerExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> produce(
-            AbstractValueCollectionExpression<SRC_ROOT, ?, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            AbstractValueCollectionExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         return this.chainBuilder.produce(initialExpression);
     }
@@ -176,7 +176,7 @@ public final class BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, TRG_TYP
 
     // delegate method
     public <NEW_SRC_TYPE> BiDslCollectionProducerExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> produce(
-            DslCollectionExpression<SRC_ROOT, ?, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            DslCollectionExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         return this.chainBuilder.produce(initialExpression);
     }
@@ -204,7 +204,7 @@ public final class BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, TRG_TYP
 
     // delegate method
     public <NEW_SRC_TYPE> BiValueCollectionConsumerExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> consume(
-            ValueCollectionExpression<SRC_ROOT, ?, NEW_SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+            ValueCollectionExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
         return this.chainBuilder.consume(initialExpression);
     }
@@ -218,7 +218,7 @@ public final class BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, TRG_TYP
 
     // delegate method
     public <NEW_SRC_TYPE> BiValueCollectionConsumerExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> consume(
-            AbstractValueCollectionExpression<SRC_ROOT, ?, NEW_SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+            AbstractValueCollectionExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
         return this.chainBuilder.consume(initialExpression);
     }
@@ -246,7 +246,7 @@ public final class BiConsumerMappingConditionBuilder<SRC_ROOT, TRG_ROOT, TRG_TYP
 
     // delegate method
     public <NEW_SRC_TYPE> BiDslCollectionConsumerExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> consume(
-            DslCollectionExpression<SRC_ROOT, ?, NEW_SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+            DslCollectionExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
         return this.chainBuilder.consume(initialExpression);
     }

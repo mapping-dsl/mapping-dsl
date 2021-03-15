@@ -32,7 +32,7 @@ public final class BiValueCollectionProducerExpressionConverterBuilder<SRC_ROOT,
 
     // delegate method
     public BiProducerMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
-            ValueCollectionExpression<TRG_ROOT, ?, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+            ValueCollectionExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
         return this.terminalExpressionBuilder.to(targetExpression);
     }
@@ -46,7 +46,7 @@ public final class BiValueCollectionProducerExpressionConverterBuilder<SRC_ROOT,
 
     // delegate method
     public BiProducerMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
-            AbstractValueCollectionExpression<TRG_ROOT, ?, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+            AbstractValueCollectionExpression<TRG_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
         return this.terminalExpressionBuilder.to(targetExpression);
     }
@@ -65,7 +65,7 @@ public final class BiValueCollectionProducerExpressionConverterBuilder<SRC_ROOT,
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
         public BiProducerMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
-                ValueCollectionExpression<TRG_ROOT, ?, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+                ValueCollectionExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
             return new BiProducerMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
@@ -79,7 +79,7 @@ public final class BiValueCollectionProducerExpressionConverterBuilder<SRC_ROOT,
         }
 
         public BiProducerMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> to(
-                AbstractValueCollectionExpression<TRG_ROOT, ?, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
+                AbstractValueCollectionExpression<TRG_ROOT, TRG_TYPE, ? extends ValueConsumerFunction> targetExpression) {
 
             return new BiProducerMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));

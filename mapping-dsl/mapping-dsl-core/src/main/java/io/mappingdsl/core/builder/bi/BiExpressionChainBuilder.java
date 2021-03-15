@@ -58,7 +58,7 @@ public final class BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     // delegate method
     public <SRC_TYPE> BiValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> bind(
-            ValueCollectionExpression<SRC_ROOT, ?, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
+            ValueCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.bind(initialExpression);
@@ -74,7 +74,7 @@ public final class BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     // delegate method
     public <SRC_TYPE> BiValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> bind(
-            AbstractValueCollectionExpression<SRC_ROOT, ?, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
+            AbstractValueCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.bind(initialExpression);
@@ -106,7 +106,7 @@ public final class BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     // delegate method
     public <SRC_TYPE> BiDslCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> bind(
-            DslCollectionExpression<SRC_ROOT, ?, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
+            DslCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.bind(initialExpression);
@@ -138,7 +138,7 @@ public final class BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     // delegate method
     public <SRC_TYPE> BiValueCollectionProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
-            ValueCollectionExpression<SRC_ROOT, ?, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            ValueCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.produce(initialExpression);
@@ -154,7 +154,7 @@ public final class BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     // delegate method
     public <SRC_TYPE> BiValueCollectionProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
-            AbstractValueCollectionExpression<SRC_ROOT, ?, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            AbstractValueCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.produce(initialExpression);
@@ -186,7 +186,7 @@ public final class BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     // delegate method
     public <SRC_TYPE> BiDslCollectionProducerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
-            DslCollectionExpression<SRC_ROOT, ?, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            DslCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.produce(initialExpression);
@@ -218,7 +218,7 @@ public final class BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     // delegate method
     public <SRC_TYPE> BiValueCollectionConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
-            ValueCollectionExpression<SRC_ROOT, ?, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+            ValueCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.consume(initialExpression);
@@ -234,7 +234,7 @@ public final class BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     // delegate method
     public <SRC_TYPE> BiValueCollectionConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
-            AbstractValueCollectionExpression<SRC_ROOT, ?, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+            AbstractValueCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.consume(initialExpression);
@@ -266,7 +266,7 @@ public final class BiExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     // delegate method
     public <SRC_TYPE> BiDslCollectionConsumerExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> consume(
-            DslCollectionExpression<SRC_ROOT, ?, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
+            DslCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueConsumerFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.consume(initialExpression);

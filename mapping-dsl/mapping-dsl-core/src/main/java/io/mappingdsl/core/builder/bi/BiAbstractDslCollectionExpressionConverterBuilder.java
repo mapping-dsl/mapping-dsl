@@ -29,7 +29,7 @@ public final class BiAbstractDslCollectionExpressionConverterBuilder<SRC_ROOT, S
 
     // delegate method
     public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> with(
-            DslCollectionExpression<TRG_ROOT, ?, SRC_TYPE, ? extends ValueProcessingFunction> targetExpression) {
+            DslCollectionExpression<TRG_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> targetExpression) {
 
         return this.dslCollectionExpressionBuilder.with(targetExpression);
     }
@@ -43,7 +43,7 @@ public final class BiAbstractDslCollectionExpressionConverterBuilder<SRC_ROOT, S
 
     // delegate method
     public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> with(
-            AbstractDslCollectionExpression<TRG_ROOT, ?, SRC_TYPE, ? extends ValueProcessingFunction> targetExpression) {
+            AbstractDslCollectionExpression<TRG_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> targetExpression) {
 
         return this.dslCollectionExpressionBuilder.with(targetExpression);
     }
@@ -106,7 +106,7 @@ public final class BiAbstractDslCollectionExpressionConverterBuilder<SRC_ROOT, S
 
         // delegate method
         public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> with(
-                DslCollectionExpression<TRG_ROOT, ?, SRC_TYPE, ? extends ValueProcessingFunction> targetExpression) {
+                DslCollectionExpression<TRG_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> targetExpression) {
 
             return this.dslCollectionExpressionBuilder.with(targetExpression);
         }
@@ -120,7 +120,7 @@ public final class BiAbstractDslCollectionExpressionConverterBuilder<SRC_ROOT, S
 
         // delegate method
         public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, SRC_TYPE> with(
-                AbstractDslCollectionExpression<TRG_ROOT, ?, SRC_TYPE, ? extends ValueProcessingFunction> targetExpression) {
+                AbstractDslCollectionExpression<TRG_ROOT, SRC_TYPE, ? extends ValueProcessingFunction> targetExpression) {
 
             return this.dslCollectionExpressionBuilder.with(targetExpression);
         }
@@ -141,7 +141,7 @@ public final class BiAbstractDslCollectionExpressionConverterBuilder<SRC_ROOT, S
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
         public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> with(
-                DslCollectionExpression<TRG_ROOT, ?, TRG_TYPE, ? extends ValueProcessingFunction> targetExpression) {
+                DslCollectionExpression<TRG_ROOT, TRG_TYPE, ? extends ValueProcessingFunction> targetExpression) {
 
             return new BiMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
@@ -155,7 +155,7 @@ public final class BiAbstractDslCollectionExpressionConverterBuilder<SRC_ROOT, S
         }
 
         public BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> with(
-                AbstractDslCollectionExpression<TRG_ROOT, ?, TRG_TYPE, ? extends ValueProcessingFunction> targetExpression) {
+                AbstractDslCollectionExpression<TRG_ROOT, TRG_TYPE, ? extends ValueProcessingFunction> targetExpression) {
 
             return new BiMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
@@ -177,7 +177,7 @@ public final class BiAbstractDslCollectionExpressionConverterBuilder<SRC_ROOT, S
         private final MappingRule<SRC_ROOT, TRG_ROOT> mappingRule;
 
         public <TRG_TYPE> BiMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> with(
-                DslCollectionExpression<TRG_ROOT, ?, TRG_TYPE, ? extends ValueProcessingFunction> targetExpression) {
+                DslCollectionExpression<TRG_ROOT, TRG_TYPE, ? extends ValueProcessingFunction> targetExpression) {
 
             return new BiMappingConditionBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));
@@ -191,7 +191,7 @@ public final class BiAbstractDslCollectionExpressionConverterBuilder<SRC_ROOT, S
         }
 
         public <TRG_TYPE> BiDslExpressionHintsBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT, TRG_TYPE> with(
-                AbstractDslCollectionExpression<TRG_ROOT, ?, TRG_TYPE, ? extends ValueProcessingFunction> targetExpression) {
+                AbstractDslCollectionExpression<TRG_ROOT, TRG_TYPE, ? extends ValueProcessingFunction> targetExpression) {
 
             return new BiDslExpressionHintsBuilder<>(
                     this.context, this.mappingRule.withTerminalExpression(targetExpression));

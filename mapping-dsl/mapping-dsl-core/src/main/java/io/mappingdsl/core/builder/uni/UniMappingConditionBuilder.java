@@ -57,7 +57,7 @@ public final class UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
     // delegate method
     public <NEW_SRC_TYPE> UniValueCollectionExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> produce(
-            ValueCollectionExpression<SRC_ROOT, ?, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            ValueCollectionExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         return this.chainBuilder.produce(initialExpression);
     }
@@ -71,7 +71,7 @@ public final class UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
     // delegate method
     public <NEW_SRC_TYPE> UniValueCollectionExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> produce(
-            AbstractValueCollectionExpression<SRC_ROOT, ?, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            AbstractValueCollectionExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         return this.chainBuilder.produce(initialExpression);
     }
@@ -85,7 +85,7 @@ public final class UniMappingConditionBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> {
 
     // delegate method
     public <NEW_SRC_TYPE> UniDslCollectionExpressionConverterBuilder<SRC_ROOT, NEW_SRC_TYPE, TRG_ROOT> produce(
-            DslCollectionExpression<SRC_ROOT, ?, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            DslCollectionExpression<SRC_ROOT, NEW_SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         return this.chainBuilder.produce(initialExpression);
     }

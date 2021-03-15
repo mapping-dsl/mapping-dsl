@@ -54,7 +54,7 @@ public final class UniExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     // delegate method
     public <SRC_TYPE> UniValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
-            ValueCollectionExpression<SRC_ROOT, ?, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            ValueCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.produce(initialExpression);
@@ -70,7 +70,7 @@ public final class UniExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     // delegate method
     public <SRC_TYPE> UniValueCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
-            AbstractValueCollectionExpression<SRC_ROOT, ?, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            AbstractValueCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.produce(initialExpression);
@@ -86,7 +86,7 @@ public final class UniExpressionChainBuilder<SRC_ROOT, TRG_ROOT> {
 
     // delegate method
     public <SRC_TYPE> UniDslCollectionExpressionConverterBuilder<SRC_ROOT, SRC_TYPE, TRG_ROOT> produce(
-            DslCollectionExpression<SRC_ROOT, ?, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
+            DslCollectionExpression<SRC_ROOT, SRC_TYPE, ? extends ValueProducerFunction> initialExpression) {
 
         registerCurrentRule();
         return this.initialExpressionBuilder.produce(initialExpression);
