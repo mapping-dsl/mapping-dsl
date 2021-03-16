@@ -21,4 +21,9 @@ public final class GeneratorUtils {
         return fullClassName.endsWith(DSL_CLASS_NAME_SUFFIX);
     }
 
+    public static boolean isCollectionField(String rawFieldType) {
+        Class<?> fieldType = ClassUtils.getClassByName(rawFieldType);
+        return fieldType != null && Iterable.class.isAssignableFrom(fieldType);
+    }
+
 }

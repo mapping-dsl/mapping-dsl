@@ -1,5 +1,6 @@
-package io.mappingdsl.generator.core.model;
+package io.mappingdsl.generator.core.model.method;
 
+import io.mappingdsl.generator.core.model.field.FieldModelBase;
 import lombok.Builder;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
@@ -8,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 @Builder
 public class MethodModel {
 
-    private final FieldModel fieldModel;
+    private final FieldModelBase fieldModel;
     private final String name;
     private final String type;
     private final MethodModelType modelType;

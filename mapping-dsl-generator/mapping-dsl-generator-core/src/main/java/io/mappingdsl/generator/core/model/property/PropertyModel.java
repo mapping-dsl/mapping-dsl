@@ -1,12 +1,15 @@
-package io.mappingdsl.generator.core.model;
+package io.mappingdsl.generator.core.model.property;
 
+import io.mappingdsl.generator.core.model.field.FieldModelBase;
+import io.mappingdsl.generator.core.model.method.MethodModel;
+import io.mappingdsl.generator.core.model.method.MethodModelType;
 import lombok.Getter;
 import lombok.Setter;
 
 public class PropertyModel {
 
     @Getter
-    private final FieldModel fieldModel;
+    private final FieldModelBase fieldModel;
 
     @Getter
     @Setter
@@ -16,7 +19,7 @@ public class PropertyModel {
     @Setter
     private MethodModel setterModel;
 
-    public PropertyModel(FieldModel fieldModel) {
+    public PropertyModel(FieldModelBase fieldModel) {
         this.fieldModel = fieldModel;
     }
 

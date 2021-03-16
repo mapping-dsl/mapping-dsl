@@ -1,5 +1,8 @@
 package io.mappingdsl.generator.core.model;
 
+import io.mappingdsl.generator.core.model.field.FieldModelBase;
+import io.mappingdsl.generator.core.model.method.MethodModel;
+import io.mappingdsl.generator.core.model.property.PropertyModel;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,7 +14,7 @@ public class DslClassModel {
 
     private final String fullClassName;
     private final boolean isAbstract;
-    private final List<FieldModel> fieldModels = new LinkedList<>();
+    private final List<FieldModelBase> fieldModels = new LinkedList<>();
     private final List<MethodModel> methodModels = new LinkedList<>();
     private final List<PropertyModel> propertyModels = new LinkedList<>();
 
@@ -21,7 +24,7 @@ public class DslClassModel {
         this.isAbstract = isAbstract;
     }
 
-    public void registerFieldModel(FieldModel field) {
+    public void registerFieldModel(FieldModelBase field) {
         this.fieldModels.add(field);
     }
 

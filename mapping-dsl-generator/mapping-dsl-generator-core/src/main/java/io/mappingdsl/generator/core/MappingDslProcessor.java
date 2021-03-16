@@ -8,10 +8,11 @@ import ice.bricks.lang.model.LanguageModelUtils;
 import ice.bricks.lang.model.LanguageModelUtils.TypeDetails;
 import ice.bricks.meta.ClassUtils;
 import io.mappingdsl.generator.core.model.DslClassModel;
-import io.mappingdsl.generator.core.model.FieldModel;
-import io.mappingdsl.generator.core.model.MethodModel;
-import io.mappingdsl.generator.core.model.MethodModelType;
-import io.mappingdsl.generator.core.model.PropertyModel;
+import io.mappingdsl.generator.core.model.field.FieldModelBase;
+import io.mappingdsl.generator.core.model.field.FieldModelFactory;
+import io.mappingdsl.generator.core.model.method.MethodModel;
+import io.mappingdsl.generator.core.model.method.MethodModelType;
+import io.mappingdsl.generator.core.model.property.PropertyModel;
 import io.mappingdsl.generator.core.utils.GeneratorUtils;
 import lombok.Data;
 import lombok.Getter;
@@ -126,7 +127,7 @@ public class MappingDslProcessor {
                         .collect(Collectors.toList());
 
                 // register field
-                FieldModel fieldModel = buildFieldModel(scope, field);
+                FieldModelBase fieldModel = buildFieldModel(scope, field);
                 model.registerFieldModel(fieldModel);
 
                 // register property
@@ -176,20 +177,16 @@ public class MappingDslProcessor {
         });
     }
 
-    private FieldModel buildFieldModel(List<String> scope, Element fieldElement) {
+    private FieldModelBase buildFieldModel(List<String> scope, Element fieldElement) {
         String fieldName = fieldElement.getSimpleName().toString();
 
         TypeDetails typeDetails = ExceptionUtils.defaultIfException(
                 () -> LanguageModelUtils.getTypeDetails(this.typeUtils, fieldElement.asType()), null);
 
-        return FieldModel.builder()
-                .name(fieldName)
-                .metadata(typeDetails)
-                .scope(scope)
-                .build();
+        return FieldModelFactory.generateModel(fieldName, typeDetails, scope);
     }
 
-    private MethodModel buildMethodModel(Element methodElement, FieldModel fieldModel) {
+    private MethodModel buildMethodModel(Element methodElement, FieldModelBase fieldModel) {
         String methodName = methodElement.getSimpleName().toString();
 
         Symbol.MethodSymbol method = (Symbol.MethodSymbol) methodElement;
@@ -198,7 +195,7 @@ public class MappingDslProcessor {
         return buildMethodModel(methodName, methodReturnType, fieldModel);
     }
 
-    private MethodModel buildMethodModel(String methodName, String methodReturnType, FieldModel fieldModel) {
+    private MethodModel buildMethodModel(String methodName, String methodReturnType, FieldModelBase fieldModel) {
         MethodModelType modelType = methodName.startsWith("set")
                 ? MethodModelType.SETTER
                 : MethodModelType.GETTER;

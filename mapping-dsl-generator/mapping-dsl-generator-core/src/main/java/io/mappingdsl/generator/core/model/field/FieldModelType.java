@@ -1,4 +1,4 @@
-package io.mappingdsl.generator.core.model;
+package io.mappingdsl.generator.core.model.field;
 
 public enum FieldModelType {
 
