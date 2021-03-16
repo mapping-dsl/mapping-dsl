@@ -53,7 +53,7 @@ public final class SimpleDataPojoMappingDsl<ROOT, FUN extends ExpressionFunction
                     this.getSimpleValue.getExpressionFunction(),
                     this.setSimpleValue.getExpressionFunction()));
 
-    public SimpleDataPojoMappingDsl(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
+    public SimpleDataPojoMappingDsl(ExpressionBase<ROOT, ?> parentExpression, FUN expressionFunction) {
         super(parentExpression, expressionFunction);
     }
 

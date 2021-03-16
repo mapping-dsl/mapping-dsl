@@ -39,7 +39,7 @@ public final class AbstractValueMappingDsl<ROOT, FUN extends ExpressionFunction>
     public static final AbstractValueMappingDsl<pojo.AbstractValue, ValueProducerFunction> $this =
             new AbstractValueMappingDsl<>(new RootIdentityFunction("AbstractValue"));
 
-    public AbstractValueMappingDsl(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
+    public AbstractValueMappingDsl(ExpressionBase<ROOT, ?> parentExpression, FUN expressionFunction) {
         super(parentExpression, expressionFunction);
     }
 

@@ -9,10 +9,10 @@ import java.util.Deque;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public abstract class ExpressionBase<ROOT, TYPE, FUN extends ExpressionFunction> {
+public abstract class ExpressionBase<ROOT, FUN extends ExpressionFunction> {
 
     @Getter
-    private final ExpressionBase<ROOT, ?, ?> parentExpression;
+    private final ExpressionBase<ROOT, ?> parentExpression;
 
     @Getter
     private final FUN expressionFunction;
@@ -22,16 +22,16 @@ public abstract class ExpressionBase<ROOT, TYPE, FUN extends ExpressionFunction>
         this.expressionFunction = expressionFunction;
     }
 
-    public ExpressionBase(@NotNull ExpressionBase<ROOT, ?, ?> parentExpression, @NotNull FUN expressionFunction) {
+    public ExpressionBase(@NotNull ExpressionBase<ROOT, ?> parentExpression, @NotNull FUN expressionFunction) {
         this.parentExpression = parentExpression;
         this.expressionFunction = expressionFunction;
     }
 
     @Override
     public String toString() {
-        Deque<ExpressionBase<ROOT, ?, ?>> expressionChain = new ArrayDeque<>();
+        Deque<ExpressionBase<ROOT, ?>> expressionChain = new ArrayDeque<>();
 
-        ExpressionBase<ROOT, ?, ?> expression = this;
+        ExpressionBase<ROOT, ?> expression = this;
         while (expression != null) {
             expressionChain.addFirst(expression);
             expression = expression.getParentExpression();

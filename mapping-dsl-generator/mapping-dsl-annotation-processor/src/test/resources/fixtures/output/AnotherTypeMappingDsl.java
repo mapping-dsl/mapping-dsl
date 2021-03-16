@@ -53,7 +53,7 @@ public final class AnotherTypeMappingDsl<ROOT, FUN extends ExpressionFunction>
                     this.getSimpleValue.getExpressionFunction(),
                     this.setSimpleValue.getExpressionFunction()));
 
-    public AnotherTypeMappingDsl(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
+    public AnotherTypeMappingDsl(ExpressionBase<ROOT, ?> parentExpression, FUN expressionFunction) {
         super(parentExpression, expressionFunction);
     }
 

@@ -63,7 +63,7 @@ public class MappingExecutor {
         }
 
         for (MappingRule<?, ?> rule : rules) {
-            Deque<ExpressionBase<?, ?, ?>> sourcePath = unwindPath(rule.getInitialExpression());
+            Deque<ExpressionBase<?, ?>> sourcePath = unwindPath(rule.getInitialExpression());
             Object sourceValue = produceValue(source, sourcePath);
             if (sourceValue == null) {
                 continue;
@@ -73,7 +73,7 @@ public class MappingExecutor {
             Condition<Object> condition = (Condition<Object>) rule.getInitialCondition();
             Converter<Object, Object> converter = (Converter<Object, Object>) rule.getInitialExpressionConverter();
 
-            Deque<ExpressionBase<?, ?, ?>> targetPath = unwindPath(rule.getTerminalExpression());
+            Deque<ExpressionBase<?, ?>> targetPath = unwindPath(rule.getTerminalExpression());
             ValueConsumer valueConsumer = getValueConsumer(target, targetPath);
 
             Stream<Object> mappedValues = sourceValues
@@ -137,9 +137,9 @@ public class MappingExecutor {
         return Stream.of(sourceValue);
     }
 
-    private Deque<ExpressionBase<?, ?, ?>> unwindPath(ExpressionBase<?, ?, ?> expression) {
-        Deque<ExpressionBase<?, ?, ?>> expressionsPath = new LinkedList<>();
-        ExpressionBase<?, ?, ?> currentExpression = expression;
+    private Deque<ExpressionBase<?, ?>> unwindPath(ExpressionBase<?, ?> expression) {
+        Deque<ExpressionBase<?, ?>> expressionsPath = new LinkedList<>();
+        ExpressionBase<?, ?> currentExpression = expression;
 
         while (currentExpression.getExpressionFunction().getClass() != RootIdentityFunction.class) {
             expressionsPath.push(currentExpression);
@@ -149,11 +149,11 @@ public class MappingExecutor {
         return expressionsPath;
     }
 
-    private Object produceValue(Object source, Deque<ExpressionBase<?, ?, ?>> path) {
+    private Object produceValue(Object source, Deque<ExpressionBase<?, ?>> path) {
         Object value = source;
 
         while (!path.isEmpty()) {
-            ExpressionBase<?, ?, ?> expression = path.pop();
+            ExpressionBase<?, ?> expression = path.pop();
             ValueProducerFunction producerFunction = (ValueProducerFunction) expression.getExpressionFunction();
             value = producerFunction.produce(value);
 
@@ -166,11 +166,11 @@ public class MappingExecutor {
         return value;
     }
 
-    private ValueConsumer getValueConsumer(Object target, Deque<ExpressionBase<?, ?, ?>> path) {
+    private ValueConsumer getValueConsumer(Object target, Deque<ExpressionBase<?, ?>> path) {
         Object currentTarget = target;
 
         while (!path.isEmpty()) {
-            ExpressionBase<?, ?, ?> expression = path.pop();
+            ExpressionBase<?, ?> expression = path.pop();
 
             if (path.isEmpty()) {
                 ValueConsumerFunction consumerFunction = (ValueConsumerFunction) expression.getExpressionFunction();
@@ -187,7 +187,7 @@ public class MappingExecutor {
         throw new IllegalStateException("Unable to get value consumer");
     }
 
-    private Object getNullSourceValue(ExpressionBase<?, ?, ?> expression) {
+    private Object getNullSourceValue(ExpressionBase<?, ?> expression) {
         if (this.mappingConfiguration.getNullHandlingMode() == NullHandlingMode.PROCEED) {
             return null;
         }

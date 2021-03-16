@@ -12,8 +12,8 @@ import lombok.Getter;
 public class MappingRule<SRC_ROOT, TRG_ROOT> {
 
     private final MappingRuleDirection mappingRuleDirection;
-    private final ExpressionBase<SRC_ROOT, ?, ? extends ExpressionFunction> initialExpression;
-    private final ExpressionBase<TRG_ROOT, ?, ? extends ExpressionFunction> terminalExpression;
+    private final ExpressionBase<SRC_ROOT, ? extends ExpressionFunction> initialExpression;
+    private final ExpressionBase<TRG_ROOT, ? extends ExpressionFunction> terminalExpression;
     private final Converter<?, ?> initialExpressionConverter;
     private final Converter<?, ?> terminalExpressionConverter;
     private final Condition<?> initialCondition;
@@ -54,7 +54,7 @@ public class MappingRule<SRC_ROOT, TRG_ROOT> {
     }
 
     public MappingRule<SRC_ROOT, TRG_ROOT> withTerminalExpression(
-            ExpressionBase<TRG_ROOT, ?, ? extends ExpressionFunction> terminalExpression) {
+            ExpressionBase<TRG_ROOT, ? extends ExpressionFunction> terminalExpression) {
 
         return MappingRule.<SRC_ROOT, TRG_ROOT>builder()
                 .mappingRuleDirection(this.mappingRuleDirection)

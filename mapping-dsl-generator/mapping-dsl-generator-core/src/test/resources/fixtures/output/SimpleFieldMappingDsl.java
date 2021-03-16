@@ -235,7 +235,7 @@ public final class SimpleFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
                     this.getListOfInterfaceValue.getExpressionFunction(),
                     this.setListOfInterfaceValue.getExpressionFunction()));
 
-    public SimpleFieldMappingDsl(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
+    public SimpleFieldMappingDsl(ExpressionBase<ROOT, ?> parentExpression, FUN expressionFunction) {
         super(parentExpression, expressionFunction);
     }
 

@@ -7,12 +7,12 @@ import io.mappingdsl.core.expression.function.ValueProducerFunction;
 import io.mappingdsl.core.expression.simple.RawExpression;
 
 public abstract class CollectionExpressionBase<ROOT, ELEMENT_TYPE, FUN extends ExpressionFunction>
-        extends ExpressionBase<ROOT, ELEMENT_TYPE, FUN> {
+        extends ExpressionBase<ROOT, FUN> {
 
     private final RawExpression<ROOT, Integer, ValueProducerFunction> size =
             new RawExpression<>(this, new CollectionSizeAccessorFunction());
 
-    public CollectionExpressionBase(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
+    public CollectionExpressionBase(ExpressionBase<ROOT, ?> parentExpression, FUN expressionFunction) {
         super(parentExpression, expressionFunction);
     }
 

@@ -67,7 +67,7 @@ public final class SimpleTypeMappingDsl<ROOT, FUN extends ExpressionFunction>
                     this.getIntValue.getExpressionFunction(),
                     this.setIntValue.getExpressionFunction()));
 
-    public SimpleTypeMappingDsl(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
+    public SimpleTypeMappingDsl(ExpressionBase<ROOT, ?> parentExpression, FUN expressionFunction) {
         super(parentExpression, expressionFunction);
     }
 

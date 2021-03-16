@@ -62,7 +62,7 @@ public final class ${rootDslClassName}<ROOT, FUN extends ExpressionFunction>
         <#lt><#if propertyModel?has_next>${'\n'}</#if>
     </#list>
 
-    public ${rootDslClassName}(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
+    public ${rootDslClassName}(ExpressionBase<ROOT, ?> parentExpression, FUN expressionFunction) {
         super(parentExpression, expressionFunction);
     }
 

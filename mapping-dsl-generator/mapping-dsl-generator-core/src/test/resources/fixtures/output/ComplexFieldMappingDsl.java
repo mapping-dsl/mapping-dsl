@@ -193,7 +193,7 @@ public final class ComplexFieldMappingDsl<ROOT, FUN extends ExpressionFunction>
                     this.getInterfacePredecessorsList.getExpressionFunction(),
                     this.setInterfacePredecessorsList.getExpressionFunction()));
 
-    public ComplexFieldMappingDsl(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
+    public ComplexFieldMappingDsl(ExpressionBase<ROOT, ?> parentExpression, FUN expressionFunction) {
         super(parentExpression, expressionFunction);
     }
 

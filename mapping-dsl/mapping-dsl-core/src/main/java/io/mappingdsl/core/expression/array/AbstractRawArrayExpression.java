@@ -9,7 +9,7 @@ import io.mappingdsl.core.expression.simple.AbstractRawExpression;
 public class AbstractRawArrayExpression<ROOT, ELEMENT_TYPE, FUN extends ExpressionFunction>
         extends ArrayExpressionBase<ROOT, ELEMENT_TYPE, FUN> {
 
-    public AbstractRawArrayExpression(ExpressionBase<ROOT, ?, ?> parentExpression, FUN expressionFunction) {
+    public AbstractRawArrayExpression(ExpressionBase<ROOT, ?> parentExpression, FUN expressionFunction) {
         super(parentExpression, expressionFunction);
     }
 
