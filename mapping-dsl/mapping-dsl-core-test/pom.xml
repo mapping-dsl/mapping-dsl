@@ -133,7 +133,7 @@
                     <dependency>
                         <groupId>org.jacoco</groupId>
                         <artifactId>org.jacoco.ant</artifactId>
-                        <version>0.8.6</version>
+                        <version>0.8.7</version>
                     </dependency>
                 </dependencies>
             </plugin>
