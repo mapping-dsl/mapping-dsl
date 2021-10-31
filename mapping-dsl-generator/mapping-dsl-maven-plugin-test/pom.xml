@@ -74,8 +74,8 @@
 
     <repositories>
         <repository>
-            <id>bintray</id>
-            <url>https://dl.bintray.com/alexeyanufriev/mapping-dsl</url>
+            <id>test-lib</id>
+            <url>https://maven.pkg.github.com/mapping-dsl/test-lib</url>
         </repository>
     </repositories>
 

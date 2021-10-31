@@ -16,6 +16,7 @@
     <modules>
         <module>mapping-dsl-annotation-processor</module>
         <module>mapping-dsl-generator-core</module>
+        <module>mapping-dsl-generator-core-test</module>
         <module>mapping-dsl-maven-plugin</module>
         <module>mapping-dsl-maven-plugin-test</module>
     </modules>

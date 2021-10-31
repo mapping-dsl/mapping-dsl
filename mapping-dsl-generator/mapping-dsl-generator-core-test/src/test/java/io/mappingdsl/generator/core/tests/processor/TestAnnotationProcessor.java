@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @SupportedAnnotationTypes("*")
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
+@SupportedSourceVersion(SourceVersion.RELEASE_11)
 public class TestAnnotationProcessor extends AbstractProcessor {
 
     private final List<String> scope;

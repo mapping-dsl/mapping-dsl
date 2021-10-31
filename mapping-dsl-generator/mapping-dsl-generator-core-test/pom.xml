@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.mapping-dsl</groupId>
+        <artifactId>mapping-dsl-generator</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <!--
+    `mapping-dsl-generator-core` is now modularized,
+    but running tests for a module is a bit complex in terms of configuration,
+    thus a separate testing module has been created
+    -->
+    <artifactId>mapping-dsl-generator-core-test</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.mapping-dsl</groupId>
+            <artifactId>mapping-dsl-generator-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.testing.compile</groupId>
+            <artifactId>compile-testing</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+            <!--
+            mapping-dsl-generator-core module is covered with tests located in current (mapping-dsl-generator-core-test) module,
+            this is done due to complexities with configuration for modular system
+
+            jacoco-maven-plugin cannot generate coverage for maven modules other than current ones,
+            and since the code and tests are located in a different modules for proper test coverage report
+            jacoco-maven-plugin cannot be used
+
+            on the other hand jacoco-ant-plugin can generate coverage report for classes in different locations,
+            that is why in this case ant plugin is used instead of a maven one
+            -->
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>post-unit-test</id>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>generate-coverage-report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <taskdef name="report" classname="org.jacoco.ant.ReportTask" />
+                                <report>
+                                    <executiondata>
+                                        <file file="${project.build.directory}/coverage-reports/jacoco-ut.exec" />
+                                    </executiondata>
+                                    <structure name="mapping-dsl-generator-core">
+                                        <classfiles>
+                                            <fileset dir="../mapping-dsl-generator-core/target/classes" />
+                                        </classfiles>
+                                        <sourcefiles encoding="UTF-8">
+                                            <fileset dir="../mapping-dsl-generator-core/src/main/java" />
+                                        </sourcefiles>
+                                    </structure>
+                                    <html destdir="${basedir}/target/coverage-reports/jacoco-ut/html" />
+                                    <xml destfile="${basedir}/target/coverage-reports/jacoco-ut/jacoco.xml" />
+                                </report>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>org.jacoco.ant</artifactId>
+                        <version>0.8.6</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -14,17 +14,18 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set up Java
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v2
       with:
-        java-version: 1.8
+        java-version: 11
+        distribution: adopt
+        cache: maven
+        settings-path: ${{ github.workspace }}
+        server-id: test-lib
+        server-username: TEST_LIB_REPO_USER
+        server-password: TEST_LIB_REPO_PAT
 
-    - name: Cache Maven dependencies
-      uses: actions/cache@v2
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-
-    - name: Run Maven
-      run: mvn -B clean test --file pom.xml
+    - name: Test Changes
+      run: mvn -B clean test --file pom.xml -s $GITHUB_WORKSPACE/settings.xml
+      env:
+        TEST_LIB_REPO_USER: CI
+        TEST_LIB_REPO_PAT: ${{ secrets.TEST_LIB_REPO_PAT }}

@@ -1,6 +1,6 @@
 package io.mappingdsl.generator.core.model.field;
 
-import ice.bricks.lang.model.LanguageModelUtils.TypeDetails;
+import ice.bricks.lang.model.TypeDetails;
 import io.mappingdsl.generator.core.utils.GeneratorUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @SupportedAnnotationTypes("io.mappingdsl.annotation.MappingDsl")
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
+@SupportedSourceVersion(SourceVersion.RELEASE_11)
 public class MappingDslAnnotationProcessor extends AbstractProcessor {
 
     private MappingDslProcessor mappingDslProcessor;
