@@ -10,33 +10,23 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mapping-dsl-generator-core</artifactId>
+    <!--
+    `mapping-dsl-generator-core` is now modularized,
+    but running tests for a module is a bit complex in terms of configuration,
+    thus a separate testing module has been created
+    -->
+    <artifactId>mapping-dsl-generator-core-test</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>io.mapping-dsl</groupId>
-            <artifactId>mapping-dsl-core</artifactId>
+            <artifactId>mapping-dsl-generator-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-collections4</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.alexey-anufriev</groupId>
-            <artifactId>ice-bricks</artifactId>
+            <groupId>com.google.testing.compile</groupId>
+            <artifactId>compile-testing</artifactId>
         </dependency>
     </dependencies>
 
@@ -44,14 +34,13 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
+                <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
-                    <compilerArgs>
-                        <arg>--add-exports</arg>
-                        <arg>jdk.compiler/com.sun.tools.javac.code=mapping.dsl.generator.core</arg>
-                    </compilerArgs>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
+
+            <!-- TODO: adopt test coverage report -->
         </plugins>
     </build>
 

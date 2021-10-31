@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 @SupportedAnnotationTypes("*")
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
+@SupportedSourceVersion(SourceVersion.RELEASE_11)
 @SupportedOptions(MappingDslBatchGenerator.SCOPE_OPTION)
 public class MappingDslBatchGenerator extends AbstractProcessor {
 
