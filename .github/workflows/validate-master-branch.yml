@@ -18,6 +18,7 @@ jobs:
         java-version: 11
         distribution: adopt
         cache: maven
+        settings-path: ${{ github.workspace }}
         server-id: test-lib
         server-username: TEST_LIB_REPO_USER
         server-password: TEST_LIB_REPO_PAT
