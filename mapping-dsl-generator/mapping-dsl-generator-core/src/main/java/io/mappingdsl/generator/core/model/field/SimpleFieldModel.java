@@ -1,6 +1,6 @@
 package io.mappingdsl.generator.core.model.field;
 
-import ice.bricks.lang.model.LanguageModelUtils.TypeDetails;
+import ice.bricks.lang.model.TypeDetails;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 

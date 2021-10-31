@@ -5,7 +5,7 @@ import ice.bricks.beans.BeansUtils;
 import ice.bricks.exceptions.ExceptionUtils;
 import ice.bricks.io.IoUtils;
 import ice.bricks.lang.model.LanguageModelUtils;
-import ice.bricks.lang.model.LanguageModelUtils.TypeDetails;
+import ice.bricks.lang.model.TypeDetails;
 import ice.bricks.meta.ClassUtils;
 import io.mappingdsl.generator.core.model.DslClassModel;
 import io.mappingdsl.generator.core.model.field.FieldModelBase;
