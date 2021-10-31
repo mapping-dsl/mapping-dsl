@@ -25,7 +25,6 @@
         </dependency>
     </dependencies>
 
-
     <!-- explicitly configure compilation process to avoid custom annotation processor to be a part of it -->
     <build>
         <plugins>
