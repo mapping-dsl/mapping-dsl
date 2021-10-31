@@ -20,11 +20,11 @@ public class SourceCodeGenerator {
     private final Template rootTemplate;
 
     private SourceCodeGenerator() {
-        Configuration configuration = new Configuration(Configuration.VERSION_2_3_30);
+        Configuration configuration = new Configuration(Configuration.VERSION_2_3_31);
         configuration.setClassForTemplateLoading(this.getClass(), "/templates/");
         configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 
-        BeansWrapper beansWrapper = new BeansWrapper(Configuration.VERSION_2_3_30);
+        BeansWrapper beansWrapper = new BeansWrapper(Configuration.VERSION_2_3_31);
 
         TemplateModel generatorUtilsMode = ExceptionUtils.runSafe(
                 () -> beansWrapper.getStaticModels().get(GeneratorUtils.class.getName()));

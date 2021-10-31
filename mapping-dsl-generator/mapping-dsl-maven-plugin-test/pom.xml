@@ -28,7 +28,7 @@
         <dependency>
             <groupId>io.mapping-dsl</groupId>
             <artifactId>test-lib</artifactId>
-            <version>1.0</version>
+            <version>${test-lib.version}</version>
         </dependency>
     </dependencies>
 
