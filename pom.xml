@@ -24,7 +24,7 @@
         <lombok.version>1.18.22</lombok.version>
         <maven-core.version>3.8.4</maven-core.version>
         <maven-plugin-annotations.version>3.6.1</maven-plugin-annotations.version>
-        <maven-plugin-api.version>3.8.3</maven-plugin-api.version>
+        <maven-plugin-api.version>3.8.4</maven-plugin-api.version>
         <mockito-core.version>4.0.0</mockito-core.version>
         <test-lib.version>1.0</test-lib.version>
 
