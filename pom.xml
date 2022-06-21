@@ -24,12 +24,12 @@
         <lombok.version>1.18.22</lombok.version>
         <maven-core.version>3.8.4</maven-core.version>
         <maven-plugin-annotations.version>3.6.2</maven-plugin-annotations.version>
-        <maven-plugin-api.version>3.8.4</maven-plugin-api.version>
+        <maven-plugin-api.version>3.8.6</maven-plugin-api.version>
         <mockito-core.version>4.2.0</mockito-core.version>
         <test-lib.version>1.0</test-lib.version>
 
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
-        <maven-antrun-plugin.version>3.0.0</maven-antrun-plugin.version>
+        <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-plugin-plugin.version>3.6.2</maven-plugin-plugin.version>
